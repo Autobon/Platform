@@ -1,2 +1,3 @@
 rootProject.name = 'Platform'
+include 'MobileAPI'
 
