@@ -1,0 +1,40 @@
+group 'Autobon'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.+")
+        classpath("org.flywaydb:flyway-gradle-plugin:3.+")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'org.flywaydb.flyway'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-freemarker:1.+")
+//    compile("org.springframework.boot:spring-boot-starter-data-jpa:1.+")
+    testCompile("org.mockito:mockito-core:1.+")
+    testCompile("org.springframework.boot:spring-boot-starter-test:1.+")
+    runtime("mysql:mysql-connector-java:5.+")
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked"
+    }
+}
+
+defaultTasks "build"
