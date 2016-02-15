@@ -13,12 +13,12 @@ logging:
 # spring
 spring:
     profiles.active: dev
-    freemarker.cache: true
+    freemarker.cache: false
     resources.cache-period: 7200
     datasource:
-        url: jdbc:mysql://127.0.0.1:3306/autobon?characterEncoding=utf8
+        url: jdbc:mysql://127.0.0.1:3306/autobon?characterEncoding=utf8&useSSL=false
         username: root
-        password: root
+        password: 123456
     jpa:
         show-sql: true
         hibernate:

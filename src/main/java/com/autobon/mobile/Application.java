@@ -1,4 +1,4 @@
-package com.autobon;
+package com.autobon.mobile;
 
 
 import org.springframework.boot.SpringApplication;
