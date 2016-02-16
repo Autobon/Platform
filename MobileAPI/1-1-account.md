@@ -13,6 +13,7 @@ GET /api/mobile/verifySms
 
 ### 用例
 
-| Request URL | Request Header | Request Body | Result |
-| ----------- | -------------- | ------------ | ------ |
+
+| URL | Header | Body | Result |
+| --- | ------ | ---- | ------ |
 | GET /api/mobile/verifySms?phone=18812345678 | | | {"result":true,"message":"","error":null,"data":null} |
