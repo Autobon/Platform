@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -62,6 +64,7 @@ public class AccountController {
             @RequestParam("password")  String password,
             @RequestParam("verifySms") String verifySms,
             HttpSession session) {
+
         JsonMessage ret = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
 
@@ -69,7 +72,7 @@ public class AccountController {
             ret.setError("ILLEGAL_PARAM");
             messages.add("手机号格式错误");
         } else if (technicianService.getByPhone(phone) != null) {
-            ret.setError("OCCUPIED_IDENTIFIER");
+            ret.setError("OCCUPIED_ID");
             messages.add("手机号已被注册");
         }
 
@@ -89,9 +92,63 @@ public class AccountController {
             Technician technician = new Technician();
             technician.setPhone(phone);
             technician.setPassword(Technician.encryptPassword(password));
-            technicianService.add(technician);
+            technicianService.save(technician);
             ret.setData(technician);
         }
+        return ret;
+    }
+
+    @RequestMapping(value = "/technician/login", method = RequestMethod.POST)
+    public JsonMessage loginTechnician(HttpServletResponse response,
+            @RequestParam("phone")    String phone,
+            @RequestParam("password") String password) {
+
+        JsonMessage ret = new JsonMessage(true);
+        Technician technician = technicianService.getByPhone(phone);
+
+        if (technician == null) {
+            ret.setResult(false);
+            ret.setError("NO_SUCH_USER");
+            ret.setMessage("手机号未注册");
+        } else if (!technician.getPassword().equals(Technician.encryptPassword(password))) {
+            ret.setResult(false);
+            ret.setError("ILLEGAL_PARAM");
+            ret.setMessage("密码错误");
+        } else {
+            response.addCookie(new Cookie("token", Technician.makeToken(technician.getId())));
+            ret.setData(technician);
+        }
+        return ret;
+    }
+
+    @RequestMapping(value = "/technician/resetPassword", method = RequestMethod.POST)
+    public JsonMessage resetPassword(HttpSession session,
+            @RequestParam("phone")     String phone,
+            @RequestParam("verifySms") String verifySms) throws Exception {
+
+        JsonMessage ret = new JsonMessage(true);
+        Technician technician = technicianService.getByPhone(phone);
+        if (technician == null) {
+            ret.setResult(false);
+            ret.setError("NO_SUCH_USER");
+            ret.setMessage("手机号未注册");
+        } else if (!verifySms.equals(session.getAttribute("verifySms"))){
+            ret.setResult(false);
+            ret.setError("ILLEGAL_PARAM");
+            ret.setMessage("验证码错误");
+        } else {
+            String password = VerifyCode.generateRandomNumber(6);
+            technician.setPassword(Technician.encryptPassword(password));
+            technicianService.save(technician);
+            smsSender.send(phone, "【车邻邦】你的新密码是：" + password + ", 请登录后及时更换密码。");
+        }
+        return ret;
+    }
+
+    @RequestMapping(value = "/technician/changePassword", method = RequestMethod.POST)
+    public JsonMessage changePassword(HttpSession session, @RequestParam("password") String password) {
+        JsonMessage ret = new JsonMessage(true);
+
         return ret;
     }
 }

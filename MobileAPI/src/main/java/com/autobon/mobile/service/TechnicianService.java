@@ -23,7 +23,7 @@ public class TechnicianService {
         return repository.getByPhone(phone);
     }
 
-    public Technician add(Technician technician) {
+    public Technician save(Technician technician) {
         return repository.save(technician);
     }
 

@@ -77,7 +77,7 @@ public class AccountControllerTest {
                 .param("verifySms", "123456"))
             .andExpect(status().isOk())
             .andDo(MockMvcResultHandlers.print())
-            .andExpect(jsonPath("$.error", is("OCCUPIED_IDENTIFIER")));
+            .andExpect(jsonPath("$.error", is("OCCUPIED_ID")));
     }
 
 

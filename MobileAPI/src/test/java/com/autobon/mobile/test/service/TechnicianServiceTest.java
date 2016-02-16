@@ -37,7 +37,7 @@ public class TechnicianServiceTest {
     @Transactional
     public void testAdd() {
         Assert.assertEquals(technician.getId(), 0);
-        technicianService.add(technician);
+        technicianService.save(technician);
         Assert.assertTrue(technician.getId() > 0);
     }
 }

@@ -11,7 +11,7 @@ CREATE TABLE `partner` (
   `latitude` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '纬度',
   `phone` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '联系电话',
   `logo_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8_unicode_ci,
+  `description` varchar(255) COLLATE utf8_unicode_ci,
   `last_login_at` datetime DEFAULT NULL,
   `last_login_ip` varchar(125) COLLATE utf8_unicode_ci DEFAULT NULL,
   `create_at` datetime DEFAULT NULL,
