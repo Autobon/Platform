@@ -10,13 +10,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 /**
  * Created by dave on 16/2/12.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackageClasses = MobileApiApplication.class)
+@EntityScan(basePackageClasses = MobileApiApplication.class)
+@EnableJpaRepositories(basePackageClasses = MobileApiApplication.class)
 @EnableWebMvc
-@EntityScan
-@EnableJpaRepositories
 @EnableTransactionManagement
-public class Application {
+public class MobileApiApplication {
     public static void main(String[] args){
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(MobileApiApplication.class, args);
     }
 }

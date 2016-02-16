@@ -1,10 +1,6 @@
 package com.autobon.mobile.entity;
 
-import sun.plugin2.message.Message;
-
 import javax.persistence.*;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 /**

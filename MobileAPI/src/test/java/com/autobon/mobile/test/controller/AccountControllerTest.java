@@ -1,6 +1,6 @@
 package com.autobon.mobile.test.controller;
 
-import com.autobon.mobile.Application;
+import com.autobon.mobile.MobileApiApplication;
 import com.autobon.mobile.entity.Technician;
 import com.autobon.mobile.service.TechnicianService;
 import org.junit.Assert;
@@ -19,22 +19,26 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by dave on 16/2/15.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = MobileApiApplication.class)
 @WebAppConfiguration
 public class AccountControllerTest {
     @Autowired WebApplicationContext wac;
     @Autowired MockHttpSession session;
     @Autowired TechnicianService technicianService;
 
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
+    String phone = "18827075338";
+    String password = "123456";
 
     @Before
     public void setUp() {
@@ -42,11 +46,20 @@ public class AccountControllerTest {
     }
 
     @Test
+    public void sendVerifySms() throws Exception {
+        this.mockMvc.perform(get("/api/mobile/verifySms").session(session).param("phone", phone))
+            .andExpect(status().isOk())
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(jsonPath("$.result", is(true)))
+            .andExpect(request().sessionAttribute("verifySms", "123456"));
+    }
+
+    @Test
     @Transactional
     public void register() throws Exception {
-        String phone = "18827075338";
-        String password = "123456";
-        session.setAttribute("verifySms", "123456");
+        this.mockMvc.perform(get("/api/mobile/verifySms").session(session).param("phone", phone))
+                .andExpect(status().isOk());
+
         this.mockMvc.perform(post("/api/mobile/technician/register").session(session)
                 .param("phone", phone)
                 .param("password", password)

@@ -1,4 +1,6 @@
-
+com.autobon:
+    sms.gateway: http://114.215.172.92/message/messageSend # SMS Gateway
+    env: TEST
 
 # Tomcat
 server.port: 51234

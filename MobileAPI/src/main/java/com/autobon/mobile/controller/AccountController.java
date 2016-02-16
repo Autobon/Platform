@@ -3,8 +3,10 @@ package com.autobon.mobile.controller;
 import com.autobon.mobile.entity.Technician;
 import com.autobon.mobile.service.TechnicianService;
 import com.autobon.mobile.utils.JsonMessage;
+import com.autobon.mobile.utils.SmsSender;
 import com.autobon.mobile.utils.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,8 +26,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/mobile")
 public class AccountController {
-    @Autowired
-    private TechnicianService technicianService;
+    @Autowired private TechnicianService technicianService;
+    @Autowired private SmsSender smsSender;
+    @Value("${com.autobon.env:PROD}")
+    private String env;
 
     @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
     public void getVerifyCode(HttpSession session, OutputStream out) throws IOException {
@@ -35,10 +39,15 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/verifySms", method = RequestMethod.GET)
-    public void getVerifySms(HttpSession session) {
-        //String code = VerifyCode.generateRandomNumber(6);
-        //TODO ali-mns
-        session.setAttribute("verifySms", "123456");
+    public JsonMessage getVerifySms(HttpSession session, @RequestParam("phone") String phone) throws IOException {
+        String code = VerifyCode.generateRandomNumber(6);
+        if (env.equals("TEST")) {
+            code = "123456";
+        } else {
+            smsSender.send(phone, "【车邻邦】你的验证码是：" + code + ", 请不要把验证码泄露给其他人。");
+        }
+        session.setAttribute("verifySms", code);
+        return new JsonMessage(true);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -49,9 +58,9 @@ public class AccountController {
 
     @RequestMapping(value = "/technician/register", method = RequestMethod.POST)
     public JsonMessage register(
-            @RequestParam(value = "phone")     String phone,
-            @RequestParam(value = "password")  String password,
-            @RequestParam(value = "verifySms") String verifySms,
+            @RequestParam("phone")     String phone,
+            @RequestParam("password")  String password,
+            @RequestParam("verifySms") String verifySms,
             HttpSession session) {
         JsonMessage ret = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();

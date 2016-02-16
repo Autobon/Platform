@@ -1,6 +1,6 @@
 package com.autobon.mobile.test.service;
 
-import com.autobon.mobile.Application;
+import com.autobon.mobile.MobileApiApplication;
 import com.autobon.mobile.entity.Technician;
 import com.autobon.mobile.service.TechnicianService;
 import org.junit.Assert;
@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
  * Created by dave on 16/2/12.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = MobileApiApplication.class)
 @WebAppConfiguration
 public class TechnicianServiceTest {
     @Autowired
