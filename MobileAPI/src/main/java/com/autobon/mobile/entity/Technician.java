@@ -1,6 +1,7 @@
 package com.autobon.mobile.entity;
 
-import sun.misc.BASE64Encoder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -9,16 +10,17 @@ import javax.persistence.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
-import java.util.concurrent.Exchanger;
 
 /**
  * Created by dave on 16/2/5.
  */
 @Entity
 @Table
-public class Technician {
+public class Technician implements UserDetails {
     public enum Status {
         NOTVERIFIED(0), VERIFIED(1), REJECTED(2), BANNED(3);
         private int statusCode;
@@ -77,7 +79,7 @@ public class Technician {
     @Column(name = "status")
     private int statusCode;
 
-    private static String Token = "Autobon~!@#2016";
+    private static String Token = "Autobon~!@#2016=";
 
     public Technician() {
         this.setStatus(Status.NOTVERIFIED);
@@ -107,10 +109,8 @@ public class Technician {
     // 根据用户ID生成token
     public static String makeToken(int id) {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128, new SecureRandom(Token.getBytes()));
             Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), "AES"));
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(Token.getBytes(), "AES"));
             return "technician:" + Base64.getEncoder().encodeToString(cipher.doFinal(new Integer(id).toString().getBytes()));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -124,10 +124,8 @@ public class Technician {
         if (arr.length < 2 || !arr[0].equals("technician")) return 0;
         else token = arr[1];
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128, new SecureRandom(token.getBytes()));
             Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), "AES"));
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Token.getBytes(), "AES"));
             return Integer.parseInt(new String(cipher.doFinal(Base64.getDecoder().decode(token))));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -309,5 +307,43 @@ public class Technician {
 
     protected void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        GrantedAuthority authority = new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "TECHNICIAN";
+            }
+        };
+        ArrayList<GrantedAuthority> ret = new ArrayList<>();
+        ret.add(authority);
+        return ret;
+    }
+
+    @Override
+    public String getUsername() {
+        return phone;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return getStatus() != Status.BANNED;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return getStatus() == Status.VERIFIED;
     }
 }

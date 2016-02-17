@@ -3,6 +3,7 @@ package com.autobon.mobile.controller;
 import com.autobon.mobile.entity.Technician;
 import com.autobon.mobile.service.TechnicianService;
 import com.autobon.mobile.utils.JsonMessage;
+import com.autobon.mobile.utils.RedisCache;
 import com.autobon.mobile.utils.SmsSender;
 import com.autobon.mobile.utils.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,25 +31,26 @@ import java.util.stream.Collectors;
 public class AccountController {
     @Autowired private TechnicianService technicianService;
     @Autowired private SmsSender smsSender;
+    @Autowired private RedisCache redisCache;
     @Value("${com.autobon.env:PROD}")
     private String env;
 
-    @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
-    public void getVerifyCode(HttpSession session, OutputStream out) throws IOException {
-        String code = VerifyCode.generateVerifyCode(6);
-        session.setAttribute("verifyCode", code);
-        VerifyCode.writeVerifyCodeImage(250, 40, out, code);
-    }
+//    @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
+//    public void getVerifyCode(OutputStream out) throws IOException {
+//        String code = VerifyCode.generateVerifyCode(6);
+//        //TODO session.setAttribute("verifyCode", code);
+//        VerifyCode.writeVerifyCodeImage(250, 40, out, code);
+//    }
 
     @RequestMapping(value = "/verifySms", method = RequestMethod.GET)
-    public JsonMessage getVerifySms(HttpSession session, @RequestParam("phone") String phone) throws IOException {
+    public JsonMessage getVerifySms(@RequestParam("phone") String phone) throws IOException {
         String code = VerifyCode.generateRandomNumber(6);
         if (env.equals("TEST")) {
             code = "123456";
         } else {
             smsSender.send(phone, "【车邻邦】你的验证码是：" + code + ", 请不要把验证码泄露给其他人。");
         }
-        session.setAttribute("verifySms", code);
+        redisCache.set(("verifySms:" + phone).getBytes(), code.getBytes(), 15*60);
         return new JsonMessage(true);
     }
 
@@ -62,8 +64,7 @@ public class AccountController {
     public JsonMessage register(
             @RequestParam("phone")     String phone,
             @RequestParam("password")  String password,
-            @RequestParam("verifySms") String verifySms,
-            HttpSession session) {
+            @RequestParam("verifySms") String verifySms) {
 
         JsonMessage ret = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
@@ -80,7 +81,7 @@ public class AccountController {
             ret.setError("ILLEGAL_PARAM");
             messages.add("密码至少6位");
         }
-        if (!verifySms.equals(session.getAttribute("verifySms"))) {
+        if (!verifySms.equals(new String(redisCache.get(("verifySms:" + phone).getBytes())))) {
             ret.setError("ILLEGAL_PARAM");
             messages.add("验证码错误");
         }
@@ -115,7 +116,7 @@ public class AccountController {
             ret.setError("ILLEGAL_PARAM");
             ret.setMessage("密码错误");
         } else {
-            response.addCookie(new Cookie("token", Technician.makeToken(technician.getId())));
+            response.addCookie(new Cookie("autoken", Technician.makeToken(technician.getId())));
             ret.setData(technician);
         }
         return ret;
@@ -132,7 +133,7 @@ public class AccountController {
             ret.setResult(false);
             ret.setError("NO_SUCH_USER");
             ret.setMessage("手机号未注册");
-        } else if (!verifySms.equals(session.getAttribute("verifySms"))){
+        } else if (!verifySms.equals(new String(redisCache.get(("verifySms:" + phone).getBytes())))) {
             ret.setResult(false);
             ret.setError("ILLEGAL_PARAM");
             ret.setMessage("验证码错误");
@@ -146,9 +147,18 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/technician/changePassword", method = RequestMethod.POST)
-    public JsonMessage changePassword(HttpSession session, @RequestParam("password") String password) {
+    public JsonMessage changePassword(@RequestParam("password") String password) {
+        System.out.println("password: " + password);
         JsonMessage ret = new JsonMessage(true);
-
+        if (password.length() < 6) {
+            ret.setResult(false);
+            ret.setError("ILLEGAL_PARAM");
+            ret.setMessage("密码至少6位");
+        } else {
+            Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+            technician.setPassword(password);
+            technicianService.save(technician);
+        }
         return ret;
     }
 }

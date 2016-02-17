@@ -19,6 +19,10 @@ public class TechnicianService {
     @Autowired
     private TechnicianRepository repository;
 
+    public Technician get(int id) {
+        return repository.findOne(id);
+    }
+
     public Technician getByPhone(String phone) {
         return repository.getByPhone(phone);
     }
