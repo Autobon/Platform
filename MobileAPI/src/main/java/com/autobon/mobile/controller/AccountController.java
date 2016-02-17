@@ -148,7 +148,6 @@ public class AccountController {
 
     @RequestMapping(value = "/technician/changePassword", method = RequestMethod.POST)
     public JsonMessage changePassword(@RequestParam("password") String password) {
-        System.out.println("password: " + password);
         JsonMessage ret = new JsonMessage(true);
         if (password.length() < 6) {
             ret.setResult(false);
@@ -156,7 +155,7 @@ public class AccountController {
             ret.setMessage("密码至少6位");
         } else {
             Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
-            technician.setPassword(password);
+            technician.setPassword(Technician.encryptPassword(password));
             technicianService.save(technician);
         }
         return ret;

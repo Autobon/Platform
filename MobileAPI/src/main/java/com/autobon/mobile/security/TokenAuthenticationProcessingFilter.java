@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -29,6 +30,7 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
 
     public TokenAuthenticationProcessingFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
+        this.setContinueChainBeforeSuccessfulAuthentication(true);
     }
 
     @Override
@@ -94,6 +96,7 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
             };
             authentication = new TokenAuthentication(anonymous);
         }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         return authentication;
     }
 }

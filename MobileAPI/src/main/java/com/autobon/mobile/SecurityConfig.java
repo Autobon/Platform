@@ -41,15 +41,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/api/mobile/technician/**").hasAuthority("TECHNICIAN")
-            .and().authorizeRequests().antMatchers(
+        http.addFilterBefore(authenticationProcessingFilter(), BasicAuthenticationFilter.class);
+        http.authorizeRequests().antMatchers(
+                "/api/mobile/technician/login",
                 "/api/mobile/technician/register",
-                "/api/mobile/technician/resetPassword").permitAll();
+                "/api/mobile/technician/resetPassword").permitAll()
+            .and().authorizeRequests().antMatchers("/api/mobile/technician/**")
+                .hasAuthority("TECHNICIAN");
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().antMatcher("/api/mobile/**").csrf().disable();
-        http.antMatcher("/api/mobile/technician/**")
-            .addFilterBefore(authenticationProcessingFilter(), BasicAuthenticationFilter.class);
+            .and().csrf().disable();
     }
 
     @Override
