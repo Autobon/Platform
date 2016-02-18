@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -139,6 +143,21 @@ public class TechnicianAccountController {
             Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
             technician.setPassword(Technician.encryptPassword(password));
             technicianService.save(technician);
+        }
+        return ret;
+    }
+
+    @RequestMapping(value = "/avatar", method = RequestMethod.POST)
+    public JsonMessage uploadAvatar(HttpServletRequest request, MultipartFile file) {
+        JsonMessage ret = new JsonMessage(true);
+        if (!file.isEmpty()) {
+            File dir = new File(request.getServletContext().getRealPath("/uploads/technician/avatar"));
+            if (!dir.exists()) dir.mkdirs();
+            String originalName = file.getOriginalFilename();
+            String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase();
+            String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                    + (VerifyCode.generateRandomNumber(6)) + extension;
+
         }
         return ret;
     }

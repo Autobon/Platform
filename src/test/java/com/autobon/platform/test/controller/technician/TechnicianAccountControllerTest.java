@@ -1,4 +1,4 @@
-package com.autobon.platform.test.controller;
+package com.autobon.platform.test.controller.technician;
 
 import com.autobon.platform.Application;
 import com.autobon.technician.entity.Technician;
@@ -44,7 +44,7 @@ public class TechnicianAccountControllerTest {
 
     MockMvc mockMvc;
     MockMvc mockMvcS;
-    String phone = "18827075338";
+    String phone = "18827075300";
     String password = "123456";
 
     @Before
