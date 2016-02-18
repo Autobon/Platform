@@ -80,10 +80,10 @@ public class AccountController {
             ret.setError("ILLEGAL_PARAM");
             messages.add("密码至少6位");
         }
-/*        if (!verifySms.equals(new String(redisCache.get(("verifySms:" + phone).getBytes())))) {
+        if (!verifySms.equals(new String(redisCache.get(("verifySms:" + phone).getBytes())))) {
             ret.setError("ILLEGAL_PARAM");
             messages.add("验证码错误");
-        }*/
+        }
 
         if (messages.size() > 0) {
             ret.setResult(false);
