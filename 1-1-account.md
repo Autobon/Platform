@@ -59,6 +59,10 @@ POST /api/mobile/technician/login
 | phone | 手机号 | 18812345678 |
 | password| 密码 | 123456 |
 
+### 返回数据
+1. 登录成功
+
+
 ## 4. 找回密码
 通过手机号和短信验证码接收新密码短信.
 ### URL及请求方法
@@ -68,6 +72,7 @@ POST /api/mobile/technician/resetPassword
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
 | phone | 手机号 | 18812345678 |
+| password | 新密码 | 123456 |
 | verifySms| 短信验证码 | 111222 |
 
 ## 5. 更改密码

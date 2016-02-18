@@ -111,6 +111,7 @@ public class TechnicianAccountControllerTest {
                     mockMvc.perform(get("/api/mobile/verifySms").param("phone", phoneT));
                     mockMvc.perform(post("/api/mobile/technician/resetPassword")
                             .param("phone", phoneT)
+                            .param("password", "123456")
                             .param("verifySms", "123456"))
                         .andDo(MockMvcResultHandlers.print())
                         .andExpect(jsonPath("$.result", is(true)));
