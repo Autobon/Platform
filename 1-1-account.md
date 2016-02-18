@@ -78,8 +78,7 @@ POST /api/mobile/technician/changePassword
 
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
-| phone | 手机号 | 18812345678 |
-| verifySms| 短信验证码 | 111222 |
+| password| 新密码 | 111222 |
 
 ### 请求Cookie
 请求Cookie中必须有有效的autoken.
