@@ -37,7 +37,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
         poolConfig.setMaxIdle(3);
         poolConfig.setMinIdle(2);
         poolConfig.setMaxWaitMillis(10000);
-        poolConfig.setTestOnBorrow(true);
+        //poolConfig.setTestOnBorrow(true);
         redisConnectionFactory.setPoolConfig(poolConfig);
         return redisConnectionFactory;
     }
