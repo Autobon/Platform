@@ -17,7 +17,7 @@ import java.util.Date;
  * Created by dave on 16/2/5.
  */
 @Entity
-@Table
+@Table(name="technician")
 public class Technician implements UserDetails {
     public enum Status {
         NOTVERIFIED(0), VERIFIED(1), REJECTED(2), BANNED(3);
@@ -76,6 +76,9 @@ public class Technician implements UserDetails {
 
     @Column(name = "status")
     private int statusCode;
+
+    @Column(name = "skill")
+    private String skill;
 
     private static String Token = "Autobon~!@#2016=";
 
@@ -305,6 +308,14 @@ public class Technician implements UserDetails {
 
     protected void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
     }
 
     @Override

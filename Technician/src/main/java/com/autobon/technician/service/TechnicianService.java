@@ -1,6 +1,7 @@
 package com.autobon.technician.service;
 
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.repository.CodeitemRepository;
 import com.autobon.technician.repository.TechnicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -18,6 +20,9 @@ import java.util.regex.Pattern;
 public class TechnicianService {
     @Autowired
     private TechnicianRepository repository;
+
+    @Autowired
+    private CodeitemRepository codeitemRepository;
 
     public Technician get(int id) {
         return repository.findOne(id);
@@ -61,5 +66,17 @@ public class TechnicianService {
             ret.put("result", true);
         }
         return ret;
+    }
+
+    public List<String> getWorkByCodemap(String codemap){
+        List<String> list = codeitemRepository.getByCodemap(codemap);
+        return list;
+    }
+
+    public Technician getById(Integer id) {
+        return null;
+    }
+
+    public void add(Technician technician) {
     }
 }
