@@ -24,5 +24,5 @@ spring:
             # Hibernate DDL  auto: create, create-drop, update, validate
             ddl-auto: validate
             naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-            properties:
-                hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+        properties:
+            hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
