@@ -1,2 +1,3 @@
 rootProject.name = 'Platform'
-include 'Technician'
+include 'Technician','Staff'
+
