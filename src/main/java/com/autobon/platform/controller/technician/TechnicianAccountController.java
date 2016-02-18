@@ -150,6 +150,13 @@ public class TechnicianAccountController {
         return ret;
     }
 
+    /**
+     * 上传头像
+     * @param request
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public JsonMessage uploadAvatar(HttpServletRequest request, MultipartFile file) throws Exception {
         JsonMessage ret = new JsonMessage(true);
@@ -178,6 +185,13 @@ public class TechnicianAccountController {
         return ret;
     }
 
+    /**
+     * 上传身份证照片
+     * @param request
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/idPhoto", method = RequestMethod.POST)
     public JsonMessage uploadIdPhoto(HttpServletRequest request, MultipartFile file) throws Exception {
         JsonMessage ret = new JsonMessage(true);
