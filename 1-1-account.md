@@ -42,11 +42,7 @@ POST /api/mobile/technician/register
     `POST /api/mobile/technician/register`
 * **POST参数**
 
-    ```
-    phone=18827075338
-    password=123456
-    verifySms=123456
-    ```
+    `phone=18827075338&password=123456&verifySms=123456`
 * 返回结果
 
     ```
