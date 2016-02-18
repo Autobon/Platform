@@ -39,8 +39,8 @@ public class TechnicianAccountController {
     @Autowired TechnicianService technicianService;
     @Autowired RedisCache redisCache;
     @Autowired SmsSender smsSender;
-    @Value("${com.autobon.env:PROD}")
-    private String env;
+    @Value("${com.autobon.env:PROD}") String env;
+    @Value("${com.autobon.gm-path}") String gmPath;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -163,6 +163,7 @@ public class TechnicianAccountController {
         if (!dir.exists()) dir.mkdirs();
         try (InputStream fis = file.getInputStream()) {
             ConvertCmd cmd = new ConvertCmd(true);
+            cmd.setSearchPath(gmPath);
             cmd.setInputProvider(new Pipe(fis, null));
             IMOperation operation = new IMOperation();
             operation.addImage("-");
