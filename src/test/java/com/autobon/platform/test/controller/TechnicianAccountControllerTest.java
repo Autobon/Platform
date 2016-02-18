@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class AccountControllerTest {
+public class TechnicianAccountControllerTest {
     @Autowired WebApplicationContext wac;
     @Autowired TechnicianService technicianService;
     @Autowired FilterChainProxy springFilterChain;
@@ -94,7 +94,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void loginAndChangePassword() throws Exception {
+    public void changeAndResetPassword() throws Exception {
         this.mockMvcS.perform(post("/api/mobile/technician/changePassword")
                 .param("password", "221234")
                 .cookie(new Cookie("autoken", token)))
@@ -105,12 +105,17 @@ public class AccountControllerTest {
                     mockMvc.perform(post("/api/mobile/technician/login")
                             .param("phone", phoneT)
                             .param("password", "221234"))
-                            .andDo(MockMvcResultHandlers.print())
-                            .andExpect(jsonPath("$.result", is(true)));
+                        .andDo(MockMvcResultHandlers.print())
+                        .andExpect(jsonPath("$.result", is(true)));
+                    mockMvc.perform(get("/api/mobile/verifySms").param("phone", phoneT));
+                    mockMvc.perform(post("/api/mobile/technician/resetPassword")
+                            .param("phone", phoneT)
+                            .param("verifySms", "123456"))
+                        .andDo(MockMvcResultHandlers.print())
+                        .andExpect(jsonPath("$.result", is(true)));
                 }
             })
             .andExpect(jsonPath("$.result", is(true)));
-
     }
 
 

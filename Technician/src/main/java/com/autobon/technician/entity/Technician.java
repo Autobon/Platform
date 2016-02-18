@@ -1,5 +1,6 @@
 package com.autobon.technician.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -44,6 +45,7 @@ public class Technician implements UserDetails {
 
     @Column private String phone;
 
+    @JsonIgnore
     @Column private String password;
 
     @Column private String name;
