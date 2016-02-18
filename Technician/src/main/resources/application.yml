@@ -15,14 +15,14 @@ spring:
     freemarker.cache: true
     resources.cache-period: 7200
     datasource:
-        url: jdbc:mysql://127.0.0.1:3306/autobon?characterEncoding=utf8&useSSL=false
-        username: root
-        password: 123456
+        url: jdbc:mysql://121.40.157.200:3306/autobondb?characterEncoding=utf8&useSSL=false
+        username: autobon
+        password: autobon
     jpa:
         show-sql: true
         hibernate:
             # Hibernate DDL  auto: create, create-drop, update, validate
             ddl-auto: validate
             naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-            properties:
-                hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+        properties:
+            hibernate.dialect: org.hibernate.dialect.MySQL5Dialect

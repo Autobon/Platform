@@ -1,5 +1,6 @@
 package com.autobon.technician.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -44,6 +45,7 @@ public class Technician implements UserDetails {
 
     @Column private String phone;
 
+    @JsonIgnore
     @Column private String password;
 
     @Column private String name;
@@ -320,14 +322,21 @@ public class Technician implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        GrantedAuthority authority = new GrantedAuthority() {
+        ArrayList<GrantedAuthority> ret = new ArrayList<>();
+        ret.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
                 return "TECHNICIAN";
             }
-        };
-        ArrayList<GrantedAuthority> ret = new ArrayList<>();
-        ret.add(authority);
+        });
+        if (getStatus() == Status.VERIFIED) {
+            ret.add(new GrantedAuthority() {
+                @Override
+                public String getAuthority() {
+                    return "VERIFIED_TECHNICIAN";
+                }
+            });
+        }
         return ret;
     }
 
