@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.Cookie;
@@ -37,6 +38,9 @@ public class AccountControllerTest {
     @Autowired WebApplicationContext wac;
     @Autowired TechnicianService technicianService;
     @Autowired FilterChainProxy springFilterChain;
+    @Value("${com.autobon.test.token}")
+    String token;
+    String phoneT = "18812345678";
 
     MockMvc mockMvc;
     MockMvc mockMvcS;
@@ -58,9 +62,8 @@ public class AccountControllerTest {
     }
 
     @Test
+    @Transactional
     public void register() throws Exception {
-        Technician t = technicianService.getByPhone(phone);
-        if (t != null) technicianService.deleteById(t.getId());
         this.mockMvc.perform(get("/api/mobile/verifySms").param("phone", phone))
                 .andExpect(status().isOk());
 
@@ -92,43 +95,21 @@ public class AccountControllerTest {
 
     @Test
     public void loginAndChangePassword() throws Exception {
-        this.mockMvc.perform(post("/api/mobile/technician/register")
-                .param("phone", phone)
-                .param("password", password)
-                .param("verifySms", "123456"))
+        this.mockMvcS.perform(post("/api/mobile/technician/changePassword")
+                .param("password", "221234")
+                .cookie(new Cookie("autoken", token)))
+            .andDo(MockMvcResultHandlers.print())
             .andDo(new ResultHandler() {
                 @Override
                 public void handle(MvcResult result) throws Exception {
                     mockMvc.perform(post("/api/mobile/technician/login")
-                            .param("phone", phone)
-                            .param("password", password))
+                            .param("phone", phoneT)
+                            .param("password", "221234"))
                             .andDo(MockMvcResultHandlers.print())
-                            .andDo(new ResultHandler() {
-                                @Override
-                                public void handle(MvcResult result) throws Exception {
-                                    Cookie cookie = result.getResponse().getCookie("autoken");
-                                    mockMvcS.perform(post("/api/mobile/technician/changePassword")
-                                            .param("password", "221234")
-                                            .cookie(cookie))
-                                            .andDo(MockMvcResultHandlers.print())
-                                            .andDo(new ResultHandler() {
-                                                @Override
-                                                public void handle(MvcResult result) throws Exception {
-                                                    mockMvc.perform(post("/api/mobile/technician/login")
-                                                            .param("phone", phone)
-                                                            .param("password", "221234"))
-                                                            .andDo(MockMvcResultHandlers.print())
-                                                            .andExpect(jsonPath("$.result", is(true)));
-                                                }
-                                            })
-                                            .andExpect(jsonPath("$.result", is(true)));
-                                }
-                            })
                             .andExpect(jsonPath("$.result", is(true)));
-                    Technician t = technicianService.getByPhone(phone);
-                    if (t != null) technicianService.deleteById(t.getId());
                 }
-            });
+            })
+            .andExpect(jsonPath("$.result", is(true)));
 
     }
 
