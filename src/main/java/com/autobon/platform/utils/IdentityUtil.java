@@ -6,6 +6,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+/**
+ * Created by yuh on 2016/2/18.
+ */
 @Component
 public class IdentityUtil {
 

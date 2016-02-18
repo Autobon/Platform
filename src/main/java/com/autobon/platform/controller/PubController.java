@@ -1,4 +1,4 @@
-package com.autobon.platform.controller.technician;
+package com.autobon.platform.controller;
 
 
 import com.autobon.platform.utils.JsonMessage;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/2/18.
+ * Created by yuh on 2016/2/18.
  */
 @RestController
 @RequestMapping("/api/mobile")
