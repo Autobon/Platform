@@ -96,7 +96,7 @@ public class TechnicianAccountController {
             ret.setMessage("手机号未注册");
         } else if (!technician.getPassword().equals(Technician.encryptPassword(password))) {
             ret.setResult(false);
-            ret.setError("ILLEGAL_PARAM");
+            ret.setError("PASSWORD_MISMATCH");
             ret.setMessage("密码错误");
         } else {
             response.addCookie(new Cookie("autoken", Technician.makeToken(technician.getId())));
