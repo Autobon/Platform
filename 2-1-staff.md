@@ -17,7 +17,7 @@ POST /api/staff/login
 | ------ | --- | ------ | ---- | ------ |
 | POST | /api/staff/login | | | {"result":true,"message":"登录成功","error":null,"data":{1,"admin",2016-02-18 13:00}} |
 
-## 1.注销
+## 2.注销
 车邻邦后台注销
 
 ### URL及请求方法
