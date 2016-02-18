@@ -14,7 +14,3 @@ src/main/resources/static/script/lib/
 build/
 *-dev.yml
 /*.properties
-/src/*/resources/application-*.properties
-/src/*/resources/application-*.yml
-/src/*/resources/messages.properties
-/src/*/resources/*_zh_CN.properties
