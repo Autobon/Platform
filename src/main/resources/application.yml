@@ -1,7 +1,4 @@
-com.autobon:
-    sms.gateway: http://114.215.172.92/message/messageSend # SMS Gateway
-    test.token: technician:HM6GlQ4/4AXxoe2ZfZVM2Q==
-    env: TEST
+
 
 # Tomcat
 server.port: 51234
@@ -11,7 +8,7 @@ logging:
     level:
         org.hibernate: WARN
         org.springframework: WARN
-    file: Autobon.log
+    file: Rental.log
 
 # spring
 spring:
@@ -19,18 +16,14 @@ spring:
     freemarker.cache: true
     resources.cache-period: 7200
     datasource:
-        url: jdbc:mysql://121.40.157.200:3306/autobondb?characterEncoding=utf8&useSSL=false
-        username: autobon
-        password: autobon
+        url: jdbc:mysql://127.0.0.1:3306/autobon?characterEncoding=utf8
+        username: root
+        password: root
     jpa:
         show-sql: true
         hibernate:
             # Hibernate DDL  auto: create, create-drop, update, validate
             ddl-auto: validate
             naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-        properties:
-            hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-    redis:
-        host: 120.55.98.235
-        port: 6379
-        password: 193ete0AD2936ac06c09&5307fab776Zcd0fatkf0c4ef
+            properties:
+                hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
