@@ -79,6 +79,21 @@ public class CertificateController {
         return jsonMessage;
     }
 
+    @RequestMapping(value="/technician/modifyAuth", method = RequestMethod.POST)
+    public JsonMessage modifyAuth(
+            @RequestParam("name") String name,
+            @RequestParam("idNo") String idNo,
+            @RequestParam("skillArray") String[] skillArray,
+            @RequestParam("avatar") String avatar,
+            @RequestParam("bank") String bank,
+            @RequestParam("bankAddress") String bankAddress,
+            @RequestParam("bankCardNo") String bankCardNo) {
+        JsonMessage jsonMessage = new JsonMessage(true,"modifyAuth");
 
+        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        jsonMessage.setData(technician);
+
+        return jsonMessage;
+    }
 
 }
