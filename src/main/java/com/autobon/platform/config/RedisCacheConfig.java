@@ -30,6 +30,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
         redisConnectionFactory.setHostName(redisHost);
         redisConnectionFactory.setPort(redisPort);
         redisConnectionFactory.setPassword(redisPassword);
+        redisConnectionFactory.setTimeout(100000);
         return redisConnectionFactory;
     }
 
