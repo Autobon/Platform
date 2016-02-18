@@ -1,4 +1,4 @@
-package com.autobon.controller;
+package com.autobon.platform.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

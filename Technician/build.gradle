@@ -16,31 +16,18 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'org.flywaydb.flyway'
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 dependencies {
-    compile project(":Technician")
     compile "org.springframework.boot:spring-boot-starter:1.+"
-    compile "org.springframework.boot:spring-boot-starter-web:1.+"
     compile 'org.springframework.boot:spring-boot-starter-security:1.+'
     compile "org.springframework.boot:spring-boot-starter-data-jpa:1.+"
-    compile "org.springframework.boot:spring-boot-starter-freemarker:1.+"
-    compile "org.springframework.data:spring-data-redis:1.+"
-    compile 'redis.clients:jedis:2.+'
+    compile "com.fasterxml.jackson.core:jackson-annotations:2.+"
     testCompile "org.springframework.boot:spring-boot-starter-test:1.+"
-    testCompile "com.jayway.jsonpath:json-path:2.+"
     runtime "mysql:mysql-connector-java:5.+"
 }
-
-gradle.projectsEvaluated {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:unchecked"
-    }
-}
-
-defaultTasks "build"

@@ -1,7 +1,3 @@
-com.autobon:
-    sms.gateway: http://114.215.172.92/message/messageSend # SMS Gateway
-    test.token: technician:HM6GlQ4/4AXxoe2ZfZVM2Q==
-    env: TEST
 
 # Tomcat
 server.port: 51234
@@ -30,7 +26,3 @@ spring:
             naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
         properties:
             hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-    redis:
-        host: 120.55.98.235
-        port: 6379
-        password: 193ete0AD2936ac06c09&5307fab776Zcd0fatkf0c4ef

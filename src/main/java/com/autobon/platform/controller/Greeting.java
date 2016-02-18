@@ -1,4 +1,4 @@
-package com.autobon.controller;
+package com.autobon.platform.controller;
 
 /**
  * Created by liz on 2016/1/27.
