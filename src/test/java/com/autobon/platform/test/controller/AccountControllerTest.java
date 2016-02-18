@@ -42,6 +42,7 @@ public class AccountControllerTest {
     MockMvc mockMvcS;
     String phone = "18827075338";
     String password = "123456";
+    String[] stringArray = {"1","6"};
 
     @Before
     public void setUp() {
@@ -121,6 +122,44 @@ public class AccountControllerTest {
                                                             .andExpect(jsonPath("$.result", is(true)));
                                                 }
                                             })
+                                            .andExpect(jsonPath("$.result", is(true)));
+                                }
+                            })
+                            .andExpect(jsonPath("$.result", is(true)));
+                    Technician t = technicianService.getByPhone(phone);
+                    if (t != null) technicianService.deleteById(t.getId());
+                }
+            });
+
+    }
+
+    @Test
+    public void commitAuth() throws Exception {
+        this.mockMvc.perform(post("/api/mobile/technician/register")
+                .param("phone", phone)
+                .param("password", password)
+                .param("verifySms", "123456"))
+            .andDo(new ResultHandler() {
+                @Override
+                public void handle(MvcResult result) throws Exception {
+                    mockMvc.perform(post("/api/mobile/technician/login")
+                            .param("phone", phone)
+                            .param("password", password))
+                            .andDo(MockMvcResultHandlers.print())
+                            .andDo(new ResultHandler() {
+                                @Override
+                                public void handle(MvcResult result) throws Exception {
+                                    Cookie cookie = result.getResponse().getCookie("autoken");
+                                    mockMvcS.perform(post("/api/mobile/technician/commitAuth")
+                                            .param("name", "tom")
+                                            .param("idNo","422302198608266313")
+                                            .param("skillArray",stringArray)
+                                            .param("avatar","/etc/a.jpg")
+                                            .param("bank","027")
+                                            .param("bankAddress","光谷")
+                                            .param("bankCardNo","88888888888")
+                                            .cookie(cookie))
+                                            .andDo(MockMvcResultHandlers.print())
                                             .andExpect(jsonPath("$.result", is(true)));
                                 }
                             })

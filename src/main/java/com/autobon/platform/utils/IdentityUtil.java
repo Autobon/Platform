@@ -263,7 +263,7 @@ public class IdentityUtil {
 
     }
 
-
+/*
     public static void main(String[] args) {
         String idNo = "422130198809180235";
         String idNo2 = "429004192208280087";
@@ -271,6 +271,8 @@ public class IdentityUtil {
         Boolean b2 = checkIDCard(idNo2);
         System.out.println(" >>>>" + b1 + "<<<<<" + b2);
     }
+*/
+
 
 
     public IdentityUtil() {

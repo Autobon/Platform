@@ -1,4 +1,4 @@
-package com.autobon.platform.controller;
+package com.autobon.platform.controller.technician;
 
 import com.autobon.platform.utils.ArrayUtil;
 import com.autobon.platform.utils.IdentityUtil;
@@ -7,12 +7,12 @@ import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/mobile")
-public class TechnicianController {
+public class CertificateController {
     @Value("${com.autobon.skill}")
     private String skill;
 
@@ -35,36 +35,16 @@ public class TechnicianController {
     @Autowired
     private IdentityUtil identityUtil;
 
-    @RequestMapping(value = "/technician/getSkill", method = RequestMethod.GET)
-    public JsonMessage getSkill(HttpSession session) throws Exception{
-        String[] skills = skill.split(",");
-
-        JsonMessage jsonMessage = new JsonMessage(true,"skill");
-        jsonMessage.setData(skills);
-
-        return jsonMessage;
-    }
-
-    @RequestMapping(value="/technician/getWork", method = RequestMethod.GET)
-    public JsonMessage getWork(HttpSession session,String codemap) throws Exception{
-        List<String> workList = technicianService.getWorkByCodemap(codemap);
-
-        JsonMessage jsonMessage = new JsonMessage(true,"work");
-        jsonMessage.setData(workList);
-        return jsonMessage;
-    }
 
     @RequestMapping(value="/technician/commitAuth", method = RequestMethod.POST)
     public JsonMessage commitAuth(
-            @RequestParam("id") Integer id,
             @RequestParam("name") String name,
             @RequestParam("idNo") String idNo,
             @RequestParam("skillArray") String[] skillArray,
             @RequestParam("avatar") String avatar,
             @RequestParam("bank") String bank,
             @RequestParam("bankAddress") String bankAddress,
-            @RequestParam("bankCardNo") String bankCardNo,
-            HttpSession session) {
+            @RequestParam("bankCardNo") String bankCardNo) {
 
         JsonMessage jsonMessage = new JsonMessage(true,"commitAuth");
         ArrayList<String> messages = new ArrayList<>();
@@ -81,7 +61,9 @@ public class TechnicianController {
             jsonMessage.setResult(false);
             jsonMessage.setMessage(messages.stream().collect(Collectors.joining(",")));
         } else {
-            Technician technician = technicianService.getById(id);
+            //Technician technician = technicianService.getById(id);
+            Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+            //Technician technician = new Technician();
             technician.setName(name);
             technician.setIdNo(idNo);
             technician.setSkill(skill);
@@ -90,7 +72,7 @@ public class TechnicianController {
             technician.setBankAddress(bankAddress);
             technician.setBankCardNo(bankCardNo);
 
-            technicianService.add(technician);
+            technicianService.save(technician);
             jsonMessage.setData(technician);
         }
 

@@ -73,10 +73,4 @@ public class TechnicianService {
         return list;
     }
 
-    public Technician getById(Integer id) {
-        return null;
-    }
-
-    public void add(Technician technician) {
-    }
 }
