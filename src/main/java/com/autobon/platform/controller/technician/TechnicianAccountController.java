@@ -6,6 +6,9 @@ import com.autobon.platform.utils.SmsSender;
 import com.autobon.platform.utils.VerifyCode;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
+import org.im4java.core.ConvertCmd;
+import org.im4java.core.IMOperation;
+import org.im4java.process.Pipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +22,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -107,6 +111,7 @@ public class TechnicianAccountController {
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public JsonMessage resetPassword(
             @RequestParam("phone")     String phone,
+            @RequestParam("password")  String password,
             @RequestParam("verifySms") String verifySms) throws Exception {
 
         JsonMessage ret = new JsonMessage(true);
@@ -119,13 +124,11 @@ public class TechnicianAccountController {
             ret.setResult(false);
             ret.setError("ILLEGAL_PARAM");
             ret.setMessage("验证码错误");
+        } else if (password.length() < 6) {
+            ret.setResult(false);
+            ret.setError("ILLEGAL_PARAM");
+            ret.setMessage("密码至少6位");
         } else {
-            String password = VerifyCode.generateRandomNumber(6);
-            if (env.equals("TEST")) {
-                password = "123456";
-            } else {
-                smsSender.send(phone, "【车邻邦】你的新密码是：" + password + ", 请登录后及时更换密码。");
-            }
             technician.setPassword(Technician.encryptPassword(password));
             technicianService.save(technician);
         }
@@ -148,17 +151,48 @@ public class TechnicianAccountController {
     }
 
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
-    public JsonMessage uploadAvatar(HttpServletRequest request, MultipartFile file) {
+    public JsonMessage uploadAvatar(HttpServletRequest request, MultipartFile file) throws Exception {
         JsonMessage ret = new JsonMessage(true);
-        if (!file.isEmpty()) {
-            File dir = new File(request.getServletContext().getRealPath("/uploads/technician/avatar"));
-            if (!dir.exists()) dir.mkdirs();
-            String originalName = file.getOriginalFilename();
-            String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase();
-            String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                    + (VerifyCode.generateRandomNumber(6)) + extension;
+        String path = "/uploads/technician/avatar";
+        File dir = new File(request.getServletContext().getRealPath(path));
+        String originalName = file.getOriginalFilename();
+        String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase();
+        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                + (VerifyCode.generateRandomNumber(6)) + extension;
 
+        if (!dir.exists()) dir.mkdirs();
+        try (InputStream fis = file.getInputStream()) {
+            ConvertCmd cmd = new ConvertCmd(true);
+            cmd.setInputProvider(new Pipe(fis, null));
+            IMOperation operation = new IMOperation();
+            operation.addImage("-");
+            operation.gravity("center").thumbnail(200, 200, "^").extent(200, 200);
+            operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+            cmd.run(operation);
         }
+        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        technician.setAvatar(path + "/" + filename);
+        technicianService.save(technician);
+        ret.setData(technician.getAvatar());
+        return ret;
+    }
+
+    @RequestMapping(value = "/idPhoto", method = RequestMethod.POST)
+    public JsonMessage uploadIdPhoto(HttpServletRequest request, MultipartFile file) throws Exception {
+        JsonMessage ret = new JsonMessage(true);
+        String path = "/uploads/technician/idPhoto";
+        File dir = new File(request.getServletContext().getRealPath(path));
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                + (VerifyCode.generateRandomNumber(6)) + extension;
+
+        if (!dir.exists()) dir.mkdirs();
+        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
+        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        technician.setIdPhoto(path + "/" + filename);
+        technicianService.save(technician);
+        ret.setData(technician.getIdPhoto());
         return ret;
     }
 }

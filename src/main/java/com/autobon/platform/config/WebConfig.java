@@ -15,7 +15,7 @@ public class WebConfig {
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("UTF-8");
-        resolver.setMaxUploadSize(10*1024*1024);
+        resolver.setMaxUploadSize(12*1024*1024);
         resolver.setMaxUploadSizePerFile(2*1024*1024);
         resolver.setResolveLazily(true);
         return resolver;
