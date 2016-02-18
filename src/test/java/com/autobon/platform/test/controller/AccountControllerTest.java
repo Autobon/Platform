@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-@Rollback(false)
 public class AccountControllerTest {
     @Autowired WebApplicationContext wac;
     @Autowired TechnicianService technicianService;
@@ -93,34 +92,43 @@ public class AccountControllerTest {
 
     @Test
     public void loginAndChangePassword() throws Exception {
-        this.mockMvc.perform(post("/api/mobile/technician/login")
+        this.mockMvc.perform(post("/api/mobile/technician/register")
                 .param("phone", phone)
-                .param("password", password))
-            .andDo(MockMvcResultHandlers.print())
+                .param("password", password)
+                .param("verifySms", "123456"))
             .andDo(new ResultHandler() {
                 @Override
                 public void handle(MvcResult result) throws Exception {
-                    Cookie cookie = result.getResponse().getCookie("autoken");
-                    mockMvcS.perform(post("/api/mobile/technician/changePassword")
-                            .param("password", "221234")
-                            .cookie(cookie))
+                    mockMvc.perform(post("/api/mobile/technician/login")
+                            .param("phone", phone)
+                            .param("password", password))
                             .andDo(MockMvcResultHandlers.print())
                             .andDo(new ResultHandler() {
                                 @Override
                                 public void handle(MvcResult result) throws Exception {
-                                    mockMvc.perform(post("/api/mobile/technician/login")
-                                            .param("phone", phone)
-                                            .param("password", "221234"))
+                                    Cookie cookie = result.getResponse().getCookie("autoken");
+                                    mockMvcS.perform(post("/api/mobile/technician/changePassword")
+                                            .param("password", "221234")
+                                            .cookie(cookie))
                                             .andDo(MockMvcResultHandlers.print())
+                                            .andDo(new ResultHandler() {
+                                                @Override
+                                                public void handle(MvcResult result) throws Exception {
+                                                    mockMvc.perform(post("/api/mobile/technician/login")
+                                                            .param("phone", phone)
+                                                            .param("password", "221234"))
+                                                            .andDo(MockMvcResultHandlers.print())
+                                                            .andExpect(jsonPath("$.result", is(true)));
+                                                }
+                                            })
                                             .andExpect(jsonPath("$.result", is(true)));
                                 }
                             })
                             .andExpect(jsonPath("$.result", is(true)));
+                    Technician t = technicianService.getByPhone(phone);
+                    if (t != null) technicianService.deleteById(t.getId());
                 }
-            })
-            .andExpect(jsonPath("$.result", is(true)));
-        Technician t = technicianService.getByPhone(phone);
-        if (t != null) technicianService.deleteById(t.getId());
+            });
 
     }
 
