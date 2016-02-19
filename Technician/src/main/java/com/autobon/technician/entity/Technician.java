@@ -1,6 +1,8 @@
 package com.autobon.technician.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,6 +22,7 @@ import java.util.Date;
 @Entity
 @Table
 public class Technician implements UserDetails {
+    private static Logger log = LoggerFactory.getLogger(Technician.class);
     public enum Status {
         NOTVERIFIED(0), VERIFIED(1), REJECTED(2), BANNED(3);
         private int statusCode;
@@ -131,7 +134,7 @@ public class Technician implements UserDetails {
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Token.getBytes(), "AES"));
             return Integer.parseInt(new String(cipher.doFinal(Base64.getDecoder().decode(token))));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.info("无效token: " + token);
         }
         return 0;
     }
