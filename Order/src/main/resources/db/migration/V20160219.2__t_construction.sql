@@ -1,7 +1,7 @@
 CREATE TABLE `t_construction` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) DEFAULT NULL COMMENT '订单id',
-  `technician` int(11) DEFAULT NULL COMMENT '技师id',
+  `technician_id` int(11) DEFAULT NULL COMMENT '技师id',
   `is_main` int(11) DEFAULT NULL COMMENT '是否主责任技师 0-不是 1-是',
   `rtposition_lon` varchar(20) DEFAULT NULL COMMENT '实时位置经度',
   `rtposition_lat` varchar(20) DEFAULT NULL COMMENT '实时位置纬度',
