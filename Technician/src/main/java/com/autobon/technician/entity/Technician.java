@@ -78,6 +78,7 @@ public class Technician implements UserDetails {
 
     @Column private String skill; // 技师技能
 
+    @JsonIgnore
     @Column(name = "status")
     private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
 
@@ -319,6 +320,7 @@ public class Technician implements UserDetails {
         this.statusCode = statusCode;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> ret = new ArrayList<>();
@@ -339,26 +341,31 @@ public class Technician implements UserDetails {
         return ret;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return phone;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return getStatus() != Status.BANNED;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return getStatus() == Status.VERIFIED;
