@@ -36,17 +36,17 @@ public class CertificateController {
     private IdentityUtil identityUtil;
 
 
-    @RequestMapping(value="/technician/commitAuth", method = RequestMethod.POST)
-    public JsonMessage commitAuth(
+    @RequestMapping(value="/technician/commitCertificate", method = RequestMethod.POST)
+    public JsonMessage commitCertificate(
             @RequestParam("name") String name,
             @RequestParam("idNo") String idNo,
             @RequestParam("skillArray") String[] skillArray,
-            @RequestParam("avatar") String avatar,
+            @RequestParam("idPhoto") String idPhoto,
             @RequestParam("bank") String bank,
             @RequestParam("bankAddress") String bankAddress,
             @RequestParam("bankCardNo") String bankCardNo) {
 
-        JsonMessage jsonMessage = new JsonMessage(true,"commitAuth");
+        JsonMessage jsonMessage = new JsonMessage(true,"commitCertificate");
         ArrayList<String> messages = new ArrayList<>();
 
         String skill = arrayUtil.arrayToString(skillArray);
@@ -67,7 +67,7 @@ public class CertificateController {
             technician.setName(name);
             technician.setIdNo(idNo);
             technician.setSkill(skill);
-            technician.setAvatar(avatar);
+            technician.setIdPhoto(idPhoto);
             technician.setBank(bank);
             technician.setBankAddress(bankAddress);
             technician.setBankCardNo(bankCardNo);
@@ -79,16 +79,9 @@ public class CertificateController {
         return jsonMessage;
     }
 
-    @RequestMapping(value="/technician/modifyAuth", method = RequestMethod.POST)
-    public JsonMessage modifyAuth(
-            @RequestParam("name") String name,
-            @RequestParam("idNo") String idNo,
-            @RequestParam("skillArray") String[] skillArray,
-            @RequestParam("avatar") String avatar,
-            @RequestParam("bank") String bank,
-            @RequestParam("bankAddress") String bankAddress,
-            @RequestParam("bankCardNo") String bankCardNo) {
-        JsonMessage jsonMessage = new JsonMessage(true,"modifyAuth");
+    @RequestMapping(value="/technician/getCertificate", method = RequestMethod.POST)
+    public JsonMessage getCertificate() {
+        JsonMessage jsonMessage = new JsonMessage(true,"getCertificate");
 
         Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
         jsonMessage.setData(technician);
