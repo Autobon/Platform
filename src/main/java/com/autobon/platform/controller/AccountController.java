@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created by dave on 16/2/12.
@@ -25,12 +29,18 @@ public class AccountController {
     @Value("${com.autobon.env:PROD}")
     private String env;
 
-//    @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
-//    public void getVerifyCode(OutputStream out) throws IOException {
-//        String code = VerifyCode.generateVerifyCode(6);
-//        //TODO session.setAttribute("verifyCode", code);
-//        VerifyCode.writeVerifyCodeImage(250, 40, out, code);
-//    }
+    /***
+     * 请求验证码图片.验证码存放在redis中.
+     * @param request
+     * @param out
+     * @throws IOException
+     */
+    @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
+    public void getVerifyCode(HttpServletRequest request, OutputStream out) throws IOException {
+        String code = VerifyCode.generateVerifyCode(6);
+        redisCache.set(("verifyCode:" + request.getRemoteAddr()).getBytes(), code.getBytes(), 15*60);
+        VerifyCode.writeVerifyCodeImage(250, 40, out, code);
+    }
 
     @RequestMapping(value = "/verifySms", method = RequestMethod.GET)
     public JsonMessage getVerifySms(@RequestParam("phone") String phone) throws IOException {
@@ -45,8 +55,11 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public JsonMessage logout() {
+    public JsonMessage logout(HttpServletResponse response) {
         SecurityContextHolder.clearContext();
+        Cookie cookie = new Cookie("autoken", null);
+        cookie.setMaxAge(0); // 立即删除
+        response.addCookie(cookie);
         return new JsonMessage(true);
     }
 
