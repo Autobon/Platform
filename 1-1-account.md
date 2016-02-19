@@ -222,3 +222,35 @@ POST /api/mobile/technician/changePassword
 "error": "ILLEGAL_PARAM",
 "data": null}
 ```
+
+## 6. 上传头像
+### URL及请求方法
+POST /api/mobile/technician/avatar
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| file| 图片文件 |  |
+
+### 返回数据
+1.请求成功
+
+```
+{"result": true,
+"message": "",
+"error": null,
+"data": "/uploads/technician/avatar/20160219162940293084.png"}
+```
+返回数据中的data字段加上服务器域名及端口就是头像网址.
+
+2.没有上传文件
+
+```
+{"result": false,
+"message": "没有上传文件",
+"error": "NO_UPLOAD_FILE",
+"data": null}
+```
+
+3.上传文件大小超过2MB
+

@@ -15,9 +15,6 @@ logging:
         org.springframework: WARN
     file: Autobon.log
 
-multipart.maxFileSize: 2MB
-multipart.maxRequestSize: 10MB
-
 # spring
 spring:
     profiles.active: dev
