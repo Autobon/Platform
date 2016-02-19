@@ -55,7 +55,7 @@ public class TechnicianAccountControllerTest {
 
     @Test
     public void sendVerifySms() throws Exception {
-        this.mockMvc.perform(get("/api/mobile/verifySms").param("phone", phone))
+        mockMvc.perform(get("/api/mobile/verifySms").param("phone", phone))
             .andExpect(status().isOk())
             .andDo(MockMvcResultHandlers.print())
             .andExpect(jsonPath("$.result", is(true)));
@@ -64,10 +64,10 @@ public class TechnicianAccountControllerTest {
     @Test
     @Transactional
     public void register() throws Exception {
-        this.mockMvc.perform(get("/api/mobile/verifySms").param("phone", phone))
+        mockMvc.perform(get("/api/mobile/verifySms").param("phone", phone))
                 .andExpect(status().isOk());
 
-        this.mockMvc.perform(post("/api/mobile/technician/register")
+        mockMvc.perform(post("/api/mobile/technician/register")
                 .param("phone", phone)
                 .param("password", password)
                 .param("verifySms", "123456"))
@@ -77,7 +77,7 @@ public class TechnicianAccountControllerTest {
         Technician technician = technicianService.getByPhone(phone);
         Assert.assertNotNull(technician);
 
-        this.mockMvc.perform(post("/api/mobile/technician/register")
+        mockMvc.perform(post("/api/mobile/technician/register")
                 .param("phone", phone)
                 .param("password", password)
                 .param("verifySms", "123456"))
@@ -87,7 +87,7 @@ public class TechnicianAccountControllerTest {
 
     @Test
     public void response403() throws Exception {
-        this.mockMvcS.perform(post("/api/mobile/technician/changePassword")
+        mockMvcS.perform(post("/api/mobile/technician/changePassword")
                 .param("password", "123456"))
             .andExpect(status().is(403))
             .andDo(MockMvcResultHandlers.print());
@@ -95,28 +95,25 @@ public class TechnicianAccountControllerTest {
 
     @Test
     public void changeAndResetPassword() throws Exception {
-        this.mockMvcS.perform(post("/api/mobile/technician/changePassword")
+        mockMvcS.perform(post("/api/mobile/technician/changePassword")
                 .param("password", "221234")
                 .cookie(new Cookie("autoken", token)))
             .andDo(MockMvcResultHandlers.print())
-            .andDo(new ResultHandler() {
-                @Override
-                public void handle(MvcResult result) throws Exception {
-                    mockMvc.perform(post("/api/mobile/technician/login")
-                            .param("phone", phoneT)
-                            .param("password", "221234"))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(jsonPath("$.result", is(true)));
-                    mockMvc.perform(get("/api/mobile/verifySms").param("phone", phoneT));
-                    mockMvc.perform(post("/api/mobile/technician/resetPassword")
-                            .param("phone", phoneT)
-                            .param("password", "123456")
-                            .param("verifySms", "123456"))
-                        .andDo(MockMvcResultHandlers.print())
-                        .andExpect(jsonPath("$.result", is(true)));
-                }
-            })
             .andExpect(jsonPath("$.result", is(true)));
+
+        mockMvc.perform(post("/api/mobile/technician/login")
+                .param("phone", phoneT)
+                .param("password", "221234"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+
+        mockMvc.perform(get("/api/mobile/verifySms").param("phone", phoneT));
+        mockMvc.perform(post("/api/mobile/technician/resetPassword")
+                .param("phone", phoneT)
+                .param("password", "123456")
+                .param("verifySms", "123456"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
     }
 
 
