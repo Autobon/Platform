@@ -30,15 +30,16 @@ public class AccountController {
     private String env;
 
     /***
-     * 请求验证码图片.验证码存放在redis中.
-     * @param request
+     * 在提交含有验证码图片的表单时,为了对验证码正确性进行验证,请一并传入获取验证码图片时的seed参数
+     * @param seed 由客户端生成的用于标识自己的随机字符串,建议使用如下形式: 代表时间戳长整数 + ':' + 12位随机码
      * @param out
      * @throws IOException
      */
     @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
-    public void getVerifyCode(HttpServletRequest request, OutputStream out) throws IOException {
+    public void getVerifyCode(@RequestParam("seed") String seed, OutputStream out) throws IOException {
         String code = VerifyCode.generateVerifyCode(6);
-        redisCache.set(("verifyCode:" + request.getRemoteAddr()).getBytes(), code.getBytes(), 15*60);
+        if (env.equals("TEST")) code = "123456";
+        redisCache.set(seed.getBytes(), code.getBytes(), 15*60);
         VerifyCode.writeVerifyCodeImage(250, 40, out, code);
     }
 
