@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -39,7 +38,7 @@ public class AccountController {
     public void getVerifyCode(@RequestParam("seed") String seed, OutputStream out) throws IOException {
         String code = VerifyCode.generateVerifyCode(6);
         if (env.equals("TEST")) code = "123456";
-        redisCache.set(seed.getBytes(), code.getBytes(), 15*60);
+        redisCache.set(seed.getBytes(), code.getBytes(), 5*60);
         VerifyCode.writeVerifyCodeImage(250, 40, out, code);
     }
 
@@ -51,7 +50,7 @@ public class AccountController {
         } else {
             smsSender.send(phone, "【车邻邦】你的验证码是：" + code + ", 请不要把验证码泄露给其他人。");
         }
-        redisCache.set(("verifySms:" + phone).getBytes(), code.getBytes(), 15*60);
+        redisCache.set(("verifySms:" + phone).getBytes(), code.getBytes(), 5*60);
         return new JsonMessage(true);
     }
 
