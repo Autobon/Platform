@@ -22,10 +22,7 @@ multipart.maxRequestSize: 10MB
 spring:
     profiles.active: dev
     freemarker.cache: true
-    resources:
-        cache-period: 7200
-        chain.strategy.content.enabled: true
-        chain.strategy.content.paths: /**
+    resources.cache-period: 7200
 
     datasource:
         url: jdbc:mysql://121.40.157.200:3306/autobondb?characterEncoding=utf8&useSSL=false
