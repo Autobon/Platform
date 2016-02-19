@@ -1,5 +1,3 @@
-
-
 CREATE TABLE `technician` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `phone` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
@@ -23,3 +21,5 @@ CREATE TABLE `technician` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_UNIQUE` (`phone`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `technician` VALUES (1,'18812345678','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,'2016-02-19 14:59:13','0:0:0:0:0:0:0:1','2016-02-18 00:00:00',0,0);
