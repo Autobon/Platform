@@ -37,7 +37,7 @@ POST /api/mobile/technician/register
 
 
 ### 返回数据
-1. 请求成功
+1.请求成功
 
 ```
 {"result": true,
@@ -65,7 +65,7 @@ POST /api/mobile/technician/register
 }}
 ```
 
-2. 验证码错误
+2.验证码错误
 
 ```
 {"result": false,
@@ -74,7 +74,7 @@ POST /api/mobile/technician/register
 "data": null}
 ```
 
-3. 手机号格式错误
+3.手机号格式错误
 
 ```
 {"result": false,
@@ -83,7 +83,7 @@ POST /api/mobile/technician/register
 "data": null}
 ```
 
-4. 密码至少6位
+4.密码至少6位
 
 ```
 {"result": false,
@@ -103,7 +103,7 @@ POST /api/mobile/technician/login
 | password| 密码 | 123456 |
 
 ### 返回数据
-1. 登录成功
+1.登录成功
 
 ```
 {"result": true,
@@ -130,7 +130,7 @@ POST /api/mobile/technician/login
     "status": "NOTVERIFIED"
 }}
 ```
-2. 未注册手机
+2.未注册手机
 
 ```
 {"result": false,
@@ -139,7 +139,7 @@ POST /api/mobile/technician/login
 "data": null}
 ```
 
-3. 密码错误
+3.密码错误
 
 ```
 {"result": false,
@@ -159,7 +159,7 @@ POST /api/mobile/technician/resetPassword
 | password | 新密码 | 123456 |
 | verifySms| 短信验证码 | 111222 |
 ### 返回数据
-1. 请求成功
+1.请求成功
 
 ```
 {"result": true,
@@ -167,7 +167,7 @@ POST /api/mobile/technician/resetPassword
 "error": null,
 "data": null}
 ```
-2. 验证码错误
+2.验证码错误
 
 ```
 {"result": false,
@@ -175,7 +175,7 @@ POST /api/mobile/technician/resetPassword
 "error": "ILLEGAL_PARAM",
 "data": null}
 ```
-3. 密码至少6位
+3.密码至少6位
 
 ```
 {"result": false,
@@ -183,7 +183,7 @@ POST /api/mobile/technician/resetPassword
 "error": "ILLEGAL_PARAM",
 "data": null}
 ```
-4. 手机号未注册
+4.手机号未注册
 
 ```
 {"result": false,
@@ -205,7 +205,7 @@ POST /api/mobile/technician/changePassword
 请求Cookie中必须有有效的autoken.
 
 ### 返回数据
-1. 请求成功
+1.请求成功
 
 ```
 {"result": false,
@@ -214,7 +214,7 @@ POST /api/mobile/technician/changePassword
 "data": null}
 ```
 
-2. 密码至少6位
+2.密码至少6位
 
 ```
 {"result": false,
