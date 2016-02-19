@@ -9,6 +9,12 @@ CREATE TABLE `t_order` (
   `customer_type` int(1) DEFAULT NULL COMMENT '客户类型',
   `customer_id` int(11) DEFAULT NULL COMMENT '下单客户编号',
   `remark` varchar(255) DEFAULT NULL COMMENT '订单备注',
+  `main_tech_id` int(11) DEFAULT NULL COMMENT '主技师id',
+  `second_tech_id` int(11) DEFAULT NULL COMMENT '合作技师id',
   PRIMARY KEY (`Id`),
-  UNIQUE KEY unique_order_num (order_num)
+  UNIQUE KEY `unique_order_num` (`order_num`),
+  KEY `main_tech_id` (`main_tech_id`),
+  KEY `second_tech_id` (`second_tech_id`),
+  CONSTRAINT `t_order_ibfk_1` FOREIGN KEY (`main_tech_id`) REFERENCES `technician` (`id`),
+  CONSTRAINT `t_order_ibfk_2` FOREIGN KEY (`second_tech_id`) REFERENCES `technician` (`id`)
 ) DEFAULT CHARSET=utf8 COMMENT='订单表';
