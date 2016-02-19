@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * Created by dave on 16/2/12.
@@ -28,17 +31,22 @@ public class AccountController {
     @Value("${com.autobon.env:PROD}")
     private String env;
 
-    /***
-     * 在提交含有验证码图片的表单时,为了对验证码正确性进行验证,请一并传入获取验证码图片时的seed参数.为了不使用sessionId的折衷方法.
-     * @param seed 由客户端生成的用于标识自己的随机字符串,建议使用如下形式: 代表时间戳长整数 + ':' + 12位随机码
-     * @param out
-     * @throws IOException
-     */
+
     @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
-    public void getVerifyCode(@RequestParam("seed") String seed, OutputStream out) throws IOException {
+    public void getVerifyCode(HttpServletRequest request, HttpServletResponse response, OutputStream out) throws IOException {
+        Cookie[] cookies = request.getCookies();
+        Cookie cookie = null;
+        if (cookies != null) {
+            cookie = Arrays.stream(cookies).filter(c -> c.getName().equals("JSESSIONID")).findFirst().orElse(null);
+        }
+        if (cookie == null) {
+            cookie = new Cookie("JSESSIONID", UUID.randomUUID().toString());
+            cookie.setMaxAge(-1); // 浏览器关闭即失效
+            response.addCookie(cookie);
+        }
         String code = VerifyCode.generateVerifyCode(6);
         if (env.equals("TEST")) code = "123456";
-        redisCache.set(seed.getBytes(), code.getBytes(), 5*60);
+        redisCache.set(("verifyCode:" + cookie.getValue()).getBytes(), code.getBytes(), 5*60);
         VerifyCode.writeVerifyCodeImage(250, 40, out, code);
     }
 

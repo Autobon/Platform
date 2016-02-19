@@ -12,5 +12,5 @@
 node_modules/
 src/main/resources/static/script/lib/
 build/
-*-dev.yml
+**/*-dev.yml
 /*.properties
