@@ -43,43 +43,43 @@ public class Technician implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column private String phone;
+    @Column private String phone; // 手机号
 
     @JsonIgnore
-    @Column private String password;
+    @Column private String password; // 密码
 
-    @Column private String name;
+    @Column private String name; // 姓名
 
-    @Column private String gender;
+    @Column private String gender; // 性别
 
-    @Column private String avatar;
+    @Column private String avatar; // 头像
 
-    @Column private String idNo;
+    @Column private String idNo; // 身份证编号
 
-    @Column private String idPhoto;
+    @Column private String idPhoto; // 身份证正面照片
 
-    @Column private String bank;
+    @Column private String bank; // 银行卡归属银行
 
-    @Column private String bankAddress;
+    @Column private String bankAddress; // 开户行地址
 
-    @Column private String bankCardNo;
+    @Column private String bankCardNo; // 银行卡号码
 
-    @Column private Date verifyAt;
+    @Column private Date verifyAt; // 认证通过日期
 
-    @Column private Date lastLoginAt;
+    @Column private Date lastLoginAt; // 最后登录时间
 
-    @Column private String lastLoginIp;
+    @Column private String lastLoginIp; // 最后登录IP
 
-    @Column private Date createAt;
+    @Column private Date createAt; // 注册时间
 
-    @Column private int star;
+    @Column private int star; // 技师星级
 
-    @Column private float voteRate;
+    @Column private float voteRate; // 技师好评率
 
-    @Column private String skill;
+    @Column private String skill; // 技师技能
 
     @Column(name = "status")
-    private int statusCode;
+    private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
 
     private static String Token = "Autobon~!@#2016=";
 

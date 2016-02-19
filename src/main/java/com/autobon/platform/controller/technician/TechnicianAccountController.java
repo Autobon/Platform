@@ -39,8 +39,8 @@ public class TechnicianAccountController {
     @Autowired TechnicianService technicianService;
     @Autowired RedisCache redisCache;
     @Autowired SmsSender smsSender;
-    @Value("${com.autobon.env:PROD}")
-    private String env;
+    @Value("${com.autobon.env:PROD}") String env;
+    @Value("${com.autobon.gm-path}") String gmPath;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -150,6 +150,13 @@ public class TechnicianAccountController {
         return ret;
     }
 
+    /**
+     * 上传头像
+     * @param request
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public JsonMessage uploadAvatar(HttpServletRequest request, MultipartFile file) throws Exception {
         JsonMessage ret = new JsonMessage(true);
@@ -163,6 +170,7 @@ public class TechnicianAccountController {
         if (!dir.exists()) dir.mkdirs();
         try (InputStream fis = file.getInputStream()) {
             ConvertCmd cmd = new ConvertCmd(true);
+            cmd.setSearchPath(gmPath);
             cmd.setInputProvider(new Pipe(fis, null));
             IMOperation operation = new IMOperation();
             operation.addImage("-");
@@ -177,6 +185,13 @@ public class TechnicianAccountController {
         return ret;
     }
 
+    /**
+     * 上传身份证照片
+     * @param request
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/idPhoto", method = RequestMethod.POST)
     public JsonMessage uploadIdPhoto(HttpServletRequest request, MultipartFile file) throws Exception {
         JsonMessage ret = new JsonMessage(true);

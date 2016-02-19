@@ -37,14 +37,14 @@ POST /api/mobile/technician/register
 
 ### 用例
 
-* **Request** `POST /api/mobile/technician/register`
+* **Request**
+
+    `POST /api/mobile/technician/register`
 * **POST参数**
-    ```
-    phone=18827075338
-    password=123456
-    verifySms=123456
-    ```
+
+    `phone=18827075338&password=123456&verifySms=123456`
 * 返回结果
+
     ```
     {"result":true,"message":"","error":null,"data":{"id":1,"phone":"18827075338","password":"7c4a8d09ca3762af61e59520943dc26494f8941b","name":null,"gender":null,"avatar":null,"idNo":null,"idPhoto":null,"bank":null,"bankAddress":null,"bankCardNo":null,"verifyAt":null,"lastLoginAt":null,"lastLoginIp":null,"createAt":1455592936660,"star":0,"voteRate":0.0,"status":"NOTVERIFIED","activated":false,"banned":false,"available":false}}
     ```
