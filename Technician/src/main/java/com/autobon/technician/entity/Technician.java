@@ -368,6 +368,6 @@ public class Technician implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return getStatus() == Status.VERIFIED;
+        return getStatus() != Status.BANNED;
     }
 }
