@@ -139,30 +139,6 @@ public class Technician implements UserDetails {
         return 0;
     }
 
-    public boolean isAvailable() {
-        return this.getStatus() == Status.VERIFIED;
-    }
-
-    public boolean isActivated() {
-        return this.getStatus() != Status.NOTVERIFIED;
-    }
-
-    public boolean isBanned() {
-        return this.getStatus() == Status.BANNED;
-    }
-
-    public void setBanned() {
-        this.setStatus(Status.BANNED);
-    }
-
-    public void setActived() {
-        this.setStatus(Status.VERIFIED);
-    }
-
-    public void setDeactived() {
-        this.setStatus(Status.NOTVERIFIED);
-    }
-
     public Status getStatus() {
         return Status.getStatus(this.getStatusCode());
     }

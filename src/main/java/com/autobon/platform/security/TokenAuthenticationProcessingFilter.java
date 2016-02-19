@@ -1,5 +1,7 @@
 package com.autobon.platform.security;
 
+import com.autobon.staff.entity.Staff;
+import com.autobon.staff.service.StaffService;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ import java.util.Collection;
 public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
     @Autowired
     private TechnicianService technicianService;
+    @Autowired
+    private StaffService staffService;
 
     public TokenAuthenticationProcessingFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
@@ -48,6 +52,12 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
             if (id > 0) technician = technicianService.get(id);
             if (technician != null) authentication = new TokenAuthentication(technician);
             else throw new BadCredentialsException("无效凭证");
+        } else if (token.startsWith("staff:")) {
+            //TODO
+//            int id = staffService.loadToken(token);
+//            Staff staff = staffService.get(id);
+//            if (staff != null) authentication = new TokenAuthentication(staff);
+//            else throw new BadCredentialsException("无效凭证");
         }
         if (authentication == null) {
             GrantedAuthority authority = new GrantedAuthority() {
