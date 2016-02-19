@@ -4,6 +4,7 @@ CREATE TABLE `technician` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `phone` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  skill varchar(45) COMMENT '技能',
   `name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '姓名',
   `gender` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '性别',
   `id_no` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '身份证号',

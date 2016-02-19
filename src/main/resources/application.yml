@@ -1,7 +1,9 @@
 com.autobon:
     sms.gateway: http://114.215.172.92/message/messageSend # SMS Gateway
     test.token: technician:HM6GlQ4/4AXxoe2ZfZVM2Q==
+    gm-path: /usr/bin
     env: TEST
+    skill: 汽车贴膜,美容清洁,隐形车衣,车身改色
 
 # Tomcat
 server.port: 51234
@@ -13,11 +15,15 @@ logging:
         org.springframework: WARN
     file: Autobon.log
 
+multipart.maxFileSize: 2MB
+multipart.maxRequestSize: 10MB
+
 # spring
 spring:
     profiles.active: dev
     freemarker.cache: true
     resources.cache-period: 7200
+
     datasource:
         url: jdbc:mysql://121.40.157.200:3306/autobondb?characterEncoding=utf8&useSSL=false
         username: autobon

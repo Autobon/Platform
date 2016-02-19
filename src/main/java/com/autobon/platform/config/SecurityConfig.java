@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public TokenAuthenticationProcessingFilter authenticationProcessingFilter() throws Exception {
         TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(
-                new AntPathRequestMatcher("/api/mobile/**"));
+                new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManagerBean());
         return filter;
     }
@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(
                 "/api/mobile/technician/login",
                 "/api/mobile/technician/register",
+                "/api/mobile/pub/**",
                 "/api/mobile/technician/resetPassword").permitAll()
             .and().authorizeRequests().antMatchers("/api/mobile/technician/**")
                 .hasAuthority("TECHNICIAN");

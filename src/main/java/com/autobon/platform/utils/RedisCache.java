@@ -17,7 +17,8 @@ public class RedisCache {
     }
 
     public byte[] get(byte[] key) {
-        return connectionFactory.getConnection().get(key);
+        byte[] ret = connectionFactory.getConnection().get(key);
+        return ret == null ? new byte[0] : ret;
     }
 
     public void delete(byte[] key) {
