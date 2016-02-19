@@ -25,6 +25,9 @@ targetCompatibility = 1.8
 
 dependencies {
     compile project(":Technician")
+    compile project(":Staff")
+    compile project(":Order")
+    compile project(":Cooperators")
     compile "org.springframework.boot:spring-boot-starter:1.+"
     compile "org.springframework.boot:spring-boot-starter-web:1.+"
     compile 'org.springframework.boot:spring-boot-starter-security:1.+'
@@ -33,6 +36,7 @@ dependencies {
     compile "org.springframework.data:spring-data-redis:1.+"
     compile 'redis.clients:jedis:2.+'
     compile 'org.im4java:im4java:1.+'
+    compile("com.alibaba:fastjson:1.2.+")
     compile 'commons-fileupload:commons-fileupload:1.+'
     testCompile "org.springframework.boot:spring-boot-starter-test:1.+"
     testCompile "com.jayway.jsonpath:json-path:2.+"
