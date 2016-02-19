@@ -25,6 +25,9 @@ targetCompatibility = 1.8
 
 dependencies {
     compile project(":Technician")
+    compile project(":Staff")
+    compile project(":Order")
+    compile project(":Cooperators")
     compile "org.springframework.boot:spring-boot-starter:1.+"
     compile "org.springframework.boot:spring-boot-starter-web:1.+"
     compile 'org.springframework.boot:spring-boot-starter-security:1.+'

@@ -1,7 +1,7 @@
 com.autobon:
     sms.gateway: http://114.215.172.92/message/messageSend # SMS Gateway
     test.token: technician:HM6GlQ4/4AXxoe2ZfZVM2Q==
-    gm-path: /usr/bin
+    gm-path: /usr/bin # graphicsMagick工具路径
     env: TEST
     skill: 汽车贴膜,美容清洁,隐形车衣,车身改色
     baiduKey: lhFpgbOkc15RHjiexfP2aDhg

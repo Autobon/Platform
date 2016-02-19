@@ -3,10 +3,10 @@ package com.autobon.platform.security;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -47,6 +47,7 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
             Technician technician = null;
             if (id > 0) technician = technicianService.get(id);
             if (technician != null) authentication = new TokenAuthentication(technician);
+            else throw new BadCredentialsException("无效凭证");
         }
         if (authentication == null) {
             GrantedAuthority authority = new GrantedAuthority() {
@@ -95,7 +96,6 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
             };
             authentication = new TokenAuthentication(anonymous);
         }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return authentication;
+        return this.getAuthenticationManager().authenticate(authentication);
     }
 }
