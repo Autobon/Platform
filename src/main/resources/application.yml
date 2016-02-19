@@ -4,6 +4,7 @@ com.autobon:
     gm-path: /usr/bin
     env: TEST
     skill: 汽车贴膜,美容清洁,隐形车衣,车身改色
+    baiduKey: lhFpgbOkc15RHjiexfP2aDhg
 
 # Tomcat
 server.port: 51234
