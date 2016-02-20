@@ -1,10 +1,9 @@
 
 define(['../autobon','jquery','md5'],function(module,$){
-    module.controller("indexCtrl",function($scope, $resource, $http, $translate,$location,commonService){
+    module.controller("indexCtrl",function($scope, $resource, $http, $location,commonService){
 
         $scope.debug = false; //当前模式 false-用户模式 true-调试模式
 
-        alert("zhuye");
 
         //改变当前模式
         $scope.changePattern = function(){

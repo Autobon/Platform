@@ -1,4 +1,4 @@
-define(['../briair','jquery'],function(module,$){
+define(['../autobon','jquery'],function(module,$){
     module.controller("reLoginCtrl",function($scope,$http,$location,$timeout,$resource,$filter,commonService){
         $scope.signinTemplate = "loginStep";
         $scope.loginInfo={};  //登录信息

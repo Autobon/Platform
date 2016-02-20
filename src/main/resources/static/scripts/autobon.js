@@ -20,7 +20,6 @@ define(['angular','routes','./service/dependencyResolverFor','angularResource','
 
             $locationProvider.html5Mode(true);
 
-            console.log(config);
 
             if(config.routes !== undefined)
             {
