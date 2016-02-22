@@ -2,13 +2,12 @@
 define(['../autobon','jquery','md5'],function(module,$){
     module.controller("indexCtrl",function($scope, $resource, $http, $location,commonService){
 
-        $scope.debug = false; //当前模式 false-用户模式 true-调试模式
+//        var loginCookie = commonService.getCookie('token');//获取token
+//          if (loginCookie == "") {
+//              window.location.href="/login.html";
+//          }
 
-
-        //改变当前模式
-        $scope.changePattern = function(){
-            $scope.debug = !$scope.debug;
-        };
+        var loginReInfoApi = $resource('/api/login/:token');  //返回登录用户的信息
 
         $scope.loginInfo={};
         $scope.type = "login";  //点击左上角的系统名称，所要跳转的页面
@@ -23,13 +22,6 @@ define(['../autobon','jquery','md5'],function(module,$){
                 $scope.active(0); //菜单激活样式
             }
 
-        };
-
-
-        //切换page-head
-        $scope.changeHead = function(ilg,lg){
-            $scope.isLogin=ilg;
-            $scope.logined=lg;
         };
 
 
@@ -66,8 +58,6 @@ define(['../autobon','jquery','md5'],function(module,$){
         };
 
 
-
-
         /**
          * 通过token获取用户的详细信息
          *
@@ -93,8 +83,6 @@ define(['../autobon','jquery','md5'],function(module,$){
                 console.log(errData.data.error);
             })
         };
-
-
 
         /**
          * 获取登录用户详细信息
