@@ -2,15 +2,27 @@
 define(['../autobon','jquery','md5'],function(module,$){
     module.controller("indexCtrl",function($scope, $resource, $http, $location,commonService){
 
-//        var loginCookie = commonService.getCookie('token');//获取token
-//          if (loginCookie == "") {
-//              window.location.href="/login.html";
-//          }
+        var loginCookie = commonService.getCookie('token_staff');//获取token
+          if (loginCookie == "") {
+              window.location.href="/login.html";
+          }
 
-        var loginReInfoApi = $resource('/api/login/:token');  //返回登录用户的信息
+
+        var logoutApi = $resource("/api/staff/logout");
 
         $scope.loginInfo={};
         $scope.type = "login";  //点击左上角的系统名称，所要跳转的页面
+
+
+        //注销登录
+        $scope.logout=function(){
+            logoutApi.delete(function(data){
+                window.location.href="/login.html";
+            },function(errData){
+                commonService.deleteCookie('token_staff');  //防止服务器注销失败后，浏览器还保留token
+                console.log(errData.data.error);
+            })
+        };
 
 
         //点击“华晨汽车”标志动态跳转
@@ -25,20 +37,6 @@ define(['../autobon','jquery','md5'],function(module,$){
         };
 
 
-        //接口定义
-        var loginApi = $resource("/api/login");
-        //注销登陆
-        $scope.signOut=function(){
-            $scope.loginInfo={};
-            $scope.type = "login";
-            $scope.returnHome('login');
-            loginApi.delete(function(data){
-               console.log(data.status);
-            },function(errData){
-                commonService.deleteCookie('token');  //防止服务器注销失败后，浏览器还保留token
-                console.log(errData.data.error);
-            })
-        };
 
         $scope.postData = {};
         //用户登录

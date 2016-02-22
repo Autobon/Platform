@@ -1,11 +1,12 @@
 package com.autobon.staff.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by liz on 2016/2/18.
  */
-public class StaffShow {
+public class StaffShow implements Serializable {
 
     /**
      * Created by samsung on 2016/2/3.

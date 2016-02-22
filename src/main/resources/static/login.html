@@ -8,19 +8,21 @@
 <link href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css" rel="stylesheet" type="text/css">
 <base href="/login.html" />
 </head>
-<body class="g-loginbody" ng-controller="loginCtrl" ng>
+<body class="g-loginbody ng-cloak" ng-controller="loginCtrl" ng-cloak>
 <div class="g-wrap">
   <div class="g-container1">
     <div class="g-mainbox">
       <div class="g-main">
         <div class="g-logobox"></div><!--g-logobox end-->
-        <div class="g-loginbox">
-          <div class="g-id"><input name=""  type="text"  placeholder="请输入用户名" /></div><!--g-id end-->
-          <div class="g-errorbox" style="display:none;">用户名不能为空</div><!--g-errorbox end-->
-          <div class="g-pw"><input name="" type="text"  placeholder="请输入密码" onclick="this.value='';focus()" /></div><!--g-pw end-->
-          <div class="g-errorbox" style="display:none;">用户名不能为空</div><!--g-errorbox end-->
-          <a href="###" class="g-btn-01 g-margin-t20">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</a><!--g-btn-01 end-->
-        </div><!--g-loginbox end-->
+        <form name="loginForm">
+          <div class="g-loginbox">
+            <div class="g-id"><input name="username"  type="text" ng-model="loginInfo.username"  placeholder="请输入用户名" /></div><!--g-id end-->
+            <div class="g-errorbox" ng-show="loginForm.username.$error.required">用户名不能为空</div><!--g-errorbox end-->
+            <div class="g-pw"><input name="password" type="text" ng-model="loginInfo.password"  placeholder="请输入密码" ng-Keypress="loginEnter($event)" /></div><!--g-pw end-->
+            <div class="g-errorbox" ng-show="loginForm.password.$error.required">密码不能为空</div><!--g-errorbox end-->
+            <a href="###" class="g-btn-01 g-margin-t20" ng-click="login();">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</a><!--g-btn-01 end-->
+          </div><!--g-loginbox end-->
+        </form>
       </div><!--g-main end-->
     </div><!--g-mainbox end-->
   </div><!--g-container end-->

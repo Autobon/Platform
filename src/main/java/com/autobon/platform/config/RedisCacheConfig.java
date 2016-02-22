@@ -20,17 +20,17 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisCacheConfig extends CachingConfigurerSupport {
     @Value("${spring.redis.host}")
     private String redisHost;
-    @Value("${spring.redis.port}")
-    private int redisPort;
-    @Value("${spring.redis.password}")
-    private String redisPassword;
+//    @Value("${spring.redis.port}")
+//    private int redisPort;
+//    @Value("${spring.redis.password}")
+//    private String redisPassword;
 
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {
         JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
         redisConnectionFactory.setHostName(redisHost);
-        redisConnectionFactory.setPort(redisPort);
-        redisConnectionFactory.setPassword(redisPassword);
+//        redisConnectionFactory.setPort(redisPort);
+//        redisConnectionFactory.setPassword(redisPassword);
         redisConnectionFactory.setTimeout(10000);
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxTotal(20);

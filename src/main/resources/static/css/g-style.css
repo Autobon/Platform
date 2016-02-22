@@ -365,3 +365,7 @@ html, body, .g-wrap {
 	height: 17px;
 	width: 20px;
 }
+
+.ng-cloak{
+	display: none;
+}
