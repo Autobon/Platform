@@ -16,4 +16,14 @@ public class HomeController {
     public String forwardIndex() {
         return "forward:/index.html";
     }
+
+    /**
+     * 静态页面处理程序
+     * 登录页面
+     * @return 返回HTML静态页面
+     */
+    @RequestMapping("/login/**")
+    public String forwardLogin() {
+        return "forward:/login.html";
+    }
 }

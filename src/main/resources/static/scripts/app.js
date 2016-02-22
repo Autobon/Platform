@@ -24,7 +24,7 @@ requirejs.config({
 require
 (
     [
-        'angular','autobon', './controller/indexCtrl','./service/commonService','./filter/commonFilter'
+        'angular','autobon', './controller/indexCtrl', './controller/loginCtrl','./service/commonService','./filter/commonFilter'
     ],
     function(angular)
     {
