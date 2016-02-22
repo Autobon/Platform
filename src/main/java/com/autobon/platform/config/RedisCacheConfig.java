@@ -5,7 +5,7 @@ import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import redis.clients.jedis.Jedis;
 
 /**
  * Created by dave on 16/2/17.
@@ -19,20 +19,25 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     private int redisPort;
 
     @Bean
-    public JedisConnectionFactory redisConnectionFactory() {
-        JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
-        redisConnectionFactory.setHostName(redisHost);
-        redisConnectionFactory.setPort(redisPort);
-        redisConnectionFactory.setTimeout(10000);
-//        JedisPoolConfig poolConfig = new JedisPoolConfig();
-//        poolConfig.setMaxTotal(3);
-//        poolConfig.setMaxIdle(3);
-//        poolConfig.setMinIdle(1);
-//        poolConfig.setMaxWaitMillis(10000);
-//        //poolConfig.setTestOnBorrow(true);
-//        redisConnectionFactory.setPoolConfig(poolConfig);
-        return redisConnectionFactory;
+    public Jedis getJedis() {
+        return new Jedis(redisHost, redisPort);
     }
+
+//    @Bean
+//    public JedisConnectionFactory redisConnectionFactory() {
+//        JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
+//        redisConnectionFactory.setHostName(redisHost);
+//        redisConnectionFactory.setPort(redisPort);
+//        redisConnectionFactory.setTimeout(10000);
+////        JedisPoolConfig poolConfig = new JedisPoolConfig();
+////        poolConfig.setMaxTotal(3);
+////        poolConfig.setMaxIdle(3);
+////        poolConfig.setMinIdle(1);
+////        poolConfig.setMaxWaitMillis(10000);
+////        //poolConfig.setTestOnBorrow(true);
+////        redisConnectionFactory.setPoolConfig(poolConfig);
+//        return redisConnectionFactory;
+//    }
 
 //    @Bean
 //    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory cf) {

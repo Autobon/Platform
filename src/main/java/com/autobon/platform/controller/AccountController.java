@@ -46,7 +46,7 @@ public class AccountController {
         }
         String code = VerifyCode.generateVerifyCode(6);
         if (env.equals("TEST")) code = "123456";
-        redisCache.set(("verifyCode:" + cookie.getValue()).getBytes(), code.getBytes(), 5*60);
+        redisCache.set("verifyCode:" + cookie.getValue(), code, 5*60);
         VerifyCode.writeVerifyCodeImage(250, 40, out, code);
     }
 
@@ -58,7 +58,7 @@ public class AccountController {
         } else {
             smsSender.send(phone, "【车邻邦】你的验证码是：" + code + ", 请不要把验证码泄露给其他人。");
         }
-        redisCache.set(("verifySms:" + phone).getBytes(), code.getBytes(), 5*60);
+        redisCache.set("verifySms:" + phone, code, 5*60);
         return new JsonMessage(true);
     }
 

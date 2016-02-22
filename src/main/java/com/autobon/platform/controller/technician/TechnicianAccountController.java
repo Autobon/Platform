@@ -68,7 +68,7 @@ public class TechnicianAccountController {
             msg.setError("ILLEGAL_PARAM");
             messages.add("密码至少6位");
         }
-        if (!verifySms.equals(new String(redisCache.get(("verifySms:" + phone).getBytes())))) {
+        if (!verifySms.equals(redisCache.get("verifySms:" + phone))) {
             msg.setError("ILLEGAL_PARAM");
             messages.add("验证码错误");
         }
@@ -125,7 +125,7 @@ public class TechnicianAccountController {
             msg.setResult(false);
             msg.setError("NO_SUCH_USER");
             msg.setMessage("手机号未注册");
-        } else if (!verifySms.equals(new String(redisCache.get(("verifySms:" + phone).getBytes())))) {
+        } else if (!verifySms.equals(redisCache.get("verifySms:" + phone))) {
             msg.setResult(false);
             msg.setError("ILLEGAL_PARAM");
             msg.setMessage("验证码错误");
