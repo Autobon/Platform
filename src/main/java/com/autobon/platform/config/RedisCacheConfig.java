@@ -10,7 +10,6 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * Created by dave on 16/2/17.
@@ -22,19 +21,16 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     private String redisHost;
     @Value("${spring.redis.port}")
     private int redisPort;
-    @Value("${spring.redis.password}")
-    private String redisPassword;
 
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {
         JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
         redisConnectionFactory.setHostName(redisHost);
         redisConnectionFactory.setPort(redisPort);
-        redisConnectionFactory.setPassword(redisPassword);
         redisConnectionFactory.setTimeout(10000);
 //        JedisPoolConfig poolConfig = new JedisPoolConfig();
-//        poolConfig.setMaxTotal(2);
-//        poolConfig.setMaxIdle(1);
+//        poolConfig.setMaxTotal(3);
+//        poolConfig.setMaxIdle(3);
 //        poolConfig.setMinIdle(1);
 //        poolConfig.setMaxWaitMillis(10000);
 //        //poolConfig.setTestOnBorrow(true);
