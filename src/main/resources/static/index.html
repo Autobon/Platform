@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Autobon</title>
+    <!-- Bootstrap core CSS -->
+    <link href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <base href="/index.html" />
 </head>
-<body>
-   主页
+<body ng-controller="indexCtrl" ng-cloak>
+    这里是主页12211133
+   <div ng-view=""></div>
+    <script data-main="/scripts/app.js" src="http://apps.bdimg.com/libs/require.js/2.1.9/require.min.js"></script>
 </body>
 </html>
