@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(
                 "/api/mobile/technician/login",
                 "/api/mobile/technician/register",
+               // "/api/mobile/order/**",
                 "/api/mobile/technician/resetPassword").permitAll()
             .and().authorizeRequests().antMatchers("/api/mobile/technician/**")
                 .hasAuthority("TECHNICIAN")

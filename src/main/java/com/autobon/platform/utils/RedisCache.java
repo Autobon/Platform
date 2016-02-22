@@ -1,8 +1,8 @@
 package com.autobon.platform.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 /**
  * Created by dave on 16/2/17.
@@ -10,19 +10,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisCache {
     @Autowired
-    private JedisConnectionFactory connectionFactory;
+    private Jedis jedis;
 
-    public void set(byte[] key, byte[] val, long secondsToExpire) {
-        connectionFactory.getConnection().setEx(key, secondsToExpire, val);
+    public void set(String key, String value, int secondsToExpire) {
+        jedis.setex(key, secondsToExpire, value);
     }
 
-    public byte[] get(byte[] key) {
-        byte[] ret = connectionFactory.getConnection().get(key);
-        return ret == null ? new byte[0] : ret;
+    public String get(String key) {
+        return jedis.get(key);
     }
 
-    public void delete(byte[] key) {
-        connectionFactory.getConnection().del(key);
+    public void delete(String key) {
+        jedis.del(key);
     }
 
 }

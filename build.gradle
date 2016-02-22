@@ -38,7 +38,6 @@ dependencies {
     compile 'org.im4java:im4java:1.+'
     compile "com.alibaba:fastjson:1.2.+"
     compile 'commons-fileupload:commons-fileupload:1.+'
-    compile 'commons-fileupload:commons-fileupload:1.+'
     testCompile "org.springframework.boot:spring-boot-starter-test:1.+"
     testCompile "com.jayway.jsonpath:json-path:2.+"
     runtime "mysql:mysql-connector-java:5.+"
@@ -47,6 +46,7 @@ dependencies {
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xlint:unchecked"
+        options.encoding = "UTF-8"
     }
 }
 

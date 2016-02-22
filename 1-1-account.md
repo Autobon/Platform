@@ -199,7 +199,8 @@ POST /api/mobile/technician/changePassword
 
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
-| password| 新密码 | 111222 |
+| oldPassword| 旧密码 | 123456 |
+| newPassword| 新密码 | 111222 |
 
 ### 请求Cookie
 请求Cookie中必须有有效的autoken.
@@ -208,9 +209,9 @@ POST /api/mobile/technician/changePassword
 1.请求成功
 
 ```
-{"result": false,
-"message": "密码至少6位",
-"error": "ILLEGAL_PARAM",
+{"result": true,
+"message": null,
+"error": null,
 "data": null}
 ```
 
