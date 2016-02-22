@@ -32,13 +32,13 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
         redisConnectionFactory.setPort(redisPort);
         redisConnectionFactory.setPassword(redisPassword);
         redisConnectionFactory.setTimeout(10000);
-        JedisPoolConfig poolConfig = new JedisPoolConfig();
-        poolConfig.setMaxTotal(2);
-        poolConfig.setMaxIdle(1);
-        poolConfig.setMinIdle(1);
-        poolConfig.setMaxWaitMillis(10000);
-        //poolConfig.setTestOnBorrow(true);
-        redisConnectionFactory.setPoolConfig(poolConfig);
+//        JedisPoolConfig poolConfig = new JedisPoolConfig();
+//        poolConfig.setMaxTotal(2);
+//        poolConfig.setMaxIdle(1);
+//        poolConfig.setMinIdle(1);
+//        poolConfig.setMaxWaitMillis(10000);
+//        //poolConfig.setTestOnBorrow(true);
+//        redisConnectionFactory.setPoolConfig(poolConfig);
         return redisConnectionFactory;
     }
 

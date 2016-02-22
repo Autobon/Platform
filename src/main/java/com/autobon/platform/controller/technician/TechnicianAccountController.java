@@ -141,18 +141,21 @@ public class TechnicianAccountController {
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-    public JsonMessage changePassword(@RequestParam("password") String password) {
+    public JsonMessage changePassword(
+            @RequestParam("oldPassword") String oldPassword,
+            @RequestParam("newPassword") String newPassword) {
         JsonMessage msg = new JsonMessage(true);
-        if (password.length() < 6) {
-            msg.setResult(false);
-            msg.setError("ILLEGAL_PARAM");
-            msg.setMessage("密码至少6位");
+        if (newPassword.length() < 6) {
+            return new JsonMessage(false, "ILLEGAL_PARAM", "密码至少6位");
         } else {
             Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
-            technician.setPassword(Technician.encryptPassword(password));
+            if (!technician.getPassword().equals(Technician.encryptPassword(oldPassword))) {
+                return new JsonMessage(false, "ILLEGAL_PARAM", "原密码错误");
+            }
+            technician.setPassword(Technician.encryptPassword(newPassword));
             technicianService.save(technician);
         }
-        return msg;
+        return new JsonMessage(true);
     }
 
     /**

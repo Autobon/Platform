@@ -22,5 +22,5 @@ CREATE TABLE `t_construction` (
   KEY `order_id` (`order_id`),
   KEY `technician_id` (`technician_id`),
   CONSTRAINT `t_construction_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `t_order` (`Id`),
-  CONSTRAINT `t_construction_ibfk_2` FOREIGN KEY (`technician_id`) REFERENCES `technician` (`id`)
+  CONSTRAINT `t_construction_ibfk_2` FOREIGN KEY (`technician_id`) REFERENCES `t_technician` (`id`)
 ) DEFAULT CHARSET=utf8 COMMENT='施工表';
