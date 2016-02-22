@@ -4,6 +4,9 @@ version '1.0-SNAPSHOT'
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url 'http://mvn.gt.igexin.com/nexus/content/repositories/releases/'
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.+")
@@ -38,6 +41,7 @@ dependencies {
     compile 'org.im4java:im4java:1.+'
     compile "com.alibaba:fastjson:1.2.+"
     compile 'commons-fileupload:commons-fileupload:1.+'
+    compile 'com.gexin.platform:gexin-rp-sdk-http:4.+'
     testCompile "org.springframework.boot:spring-boot-starter-test:1.+"
     testCompile "com.jayway.jsonpath:json-path:2.+"
     runtime "mysql:mysql-connector-java:5.+"

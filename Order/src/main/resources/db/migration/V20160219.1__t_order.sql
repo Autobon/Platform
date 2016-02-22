@@ -15,6 +15,6 @@ CREATE TABLE `t_order` (
   UNIQUE KEY `unique_order_num` (`order_num`),
   KEY `main_tech_id` (`main_tech_id`),
   KEY `second_tech_id` (`second_tech_id`),
-  CONSTRAINT `t_order_ibfk_1` FOREIGN KEY (`main_tech_id`) REFERENCES `technician` (`id`),
-  CONSTRAINT `t_order_ibfk_2` FOREIGN KEY (`second_tech_id`) REFERENCES `technician` (`id`)
+  CONSTRAINT `t_order_ibfk_1` FOREIGN KEY (`main_tech_id`) REFERENCES `t_technician` (`id`),
+  CONSTRAINT `t_order_ibfk_2` FOREIGN KEY (`second_tech_id`) REFERENCES `t_technician` (`id`)
 ) DEFAULT CHARSET=utf8 COMMENT='订单表';
