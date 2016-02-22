@@ -20,7 +20,7 @@ import java.util.Date;
  * Created by dave on 16/2/5.
  */
 @Entity
-@Table
+@Table(name = "t_technician")
 public class Technician implements UserDetails {
     private static Logger log = LoggerFactory.getLogger(Technician.class);
     public enum Status {

@@ -94,7 +94,8 @@ public class TechnicianAccountControllerTest {
     @Test
     public void changeAndResetPassword() throws Exception {
         mockMvcS.perform(post("/api/mobile/technician/changePassword")
-                .param("password", "221234")
+                .param("oldPassword", "123456")
+                .param("newPassword", "221234")
                 .cookie(new Cookie("autoken", token)))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(jsonPath("$.result", is(true)));

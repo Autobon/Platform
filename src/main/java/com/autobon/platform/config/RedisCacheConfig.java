@@ -1,60 +1,55 @@
 package com.autobon.platform.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Jedis;
 
 /**
  * Created by dave on 16/2/17.
  */
 @Configuration
-@EnableCaching
 public class RedisCacheConfig extends CachingConfigurerSupport {
     @Value("${spring.redis.host}")
     private String redisHost;
     @Value("${spring.redis.port}")
     private int redisPort;
-    @Value("${spring.redis.password}")
-    private String redisPassword;
 
     @Bean
-    public JedisConnectionFactory redisConnectionFactory() {
-        JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
-        redisConnectionFactory.setHostName(redisHost);
-        redisConnectionFactory.setPort(redisPort);
-        redisConnectionFactory.setPassword(redisPassword);
-        redisConnectionFactory.setTimeout(10000);
-        JedisPoolConfig poolConfig = new JedisPoolConfig();
-        poolConfig.setMaxTotal(20);
-        poolConfig.setMaxIdle(3);
-        poolConfig.setMinIdle(2);
-        poolConfig.setMaxWaitMillis(10000);
-        //poolConfig.setTestOnBorrow(true);
-        redisConnectionFactory.setPoolConfig(poolConfig);
-        return redisConnectionFactory;
+    public Jedis getJedis() {
+        return new Jedis(redisHost, redisPort);
     }
 
-    @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory cf) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(cf);
-        return redisTemplate;
-    }
+//    @Bean
+//    public JedisConnectionFactory redisConnectionFactory() {
+//        JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
+//        redisConnectionFactory.setHostName(redisHost);
+//        redisConnectionFactory.setPort(redisPort);
+//        redisConnectionFactory.setTimeout(10000);
+////        JedisPoolConfig poolConfig = new JedisPoolConfig();
+////        poolConfig.setMaxTotal(3);
+////        poolConfig.setMaxIdle(3);
+////        poolConfig.setMinIdle(1);
+////        poolConfig.setMaxWaitMillis(10000);
+////        //poolConfig.setTestOnBorrow(true);
+////        redisConnectionFactory.setPoolConfig(poolConfig);
+//        return redisConnectionFactory;
+//    }
 
-    @Bean
-    public CacheManager cacheManager(RedisTemplate redisTemplate) {
-        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+//    @Bean
+//    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory cf) {
+//        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+//        redisTemplate.setConnectionFactory(cf);
+//        return redisTemplate;
+//    }
 
-        // Number of seconds before expiration. Defaults to unlimited (0)
-        cacheManager.setDefaultExpiration(3000); // Sets the default expire time (in seconds)
-        return cacheManager;
-    }
+//    @Bean
+//    public CacheManager cacheManager(RedisTemplate redisTemplate) {
+//        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+//
+//        // Number of seconds before expiration. Defaults to unlimited (0)
+//        cacheManager.setDefaultExpiration(3000); // Sets the default expire time (in seconds)
+//        return cacheManager;
+//    }
 }
