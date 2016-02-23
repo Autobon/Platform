@@ -49,7 +49,7 @@ public class pushtoList {
 
 		message.setOffline(true);
 		message.setOfflineExpireTime(1000*3600*24);
-		// message.setPushNetWorkType(1);
+		// message.setNetWorkType(1);
 
 		List<Target> targets = new ArrayList<Target>();
 		Target target = new Target();

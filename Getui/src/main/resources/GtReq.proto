@@ -1,6 +1,18 @@
-package com.autobon.getui
+package com.autobon.getui.utils;
 
 option java_outer_classname = "GtReq";
+
+message Transparent {
+    required string id = 1;
+    required string action = 2;
+    required string taskId = 3;
+    required string appKey = 4;
+    required string appId  = 5;
+    required string messageId = 6;
+    optional PushInfo pushInfo = 7;
+    repeated ActionChain actionChain = 8;
+    repeated string condition = 9;
+}
 
 message PushInfo {
     optional string message = 1;
@@ -62,7 +74,7 @@ message ActionChain {
     optional string stype = 380;
     repeated InnerField field = 381;
     enum Type {
-        goto = 0;
+        _goto = 0;
         notification = 1;
         popup = 2;
         startapp = 3;
@@ -152,7 +164,7 @@ message ReqServList {
 
 message ReqServListResult {
     required ReqServListResultCode code = 1;
-    repeat string host = 2;
+    repeated string host = 2;
     optional string seqId = 3;
     enum ReqServListResultCode {
         successed = 0;
@@ -166,7 +178,7 @@ message PushResult {
     required string taskId = 2;
     required string messageId = 3;
     required string seqId = 4;
-    required string target 5;
+    required string target = 5;
     optional string info = 6;
     optional string traceId = 7;
     enum EPushResult {

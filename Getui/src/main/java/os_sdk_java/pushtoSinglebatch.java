@@ -52,7 +52,7 @@ public class pushtoSinglebatch {
 		message.setOffline(true);
 		message.setOfflineExpireTime(2 * 1000 * 3600);
 		message.setData(template);
-//		message.setPushNetWorkType(1); //
+//		message.setNetWorkType(1); //
 
 		List<Target> targets = new ArrayList<Target>();
 		

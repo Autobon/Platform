@@ -1,4 +1,4 @@
-﻿package os_sdk_java;
+package os_sdk_java;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

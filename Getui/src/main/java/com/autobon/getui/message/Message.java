@@ -1,10 +1,12 @@
 package com.autobon.getui.message;
 
+import com.autobon.getui.template.ITemplate;
+
 /**
  * Created by dave on 16/2/22.
  */
 public class Message {
-    enum NetworkType {
+    public enum NetworkType {
         ALL(0), WIFI(1), SIM(2);
 
         private int code;
@@ -22,52 +24,49 @@ public class Message {
         }
     }
     private boolean offline = true;
-    private int offlineExpireSecond = 60*60; //过多久该消息离线失效（单位秒） 支持1-72小时*3600秒，默认1小时 60*60
-    private NetworkType pushNetWorkType = NetworkType.ALL;
-    private String jsonData;
+    private int offlineExpireTime = 60*60*1000; //过多久该消息离线失效（单位毫秒） 支持1-72小时，默认1小时
+    private NetworkType netWorkType = NetworkType.ALL;
+    private ITemplate data;
 
     public Message() {}
 
-    public Message(boolean isOffline, int offlineExpireSecond, NetworkType pushNetWorkType, String jsonData) {
+    public Message(boolean isOffline, int offlineExpireTime,
+                   NetworkType pushNetWorkType, ITemplate data) {
         this.offline = isOffline;
-        this.offlineExpireSecond = offlineExpireSecond;
-        this.pushNetWorkType = pushNetWorkType;
-        this.jsonData = jsonData;
+        this.offlineExpireTime = offlineExpireTime;
+        this.netWorkType = pushNetWorkType;
+        this.data = data;
     }
 
     public boolean isOffline() {
         return offline;
     }
 
-    public Message setOffline(boolean offline) {
+    public void setOffline(boolean offline) {
         this.offline = offline;
-        return this;
     }
 
-    public int getOfflineExpireSecond() {
-        return offlineExpireSecond;
+    public int getOfflineExpireTime() {
+        return offlineExpireTime;
     }
 
-    public Message setOfflineExpireSecond(int offlineExpireSecond) {
-        this.offlineExpireSecond = offlineExpireSecond;
-        return this;
+    public void setOfflineExpireTime(int offlineExpireTime) {
+        this.offlineExpireTime = offlineExpireTime;
     }
 
-    public NetworkType getPushNetWorkType() {
-        return pushNetWorkType;
+    public NetworkType getNetWorkType() {
+        return netWorkType;
     }
 
-    public Message setPushNetWorkType(NetworkType pushNetWorkType) {
-        this.pushNetWorkType = pushNetWorkType;
-        return this;
+    public void setNetWorkType(NetworkType netWorkType) {
+        this.netWorkType = netWorkType;
     }
 
-    public String getJsonData() {
-        return jsonData;
+    public ITemplate getData() {
+        return data;
     }
 
-    public Message setJsonData(String jsonData) {
-        this.jsonData = jsonData;
-        return this;
+    public void setData(ITemplate data) {
+        this.data = data;
     }
 }
