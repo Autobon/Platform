@@ -55,4 +55,12 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.result", is(true)));
     }
 
+    @Test
+    public void getLocation() throws Exception {
+        mockMvcS.perform(get("/api/mobile/order/getLocation?orderId=3")
+                .cookie(new Cookie("autoken",token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
 }
