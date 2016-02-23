@@ -42,6 +42,7 @@ public class CertificateController {
             @RequestParam("idNo") String idNo,
             @RequestParam("skillArray") String[] skillArray,
             @RequestParam("idPhoto") String idPhoto,
+            @RequestParam("avatar") String avatar,
             @RequestParam("bank") String bank,
             @RequestParam("bankAddress") String bankAddress,
             @RequestParam("bankCardNo") String bankCardNo) {
@@ -68,6 +69,7 @@ public class CertificateController {
             technician.setIdNo(idNo);
             technician.setSkill(skill);
             technician.setIdPhoto(idPhoto);
+            technician.setAvatar(avatar);
             technician.setBank(bank);
             technician.setBankAddress(bankAddress);
             technician.setBankCardNo(bankCardNo);

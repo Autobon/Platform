@@ -7,7 +7,7 @@ CREATE TABLE `t_construction` (
   `start_time` datetime DEFAULT NULL COMMENT '施工开始时间',
   `signin_time` datetime DEFAULT NULL COMMENT '签到时间',
   `end_time` datetime DEFAULT NULL COMMENT '施工结束时间',
-  `brfore_pic_a` varchar(255) DEFAULT NULL COMMENT '施工前照片_1',
+  `before_pic_a` varchar(255) DEFAULT NULL COMMENT '施工前照片_1',
   `before_pic_b` varchar(255) DEFAULT NULL COMMENT '施工前照片_2',
   `before_pic_c` varchar(255) DEFAULT NULL COMMENT '施工前照片_3',
   `after_pic_a` varchar(255) DEFAULT NULL COMMENT '施工后照片_1',
