@@ -68,7 +68,8 @@ public class TechnicianAccountController {
             msg.setError("ILLEGAL_PARAM");
             messages.add("密码至少6位");
         }
-        if (!verifySms.equals(redisCache.get("verifySms:" + phone))) {
+        String code = redisCache.get("verifySms:" + phone);
+        if (!verifySms.equals(code)) {
             msg.setError("ILLEGAL_PARAM");
             messages.add("验证码错误");
         }

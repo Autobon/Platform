@@ -26,48 +26,43 @@ public class SmsSender {
     private String smsGateway;
 
     public boolean send(String sim, String content) throws IOException {
-        try {
-            //建立连接
-            URL url = new URL(smsGateway);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            connection.setRequestMethod("POST");
-            connection.setUseCaches(false);
-            connection.setInstanceFollowRedirects(true);
-            connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-            connection.connect();
-            //POST请求
-            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-            HashMap<String, String> m = new HashMap<>();
-            m.put("sim", sim);
-            m.put("content", content);
-            String requestJson = new ObjectMapper().writeValueAsString(m);
-            log.info(requestJson);
-            out.append(requestJson);
-            out.flush();
-            out.close();
-            //读取响应
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String lines;
-            StringBuffer sb = new StringBuffer("");
-            while ((lines = reader.readLine()) != null) {
-                lines = new String(lines.getBytes(), "utf-8");
-                sb.append(lines);
+        //建立连接
+        URL url = new URL(smsGateway);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setDoInput(true);
+        connection.setRequestMethod("POST");
+        connection.setUseCaches(false);
+        connection.setInstanceFollowRedirects(true);
+        connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+        connection.connect();
+        //POST请求
+        OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+        HashMap<String, String> m = new HashMap<>();
+        m.put("sim", sim);
+        m.put("content", content);
+        String requestJson = new ObjectMapper().writeValueAsString(m);
+        log.info(requestJson);
+        out.append(requestJson);
+        out.flush();
+        out.close();
+        //读取响应
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+        String line;
+        StringBuffer sb = new StringBuffer();
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+        }
+        log.info(sb.toString());
+        reader.close();
+        // 断开连接
+        connection.disconnect();
+        if (!sb.equals("")) {
+            JsonNode rootNode = new ObjectMapper().readTree(sb.toString());
+            String status = rootNode.path("status").asText();
+            if (status != null && status.equals("success")) {
+                return true;
             }
-            log.info(sb.toString());
-            reader.close();
-            // 断开连接
-            connection.disconnect();
-            if (!sb.equals("")) {
-                JsonNode rootNode = new ObjectMapper().readTree(sb.toString());
-                String status = rootNode.path("status").asText();
-                if (status != null && status.equals("success")) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            throw e;
         }
         return false;
     }

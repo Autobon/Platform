@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * Created by dave on 16/2/17.
@@ -17,8 +18,14 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     private int redisPort;
 
     @Bean
-    public Jedis getJedis() {
-        return new Jedis(redisHost, redisPort);
+    public JedisPool createJedisPool() {
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMinIdle(2);
+        config.setMaxIdle(5);
+        config.setTestOnBorrow(true);
+        config.setMaxTotal(8);
+        config.setMaxWaitMillis(5000);
+        return new JedisPool(config, redisHost, redisPort);
     }
 
 //    @Bean
