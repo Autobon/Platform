@@ -2,6 +2,7 @@ package com.autobon.platform.staff;
 
 
 import com.autobon.platform.staff.controller.StaffController;
+import com.autobon.platform.staff.controller.StaffValidate;
 import com.autobon.platform.utils.JsonMessage;
 import com.autobon.staff.service.StaffService;
 import org.junit.Assert;
@@ -28,8 +29,11 @@ public class StaffControllerTest {
     public void loginTest(){
         StaffController target = new StaffController();
         target.setStaffService(staffService);
+        StaffValidate staffValidate = new StaffValidate();
+        staffValidate.setUserName("admin");
+        staffValidate.setPassword("admin");
         HttpServletResponse response = new MockHttpServletResponse();
-        JsonMessage jsonMessage = target.login("admin", "admin",response);
+        JsonMessage jsonMessage = target.login(staffValidate,response);
         Assert.assertTrue(jsonMessage.getResult());
 
     }

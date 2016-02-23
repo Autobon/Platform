@@ -26,14 +26,12 @@ public class StaffController {
 
 
     @RequestMapping(value = "/staff/login", method = RequestMethod.POST)
-    public JsonMessage login( @RequestParam("username") String username,
-                              @RequestParam("password") String password,HttpServletResponse response) {
-
-        int flag = staffService.login(username, password);
+    public JsonMessage login(@RequestBody StaffValidate staffValidate,HttpServletResponse response) {
+        int flag = staffService.login(staffValidate.getUserName(), staffValidate.getPassword());
 
         if(flag == 0){
-            String token = staffService.generateToken(username);
-            StaffShow staffShow = staffService.convertByUsername(username);
+            String token = staffService.generateToken(staffValidate.getUserName());
+            StaffShow staffShow = staffService.convertByUsername(staffValidate.getUserName());
             Cookie cookie = new Cookie("token_staff",token);
             int seconds = 60*60*24;  //1天的秒数
             cookie.setMaxAge(seconds);  //cookie默认保存1天
