@@ -14,7 +14,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by Liujingguo91year on 2016/1/21.
+ * Created by liz on 2016/2/21.
  */
 public class StaffControllerTest {
 
