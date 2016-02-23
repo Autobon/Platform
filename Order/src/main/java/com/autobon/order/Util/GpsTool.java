@@ -1,4 +1,4 @@
-package com.autobon.platform.utils;
+package com.autobon.order.Util;
 
 
 import com.alibaba.fastjson.JSON;
@@ -9,12 +9,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-
+/**
+ * Created by yuh on 2016/2/16.
+ */
 @Component
 public class GpsTool {
     double pi = 3.14159265358979324;
