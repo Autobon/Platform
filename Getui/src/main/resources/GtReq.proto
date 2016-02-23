@@ -1,0 +1,186 @@
+package com.autobon.getui
+
+option java_outer_classname = "GtReq";
+
+message PushInfo {
+    optional string message = 1;
+    optional string actionKey = 2;
+    optional string sound = 3;
+    optional string badge = 4;
+    optional string payload = 5;
+    optional string locKey = 6;
+    optional string locArgs = 7;
+    optional string actionLocKey = 8;
+    optional string launchImage = 9;
+    optional int32 contentAvailable = 10;
+    optional bool invalidAPN = 11;
+    optional string apnJson = 12;
+    optional bool invalidMPN = 13;
+    optional string mpnXml = 14;
+}
+
+message ActionChain {
+    required int32 actionId = 1;
+    required Type type = 2;
+    optional int32 next = 3;
+    optional string logo = 100;
+    optional string logoURL = 101;
+    optional string title = 102;
+    optional string text = 103;
+    optional bool clearable = 104;
+    optional bool ring = 105;
+    optional bool buzz = 106;
+    optional string bannerURL = 107;
+    optional string img = 120;
+    optional Button buttons = 121;
+    optional string appid = 140;
+    optional AppStartUp appstartupid = 141;
+    optional bool autostart = 142;
+    optional int32 failedAction = 143;
+    optional string url = 160;
+    optional string withcid = 161;
+    optional bool is_withnettype = 162 [default = false]; // TODO default
+    optional string address = 180;
+    optional string content  = 181;
+    optional int64 ct = 182;
+    optional SMSStatus flg = 183;
+    optional int32 successedAction = 200;
+    optional int32 uninstalledAction = 201;
+    optional string name = 220;
+    optional bool autoInstall = 223;
+    optional bool wifiAutodownload = 225;
+    optional bool forceDownload = 226;
+    optional bool showProgress = 227;
+    optional string post = 241;
+    optional string headers = 242;
+    optional bool groupable = 260;
+    optional string mmsURL = 281;
+    optional bool preload = 300;
+    optional string taskid = 320;
+    optional int64 duration = 340;
+    optional string date = 360;
+    optional string stype = 380;
+    repeated InnerField field = 381;
+    enum Type {
+        goto = 0;
+        notification = 1;
+        popup = 2;
+        startapp = 3;
+        startweb = 4;
+        smsinbox = 5;
+        checkapp = 6;
+        eoa = 7;
+        appdownload = 8;
+        startsms = 9;
+        httpproxy = 10;
+        smsinbox2 = 11;
+        mmsinbox2 = 12;
+        popupweb = 13;
+        dial = 14;
+        reportbindapp = 15;
+        reportaddphoneinfo = 16;
+        reportapplist = 17;
+        terminatetask = 18;
+        reportapp = 19;
+        enablelog = 20;
+        disablelog = 21;
+        uploadlog = 22;
+    }
+    enum SMSStatus {
+        unread = 0;
+        read = 1;
+    }
+}
+
+message InnerField {
+    required string key = 1;
+    required string val = 2;
+    required Type type = 3;
+    enum Type {
+        str = 0;
+        int32 = 1;
+        int64 = 2;
+        floa = 3;
+        doub = 4;
+        bool = 5;
+    }
+}
+
+message AppStartUp {
+    optional string android = 1;
+    optional string symbia = 2;
+    optional string ios = 3;
+}
+
+message Button {
+    optional string text = 1;
+    optional int32 next = 2;
+}
+
+message Target {
+    required string appId = 1;
+    required string clientId = 2;
+    optional string alias = 3;
+}
+
+message GtAuth {
+    required string sign = 1;
+    required string appkey = 2;
+    required int64 timestamp = 3;
+    optional string seqId = 4;
+}
+
+message GtAuthResult {
+    required GtAuthResultCode code = 1;
+    optional string redirectAddress = 2;
+    optional string seqId = 3;
+    optional string info = 4;
+    enum GtAuthResultCode {
+        successed = 0;
+        failed_noSign = 1;
+        failed_noAppkey = 2;
+        failed_noTimestamp = 3;
+        failed_AuthIllegal = 4;
+        redirect = 5;
+    }
+}
+
+message ReqServList {
+    optional string seqId = 1;
+    required int64 timestamp = 3;
+}
+
+message ReqServListResult {
+    required ReqServListResultCode code = 1;
+    repeat string host = 2;
+    optional string seqId = 3;
+    enum ReqServListResultCode {
+        successed = 0;
+        failed = 1;
+        busy = 2;
+    }
+}
+
+message PushResult {
+    required EPushResult result = 1;
+    required string taskId = 2;
+    required string messageId = 3;
+    required string seqId = 4;
+    required string target 5;
+    optional string info = 6;
+    optional string traceId = 7;
+    enum EPushResult {
+        successed_online = 0;
+        successed_offline = 1;
+        successed_ignore = 2;
+        failed = 3;
+        busy = 4;
+        success_startBatch = 5;
+        success_endBatch = 6;
+    }
+}
+
+message PushListResult {
+    repeated PushResult results = 1;
+}
+
