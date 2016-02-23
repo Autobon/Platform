@@ -25,6 +25,7 @@ public class StaffControllerTest {
         this.staffService = Mockito.mock(StaffService.class);
         Mockito.when(staffService.login("admin", "admin")).thenReturn(0);
     }
+
     @Test
     public void loginTest(){
         StaffController target = new StaffController();
@@ -35,7 +36,6 @@ public class StaffControllerTest {
         HttpServletResponse response = new MockHttpServletResponse();
         JsonMessage jsonMessage = target.login(staffValidate,response);
         Assert.assertTrue(jsonMessage.getResult());
-
     }
 
     @Test

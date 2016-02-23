@@ -1,15 +1,11 @@
 package com.autobon.order.entity;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by yuh on 2016/2/22.
+ * Created by liz on 2016/2/23.
  */
-@Entity
-@Table(name="t_order")
-public class Order {
-
+public class OrderShow {
     private int id;
     private String orderNum;
     private int orderType;
@@ -23,9 +19,21 @@ public class Order {
     private int mainTechId;
     private int secondTechId;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    public OrderShow(Order order){
+        this.setId(order.getId());
+        this.setOrderNum(order.getOrderNum());
+        this.setOrderType(order.getOrderType());
+        this.setPhoto(order.getPhoto());
+        this.setOrderTime(order.getOrderTime());
+        this.setAddTime(order.getAddTime());
+        this.setStatus(order.getStatus());
+        this.setCustomerType(order.getCustomerType());
+        this.setCustomerId(order.getCustomerId());
+        this.setRemark(order.getRemark());
+        this.setMainTechId(order.getMainTechId());
+        this.setSecondTechId(order.getSecondTechId());
+    }
+
     public int getId() {
         return id;
     }
@@ -34,7 +42,6 @@ public class Order {
         this.id = id;
     }
 
-    @Column(name="order_num",nullable = false, insertable = true, updatable = true)
     public String getOrderNum() {
         return orderNum;
     }
@@ -43,7 +50,6 @@ public class Order {
         this.orderNum = orderNum;
     }
 
-    @Column(name="order_type", insertable = true, updatable = true)
     public int getOrderType() {
         return orderType;
     }
@@ -52,7 +58,6 @@ public class Order {
         this.orderType = orderType;
     }
 
-    @Column(name="photo",nullable = true, insertable = true, updatable = true)
     public String getPhoto() {
         return photo;
     }
@@ -61,7 +66,6 @@ public class Order {
         this.photo = photo;
     }
 
-    @Column(name="order_time",nullable = true, insertable = true, updatable = true)
     public Date getOrderTime() {
         return orderTime;
     }
@@ -70,7 +74,6 @@ public class Order {
         this.orderTime = orderTime;
     }
 
-    @Column(name="add_time",nullable = true, insertable = true, updatable = true)
     public Date getAddTime() {
         return addTime;
     }
@@ -79,7 +82,6 @@ public class Order {
         this.addTime = addTime;
     }
 
-    @Column(name="status", insertable = true, updatable = true)
     public int getStatus() {
         return status;
     }
@@ -88,7 +90,6 @@ public class Order {
         this.status = status;
     }
 
-    @Column(name="customer_type", insertable = true, updatable = true)
     public int getCustomerType() {
         return customerType;
     }
@@ -97,7 +98,6 @@ public class Order {
         this.customerType = customerType;
     }
 
-    @Column(name="customer_id", insertable = true, updatable = true)
     public int getCustomerId() {
         return customerId;
     }
@@ -106,7 +106,6 @@ public class Order {
         this.customerId = customerId;
     }
 
-    @Column(name="remark",nullable = true, insertable = true, updatable = true)
     public String getRemark() {
         return remark;
     }
@@ -115,7 +114,6 @@ public class Order {
         this.remark = remark;
     }
 
-    @Column(name="main_tech_id", insertable = true, updatable = true)
     public int getMainTechId() {
         return mainTechId;
     }
@@ -124,7 +122,6 @@ public class Order {
         this.mainTechId = mainTechId;
     }
 
-    @Column(name="second_tech_id", insertable = true, updatable = true)
     public int getSecondTechId() {
         return secondTechId;
     }
@@ -132,4 +129,6 @@ public class Order {
     public void setSecondTechId(int secondTechId) {
         this.secondTechId = secondTechId;
     }
+
+
 }
