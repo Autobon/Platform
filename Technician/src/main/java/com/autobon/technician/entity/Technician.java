@@ -81,6 +81,8 @@ public class Technician implements UserDetails {
 
     @Column private String skill; // 技师技能
 
+    @Column private String pushId; // 个推客户端ID, 由手机端更新
+
     @JsonIgnore
     @Column(name = "status")
     private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
@@ -289,6 +291,14 @@ public class Technician implements UserDetails {
 
     public void setSkill(String skill) {
         this.skill = skill;
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 
     protected int getStatusCode() {

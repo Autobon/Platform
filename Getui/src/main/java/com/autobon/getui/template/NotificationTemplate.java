@@ -1,13 +1,14 @@
 package com.autobon.getui.template;
 
 import com.autobon.getui.utils.GtReq;
-import com.autobon.getui.utils.PushType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by dave on 16/2/23.
+ * 点击通知打开应用模板
+ * http://docs.getui.com/pages/viewpage.action?pageId=1213588
  */
 public class NotificationTemplate extends BaseTemplate {
     private String text;

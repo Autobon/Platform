@@ -11,6 +11,17 @@ import java.util.List;
  * Created by dave on 16/2/22.
  */
 public class BaseTemplate implements ITemplate {
+    public enum PushType {
+        TransmissionMsg,
+        LinkMsg,
+        NotifyMsg,
+        PopupAppDownLoad,
+        NotyPopLoad;
+
+        private PushType() {
+        }
+    }
+
     private String appId;
     private String appKey;
     private GtReq.PushInfo.Builder pushInfo = GtReq.PushInfo.newBuilder().setInvalidAPN(true).setInvalidMPN(true);

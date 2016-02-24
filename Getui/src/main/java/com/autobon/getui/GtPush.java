@@ -1,17 +1,13 @@
 package com.autobon.getui;
 
 import com.autobon.getui.message.AppMessage;
-import com.autobon.getui.message.ListMessage;
 import com.autobon.getui.message.Message;
-import com.autobon.getui.message.SingleMessage;
 import com.autobon.getui.utils.AppConditions;
 import com.autobon.getui.utils.GtConfig;
 import com.autobon.getui.utils.GtHttp;
 import com.autobon.getui.utils.Target;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -21,7 +17,7 @@ import java.util.*;
  * Created by dave on 16/2/22.
  */
 public class GtPush {
-    private final Logger LOG = LoggerFactory.getLogger(GtPush.class);
+    private static final ObjectMapper mapper = new ObjectMapper();
     private GtConfig config;
 
     public GtPush(GtConfig config) {
@@ -37,7 +33,6 @@ public class GtPush {
         map.put("timeStamp", timestamp.toString());
         map.put("sign", sign);
         String json = GtHttp.postJson(config.getHost(), map);
-        LOG.info(json);
         return new ObjectMapper().readTree(json).path("result").asText().equals("success");
     }
 
@@ -46,8 +41,7 @@ public class GtPush {
         map.put("action", "close");
         map.put("appkey", config.getAppKey());
         String json = GtHttp.postJson(config.getHost(), map);
-        LOG.info(json);
-        return new ObjectMapper().readTree(json).path("result").asText().equals("success");
+        return mapper.readTree(json).path("result").asText().equals("success");
     }
 
     public String getContentId(Message message, String taskGroupName) throws IOException {
@@ -62,9 +56,7 @@ public class GtPush {
         map.put("offlineExpireTime", message.getOfflineExpireTime());
         map.put("pushType", message.getData().getPushType());
         map.put("type", 2);
-        if (message instanceof ListMessage) {
-            map.put("contentType", 1);
-        } else if (message instanceof AppMessage) {
+        if (message instanceof AppMessage) {
             map.put("contentType", 2);
             AppMessage appMessage = (AppMessage) message;
             map.put("appIdList", appMessage.getAppIdList());
@@ -92,10 +84,11 @@ public class GtPush {
             map.put("tagList", tagList);
             map.put("personaTags", customTags);
             map.put("speed", appMessage.getSpeed());
+        } else {
+            map.put("contentType", 1);
         }
         map.put("pushNetWorkType", message.getNetWorkType().getCode());
         String json = GtHttp.postJson(config.getHost(), map);
-        LOG.debug(json);
         JsonNode rootNode = new ObjectMapper().readTree(json);
         if (rootNode.path("result").asText().equals("ok")) {
             return rootNode.path("contentId").asText();
@@ -111,11 +104,11 @@ public class GtPush {
         return "ok".equals(response.get("result"));
     }
 
-    public Map<String, Object> pushToSingle(SingleMessage message, Target target) throws IOException {
+    public boolean pushToSingle(Message message, Target target) throws IOException {
         return pushToSingle(message, target, (String)null);
     }
 
-    public Map<String, Object> pushToSingle(SingleMessage message, Target target, String requestId)
+    public boolean pushToSingle(Message message, Target target, String requestId)
             throws IOException {
         if(requestId == null || "".equals(requestId.trim())) {
             requestId = UUID.randomUUID().toString();
@@ -137,10 +130,10 @@ public class GtPush {
         map.put("pushType", message.getData().getPushType());
         map.put("pushNetWorkType", message.getNetWorkType().getCode());
 
-        return GtHttp.postBytes(config.getHost(), map, false, false);
+        return "ok".equals(GtHttp.postBytes(config.getHost(), map, false, false).get("result"));
     }
 
-    public Map<String, Object> pushToList(String contentId, List<Target> targets) throws IOException {
+    public boolean pushToList(String contentId, List<Target> targets) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
 
         map.put("action", "pushMessageToListAction");
@@ -166,21 +159,21 @@ public class GtPush {
         map.put("aliasList", aliasList);
         map.put("type", 2);
 
-        return GtHttp.postBytes(config.getHost(), map, true, true);
+        return "ok".equals(GtHttp.postBytes(config.getHost(), map, true, true).get("result"));
     }
 
-    public Map<String, Object> pushToApp(AppMessage message, String taskGroupName) throws IOException {
+    public boolean pushToApp(AppMessage message, String taskGroupName) throws IOException {
         String contentId = this.getContentId(message, taskGroupName);
         return pushToApp(contentId);
     }
 
-    public Map<String, Object> pushToApp(String contentId) throws IOException {
+    public boolean pushToApp(String contentId) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "pushMessageToAppAction");
         map.put("appkey", config.getAppKey());
         map.put("contentId", contentId);
         map.put("type", 2);
-        return GtHttp.postBytes(config.getHost(), map, false, false);
+        return "ok".equals(GtHttp.postBytes(config.getHost(), map, false, false).get("result"));
     }
 
     public static String encryptByMd5(String str) {

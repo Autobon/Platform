@@ -1,6 +1,8 @@
 package com.autobon.getui.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpRetryException;
@@ -12,6 +14,7 @@ import java.util.Map;
  * Created by dave on 16/2/22.
  */
 public class GtHttp {
+    private static final Logger LOG = LoggerFactory.getLogger(GtHttp.class);
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static String postJson(String host, Map<String, Object> data) throws IOException {
@@ -36,7 +39,9 @@ public class GtHttp {
         }
         reader.close();
         connection.disconnect();
-        return sb.toString();
+        String ret = sb.toString();
+        LOG.info(ret);
+        return ret;
     }
 
     public static Map<String, Object> postBytes(String url, Map<String, Object> data,
@@ -72,7 +77,9 @@ public class GtHttp {
         }
         connection.disconnect();
         if (acceptGZip) response = GZip.decompress(response);
-        return mapper.readValue(response, Map.class);
+        Map<String, Object> ret = mapper.readValue(response, Map.class);
+        LOG.info(ret.toString());
+        return ret;
     }
 
     private static byte[] executePost(HttpURLConnection connection, byte[] postData) throws IOException {
