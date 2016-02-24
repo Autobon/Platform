@@ -19,6 +19,7 @@ import javax.servlet.http.Cookie;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
@@ -51,6 +52,26 @@ public class OrderControllerTest {
     public void orderList() throws Exception {
         mockMvcS.perform(get("/api/mobile/order/orderList")
                 .cookie(new Cookie("autoken",token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void getLocation() throws Exception {
+        mockMvcS.perform(get("/api/mobile/order/getLocation?orderId=1")
+                .cookie(new Cookie("autoken",token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void signIn() throws Exception {
+        mockMvcS.perform(post("/api/mobile/order/signIn")
+                .param("rtpositionLon","111.11111111")
+                .param("rtpositionLat","55.555555")
+                .param("technicianId","1")
+                .param("orderId","1")
+                .cookie(new Cookie("autoken", token)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
     }

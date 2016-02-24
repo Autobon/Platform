@@ -33,4 +33,9 @@ public class OrderService {
         }
         return orderList;
     }
+
+    public Order getLocation(int orderId) {
+        Order order = orderRepository.findOne(orderId);
+        return  order;
+    }
 }

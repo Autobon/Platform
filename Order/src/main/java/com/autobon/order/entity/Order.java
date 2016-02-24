@@ -38,6 +38,15 @@ public class Order {
     @Column(name="customer_id",nullable = true, insertable = true, updatable = true)
     private int customerId;
 
+    @Column(name="customer_name",nullable = true, insertable = true, updatable = true)
+    private String customerName;
+
+    @Column(name="customer_lon",nullable = true, insertable = true, updatable = true)
+    private String customerLon;
+
+    @Column(name="customer_lat",nullable = true, insertable = true, updatable = true)
+    private String customerLat;
+
     @Column(name="remark",nullable = true, insertable = true, updatable = true)
     private String remark;
 
@@ -118,6 +127,30 @@ public class Order {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerLon() {
+        return customerLon;
+    }
+
+    public void setCustomerLon(String customerLon) {
+        this.customerLon = customerLon;
+    }
+
+    public String getCustomerLat() {
+        return customerLat;
+    }
+
+    public void setCustomerLat(String customerLat) {
+        this.customerLat = customerLat;
     }
 
     public String getRemark() {
