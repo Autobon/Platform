@@ -36,13 +36,13 @@ public class Construction {
     @Column(name = "end_time",nullable = true, insertable = true, updatable = true)
     private Date endTime;
 
-    @Column(name = "brfore_pic_a",nullable = true, insertable = true, updatable = true)
+    @Column(name = "before_pic_a",nullable = true, insertable = true, updatable = true)
     private String beforePicA;
 
-    @Column(name = "brfore_pic_b",nullable = true, insertable = true, updatable = true)
+    @Column(name = "before_pic_b",nullable = true, insertable = true, updatable = true)
     private String beforePicB;
 
-    @Column(name = "brfore_pic_c",nullable = true, insertable = true, updatable = true)
+    @Column(name = "before_pic_c",nullable = true, insertable = true, updatable = true)
     private String beforePicC;
 
     @Column(name = "after_pic_a",nullable = true, insertable = true, updatable = true)
