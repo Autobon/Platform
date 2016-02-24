@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +48,16 @@ public class TechnicianAccountController {
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public JsonMessage handleUploadException(MaxUploadSizeExceededException ex) {
         return new JsonMessage(false, "UPLOAD_SIZE_EXCEED", "上传图片不能超过2MB");
+    }
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public JsonMessage getPushId() {
+        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        return new JsonMessage(true, "", technician);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -211,16 +220,6 @@ public class TechnicianAccountController {
     }
 
     /**
-     * 获取用户的个推ID
-     * @return
-     */
-    @RequestMapping(value = "/pushId", method = RequestMethod.GET)
-    public JsonMessage getPushId() {
-        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        return new JsonMessage(true, "", (Object) technician.getPushId());
-    }
-
-    /**
      * 更新用户的个推ID
      * @param pushId
      * @return
@@ -243,7 +242,7 @@ public class TechnicianAccountController {
     @RequestMapping(value = "/idPhoto", method = RequestMethod.POST)
     public JsonMessage uploadIdPhoto(HttpServletRequest request,
         @RequestParam("file") MultipartFile file) throws Exception {
-        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
+        if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
         JsonMessage msg = new JsonMessage(true);
         String path = "/uploads/technician/idPhoto";
