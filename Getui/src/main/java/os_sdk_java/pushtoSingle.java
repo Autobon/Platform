@@ -50,7 +50,7 @@ public class pushtoSingle {
 		message.setOffline(true);
 		message.setOfflineExpireTime(2 * 1000 * 3600);
 		message.setData(template);
-		// message.setPushNetWorkType(1); //是否wifi推送
+		// message.setNetWorkType(1); //是否wifi推送
 
 		List<Target> targets = new ArrayList<Target>();
 		Target target1 = new Target();

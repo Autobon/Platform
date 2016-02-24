@@ -19,6 +19,7 @@ dependencies {
     compile name: 'gexin-rp-sdk-http-4.0.1.0'
     compile name: 'gexin-rp-sdk-template-4.0.0.3'
     compile 'com.google.protobuf:protobuf-java:2.+'
+    compile 'commons-configuration:commons-configuration:1.+'
     compile "org.springframework.boot:spring-boot-starter:1.+"
     compile "org.springframework.boot:spring-boot-starter-web:1.+"
     compile 'org.springframework.boot:spring-boot-starter-security:1.+'

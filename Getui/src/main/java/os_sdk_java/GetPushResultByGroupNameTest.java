@@ -1,4 +1,4 @@
-﻿package os_sdk_java;
+package os_sdk_java;
 
 import com.gexin.rp.sdk.base.IQueryResult;
 import com.gexin.rp.sdk.http.IGtPush;

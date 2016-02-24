@@ -43,7 +43,7 @@ public class pushtoAPP {
 //		message.setPhoneTypeList(phoneTypeList);
 //		 message.setProvinceList(provinceList);
 //		 message.setTagList(tagList);
-//		 message.setPushNetWorkType(1);
+//		 message.setNetWorkType(1);
 //		 message.setSpeed(1000);
 		//设置省市平台tag的新方式
 		AppConditions cdt = new AppConditions(); 		

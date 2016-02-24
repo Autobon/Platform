@@ -254,4 +254,45 @@ POST /api/mobile/technician/avatar
 ```
 
 3.上传文件大小超过2MB
+返回状态码: 406
 
+```
+{"result": false,
+"message": "上传文件大小不能超过2MB",
+"error": "UPLOAD_SIZE_EXCEED",
+"data": null}
+```
+
+## 7. 更新个推ID
+### URL及请求方法
+POST /api/mobile/technician/pushId
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| pushId | 个推ID | 9a05f0154913d57ef537fdf51ffc14bd |
+
+### 返回数据
+
+```
+{"result": true,
+"message": null,
+"error": null,
+"data": null}
+```
+
+## 8. 获取用户的个推ID
+### URL及请求方法
+GET /api/mobile/technician/pushId
+
+### 请求参数
+无
+
+### 返回数据
+
+```
+{"result": true,
+"message": "",
+"error": null,
+"data": "9a05f0154913d57ef537fdf51ffc14bd"}
+```

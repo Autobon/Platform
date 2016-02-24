@@ -16,6 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -38,13 +41,14 @@ public class TechnicianAccountController {
     @Autowired TechnicianService technicianService;
     @Autowired RedisCache redisCache;
     @Autowired SmsSender smsSender;
+    @Autowired MultipartResolver resolver;
     @Value("${com.autobon.env:PROD}") String env;
     @Value("${com.autobon.gm-path}") String gmPath;
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public JsonMessage handleUploadException(MaxUploadSizeExceededException ex) {
-        return new JsonMessage(false, "UPLOAD_SIZE_EXCEED", "上传文件大小不能超过2MB");
+        return new JsonMessage(false, "UPLOAD_SIZE_EXCEED", "上传图片不能超过2MB");
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -162,39 +166,71 @@ public class TechnicianAccountController {
     /**
      * 上传头像
      * @param request
-     * @param file
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
-    public JsonMessage uploadAvatar(HttpServletRequest request,
-        @RequestParam("file") MultipartFile file) throws Exception {
-        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
-
-        JsonMessage msg = new JsonMessage(true);
+    public JsonMessage uploadAvatarForm(HttpServletRequest request) throws Exception {
         String path = "/uploads/technician/avatar";
         File dir = new File(request.getServletContext().getRealPath(path));
-        String originalName = file.getOriginalFilename();
-        String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase();
-        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + (VerifyCode.generateRandomNumber(6)) + extension;
-
         if (!dir.exists()) dir.mkdirs();
-        try (InputStream fis = file.getInputStream()) {
-            ConvertCmd cmd = new ConvertCmd(true);
-            cmd.setSearchPath(gmPath);
-            cmd.setInputProvider(new Pipe(fis, null));
-            IMOperation operation = new IMOperation();
-            operation.addImage("-");
-            operation.gravity("center").thumbnail(200, 200, "^").extent(200, 200);
-            operation.addImage(dir.getAbsolutePath() + File.separator + filename);
-            cmd.run(operation);
-        }
         Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        String filename = technician.getId() + ".jpg";
+
+        InputStream in;
+        if (request.getContentLengthLong() >= 2*1024*1024) {
+            throw new MaxUploadSizeExceededException(2*1024*1024);
+        }
+        if (resolver.isMultipart(request)) {
+            MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
+            if (file == null || file.isEmpty()) return new JsonMessage(false, "没有选择上传文件");
+            in = file.getInputStream();
+        } else {
+            String ctype = request.getHeader("content-type");
+            if (!ctype.equals("image/jpeg") && !ctype.equals("image/png")) {
+                return new JsonMessage(false, "没有上传文件，或非jpg、png类型文件");
+            }
+            if (request.getContentLengthLong() <= 0) {
+                return new JsonMessage(false, "没有选择上传文件");
+            }
+            in = request.getInputStream();
+        }
+
+        ConvertCmd cmd = new ConvertCmd(true);
+        cmd.setSearchPath(gmPath);
+        cmd.setInputProvider(new Pipe(in, null));
+        IMOperation operation = new IMOperation();
+        operation.addImage("-");
+        operation.gravity("center").thumbnail(200, 200, "^").extent(200, 200);
+        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+        cmd.run(operation);
+        in.close();
         technician.setAvatar(path + "/" + filename);
         technicianService.save(technician);
-        msg.setData(technician.getAvatar());
-        return msg;
+        return new JsonMessage(true, "", (Object) technician.getAvatar());
+    }
+
+    /**
+     * 获取用户的个推ID
+     * @return
+     */
+    @RequestMapping(value = "/pushId", method = RequestMethod.GET)
+    public JsonMessage getPushId() {
+        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        return new JsonMessage(true, "", (Object) technician.getPushId());
+    }
+
+    /**
+     * 更新用户的个推ID
+     * @param pushId
+     * @return
+     */
+    @RequestMapping(value = "/pushId", method = RequestMethod.POST)
+    public JsonMessage savePushId(@RequestParam("pushId") String pushId) {
+        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        technician.setPushId(pushId);
+        technicianService.save(technician);
+        return new JsonMessage(true);
     }
 
     /**
