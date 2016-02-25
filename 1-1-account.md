@@ -61,6 +61,7 @@ POST /api/mobile/technician/register
     "star": 0,
     "voteRate": 0,
     "skill": null,
+    "pushId": null,
     "status": "NOTVERIFIED"
 }}
 ```
