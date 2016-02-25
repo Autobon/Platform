@@ -54,8 +54,8 @@ public class TechnicianAccountController {
      * 获取用户信息
      * @return
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public JsonMessage getPushId() {
+    @RequestMapping(method = RequestMethod.GET)
+    public JsonMessage getTechnicianInfo() {
         Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
         return new JsonMessage(true, "", technician);
     }
