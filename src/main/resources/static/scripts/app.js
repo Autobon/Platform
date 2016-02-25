@@ -20,7 +20,6 @@ requirejs.config({
     }
 });
 
-
 require
 (
     [

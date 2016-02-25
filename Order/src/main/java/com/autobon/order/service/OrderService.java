@@ -3,14 +3,12 @@ package com.autobon.order.service;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderShow;
 import com.autobon.order.repository.OrderRepository;
+import com.autobon.order.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,33 +41,38 @@ public class OrderService {
 
     /**
      * 增加订单
-     * @param order
+     * @param orderShow
      * @return 订单 Order
      */
-    public Order addOrder(Order order){
+    public Order addOrder(OrderShow orderShow){
         //TODO
+        Order order = OrderUtil.orderShow2Order(orderShow);
         return orderRepository.save(order);
     }
 
     /**
      * 修改订单
-     * @param order
+     * @param orderShow
      * @return
      */
-    public Order updateOrder(Order order){
-        //TODO
-        return orderRepository.save(order);
+    public Order updateOrder(OrderShow orderShow){
+        //TODO 加上没有传值的字段不用修改的判断
+        Order oldObj = orderRepository.findOne(orderShow.getId());
+        if(orderShow.getOrderNum() != null) oldObj.setOrderNum(orderShow.getOrderNum());
+        if(orderShow.getOrderType() != 0) oldObj.setOrderType(orderShow.getOrderType());
+        if(orderShow.getPhoto() != null) oldObj.setPhoto(orderShow.getPhoto());
+        if(orderShow.getOrderTime() != null) oldObj.setOrderTime(orderShow.getOrderTime());
+        if(orderShow.getAddTime() != null) oldObj.setAddTime(orderShow.getAddTime());
+        if(orderShow.getStatus() != 0) oldObj.setStatus(orderShow.getStatus());
+        if(orderShow.getCustomerType() != 0 )oldObj.setCustomerType(orderShow.getCustomerType());
+        if(orderShow.getCustomerId() != 0)oldObj.setCustomerId(orderShow.getCustomerId());
+        if(orderShow.getRemark() != null)oldObj.setRemark(orderShow.getRemark());
+        if(orderShow.getMainTechId() != 0)oldObj.setMainTechId(orderShow.getMainTechId());
+        if(orderShow.getSecondTechId() != 0)oldObj.setSecondTechId(orderShow.getSecondTechId());
+        return orderRepository.save(oldObj);
     }
 
-    /**
-     * 查找所有订单带分页
-     * @return 所有订单
-     */
-    public Page<Order> findAllOrders(){
-        Pageable p = new PageRequest(0,10);
-        Page<Order> orders = orderRepository.findAllOrders(p);
-        return orders;
-    }
+
 
     /**
      * 根据条件查询订单分页列表
@@ -98,7 +101,7 @@ public class OrderService {
         List<Order> orderList = orderPage.getContent();
         List<OrderShow> orderShows = new ArrayList<>();
         for(Order order:orderList) {
-            OrderShow orderShow = new OrderShow(order);
+            OrderShow orderShow = OrderUtil.order2OrderShow(order);
             orderShows.add(orderShow);
         }
 

@@ -19,20 +19,6 @@ public class OrderShow {
     private int mainTechId;
     private int secondTechId;
 
-    public OrderShow(Order order){
-        this.setId(order.getId());
-        this.setOrderNum(order.getOrderNum());
-        this.setOrderType(order.getOrderType());
-        this.setPhoto(order.getPhoto());
-        this.setOrderTime(order.getOrderTime());
-        this.setAddTime(order.getAddTime());
-        this.setStatus(order.getStatus());
-        this.setCustomerType(order.getCustomerType());
-        this.setCustomerId(order.getCustomerId());
-        this.setRemark(order.getRemark());
-        this.setMainTechId(order.getMainTechId());
-        this.setSecondTechId(order.getSecondTechId());
-    }
 
     public int getId() {
         return id;
