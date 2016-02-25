@@ -48,3 +48,23 @@ POST /api/mobile/technician/getCertificate
 ### 请求Cookie
 请求Cookie中必须有有效的autoken.
 
+## 3. 修改银行卡
+修改银行卡信息
+### URL及请求方法
+POST /api/mobile/technician/changeBankCard
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| name | 名字 | 张三 |
+| bank | 银行 | 026 |
+| bankCardNo | 银行卡号 | 999999999 |
+
+* 返回结果
+    ```
+    {"result":true,"message":"changeBankCard","error":null,"data":null}
+    ```
+
+### 请求Cookie
+请求Cookie中必须有有效的autoken.
