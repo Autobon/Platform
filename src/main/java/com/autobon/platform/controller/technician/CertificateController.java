@@ -35,14 +35,11 @@ public class CertificateController {
     @Autowired
     private IdentityUtil identityUtil;
 
-
     @RequestMapping(value="/technician/commitCertificate", method = RequestMethod.POST)
     public JsonMessage commitCertificate(
             @RequestParam("name") String name,
             @RequestParam("idNo") String idNo,
             @RequestParam("skillArray") String[] skillArray,
-            @RequestParam("idPhoto") String idPhoto,
-            @RequestParam("avatar") String avatar,
             @RequestParam("bank") String bank,
             @RequestParam("bankAddress") String bankAddress,
             @RequestParam("bankCardNo") String bankCardNo) {
@@ -57,7 +54,6 @@ public class CertificateController {
             messages.add("身份证号码有误");
         }
 
-
         if (messages.size() > 0) {
             jsonMessage.setResult(false);
             jsonMessage.setMessage(messages.stream().collect(Collectors.joining(",")));
@@ -68,8 +64,6 @@ public class CertificateController {
             technician.setName(name);
             technician.setIdNo(idNo);
             technician.setSkill(skill);
-            technician.setIdPhoto(idPhoto);
-            technician.setAvatar(avatar);
             technician.setBank(bank);
             technician.setBankAddress(bankAddress);
             technician.setBankCardNo(bankCardNo);
@@ -87,6 +81,23 @@ public class CertificateController {
 
         Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
         jsonMessage.setData(technician);
+
+        return jsonMessage;
+    }
+
+
+    @RequestMapping(value = "/technician/changeBankCard", method = RequestMethod.POST)
+    public JsonMessage changeBankCard(
+            @RequestParam("name") String name,
+            @RequestParam("bank") String bank,
+            @RequestParam("bankCardNo") String bankCardNo) {
+        JsonMessage jsonMessage = new JsonMessage(true,"changeBankCard");
+
+        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        technician.setName(name);
+        technician.setBank(bank);
+        technician.setBankCardNo(bankCardNo);
+        technicianService.save(technician);
 
         return jsonMessage;
     }

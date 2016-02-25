@@ -60,8 +60,6 @@ public class CertificateControllerTest {
                 .param("name", "tom")
                 .param("idNo","422302198608266313")
                 .param("skillArray",stringArray)
-                .param("idPhoto","/etc/a.jpg")
-                .param("avatar","/etc/b.jpg")
                 .param("bank","027")
                 .param("bankAddress","光谷")
                 .param("bankCardNo","88888888888")
@@ -79,6 +77,15 @@ public class CertificateControllerTest {
 
     }
 
-
+    @Test
+    public void changeBankCard() throws Exception {
+        mockMvcS.perform(post("/api/mobile/technician/changeBankCard")
+                .param("name","张三")
+                .param("bank","026")
+                .param("bankCardNo", "999999999")
+                .cookie(new Cookie("autoken",token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
 
 }
