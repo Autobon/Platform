@@ -5,7 +5,7 @@
 
 
 ### URL及请求方法
-POST /api/mobile/order/signIn
+POST /api/mobile/construction/signIn
 
 ### 请求参数
 
@@ -19,7 +19,7 @@ POST /api/mobile/order/signIn
 ### 用例
 | Method | URL | Header | Body | Result |
 | ------ | --- | ------ | ---- | ------ |
-| POST | /api/mobile/order/signIn | | | {"result":true,"message":"signIn","error":null,"data":{"id":3,"orderId":1,"technicianId":1,"rtpositionLon":"111.11111111","rtpositionLat":"55.555555","startTime":null,"signinTime":1456457820198,"endTime":null,"beforePicA":null,"beforePicB":null,"beforePicC":null,"afterPicA":null,"afterPicB":null,"afterPicC":null,"afterPicD":null,"afterPicE":null,"afterPicF":null,"payfor":null,"workload":null}} |
+| POST | /api/mobile/construction/signIn | | | {"result":true,"message":"signIn","error":null,"data":{"id":3,"orderId":1,"technicianId":1,"rtpositionLon":"111.11111111","rtpositionLat":"55.555555","startTime":null,"signinTime":1456457820198,"endTime":null,"beforePicA":null,"beforePicB":null,"beforePicC":null,"afterPicA":null,"afterPicB":null,"afterPicC":null,"afterPicD":null,"afterPicE":null,"afterPicF":null,"payfor":null,"workload":null}} |
 
 ## 2.保存工作前图片
 保存在工作前图片地址，数量限制1到3
