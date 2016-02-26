@@ -11,7 +11,6 @@ import java.util.List;
  * Created by dave on 16/2/23.
  */
 public class APNPayload implements IPayload {
-    public static final String APN_SOUND_SILENCE = "com.gexin.ios.silence";
     public static final int PAYLOAD_MAX_BYTES = 2048;
     private static final ObjectMapper JSON = new ObjectMapper();
     private AlertMsg alertMsg = null;
@@ -28,7 +27,7 @@ public class APNPayload implements IPayload {
         HashMap<String, Object> map = new HashMap<>();
         if (this.alertMsg != null) map.put("alert", this.alertMsg.getAlertMsg());
         if (this.badge >= 0) map.put("badge", this.badge);
-        if (!APN_SOUND_SILENCE.equals(this.sound)) map.put("sound", this.sound);
+        map.put("sound", this.sound);
         if (this.contentAvailable > 0) map.put("content-available", this.contentAvailable);
         if (this.category != null && this.category.length() > 0) map.put("category" ,this.category);
 

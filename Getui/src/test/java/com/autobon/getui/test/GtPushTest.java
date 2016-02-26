@@ -3,6 +3,7 @@ package com.autobon.getui.test;
 import com.autobon.getui.GetuiConfig;
 import com.autobon.getui.GtPush;
 import com.autobon.getui.message.Message;
+import com.autobon.getui.payload.APNPayload;
 import com.autobon.getui.template.NotificationTemplate;
 import com.autobon.getui.template.TransmissionTemplate;
 import com.autobon.getui.utils.GtConfig;
@@ -40,18 +41,17 @@ public class GtPushTest {
 
     @Test
     public void pushToList() throws Exception {
-        NotificationTemplate template = new NotificationTemplate();
+        TransmissionTemplate template = new TransmissionTemplate();
         template.setAppId(gtConfig.getAppId());
         template.setAppkey(gtConfig.getAppKey());
-        template.setTitle("请输入通知栏标题");
-        template.setText("请输入通知栏内容");
-        template.setLogo("icon.png");
-        template.setLogoUrl("");
-        template.setIsRing(true);
-        template.setIsVibrate(true);
-        template.setIsClearable(true);
         template.setTransmissionType(1);
-        template.setTransmissionContent("请输入您要透传的内容");
+        template.setTransmissionContent("{\"action\":\"startup\", \"by\":\"list\"}");
+
+        //ios
+        APNPayload payload = new APNPayload();
+        payload.setAlertMsg(new APNPayload.SimpleAlertMsg("push from list"));
+        //payload.setBadge(1);
+        template.setAPNInfo(payload);
 
         Message message = new Message();
         message.setData(template);
@@ -64,7 +64,7 @@ public class GtPushTest {
         List<Target> targets = new ArrayList<>();
         Target target = new Target();
         target.setAppId(gtConfig.getAppId());
-        target.setClientId("9a05f0154913d57ef537fdf51ffc14bd");
+        target.setClientId("0f54394e1ccea495b2f3f0b702d69766");
         targets.add(target);
         Assert.assertTrue(gtPush.pushToList(contentId, targets));
     }
@@ -75,7 +75,13 @@ public class GtPushTest {
         template.setAppId(gtConfig.getAppId());
         template.setAppkey(gtConfig.getAppKey());
         template.setTransmissionType(1);
-        template.setTransmissionContent("os-toApp11111");
+        template.setTransmissionContent("{\"action\":\"startup20\"}");
+
+        //ios
+        APNPayload payload = new APNPayload();
+        payload.setAlertMsg(new APNPayload.SimpleAlertMsg("this is title5"));
+        //payload.setBadge(1);
+        template.setAPNInfo(payload);
 
         Message message = new Message();
         message.setData(template);
@@ -84,7 +90,7 @@ public class GtPushTest {
 
         Target target = new Target();
         target.setAppId(gtConfig.getAppId());
-        target.setClientId("9a05f0154913d57ef537fdf51ffc14bd");
+        target.setClientId("0f54394e1ccea495b2f3f0b702d69766");
         Assert.assertTrue(gtPush.pushToSingle(message, target));
     }
 
