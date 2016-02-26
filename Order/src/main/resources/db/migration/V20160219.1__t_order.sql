@@ -6,7 +6,7 @@ CREATE TABLE `t_order` (
   `order_time` datetime DEFAULT NULL COMMENT '预约时间',
   `add_time` datetime DEFAULT NULL COMMENT '下单时间',
   `status` int(1) NOT NULL DEFAULT '0' COMMENT '订单状态 0-未接单 1-已接单 2-工作中 3-已完成 4-已评价 5-已撤销',
-  `customer_type` int(1) NOT NULL DEFAULT '0' COMMENT '客户类型(1-合作商户 2-平台 3-用户)',
+  `customer_type` int(1) NOT NULL DEFAULT '0' COMMENT '客户类型(1-合作商户 2-后台 3-用户)',
   `customer_id` int(11) DEFAULT NULL COMMENT '下单客户编号',
    customer_name varchar(255) DEFAULT NULL COMMENT '下单客户名称',
    customer_lon varchar(20) DEFAULT NULL COMMENT '客户位置经度',

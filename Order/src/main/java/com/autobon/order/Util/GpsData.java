@@ -1,4 +1,4 @@
-package com.autobon.order.Util;
+package com.autobon.order.util;
 
 import java.util.Date;
 
