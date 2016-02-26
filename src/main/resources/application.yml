@@ -5,6 +5,7 @@ com.autobon:
     env: TEST
     skill: 汽车贴膜,美容清洁,隐形车衣,车身改色
     baiduKey: lhFpgbOkc15RHjiexfP2aDhg
+    upload.orderpic.path: /home/autobon/upload/orderpic
 
 # Tomcat
 server.port: 51234

@@ -3,6 +3,7 @@ package com.autobon.order.entity;
 import javax.persistence.*;
 import java.util.Date;
 
+
 /**
  * Created by yuh on 2016/2/23.
  */

@@ -1,0 +1,12 @@
+<div ng-controller="orderCtrl">
+    <a ng-click="addOrder()">增加订单</a>
+    <a ng-click="updateOrder()">修改订单</a>
+    <br/>
+    订单编号：<input type="text" ng-model="orderInfo.orderNum" name="orderNum"/>
+    订单类型：<input type="text" ng-model="orderInfo.orderType" name="orderType"/>
+    <input type="file" file-model="myFile"/>
+    <div class="col-md-12">
+        <img ng-src="{{imageSrc}}" style="max-width:300px;max-height:300px;margin:0 auto;display:block;" />
+    </div>
+    <a ng-click="addOrder()">提交</a>
+</div>

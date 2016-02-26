@@ -61,6 +61,7 @@ POST /api/mobile/technician/register
     "star": 0,
     "voteRate": 0,
     "skill": null,
+    "pushId": null,
     "status": "NOTVERIFIED"
 }}
 ```
@@ -127,6 +128,7 @@ POST /api/mobile/technician/login
     "star": 0,
     "voteRate": 0,
     "skill": null,
+    "pushId": null,
     "status": "NOTVERIFIED"
 }}
 ```
@@ -281,18 +283,39 @@ POST /api/mobile/technician/pushId
 "data": null}
 ```
 
-## 8. 获取用户的个推ID
+## 8. 获取用户信息
 ### URL及请求方法
-GET /api/mobile/technician/pushId
+GET /api/mobile/technician
 
 ### 请求参数
 无
 
 ### 返回数据
 
+
 ```
 {"result": true,
 "message": "",
 "error": null,
-"data": "9a05f0154913d57ef537fdf51ffc14bd"}
+"data":{
+    "id": 1,
+    "phone": "18812345678",
+    "name": null,
+    "gender": null,
+    "avatar": null,
+    "idNo": null,
+    "idPhoto": null,
+    "bank": null,
+    "bankAddress": null,
+    "bankCardNo": null,
+    "verifyAt": null,
+    "lastLoginAt": 1455867550725,
+    "lastLoginIp": "0:0:0:0:0:0:0:1",
+    "createAt": 1455724800000,
+    "star": 0,
+    "voteRate": 0,
+    "skill": null,
+    "pushId": null,
+    "status": "NOTVERIFIED"
+}}
 ```
