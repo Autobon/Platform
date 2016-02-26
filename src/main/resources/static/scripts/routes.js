@@ -13,6 +13,12 @@ define([], function () {
                 dependencies: [
                     'controller/notFoundCtrl'
                 ]
+            },
+            '/web/order': {
+                templateUrl: '/view/order.html',
+                dependencies: [
+                    'controller/orderCtrl'
+                ]
             }
         }
     };

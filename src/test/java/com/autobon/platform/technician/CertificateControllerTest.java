@@ -61,7 +61,6 @@ public class CertificateControllerTest {
                 .param("idNo","422302198608266313")
                 .param("skillArray",stringArray)
                 .param("bank","027")
-                .param("bankAddress","光谷")
                 .param("bankCardNo","88888888888")
                 .cookie(new Cookie("autoken",token)))
                 .andDo(MockMvcResultHandlers.print())
