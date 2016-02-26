@@ -41,7 +41,6 @@ public class CertificateController {
             @RequestParam("idNo") String idNo,
             @RequestParam("skillArray") String[] skillArray,
             @RequestParam("bank") String bank,
-            @RequestParam("bankAddress") String bankAddress,
             @RequestParam("bankCardNo") String bankCardNo) {
 
         JsonMessage jsonMessage = new JsonMessage(true,"commitCertificate");
@@ -65,7 +64,6 @@ public class CertificateController {
             technician.setIdNo(idNo);
             technician.setSkill(skill);
             technician.setBank(bank);
-            technician.setBankAddress(bankAddress);
             technician.setBankCardNo(bankCardNo);
 
             technicianService.save(technician);

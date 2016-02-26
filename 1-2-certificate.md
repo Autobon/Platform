@@ -14,7 +14,6 @@ POST /api/mobile/technician/commitCertificate
 | skillArray| 技能项数组 | {"1","6"} |
 | idPhoto| 身份证照 | /a/a.jpg |
 | bank| 银行字典 | 027 |
-| bankAddress| 银行地址 | 光谷 |
 | bankCardNo| 银行卡号 | 88888888888 |
 
 
@@ -25,11 +24,11 @@ POST /api/mobile/technician/commitCertificate
     `POST /api/mobile/technician/commitCertificate`
 * **POST参数**
 
-    `Parameters = {name=[tom], idNo=[422302198608266313], skillArray=[1, 6], idPhoto=[/a/a.jpg], bank=[027], bankAddress=[光谷], bankCardNo=[88888888888]}`
+    `Parameters = {name=[tom], idNo=[422302198608266313], skillArray=[1, 6], idPhoto=[/a/a.jpg], bank=[027], bankCardNo=[88888888888]}`
 * 返回结果
 
     ```
-    {"result":true,"message":"commitCertificate","error":null,"data":{"id":1,"phone":"18827075338","password":"7c4a8d09ca3762af61e59520943dc26494f8941b","name":"tom","gender":null,"avatar":null,"idNo":"422302198608266313","idPhoto":"/a/a.jpg","bank":"027","bankAddress":"光谷","bankCardNo":"88888888888","verifyAt":null,"lastLoginAt":null,"lastLoginIp":null,"createAt":1455779204000,"star":0,"voteRate":0.0,"skill":"1,6","available":false,"enabled":false,"status":"NOTVERIFIED","username":"18827075338","authorities":[{"authority":"TECHNICIAN"}],"activated":false,"banned":false,"accountNonExpired":true,"accountNonLocked":true,"credentialsNonExpired":true}}
+    {"result":true,"message":"commitCertificate","error":null,"data":{"id":1,"phone":"18827075338","password":"7c4a8d09ca3762af61e59520943dc26494f8941b","name":"tom","gender":null,"avatar":null,"idNo":"422302198608266313","idPhoto":"/a/a.jpg","bank":"027","bankAddress":null,"bankCardNo":"88888888888","verifyAt":null,"lastLoginAt":null,"lastLoginIp":null,"createAt":1455779204000,"star":0,"voteRate":0.0,"skill":"1,6","available":false,"enabled":false,"status":"NOTVERIFIED","username":"18827075338","authorities":[{"authority":"TECHNICIAN"}],"activated":false,"banned":false,"accountNonExpired":true,"accountNonLocked":true,"credentialsNonExpired":true}}
     ```
 
 

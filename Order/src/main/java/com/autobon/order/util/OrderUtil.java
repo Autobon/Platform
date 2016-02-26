@@ -1,4 +1,4 @@
-package com.autobon.order.Util;
+package com.autobon.order.util;
 
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderShow;
