@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ConstructionRepository extends JpaRepository<Construction, Integer> {
+    Construction findByTechnicianId(int technicianId);
 }
