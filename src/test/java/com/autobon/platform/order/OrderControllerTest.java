@@ -66,7 +66,7 @@ public class OrderControllerTest {
 
     @Test
     public void signIn() throws Exception {
-        mockMvcS.perform(post("/api/mobile/order/signIn")
+        mockMvcS.perform(post("/api/mobile/construction/signIn")
                 .param("rtpositionLon","111.11111111")
                 .param("rtpositionLat","55.555555")
                 .param("technicianId","1")
@@ -79,7 +79,8 @@ public class OrderControllerTest {
     String[] filePaths = {"a/a.jpg","a/b.jpg","a/c.jpg"};
     @Test
     public void saveBeforePic() throws Exception {
-        mockMvcS.perform(post("/api/mobile/order/saveBeforePic")
+        mockMvcS.perform(post("/api/mobile/construction/saveBeforePic")
+                .param("constructionId","3")
                 .param("filePaths",filePaths)
                 .cookie(new Cookie("autoken", token)))
                 .andDo(MockMvcResultHandlers.print())
@@ -89,7 +90,8 @@ public class OrderControllerTest {
     String[] filePathss = {"a/a.jpg","a/b.jpg","a/c.jpg","a/e.jpg","a/f.jpg"};
     @Test
     public void saveAfterPic() throws Exception {
-        mockMvcS.perform(post("/api/mobile/order/saveAfterPic")
+        mockMvcS.perform(post("/api/mobile/construction/saveAfterPic")
+                .param("constructionId", "3")
                 .param("filePaths",filePathss)
                 .cookie(new Cookie("autoken", token)))
                 .andDo(MockMvcResultHandlers.print())

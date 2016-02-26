@@ -26,7 +26,7 @@ import java.util.List;
  * Created by yuh on 2016/2/22.
  */
 @RestController
-@RequestMapping("/api/mobile")
+@RequestMapping("/api")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -34,7 +34,7 @@ public class OrderController {
     @Autowired
     private ConstructionRepository constructionRepository;
 
-    @RequestMapping(value = "/order/orderList", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/order/orderList", method = RequestMethod.GET)
     public JsonMessage orderList() throws Exception{
         JsonMessage jsonMessage = new JsonMessage(true,"orderList");
         List<Order> orderList = orderService.getOrderList();
@@ -43,7 +43,7 @@ public class OrderController {
 
     }
 
-    @RequestMapping(value = "/order/getLocation", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/order/getLocation", method = RequestMethod.GET)
     public JsonMessage getLocation(
             @RequestParam("orderId") int orderId){
         JsonMessage jsonMessage = new JsonMessage(true,"location");
@@ -53,7 +53,7 @@ public class OrderController {
         return  jsonMessage;
     }
 
-    @RequestMapping(value = "/order/signIn", method = RequestMethod.POST)
+    @RequestMapping(value = "/mobile/construction/signIn", method = RequestMethod.POST)
     public JsonMessage signIn(
             @RequestParam("rtpositionLon") String rtpositionLon,
             @RequestParam("rtpositionLat") String rtpositionLat,
@@ -66,7 +66,8 @@ public class OrderController {
         construction.setRtpositionLon(rtpositionLon);
         construction.setRtpositionLat(rtpositionLat);
         construction.setSigninTime(new Date());
-        constructionRepository.save(construction);
+        construction = constructionRepository.save(construction);
+        jsonMessage.setData(construction);
         return jsonMessage;
     }
 
@@ -77,7 +78,7 @@ public class OrderController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/order/uploadPic", method = RequestMethod.POST)
+    @RequestMapping(value = "/mobile/construction/uploadPic", method = RequestMethod.POST)
     public JsonMessage uploadIdPhoto(HttpServletRequest request,
                                      @RequestParam("file") MultipartFile file) throws Exception {
         if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
@@ -97,12 +98,11 @@ public class OrderController {
         return msg;
     }
 
-    @RequestMapping(value = "/order/saveBeforePic", method = RequestMethod.POST)
-    public JsonMessage saveBeforePic(@RequestParam("filePaths") String ... filePaths){
+    @RequestMapping(value = "/mobile/construction/saveBeforePic", method = RequestMethod.POST)
+    public JsonMessage saveBeforePic(@RequestParam("constructionId") int constructionId,
+                                     @RequestParam("filePaths") String ... filePaths){
         JsonMessage jsonMessage = new JsonMessage(true,"saveBeforePic");
-        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        int technicianId = technician.getId();
-        Construction construction = constructionRepository.findByTechnicianId(technicianId);
+        Construction construction = constructionRepository.findOne(constructionId);
 
         int fileLength = filePaths.length;
         if(fileLength<1 || fileLength>3){
@@ -121,12 +121,11 @@ public class OrderController {
         return jsonMessage;
     }
 
-    @RequestMapping(value = "/order/saveAfterPic", method = RequestMethod.POST)
-    public JsonMessage saveAfterPic(@RequestParam("filePaths") String ... filePaths){
+    @RequestMapping(value = "/mobile/construction/saveAfterPic", method = RequestMethod.POST)
+    public JsonMessage saveAfterPic(@RequestParam("constructionId") int constructionId,
+                                    @RequestParam("filePaths") String ... filePaths){
         JsonMessage jsonMessage = new JsonMessage(true,"saveAfterPic");
-        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        int technicianId = technician.getId();
-        Construction construction = constructionRepository.findByTechnicianId(technicianId);
+        Construction construction = constructionRepository.findOne(constructionId);
         int fileLength = filePaths.length;
         if(fileLength<3 || fileLength>6){
             return  new JsonMessage(false,"图片数量有误");
