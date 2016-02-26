@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS t_staff (
   UNIQUE KEY unique_username (username)
 )  COMMENT='员工登陆账户表';
 
-insert into t_staff(username,password,identify_salt,register_time,role_id) values('admin','21232f297a57a5a743894a0e4a801fc3','8XkO',SYSDATE(),1);
+insert into t_staff(username,password,identify_salt,register_time,role_id) values('admin','B9ED25A0EBB6CE4784D0C6A677BFC9A1','8XkO',SYSDATE(),1);

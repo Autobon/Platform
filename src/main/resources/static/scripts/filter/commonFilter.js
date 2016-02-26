@@ -1,5 +1,5 @@
 /**
- * Created by wh on 2015/9/9.
+ * Created by liz on 2016/2/20.
  */
 define(['../autobon','jquery','angular'],function(module,$,angular){
 

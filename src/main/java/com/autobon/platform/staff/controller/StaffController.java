@@ -5,7 +5,6 @@ import com.autobon.staff.entity.StaffShow;
 import com.autobon.staff.service.StaffService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/api")
 public class StaffController {
+
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(StaffController.class);
 
     private StaffService staffService = null;
