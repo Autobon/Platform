@@ -4,6 +4,7 @@ import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
 import com.autobon.order.repository.ConstructionRepository;
 import com.autobon.order.entity.OrderShow;
+import com.autobon.order.repository.OrderRepository;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.util.OrderUtil;
 import com.autobon.platform.utils.DateUtil;
@@ -46,6 +47,9 @@ public class OrderController {
 
     @Autowired
     private ConstructionRepository constructionRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @RequestMapping(value = "/mobile/order/orderList", method = RequestMethod.GET)
     public JsonMessage orderList() throws Exception{
@@ -301,6 +305,19 @@ public class OrderController {
         return msg;
     }
 
+
+    @RequestMapping(value = "/mobile/order/addSecondTechId", method = RequestMethod.POST)
+    private JsonMessage addSecondTechId(@RequestParam("orderId") int orderId,
+                                     @RequestParam("technicianId") int technicianId){
+        JsonMessage jsonMessage = new JsonMessage(true,"addSecondTechId");
+        Order order = orderRepository.findOne(orderId);
+        if(order.getMainTechId() == technicianId){
+            return new JsonMessage(false,"不能添加自己为合伙人");
+        }
+        order.setSecondTechId(technicianId);
+        orderRepository.save(order);
+        return jsonMessage;
+    }
 
 
 }
