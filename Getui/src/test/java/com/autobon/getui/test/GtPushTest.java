@@ -1,10 +1,9 @@
 package com.autobon.getui.test;
 
-import com.autobon.getui.GetuiConfig;
+import com.autobon.getui.Application;
 import com.autobon.getui.GtPush;
 import com.autobon.getui.message.Message;
 import com.autobon.getui.payload.APNPayload;
-import com.autobon.getui.template.NotificationTemplate;
 import com.autobon.getui.template.TransmissionTemplate;
 import com.autobon.getui.utils.GtConfig;
 import com.autobon.getui.utils.Target;
@@ -23,7 +22,7 @@ import java.util.List;
  * Created by dave on 16/2/22.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = GetuiConfig.class)
+@SpringApplicationConfiguration(classes = Application.class)
 public class GtPushTest {
     @Autowired
     private GtConfig gtConfig;

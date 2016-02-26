@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
+@Transactional
 public class TechnicianServiceTest {
     @Autowired
     private TechnicianService technicianService;
@@ -32,7 +33,6 @@ public class TechnicianServiceTest {
     }
 
     @Test
-    @Transactional
     public void testAdd() {
         Assert.assertEquals(technician.getId(), 0);
         technicianService.save(technician);

@@ -1,4 +1,4 @@
-package com.autobon.platform.test.controller;
+package com.autobon.platform.technician;
 
 import com.autobon.platform.Application;
 import com.autobon.technician.service.TechnicianService;

@@ -1,4 +1,4 @@
-package com.autobon.platform.test.controller.technician;
+package com.autobon.platform.technician;
 
 import com.autobon.platform.Application;
 import com.autobon.technician.entity.Technician;
@@ -16,10 +16,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.Cookie;
+import javax.transaction.Transactional;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
+@Transactional
 public class TechnicianAccountControllerTest {
     @Autowired WebApplicationContext wac;
     @Autowired TechnicianService technicianService;
@@ -60,7 +61,6 @@ public class TechnicianAccountControllerTest {
     }
 
     @Test
-    @Transactional
     public void register() throws Exception {
         mockMvc.perform(get("/api/mobile/verifySms").param("phone", phone))
                 .andExpect(status().isOk());

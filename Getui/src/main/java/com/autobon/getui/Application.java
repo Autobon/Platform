@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
  * Created by dave on 16/2/22.
  */
 @SpringBootApplication
-public class GetuiConfig {
+public class Application {
     @Value("${com.autobon.getui.host}")
     private String host;
     @Value("${com.autobon.getui.appId}")
