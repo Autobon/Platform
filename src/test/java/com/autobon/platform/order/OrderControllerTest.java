@@ -70,7 +70,27 @@ public class OrderControllerTest {
                 .param("rtpositionLon","111.11111111")
                 .param("rtpositionLat","55.555555")
                 .param("technicianId","1")
-                .param("orderId","1")
+                .param("orderId", "1")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    String[] filePaths = {"a/a.jpg","a/b.jpg","a/c.jpg"};
+    @Test
+    public void saveBeforePic() throws Exception {
+        mockMvcS.perform(post("/api/mobile/order/saveBeforePic")
+                .param("filePaths",filePaths)
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    String[] filePathss = {"a/a.jpg","a/b.jpg","a/c.jpg","a/e.jpg","a/f.jpg"};
+    @Test
+    public void saveAfterPic() throws Exception {
+        mockMvcS.perform(post("/api/mobile/order/saveAfterPic")
+                .param("filePaths",filePathss)
                 .cookie(new Cookie("autoken", token)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
