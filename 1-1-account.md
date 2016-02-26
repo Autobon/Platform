@@ -265,7 +265,46 @@ POST /api/mobile/technician/avatar
 "data": null}
 ```
 
-## 7. 更新个推ID
+## 7. 上传身份证照片
+### URL及请求方法
+POST /api/mobile/technician/idPhoto
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| file| 图片文件 |  |
+
+### 返回数据
+1.请求成功
+
+```
+{"result": true,
+"message": "",
+"error": null,
+"data": "/uploads/technician/idPhoto/20160219162940293084.png"}
+```
+返回数据中的data字段加上服务器域名及端口就是身份证照片网址.
+
+2.没有上传文件
+
+```
+{"result": false,
+"message": "没有上传文件",
+"error": "NO_UPLOAD_FILE",
+"data": null}
+```
+
+3.上传文件大小超过2MB
+返回状态码: 406
+
+```
+{"result": false,
+"message": "上传文件大小不能超过2MB",
+"error": "UPLOAD_SIZE_EXCEED",
+"data": null}
+```
+
+## 8. 更新个推ID
 ### URL及请求方法
 POST /api/mobile/technician/pushId
 ### 请求参数
@@ -283,7 +322,7 @@ POST /api/mobile/technician/pushId
 "data": null}
 ```
 
-## 8. 获取用户信息
+## 9. 获取用户信息
 ### URL及请求方法
 GET /api/mobile/technician
 
