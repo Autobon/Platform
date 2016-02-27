@@ -12,7 +12,7 @@ public class HomeController {
      * 静态页面处理程序
      * @return 返回HTML静态页面
      */
-    @RequestMapping("/web/**")
+    @RequestMapping("/web-builder/**")
     public String forwardIndex() {
         return "forward:/index.html";
     }

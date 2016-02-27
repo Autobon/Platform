@@ -5,13 +5,12 @@ package com.autobon.platform.utils;
  */
 public class JsonMessage {
     private boolean result;
-    private String message;
-    private String error;
+    private String message = "";
+    private String error = "";
     private Object data;
 
     public JsonMessage(boolean result) {
         this.result = result;
-        this.message = "";
     }
 
     public JsonMessage(boolean result, String message) {
@@ -28,11 +27,6 @@ public class JsonMessage {
         this.result = result;
         this.message = message;
         this.data = data;
-    }
-
-    public JsonMessage(boolean result, String error, String message, Object data) {
-        this(result, message, data);
-        this.error = error;
     }
 
     public boolean getResult() {

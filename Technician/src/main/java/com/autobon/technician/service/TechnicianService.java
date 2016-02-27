@@ -45,6 +45,11 @@ public class TechnicianService {
                 new Sort(Sort.Direction.DESC, "createAt")));
     }
 
+    public Page<Technician> findByName(String name, int page, int pageSize) {
+        return repository.findByName(name, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "createAt")));
+    }
+
     public HashMap<String, Object> Authenticate(String account, String password) {
         Technician technician = null;
         HashMap<String, Object> ret = new HashMap<>();

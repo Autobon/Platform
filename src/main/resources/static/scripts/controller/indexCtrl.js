@@ -28,7 +28,7 @@ define(['../autobon','jquery','md5'],function(module,$){
         //点击“华晨汽车”标志动态跳转
         $scope.returnHome= function(type){
             if(type == 'login'){
-                window.location.href="/web/main";
+                window.location.href="/web-builder/main";
             }else{
                 $location.path('/web/main');
                 $scope.active(0); //菜单激活样式
@@ -71,7 +71,7 @@ define(['../autobon','jquery','md5'],function(module,$){
                 $scope.type = "main";  //点击左上角的系统名称，所要跳转的页面
 
                 if(flag==false){
-                    window.location.href="/web/main";
+                    window.location.href="/web-builder/main";
                 }else{
                     $location.path(flag);
                 }

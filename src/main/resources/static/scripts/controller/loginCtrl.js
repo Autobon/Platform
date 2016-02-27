@@ -3,7 +3,7 @@ define(['../autobon','jquery','md5'],function(module,$){
     module.controller("loginCtrl",function($scope, $resource, $http, $location,commonService){
           var loginCookie = commonService.getCookie('token_staff');//获取token
           if (loginCookie != "") {
-              window.location.href="/web/main";
+              window.location.href="/web-builder/main";
           }
 
           //API define
@@ -19,7 +19,7 @@ define(['../autobon','jquery','md5'],function(module,$){
            postData.password = hex_md5($scope.loginInfo.password);
              loginApi.save(postData,function(data){
                  if(data.result){
-                     window.location.href = "/web/main";
+                     window.location.href = "/web-builder/main";
                  }else{
                      alert(data.message);
                  }
