@@ -358,3 +358,73 @@ GET /api/mobile/technician
     "status": "NOTVERIFIED"
 }}
 ```
+
+`status` 字段表示用户的帐户状态
+
+| status | 帐户状态 |
+| ------ | ------ |
+| NOTVERIFIED | 未认证 |
+| VERIFIED | 已认证通过 |
+| REJECTED | 认证未通过 |
+| BANNED | 帐户已被禁用 |
+
+## 10. 查询技师
+### URL及请求方法
+GET /api/mobile/technician
+
+### 请求参数
+
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| query| 是 | 手机号或姓名 | 张三 |
+| page | 否 | 从1开始，默认为1, 仅当query参数为手机号时有效 | 1 |
+| pageSize | 否 | 默认20, 仅当query参数为手机号时有效 | 20 |
+
+### 返回数据
+
+
+```
+{"result": true,
+"message": "",
+"error": "",
+"data":{
+    "page": 1,
+    "totalElements": 1,
+    "totalPages": 1,
+    "pageSize": 20,
+    "count": 1,
+    "list":[{
+        "id": 1,
+        "phone": "18812345678",
+        "name": "tom",
+        "gender": null,
+        "avatar": null,
+        "idNo": "422302198608266313",
+        "idPhoto": "/etc/a.jpg",
+        "bank": "027",
+        "bankAddress": "光谷",
+        "bankCardNo": "88888888888",
+        "verifyAt": null,
+        "lastLoginAt": 1456195103000,
+        "lastLoginIp": "127.0.0.1",
+        "createAt": 1455724800000,
+        "star": 0,
+        "voteRate": 0,
+        "skill": "1,6",
+        "pushId": null,
+        "status": "NOTVERIFIED"
+        }]
+    }
+}
+```
+
+返回值中的data属性是一个分布对象:
+
+| 字段 | 说明 |
+| ---- | ---- |
+| page | 当前页序号 |
+| pageSize | 每页条数 |
+| count | 本次返回条数 |
+| totalElements | 总条数 |
+| totalPages | 总页数 |
+| list | 本次返回的记录数组 |
