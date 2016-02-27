@@ -30,6 +30,6 @@ public class TechnicianControllerTest extends MvcTest {
                 .param("query", name)
                 .cookie(new Cookie("autoken", token)))
             .andDo(print())
-            .andExpect(jsonPath("$.data.count", Matchers.greaterThan(1)));
+            .andExpect(jsonPath("$.data.count", Matchers.greaterThanOrEqualTo(1)));
     }
 }
