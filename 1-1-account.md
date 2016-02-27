@@ -370,7 +370,7 @@ GET /api/mobile/technician
 
 ## 10. 查询技师
 ### URL及请求方法
-GET /api/mobile/technician
+GET /api/mobile/technician/search
 
 ### 请求参数
 
