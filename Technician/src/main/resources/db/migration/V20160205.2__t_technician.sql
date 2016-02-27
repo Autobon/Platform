@@ -20,7 +20,7 @@ CREATE TABLE `t_technician` (
   `skill` VARCHAR(45) COMMENT '技能',
   `push_id` VARCHAR(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `phone_UNIQUE` (`phone`)
+  UNIQUE KEY `phone_UNIQUE` (`phone`),
   KEY `name_index` (`name`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
