@@ -12,7 +12,6 @@ import org.im4java.process.Pipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,8 +54,8 @@ public class TechnicianAccountController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public JsonMessage getTechnicianInfo() {
-        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+    public JsonMessage getTechnicianInfo(HttpServletRequest request) {
+        Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", technician);
     }
 
@@ -155,14 +154,14 @@ public class TechnicianAccountController {
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-    public JsonMessage changePassword(
+    public JsonMessage changePassword(HttpServletRequest request,
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword) {
         JsonMessage msg = new JsonMessage(true);
         if (newPassword.length() < 6) {
             return new JsonMessage(false, "ILLEGAL_PARAM", "密码至少6位");
         } else {
-            Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+            Technician technician = (Technician) request.getAttribute("user");
             if (!technician.getPassword().equals(Technician.encryptPassword(oldPassword))) {
                 return new JsonMessage(false, "ILLEGAL_PARAM", "原密码错误");
             }
@@ -183,7 +182,7 @@ public class TechnicianAccountController {
         String path = "/uploads/technician/avatar";
         File dir = new File(request.getServletContext().getRealPath(path));
         if (!dir.exists()) dir.mkdirs();
-        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        Technician technician = (Technician) request.getAttribute("user");
         String filename = technician.getId() + ".jpg";
 
         InputStream in;
@@ -225,8 +224,9 @@ public class TechnicianAccountController {
      * @return
      */
     @RequestMapping(value = "/pushId", method = RequestMethod.POST)
-    public JsonMessage savePushId(@RequestParam("pushId") String pushId) {
-        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+    public JsonMessage savePushId(HttpServletRequest request,
+            @RequestParam("pushId") String pushId) {
+        Technician technician = (Technician) request.getAttribute("user");
         technician.setPushId(pushId);
         technicianService.save(technician);
         return new JsonMessage(true);
@@ -254,7 +254,7 @@ public class TechnicianAccountController {
 
         if (!dir.exists()) dir.mkdirs();
         file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        Technician technician = (Technician) request.getAttribute("user");
         technician.setIdPhoto(path + "/" + filename);
         technicianService.save(technician);
         msg.setData(technician.getIdPhoto());
