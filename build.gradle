@@ -28,6 +28,7 @@ dependencies {
     compile project(":Staff")
     compile project(":Order")
     compile project(":Cooperators")
+    compile project(":Getui")
     compile "org.springframework.boot:spring-boot-starter:1.+"
     compile "org.springframework.boot:spring-boot-starter-web:1.+"
     compile 'org.springframework.boot:spring-boot-starter-security:1.+'

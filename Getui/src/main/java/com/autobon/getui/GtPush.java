@@ -18,13 +18,8 @@ import java.util.*;
  */
 public class GtPush {
     private static final ObjectMapper mapper = new ObjectMapper();
-    private GtConfig config;
 
-    public GtPush(GtConfig config) {
-        this.config = config;
-    }
-
-    public boolean connect() throws IOException {
+    public static boolean connect(GtConfig config) throws IOException {
         Long timestamp = new Date().getTime();
         String sign = encryptByMd5(config.getAppKey() + timestamp + config.getMasterSecret());
         HashMap<String, Object> map = new HashMap<>();
@@ -36,7 +31,7 @@ public class GtPush {
         return new ObjectMapper().readTree(json).path("result").asText().equals("success");
     }
 
-    public boolean close() throws IOException {
+    public static boolean close(GtConfig config) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "close");
         map.put("appkey", config.getAppKey());
@@ -44,7 +39,7 @@ public class GtPush {
         return mapper.readTree(json).path("result").asText().equals("success");
     }
 
-    public String getContentId(Message message, String taskGroupName) throws IOException {
+    public static String getContentId(GtConfig config, Message message, String taskGroupName) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
         if (taskGroupName != null) {
             map.put("taskGroupName", taskGroupName);
@@ -95,7 +90,7 @@ public class GtPush {
         } else throw new IOException("获取contentId失败");
     }
 
-    public boolean cancelContentId(String contentId) throws IOException {
+    public static boolean cancelContentId(GtConfig config, String contentId) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "cancleContentIdAction");
         map.put("appkey", config.getAppKey());
@@ -104,11 +99,11 @@ public class GtPush {
         return "ok".equals(response.get("result"));
     }
 
-    public boolean pushToSingle(Message message, Target target) throws IOException {
-        return pushToSingle(message, target, (String)null);
+    public static boolean pushToSingle(GtConfig config, Message message, Target target) throws IOException {
+        return pushToSingle(config, message, target, (String)null);
     }
 
-    public boolean pushToSingle(Message message, Target target, String requestId)
+    public static boolean pushToSingle(GtConfig config, Message message, Target target, String requestId)
             throws IOException {
         if(requestId == null || "".equals(requestId.trim())) {
             requestId = UUID.randomUUID().toString();
@@ -133,7 +128,7 @@ public class GtPush {
         return "ok".equals(GtHttp.postBytes(config.getHost(), map, false, false).get("result"));
     }
 
-    public boolean pushToList(String contentId, List<Target> targets) throws IOException {
+    public static boolean pushToList(GtConfig config, String contentId, List<Target> targets) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
 
         map.put("action", "pushMessageToListAction");
@@ -162,12 +157,12 @@ public class GtPush {
         return "ok".equals(GtHttp.postBytes(config.getHost(), map, true, true).get("result"));
     }
 
-    public boolean pushToApp(AppMessage message, String taskGroupName) throws IOException {
-        String contentId = this.getContentId(message, taskGroupName);
-        return pushToApp(contentId);
+    public static boolean pushToApp(GtConfig config, AppMessage message, String taskGroupName) throws IOException {
+        String contentId = getContentId(config, message, taskGroupName);
+        return pushToApp(config, contentId);
     }
 
-    public boolean pushToApp(String contentId) throws IOException {
+    public static boolean pushToApp(GtConfig config, String contentId) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "pushMessageToAppAction");
         map.put("appkey", config.getAppKey());
