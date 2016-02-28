@@ -98,4 +98,15 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.result", is(true)));
     }
 
+
+    @Test
+    public void addSecondTechId() throws Exception {
+        mockMvcS.perform(post("/api/mobile/order/addSecondTechId")
+                .param("orderId", "1")
+                .param("technicianId","2")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
 }
