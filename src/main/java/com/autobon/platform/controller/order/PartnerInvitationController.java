@@ -2,8 +2,6 @@ package com.autobon.platform.controller.order;
 
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
-import com.autobon.order.entity.PartnerInvitation;
-import com.autobon.order.service.PartnerInvitationService;
 import com.autobon.order.service.OrderService;
 import com.autobon.platform.utils.JsonMessage;
 import com.autobon.technician.entity.Technician;
@@ -29,11 +27,10 @@ public class PartnerInvitationController {
 
     @Autowired private TechnicianService technicianService;
     @Autowired private OrderService orderService;
-    @Autowired private PartnerInvitationService invitationService;
     @Autowired private PushService pushService;
 
     /**
-     * 发起合伙邀请
+     * 发起合作邀请
      * @param request
      * @param partnerId
      * @param orderId
@@ -51,67 +48,71 @@ public class PartnerInvitationController {
         if (order.getStatus() >= 1 ) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已进入工作模式或已有人接单");
         } else if (order.getMainTechId() == partner.getId()) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "主技师和合作技师不能为同一人");
+            return new JsonMessage(false, "ILLEGAL_PARAMS", "主技师和合作技师不能为同一人");
         } else if (partner == null) {
             return new JsonMessage(false, "ILLEGAL_PARAMS", "系统中没有邀请的技师");
         }
 
-        PartnerInvitation invitation = new PartnerInvitation();
-        invitation.setOrder(order);
-        invitation.setMainTech(technician);
-        invitation.setInvitedTech(partner);
-        invitationService.save(invitation);
+        order.setSecondTechId(partnerId);
+        order.setEnumStatus(Order.EnumStatus.INVITATION_NOT_ACCEPTED);
+        orderService.save(order);
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "INVITE_PARTNER");
-        map.put("invitation", invitation);
+        map.put("order", order);
+        map.put("owner", technician);
+        map.put("partner", partner);
+        String json = new ObjectMapper().writeValueAsString(map);
         boolean result = pushService.pushToSingle(partner.getPushId(),
                 technician.getName() + "向你发起订单合作邀请",
-                new ObjectMapper().writeValueAsString(map), 2*3600);
+                json, 24*3600);
 
         if (!result) log.info("推送邀请消息失败");
-        return new JsonMessage(true, "", "", invitation);
+        return new JsonMessage(true);
     }
 
     /**
-     * 接受或拒绝邀请
+     * 接受或拒绝合作邀请
      * @param request
      * @param accepted
-     * @param invitationId
+     * @param orderId
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/invitation/{invitationId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{orderId}/invitation", method = RequestMethod.POST)
     public JsonMessage acceptInvitation(HttpServletRequest request,
             @RequestParam("accepted") boolean accepted,
-            @PathVariable("invitationId") int invitationId) throws IOException {
+            @PathVariable("orderId") int orderId) throws IOException {
         Technician technician = (Technician) request.getAttribute("user");
-        PartnerInvitation invitation = invitationService.get(invitationId);
+        Order order = orderService.findOrder(orderId);
 
-        if (invitation == null || invitation.getInvitedTech().getId() != technician.getId()) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个邀请");
-        } else if (invitation.getStatus() == PartnerInvitation.Status.ACCEPTED) {
+        if (order == null || order.getSecondTechId() != technician.getId()) {
+            return new JsonMessage(false, "ILLEGAL_PARAMS", "你没有这个邀请, 或订单已改邀他人");
+        } else if (order.getEnumStatus() == Order.EnumStatus.INVITATION_ACCEPTED) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已接受邀请");
-        } else if (invitation.getStatus() == PartnerInvitation.Status.REJECTED) {
+        } else if (order.getEnumStatus() == Order.EnumStatus.INVITATION_REJECT) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已拒绝邀请");
-        } else if (invitation.getStatus() == PartnerInvitation.Status.EXPIRED) {
-            return new JsonMessage(false, "EXPIRED_OPERATION", "已有其它人接单或邀请已失效");
+        } else if (order.getStatus() > 1 ) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已开始或已结束");
         }
 
         if (accepted) {
-            invitationService.expireOrderInvitaions(invitation.getOrder().getId());
-            invitation.setStats(PartnerInvitation.Status.ACCEPTED);
-            invitationService.save(invitation);
+            order.setEnumStatus(Order.EnumStatus.INVITATION_ACCEPTED);
+            orderService.save(order);
+            Technician mainTech = technicianService.get(order.getMainTechId());
             HashMap<String, Object> map = new HashMap<>();
             map.put("action", "INVITATION_ACCEPT");
-            map.put("invitation", invitation);
-            boolean result = pushService.pushToSingle(invitation.getMainTech().getPushId(),
+            map.put("order", order);
+            map.put("owner", mainTech);
+            map.put("partner", technician);
+            boolean result = pushService.pushToSingle(mainTech.getPushId(),
                     technician.getName() + "已接受你的邀请",
-                    new ObjectMapper().writeValueAsString(map), 2*3600);
+                    new ObjectMapper().writeValueAsString(map), 24*3600);
             if (!result) log.info("推送邀请已接受消息失败");
             return new JsonMessage(true);
         } else {
-            invitation.setStats(PartnerInvitation.Status.ACCEPTED);
-            invitationService.save(invitation);
+            order.setEnumStatus(Order.EnumStatus.INVITATION_REJECT);
+            orderService.save(order);
             return new JsonMessage(true);
         }
     }

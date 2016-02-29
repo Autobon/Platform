@@ -9,6 +9,25 @@ import java.util.Date;
 @Entity
 @Table(name="t_order")
 public class Order {
+    public enum EnumStatus {
+        INVITATION_NOT_ACCEPTED(0), INVITATION_ACCEPTED(1), INVITATION_REJECT(-1),
+        IN_PROGRESS(2), FINISHED(3), COMMENTED(4), CANCELED(5);
+        private int statusCode;
+
+        EnumStatus(int statusCode) {
+            this.statusCode = statusCode;
+        }
+
+        public static EnumStatus getStatus(int statusCode) {
+            for (EnumStatus s : EnumStatus.values()) {
+                if (s.getStatusCode() == statusCode) return s;
+            }
+            return null;
+        }
+        public int getStatusCode() {
+            return this.statusCode;
+        }
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
@@ -175,5 +194,13 @@ public class Order {
 
     public void setSecondTechId(int secondTechId) {
         this.secondTechId = secondTechId;
+    }
+
+    public EnumStatus getEnumStatus() {
+        return EnumStatus.getStatus(this.status);
+    }
+
+    public void setEnumStatus(EnumStatus status) {
+        this.status = status.getStatusCode();
     }
 }

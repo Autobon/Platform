@@ -60,71 +60,67 @@ POST /api/mobile/technician/order/1/invite/2
 
 ```
 {
-"invitation": {
-    "id": 4,
-    "order": {
-        "id": 13,
-        "orderNum": "test-order-num",
-        "orderType": 1,
-        "photo": null,
-        "orderTime": 1456817833035,
-        "addTime": null,
-        "status": 0,
-        "customerType": 0,
-        "customerId": 0,
-        "customerName": null,
-        "customerLon": null,
-        "customerLat": null,
-        "remark": null,
-        "mainTechId": 1,
-        "secondTechId": 0
-    },
-    "mainTech": {
-        "id": 1,
-        "phone": "18812345678",
-        "name": "tom",
-        "gender": null,
-        "avatar": null,
-        "idNo": "422302198608266313",
-        "idPhoto": "/etc/a.jpg",
-        "bank": "027",
-        "bankAddress": "光谷",
-        "bankCardNo": "88888888888",
-        "verifyAt": null,
-        "lastLoginAt": 1456195103000,
-        "lastLoginIp": "127.0.0.1",
-        "createAt": 1455724800000,
-        "star": 0,
-        "voteRate": 0,
-        "skill": "1",
-        "pushId": null,
-        "status": "NOTVERIFIED"
-    },
-    "invitedTech": {
-        "id": 12,
-        "phone": "tempPhoneNo",
-        "name": null,
-        "gender": null,
-        "avatar": null,
-        "idNo": null,
-        "idPhoto": null,
-        "bank": null,
-        "bankAddress": null,
-        "bankCardNo": null,
-        "verifyAt": null,
-        "lastLoginAt": null,
-        "lastLoginIp": null,
-        "createAt": 1456731432961,
-        "star": 0,
-        "voteRate": 0,
-        "skill": null,
-        "pushId": "",
-        "status": "NOTVERIFIED"
-    },
-    "createAt": 1456731433129,
-    "status": "NOT_ACCEPTED"
+"owner": {
+    "id": 1,
+    "phone": "18812345678",
+    "name": "tom",
+    "gender": null,
+    "avatar": null,
+    "idNo": "422302198608266313",
+    "idPhoto": "/etc/a.jpg",
+    "bank": "027",
+    "bankAddress": "光谷",
+    "bankCardNo": "88888888888",
+    "verifyAt": null,
+    "lastLoginAt": 1456195103000,
+    "lastLoginIp": "127.0.0.1",
+    "createAt": 1455724800000,
+    "star": 0,
+    "voteRate": 0,
+    "skill": "1",
+    "pushId": null,
+    "status": "NOTVERIFIED"
 },
-"action": "INVITE_PARTNER"
+"partner": {
+    "id": 14,
+    "phone": "tempPhoneNo",
+    "name": null,
+    "gender": null,
+    "avatar": null,
+    "idNo": null,
+    "idPhoto": null,
+    "bank": null,
+    "bankAddress": null,
+    "bankCardNo": null,
+    "verifyAt": null,
+    "lastLoginAt": null,
+    "lastLoginIp": null,
+    "createAt": 1456740362383,
+    "star": 0,
+    "voteRate": 0,
+    "skill": null,
+    "pushId": "",
+    "status": "NOTVERIFIED"
+},
+"action": "INVITE_PARTNER",
+"order": {
+    "id": 15,
+    "orderNum": "test-order-num",
+    "orderType": 1,
+    "photo": null,
+    "orderTime": 1456826762442,
+    "addTime": null,
+    "status": 0,
+    "customerType": 0,
+    "customerId": 0,
+    "customerName": null,
+    "customerLon": null,
+    "customerLat": null,
+    "remark": null,
+    "mainTechId": 1,
+    "secondTechId": 14,
+    "enumStatus": "INVITATION_NOT_ACCEPTED"
+}
 }
 ```
 
@@ -154,11 +150,11 @@ POST /api/mobile/technician/order/invitation/1
 "data": null}
 ```
 
-2.你没有这个邀请
+2.你没有这个邀请, 或订单已改邀他人
 
 ```
 {"result": false,
-"message": "你没有这个邀请",
+"message": "你没有这个邀请, 或订单已改邀他人",
 "error": "ILLEGAL_PARAM",
 "data": null}
 ```
@@ -181,11 +177,11 @@ POST /api/mobile/technician/order/invitation/1
 "data": null}
 ```
 
-5.已有其它人接单或邀请已失效
+5.订单已开始或已结束
 
 ```
 {"result": false,
-"message": "已有其它人接单或邀请已失效",
+"message": "订单已开始或已结束",
 "error": "ILLEGAL_PARAM",
 "data": null}
 ```
@@ -198,70 +194,66 @@ POST /api/mobile/technician/order/invitation/1
 
 ```
 {
-"invitation": {
-   "id": 4,
-   "order": {
-       "id": 13,
-       "orderNum": "test-order-num",
-       "orderType": 1,
-       "photo": null,
-       "orderTime": 1456817833035,
-       "addTime": null,
-       "status": 0,
-       "customerType": 0,
-       "customerId": 0,
-       "customerName": null,
-       "customerLon": null,
-       "customerLat": null,
-       "remark": null,
-       "mainTechId": 1,
-       "secondTechId": 0
-   },
-   "mainTech": {
-       "id": 1,
-       "phone": "18812345678",
-       "name": "tom",
-       "gender": null,
-       "avatar": null,
-       "idNo": "422302198608266313",
-       "idPhoto": "/etc/a.jpg",
-       "bank": "027",
-       "bankAddress": "光谷",
-       "bankCardNo": "88888888888",
-       "verifyAt": null,
-       "lastLoginAt": 1456195103000,
-       "lastLoginIp": "127.0.0.1",
-       "createAt": 1455724800000,
-       "star": 0,
-       "voteRate": 0,
-       "skill": "1",
-       "pushId": null,
-       "status": "NOTVERIFIED"
-   },
-   "invitedTech": {
-       "id": 12,
-       "phone": "tempPhoneNo",
-       "name": null,
-       "gender": null,
-       "avatar": null,
-       "idNo": null,
-       "idPhoto": null,
-       "bank": null,
-       "bankAddress": null,
-       "bankCardNo": null,
-       "verifyAt": null,
-       "lastLoginAt": null,
-       "lastLoginIp": null,
-       "createAt": 1456731432961,
-       "star": 0,
-       "voteRate": 0,
-       "skill": null,
-       "pushId": "",
-       "status": "NOTVERIFIED"
-   },
-   "createAt": 1456731433129,
-   "status": "ACCEPTED"
+"owner": {
+    "id": 1,
+    "phone": "18812345678",
+    "name": "tom",
+    "gender": null,
+    "avatar": null,
+    "idNo": "422302198608266313",
+    "idPhoto": "/etc/a.jpg",
+    "bank": "027",
+    "bankAddress": "光谷",
+    "bankCardNo": "88888888888",
+    "verifyAt": null,
+    "lastLoginAt": 1456195103000,
+    "lastLoginIp": "127.0.0.1",
+    "createAt": 1455724800000,
+    "star": 0,
+    "voteRate": 0,
+    "skill": "1",
+    "pushId": null,
+    "status": "NOTVERIFIED"
 },
-"action": "INVITATION_ACCEPT"
+"partner": {
+    "id": 14,
+    "phone": "tempPhoneNo",
+    "name": null,
+    "gender": null,
+    "avatar": null,
+    "idNo": null,
+    "idPhoto": null,
+    "bank": null,
+    "bankAddress": null,
+    "bankCardNo": null,
+    "verifyAt": null,
+    "lastLoginAt": null,
+    "lastLoginIp": null,
+    "createAt": 1456740362383,
+    "star": 0,
+    "voteRate": 0,
+    "skill": null,
+    "pushId": "",
+    "status": "NOTVERIFIED"
+},
+"action": "INVITATION_ACCEPT",
+"order": {
+    "id": 15,
+    "orderNum": "test-order-num",
+    "orderType": 1,
+    "photo": null,
+    "orderTime": 1456826762442,
+    "addTime": null,
+    "status": 1,
+    "customerType": 0,
+    "customerId": 0,
+    "customerName": null,
+    "customerLon": null,
+    "customerLat": null,
+    "remark": null,
+    "mainTechId": 1,
+    "secondTechId": 14,
+    "enumStatus": "INVITATION_ACCEPTED"
+}
 }
 ```
