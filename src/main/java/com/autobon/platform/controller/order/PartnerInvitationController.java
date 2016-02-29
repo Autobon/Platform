@@ -87,7 +87,7 @@ public class PartnerInvitationController {
         Order order = orderService.findOrder(orderId);
 
         if (order == null || order.getSecondTechId() != technician.getId()) {
-            return new JsonMessage(false, "ILLEGAL_PARAMS", "你没有这个邀请, 或订单已改邀他人");
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个邀请, 或订单已改邀他人");
         } else if (order.getEnumStatus() == Order.EnumStatus.INVITATION_ACCEPTED) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已接受邀请");
         } else if (order.getEnumStatus() == Order.EnumStatus.INVITATION_REJECT) {

@@ -155,7 +155,7 @@ POST /api/mobile/technician/order/invitation/1
 ```
 {"result": false,
 "message": "你没有这个邀请, 或订单已改邀他人",
-"error": "ILLEGAL_PARAM",
+"error": "ILLEGAL_OPERATION",
 "data": null}
 ```
 
@@ -164,7 +164,7 @@ POST /api/mobile/technician/order/invitation/1
 ```
 {"result": false,
 "message": "你已接受邀请",
-"error": "ILLEGAL_PARAM",
+"error": "REPEATED_OPERATION",
 "data": null}
 ```
 
@@ -173,7 +173,7 @@ POST /api/mobile/technician/order/invitation/1
 ```
 {"result": false,
 "message": "你已拒绝邀请",
-"error": "ILLEGAL_PARAM",
+"error": "REPEATED_OPERATION",
 "data": null}
 ```
 
@@ -182,7 +182,7 @@ POST /api/mobile/technician/order/invitation/1
 ```
 {"result": false,
 "message": "订单已开始或已结束",
-"error": "ILLEGAL_PARAM",
+"error": "ILLEGAL_OPERATION",
 "data": null}
 ```
 
