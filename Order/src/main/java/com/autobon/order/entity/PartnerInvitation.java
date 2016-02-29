@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "t_partner_invitation")
 public class PartnerInvitation {
     public enum Status {
-        NOT_ACCEPTED(0), ACCEPTED(1), REJECTED(2);
+        NOT_ACCEPTED(0), ACCEPTED(1), REJECTED(2), EXPIRED(3);
         private int statusCode;
 
         Status(int statusCode) {this.statusCode = statusCode;}

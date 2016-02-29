@@ -13,12 +13,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PartnerInvitationRepository extends JpaRepository<PartnerInvitation, Integer> {
 
-    @Query("from OrderInvitation oi where oi.order.id = ?1")
+    @Query("from PartnerInvitation pi where pi.order.id = ?1")
     Page<PartnerInvitation> findByOrderId(int orderId, Pageable pageable);
 
-    @Query("from OrderInvitation oi where oi.invitedTech.id = ?1")
+    @Query("from PartnerInvitation pi where pi.invitedTech.id = ?1")
     Page<PartnerInvitation> findByInvitedTechId(int invitedTechId, Pageable pageable);
 
-    @Query("from OrderInvitation oi where oi.orderId = ?1 and oi.invitedTechId = ?2")
+    @Query("from PartnerInvitation pi where pi.orderId = ?1 and pi.invitedTechId = ?2")
     Page<PartnerInvitation> findByOrderIdAndInvitedTechId(int orderId, int invitedTechId, Pageable pageable);
+
+    @Query("update PartnerInvitation pi set pi.status = 3 where pi.orderId = ?1")
+    int expireOrderInvitaions(int orderId);
 }

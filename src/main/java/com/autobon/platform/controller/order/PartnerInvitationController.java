@@ -9,6 +9,8 @@ import com.autobon.platform.utils.JsonMessage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,14 +25,24 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/mobile/technician/order")
 public class PartnerInvitationController {
+    private static Logger log = LoggerFactory.getLogger(PartnerInvitationController.class);
+
     @Autowired private TechnicianService technicianService;
     @Autowired private OrderService orderService;
     @Autowired private PartnerInvitationService invitationService;
     @Autowired private PushService pushService;
 
-    @RequestMapping(value = "/{orderId}/invitePartner/", method = RequestMethod.POST)
+    /**
+     * 发起合伙邀请
+     * @param request
+     * @param partnerId
+     * @param orderId
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/{orderId}/invite/{partnerId}", method = RequestMethod.POST)
     public JsonMessage invitePartner(HttpServletRequest request,
-            @RequestParam("partnerId") int partnerId,
+            @PathVariable("partnerId") int partnerId,
             @PathVariable("orderId")   int orderId) throws IOException {
         Technician technician = (Technician) request.getAttribute("user");
         Technician partner = technicianService.get(partnerId);
@@ -47,23 +59,60 @@ public class PartnerInvitationController {
         PartnerInvitation invitation = new PartnerInvitation();
         invitation.setOrder(order);
         invitation.setMainTech(technician);
+        invitation.setInvitedTech(partner);
         invitationService.save(invitation);
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "INVITE_PARTNER");
         map.put("invitation", invitation);
-        boolean result = pushService.pushToSingle(partner.getPushId(), technician.getName() + "向你发起订单合作邀请",
+        boolean result = pushService.pushToSingle(partner.getPushId(),
+                technician.getName() + "向你发起订单合作邀请",
                 new ObjectMapper().writeValueAsString(map), 2*3600);
 
-        if (result) return new JsonMessage(true, "已发送邀请消息");
-        else return new JsonMessage(false, "推送邀请消息失败");
+        if (!result) log.info("推送邀请消息失败");
+        return new JsonMessage(true);
     }
 
-    @RequestMapping(value = "/{orderId}/acceptInvitation", method = RequestMethod.POST)
+    /**
+     * 接受或拒绝邀请
+     * @param request
+     * @param accepted
+     * @param invitationId
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/invitation/{invitationId}", method = RequestMethod.POST)
     public JsonMessage acceptInvitation(HttpServletRequest request,
-            @PathVariable("orderId") String orderId) throws IOException {
+            @RequestParam("accepted") boolean accepted,
+            @PathVariable("invitationId") int invitationId) throws IOException {
         Technician technician = (Technician) request.getAttribute("user");
+        PartnerInvitation invitation = invitationService.get(invitationId);
 
+        if (invitation == null || invitation.getInvitedTech().getId() != technician.getId()) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个邀请");
+        } else if (invitation.getStatus() == PartnerInvitation.Status.ACCEPTED) {
+            return new JsonMessage(false, "REPEATED_OPERATION", "你已接受邀请");
+        } else if (invitation.getStatus() == PartnerInvitation.Status.REJECTED) {
+            return new JsonMessage(false, "REPEATED_OPERATION", "你已拒绝邀请");
+        } else if (invitation.getStatus() == PartnerInvitation.Status.EXPIRED) {
+            return new JsonMessage(false, "EXPIRED_OPERATION", "已有其它人接单或邀请已失效");
+        }
 
-        return null;
+        if (accepted) {
+            invitationService.expireOrderInvitaions(invitation.getOrder().getId());
+            invitation.setStats(PartnerInvitation.Status.ACCEPTED);
+            invitationService.save(invitation);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("action", "INVITATION_ACCEPT");
+            map.put("invitation", invitation);
+            boolean result = pushService.pushToSingle(invitation.getMainTech().getPushId(),
+                    technician.getName() + "已接受你的邀请",
+                    new ObjectMapper().writeValueAsString(map), 2*3600);
+            if (!result) log.info("推送邀请已接受消息失败");
+            return new JsonMessage(true);
+        } else {
+            invitation.setStats(PartnerInvitation.Status.ACCEPTED);
+            invitationService.save(invitation);
+            return new JsonMessage(true);
+        }
     }
 }

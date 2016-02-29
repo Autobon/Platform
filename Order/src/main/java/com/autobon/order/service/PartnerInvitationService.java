@@ -40,4 +40,8 @@ public class PartnerInvitationService {
         if (page.getNumberOfElements() > 0) return page.getContent().get(0);
         else return null;
     }
+
+    public int expireOrderInvitaions(int orderId) {
+        return repository.expireOrderInvitaions(orderId);
+    }
 }
