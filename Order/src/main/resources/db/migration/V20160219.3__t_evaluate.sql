@@ -6,5 +6,4 @@ CREATE TABLE `t_evaluate` (
   `advice` varchar(255) DEFAULT NULL COMMENT '评价意见和建议',
   PRIMARY KEY (`Id`),
   KEY `order_id` (`order_id`),
-  CONSTRAINT `t_evaluate_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `t_order` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单评价表';
