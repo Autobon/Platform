@@ -126,18 +126,18 @@ POST /api/mobile/technician/order/1/invite/2
 
 ## 2. 接受或拒绝合作邀请
 ### URL及请求方法
-POST /api/mobile/technician/order/invitation/{invitationId}
+POST /api/mobile/technician/order/{orderId}/invitation
 
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
 | ------- | ---- | ---- |
-| invitationId | URL点位符参数, 邀请ID | 1 |
+| orderId | URL点位符参数, 订单ID | 1 |
 
 举例:
 
 ```
-POST /api/mobile/technician/order/invitation/1
+POST /api/mobile/technician/order/1/invitation
 ```
 
 ### 返回数据
