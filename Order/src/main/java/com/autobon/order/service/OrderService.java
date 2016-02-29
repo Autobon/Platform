@@ -113,4 +113,12 @@ public class OrderService {
         return new PageImpl<OrderShow>(orderShows, pageRequest, orderPage. getTotalElements());
     }
 
+    public Order findOrder(int orderId) {
+        Order order = orderRepository.findOne(orderId);
+        return order;
+    }
+
+    public void save(Order order) {
+        orderRepository.save(order);
+    }
 }
