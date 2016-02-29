@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 /**
  * Created by dave on 16/2/28.
- * 订单邀请合伙人相关操作
+ * 订单邀请合作人相关操作
  */
 @RestController
 @RequestMapping("/api/mobile/technician/order")
@@ -50,10 +50,10 @@ public class PartnerInvitationController {
 
         if (order.getStatus() >= 1 ) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已进入工作模式或已有人接单");
-        } else if (order.getMainTechId() == technician.getId()) {
+        } else if (order.getMainTechId() == partner.getId()) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "主技师和合作技师不能为同一人");
         } else if (partner == null) {
-            return new JsonMessage(false, "ILLEGAL_PARAMS", "系统中没有指定的技师");
+            return new JsonMessage(false, "ILLEGAL_PARAMS", "系统中没有邀请的技师");
         }
 
         PartnerInvitation invitation = new PartnerInvitation();
@@ -69,7 +69,7 @@ public class PartnerInvitationController {
                 new ObjectMapper().writeValueAsString(map), 2*3600);
 
         if (!result) log.info("推送邀请消息失败");
-        return new JsonMessage(true);
+        return new JsonMessage(true, "", "", invitation);
     }
 
     /**

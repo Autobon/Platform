@@ -34,15 +34,15 @@ public class PartnerInvitation {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    @Column private Order order;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "main_tech_id")
-    @Column private Technician mainTech;
+    private Technician mainTech;
 
     @ManyToOne
     @JoinColumn(name = "invited_tech_id")
-    @Column private Technician invitedTech;
+    private Technician invitedTech;
 
     @Column private Date createAt;
 
