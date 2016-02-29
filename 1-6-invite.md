@@ -133,6 +133,7 @@ POST /api/mobile/technician/order/{orderId}/invitation
 | 参数名称 | 说明 | 举例 |
 | ------- | ---- | ---- |
 | orderId | URL点位符参数, 订单ID | 1 |
+| accepted | POST参数, 布尔类型true或false, 是否接受邀请 | true |
 
 举例:
 
