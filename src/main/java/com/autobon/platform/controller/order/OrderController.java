@@ -5,6 +5,7 @@ import com.autobon.order.entity.Order;
 import com.autobon.order.repository.ConstructionRepository;
 import com.autobon.order.entity.OrderShow;
 import com.autobon.order.repository.OrderRepository;
+import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.Util.OrderUtil;
 import com.autobon.platform.utils.DateUtil;
@@ -42,14 +43,15 @@ public class OrderController {
     @Autowired
     public void setOrderService(OrderService orderService){this.orderService = orderService;}
 
+    private ConstructionService constructionService = null;
+    @Autowired
+    public void setConstructionService(ConstructionService constructionService){this.constructionService = constructionService;}
+
     @Value("${com.autobon.upload.orderpic.path}")
     private String orderpic_path;
 
-    @Autowired
-    private ConstructionRepository constructionRepository;
-
-    @Autowired
-    private OrderRepository orderRepository;
+    //@Autowired
+    //private ConstructionRepository constructionRepository;
 
     @RequestMapping(value = "/mobile/order/orderList", method = RequestMethod.GET)
     public JsonMessage orderList() throws Exception{
@@ -83,7 +85,7 @@ public class OrderController {
         construction.setRtpositionLon(rtpositionLon);
         construction.setRtpositionLat(rtpositionLat);
         construction.setSigninTime(new Date());
-        construction = constructionRepository.save(construction);
+        construction = constructionService.save(construction);
         jsonMessage.setData(construction);
         return jsonMessage;
     }
@@ -119,7 +121,7 @@ public class OrderController {
     public JsonMessage saveBeforePic(@RequestParam("constructionId") int constructionId,
                                      @RequestParam("filePaths") String ... filePaths){
         JsonMessage jsonMessage = new JsonMessage(true,"saveBeforePic");
-        Construction construction = constructionRepository.findOne(constructionId);
+        Construction construction = constructionService.findById(constructionId);
 
         int fileLength = filePaths.length;
         if(fileLength<1 || fileLength>3){
@@ -134,7 +136,7 @@ public class OrderController {
             construction.setBeforePicB(filePaths[1]);
             construction.setBeforePicC(filePaths[2]);
         }
-        constructionRepository.save(construction);
+        constructionService.save(construction);
         return jsonMessage;
     }
 
@@ -142,7 +144,7 @@ public class OrderController {
     public JsonMessage saveAfterPic(@RequestParam("constructionId") int constructionId,
                                     @RequestParam("filePaths") String ... filePaths){
         JsonMessage jsonMessage = new JsonMessage(true,"saveAfterPic");
-        Construction construction = constructionRepository.findOne(constructionId);
+        Construction construction = constructionService.findById(constructionId);
         int fileLength = filePaths.length;
         if(fileLength<3 || fileLength>6){
             return  new JsonMessage(false,"图片数量有误");
@@ -169,7 +171,7 @@ public class OrderController {
             construction.setAfterPicE(filePaths[4]);
             construction.setAfterPicF(filePaths[5]);
         }
-        constructionRepository.save(construction);
+        constructionService.save(construction);
         return jsonMessage;
     }
 
@@ -310,12 +312,12 @@ public class OrderController {
     private JsonMessage addSecondTechId(@RequestParam("orderId") int orderId,
                                      @RequestParam("technicianId") int technicianId){
         JsonMessage jsonMessage = new JsonMessage(true,"addSecondTechId");
-        Order order = orderRepository.findOne(orderId);
+        Order order = orderService.findOrder(orderId);
         if(order.getMainTechId() == technicianId){
             return new JsonMessage(false,"不能添加自己为合伙人");
         }
         order.setSecondTechId(technicianId);
-        orderRepository.save(order);
+        orderService.save(order);
         return jsonMessage;
     }
 
