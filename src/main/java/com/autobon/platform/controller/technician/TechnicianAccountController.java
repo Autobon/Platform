@@ -56,7 +56,7 @@ public class TechnicianAccountController {
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage getTechnicianInfo(HttpServletRequest request) {
         Technician technician = (Technician) request.getAttribute("user");
-        return new JsonMessage(true, "", technician);
+        return new JsonMessage(true, "", "", technician);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -215,7 +215,7 @@ public class TechnicianAccountController {
         in.close();
         technician.setAvatar(path + "/" + filename);
         technicianService.save(technician);
-        return new JsonMessage(true, "", (Object) technician.getAvatar());
+        return new JsonMessage(true, "", "", technician.getAvatar());
     }
 
     /**

@@ -6,7 +6,7 @@ import com.autobon.order.repository.ConstructionRepository;
 import com.autobon.order.entity.OrderShow;
 import com.autobon.order.repository.OrderRepository;
 import com.autobon.order.service.OrderService;
-import com.autobon.order.util.OrderUtil;
+import com.autobon.order.Util.OrderUtil;
 import com.autobon.platform.utils.DateUtil;
 import com.autobon.platform.utils.JsonMessage;
 import com.autobon.platform.utils.VerifyCode;
@@ -246,7 +246,7 @@ public class OrderController {
         orderShow.setPhoto("api/downOrderPic?pic="+filename);
         Order order = orderService.addOrder(orderShow);
         if(order != null){
-            return  new JsonMessage(true, "订单添加成功",OrderUtil.order2OrderShow(order));
+            return  new JsonMessage(true, "", "订单添加成功",OrderUtil.order2OrderShow(order));
         }else{
             return  new JsonMessage(false, "订单添加失败");
         }
@@ -262,7 +262,7 @@ public class OrderController {
     public JsonMessage updateOrder(@RequestBody OrderShow orderShow) throws Exception{
         Order order = orderService.updateOrder(orderShow);
         if(order != null){
-            return  new JsonMessage(true, "订单修改成功",OrderUtil.order2OrderShow(order));
+            return  new JsonMessage(true, "", "订单修改成功",OrderUtil.order2OrderShow(order));
         }else{
             return  new JsonMessage(false, "订单修改失败");
         }

@@ -39,7 +39,7 @@ public class StaffController {
             response.addCookie(cookie);
             staffService.saveToken(token, staffShow, seconds);
 
-            return  new JsonMessage(true, "登录成功", staffShow);
+            return  new JsonMessage(true, "", "登录成功", staffShow);
         }
         if(flag == 1){
             return new JsonMessage(false, "用户名不存在");

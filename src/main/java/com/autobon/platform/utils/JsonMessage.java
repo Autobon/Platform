@@ -23,8 +23,9 @@ public class JsonMessage {
         this.error = error;
     }
 
-    public JsonMessage(boolean result, String message, Object data) {
+    public JsonMessage(boolean result, String error, String message, Object data) {
         this.result = result;
+        this.error = error;
         this.message = message;
         this.data = data;
     }
