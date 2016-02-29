@@ -19,7 +19,7 @@ POST /api/mobile/technician/order/1/invite/2
 ```
 
 ### 返回数据
-1. 请求成功
+1.请求成功
 
 ```
 {"result": true,
@@ -28,7 +28,7 @@ POST /api/mobile/technician/order/1/invite/2
 "data": null}
 ```
 
-2. 订单已进入工作模式或已有人接单
+2.订单已进入工作模式或已有人接单
 
 ```
 {"result": false,
@@ -37,7 +37,7 @@ POST /api/mobile/technician/order/1/invite/2
 "data": null}
 ```
 
-3. 主技师和合作技师不能为同一人
+3.主技师和合作技师不能为同一人
 
 ```
 {"result": false,
@@ -46,7 +46,7 @@ POST /api/mobile/technician/order/1/invite/2
 "data": null}
 ```
 
-4. 系统中没有邀请的技师
+4.系统中没有邀请的技师
 
 ```
 {"result": false,
@@ -145,7 +145,7 @@ POST /api/mobile/technician/order/invitation/1
 ```
 
 ### 返回数据
-1. 请求成功
+1.请求成功
 
 ```
 {"result": true,
@@ -154,7 +154,7 @@ POST /api/mobile/technician/order/invitation/1
 "data": null}
 ```
 
-2. 你没有这个邀请
+2.你没有这个邀请
 
 ```
 {"result": false,
@@ -163,7 +163,7 @@ POST /api/mobile/technician/order/invitation/1
 "data": null}
 ```
 
-3. 你已接受邀请
+3.你已接受邀请
 
 ```
 {"result": false,
@@ -172,7 +172,7 @@ POST /api/mobile/technician/order/invitation/1
 "data": null}
 ```
 
-4. 你已拒绝邀请
+4.你已拒绝邀请
 
 ```
 {"result": false,
@@ -181,7 +181,7 @@ POST /api/mobile/technician/order/invitation/1
 "data": null}
 ```
 
-5. 已有其它人接单或邀请已失效
+5.已有其它人接单或邀请已失效
 
 ```
 {"result": false,
