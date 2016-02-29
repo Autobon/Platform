@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "t_partner_invitation")
-public class OrderInvitation {
+public class PartnerInvitation {
     public enum Status {
         NOT_ACCEPTED(0), ACCEPTED(1), REJECTED(2);
         private int statusCode;
@@ -50,7 +50,7 @@ public class OrderInvitation {
     @Column(name = "status")
     private int statusCode;
 
-    public OrderInvitation() {
+    public PartnerInvitation() {
         this.setStats(Status.NOT_ACCEPTED);
         this.createAt = new Date();
     }

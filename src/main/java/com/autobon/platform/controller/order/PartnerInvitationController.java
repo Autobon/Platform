@@ -2,8 +2,8 @@ package com.autobon.platform.controller.order;
 
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
-import com.autobon.order.entity.OrderInvitation;
-import com.autobon.order.repository.OrderRepository;
+import com.autobon.order.entity.PartnerInvitation;
+import com.autobon.order.service.PartnerInvitationService;
 import com.autobon.order.service.OrderService;
 import com.autobon.platform.utils.JsonMessage;
 import com.autobon.technician.entity.Technician;
@@ -22,30 +22,32 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping("/api/mobile/technician/order")
-public class InvitationController {
+public class PartnerInvitationController {
     @Autowired private TechnicianService technicianService;
     @Autowired private OrderService orderService;
+    @Autowired private PartnerInvitationService invitationService;
     @Autowired private PushService pushService;
-    @Autowired private OrderRepository orderRepository; // TODO 不要直接使用Repository
 
-    @RequestMapping(value = "/{orderId}/invitePartner/", method = RequestMethod.GET)
+    @RequestMapping(value = "/{orderId}/invitePartner/", method = RequestMethod.POST)
     public JsonMessage invitePartner(HttpServletRequest request,
             @RequestParam("partnerId") int partnerId,
             @PathVariable("orderId")   int orderId) throws IOException {
         Technician technician = (Technician) request.getAttribute("user");
         Technician partner = technicianService.get(partnerId);
-        Order order = orderRepository.findOne(orderId);
+        Order order = orderService.findOrder(orderId);
 
         if (order.getStatus() >= 1 ) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已进入工作模式或已有人接单");
         } else if (order.getMainTechId() == technician.getId()) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "主技师和合作技师不能为同一人");
+        } else if (partner == null) {
+            return new JsonMessage(false, "ILLEGAL_PARAMS", "系统中没有指定的技师");
         }
-        if (partner == null) return new JsonMessage(false, "ILLEGAL_PARAMS", "系统中没有指定的技师");
 
-        OrderInvitation invitation = new OrderInvitation();
+        PartnerInvitation invitation = new PartnerInvitation();
         invitation.setOrder(order);
         invitation.setMainTech(technician);
+        invitationService.save(invitation);
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "INVITE_PARTNER");
         map.put("invitation", invitation);
@@ -54,5 +56,14 @@ public class InvitationController {
 
         if (result) return new JsonMessage(true, "已发送邀请消息");
         else return new JsonMessage(false, "推送邀请消息失败");
+    }
+
+    @RequestMapping(value = "/{orderId}/acceptInvitation", method = RequestMethod.POST)
+    public JsonMessage acceptInvitation(HttpServletRequest request,
+            @PathVariable("orderId") String orderId) throws IOException {
+        Technician technician = (Technician) request.getAttribute("user");
+
+
+        return null;
     }
 }
