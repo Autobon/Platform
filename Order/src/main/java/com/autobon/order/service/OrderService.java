@@ -122,8 +122,13 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Page<Order> findByTechnicianId(int techId, int page, int pageSize) {
+    public Page<Order> findByMainTechId(int techId, int page, int pageSize) {
         return orderRepository.findByMainTechId(techId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public Page<Order> findBySecondTechId(int techId, int page, int pageSize) {
+        return orderRepository.findBySecondTechId(techId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
 

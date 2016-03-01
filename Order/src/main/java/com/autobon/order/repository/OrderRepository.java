@@ -21,6 +21,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     Page<Order> findByMainTechId(int techId, Pageable pageable);
 
 
+    Page<Order> findBySecondTechId(int techId, Pageable pageable);
+
+
 
     @Query("select od from Order od where 1=1 " +
             " and (?1 is null or od.orderNum = ?1)" +

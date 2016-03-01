@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * Created by dave on 16/3/1.
  */
 @RestController
-@RequestMapping("/api/staff")
+@RequestMapping("/api/web/staff")
 public class StaffAccountController {
     @Autowired StaffService staffService;
 

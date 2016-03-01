@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by dave on 16/3/1.
  */
 @RestController("adminOrderController")
-@RequestMapping("/api/admin/order")
+@RequestMapping("/api/web/order")
 public class OrderController {
     @Autowired
     OrderService orderService;

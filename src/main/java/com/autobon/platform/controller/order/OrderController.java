@@ -35,13 +35,22 @@ public class OrderController {
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public JsonMessage list(HttpServletRequest request,
+    @RequestMapping(value = "/listMain", method = RequestMethod.GET)
+    public JsonMessage listMain(HttpServletRequest request,
              @RequestParam(value = "page", defaultValue = "1") int page,
              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                orderService.findByTechnicianId(technician.getId(), page, pageSize));
+                orderService.findByMainTechId(technician.getId(), page, pageSize));
+    }
+
+    @RequestMapping(value = "/listSecond", method = RequestMethod.GET)
+    public JsonMessage listSecond(HttpServletRequest request,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Technician technician = (Technician) request.getAttribute("user");
+        return new JsonMessage(true, "", "",
+                orderService.findBySecondTechId(technician.getId(), page, pageSize));
     }
 
     @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)
@@ -69,6 +78,8 @@ public class OrderController {
         construction = constructionService.save(construction);
         return new JsonMessage(true, "", "", construction);
     }
+
+    // TODO 继续清理下面的代码
 
     /**
      * 根据条件查找订单列表
@@ -192,9 +203,9 @@ public class OrderController {
      * @return
      * @throws Exception
      */
-//    @RequestMapping(value = "/upload/orderpic", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
-//    public JsonMessage uploadOrderPic(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
-//
+    @RequestMapping(value = "/upload/orderpic", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+    public JsonMessage uploadOrderPic(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
+
 //        Iterator<String> itr = request.getFileNames();
 //        MultipartFile file = request.getFile(itr.next());
 //        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", NO_UPLOAD_FILE);
@@ -208,26 +219,7 @@ public class OrderController {
 //        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
 //        msg.setData(orderpic_path + "\"/\" " + filename);
 //        return msg;
-//    }
-
-
-    /**
-     * 此方法已由PartnerInvitationController.invitePartner方法替代
-     * @param orderId
-     * @param technicianId
-     * @return
-     */
-    @RequestMapping(value = "/mobile/order/addSecondTechId", method = RequestMethod.POST)
-    private JsonMessage addSecondTechId(@RequestParam("orderId") int orderId,
-                                        @RequestParam("technicianId") int technicianId) {
-        JsonMessage jsonMessage = new JsonMessage(true, "addSecondTechId");
-        Order order = orderService.findOrder(orderId);
-        if (order.getMainTechId() == technicianId) {
-            return new JsonMessage(false, "不能添加自己为合伙人");
-        }
-        order.setSecondTechId(technicianId);
-        orderService.save(order);
-        return jsonMessage;
+        return null;
     }
 
     @RequestMapping(value="/mobile/order/getWorkList",method = RequestMethod.POST)

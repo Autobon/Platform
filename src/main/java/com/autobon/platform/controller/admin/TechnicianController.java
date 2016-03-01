@@ -14,7 +14,7 @@ import java.io.IOException;
  * Created by dave on 16/3/1.
  */
 @RestController("adminTechnicianController")
-@RequestMapping("/api/admin/technician")
+@RequestMapping("/api/web/technician")
 public class TechnicianController {
     @Autowired TechnicianService technicianService;
     @Autowired PushService pushService;

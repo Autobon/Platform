@@ -29,12 +29,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/mobile/technician/construct")
 public class ConstructionController {
-    @Autowired
-    OrderService orderService;
-    @Autowired
-    ConstructionService constructionService;
+    @Autowired OrderService orderService;
+    @Autowired ConstructionService constructionService;
 
-    @RequestMapping(value = "/construction/uploadBeforePhotos", method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadBeforePhotos", method = RequestMethod.POST)
     public JsonMessage uploadBeforePhotos(HttpServletRequest request,
               @RequestParam("orderId") int orderId,
               @RequestParam(value = "file", required = false) MultipartFile[] files,
@@ -42,7 +40,7 @@ public class ConstructionController {
         return _savePhotos(files, orderId, request, true, append);
     }
 
-    @RequestMapping(value = "/construction/uploadAfterPhotos", method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadAfterPhotos", method = RequestMethod.POST)
     public JsonMessage uploadAfterPhotos(HttpServletRequest request,
              @RequestParam("orderId") int orderId,
              @RequestParam(value = "file", required = false) MultipartFile[] files,
