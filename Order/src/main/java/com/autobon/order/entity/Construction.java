@@ -37,44 +37,20 @@ public class Construction {
     @Column(name = "end_time",nullable = true, insertable = true, updatable = true)
     private Date endTime;
 
-    @Column(name = "before_pic_a",nullable = true, insertable = true, updatable = true)
-    private String beforePicA;
+    @Column(name = "before_photos",nullable = true, insertable = true, updatable = true)
+    private String beforePhotos;
 
-    @Column(name = "before_pic_b",nullable = true, insertable = true, updatable = true)
-    private String beforePicB;
+    @Column(name = "after_photos",nullable = true, insertable = true, updatable = true)
+    private String afterPhotos;
 
-    @Column(name = "before_pic_c",nullable = true, insertable = true, updatable = true)
-    private String beforePicC;
+    @Column(name = "payment",nullable = true, insertable = true, updatable = true)
+    private Float payment;
 
-    @Column(name = "after_pic_a",nullable = true, insertable = true, updatable = true)
-    private String afterPicA;
+    @Column(name = "work_items",nullable = true, insertable = true, updatable = true)
+    private String workItems;
 
-    @Column(name = "after_pic_b",nullable = true, insertable = true, updatable = true)
-    private String afterPicB;
-
-    @Column(name = "after_pic_c",nullable = true, insertable = true, updatable = true)
-    private String afterPicC;
-
-    @Column(name = "after_pic_d",nullable = true, insertable = true, updatable = true)
-    private String afterPicD;
-
-    @Column(name = "after_pic_e",nullable = true, insertable = true, updatable = true)
-    private String afterPicE;
-
-    @Column(name = "after_pic_f",nullable = true, insertable = true, updatable = true)
-    private String afterPicF;
-
-    @Column(name = "payfor",nullable = true, insertable = true, updatable = true)
-    private Float payfor;
-
-    @Column(name = "workload",nullable = true, insertable = true, updatable = true)
-    private String workload;
-
-    @Column(name = "car_type",nullable = true, insertable = true, updatable = true)
-    private int carType;
-
-    @Column(name = "work_size",nullable = true, insertable = true, updatable = true)
-    private int workSize;
+    @Column(name = "car_seat",nullable = true, insertable = true, updatable = true)
+    private int carSeat;
 
     public int getId() {
         return id;
@@ -140,107 +116,43 @@ public class Construction {
         this.endTime = endTime;
     }
 
-    public String getBeforePicA() {
-        return beforePicA;
+    public String getBeforePhotos() {
+        return beforePhotos;
     }
 
-    public void setBeforePicA(String beforePicA) {
-        this.beforePicA = beforePicA;
+    public void setBeforePhotos(String beforePhotos) {
+        this.beforePhotos = beforePhotos;
     }
 
-    public String getBeforePicB() {
-        return beforePicB;
+    public String getAfterPhotos() {
+        return afterPhotos;
     }
 
-    public void setBeforePicB(String beforePicB) {
-        this.beforePicB = beforePicB;
+    public void setAfterPhotos(String afterPhotos) {
+        this.afterPhotos = afterPhotos;
     }
 
-    public String getBeforePicC() {
-        return beforePicC;
+    public Float getPayment() {
+        return payment;
     }
 
-    public void setBeforePicC(String beforePicC) {
-        this.beforePicC = beforePicC;
+    public void setPayment(Float payment) {
+        this.payment = payment;
     }
 
-    public String getAfterPicA() {
-        return afterPicA;
+    public String getWorkItems() {
+        return workItems;
     }
 
-    public void setAfterPicA(String afterPicA) {
-        this.afterPicA = afterPicA;
+    public void setWorkItems(String workItems) {
+        this.workItems = workItems;
     }
 
-    public String getAfterPicB() {
-        return afterPicB;
+    public int getCarSeat() {
+        return carSeat;
     }
 
-    public void setAfterPicB(String afterPicB) {
-        this.afterPicB = afterPicB;
-    }
-
-    public String getAfterPicC() {
-        return afterPicC;
-    }
-
-    public void setAfterPicC(String afterPicC) {
-        this.afterPicC = afterPicC;
-    }
-
-    public String getAfterPicD() {
-        return afterPicD;
-    }
-
-    public void setAfterPicD(String afterPicD) {
-        this.afterPicD = afterPicD;
-    }
-
-    public String getAfterPicE() {
-        return afterPicE;
-    }
-
-    public void setAfterPicE(String afterPicE) {
-        this.afterPicE = afterPicE;
-    }
-
-    public String getAfterPicF() {
-        return afterPicF;
-    }
-
-    public void setAfterPicF(String afterPicF) {
-        this.afterPicF = afterPicF;
-    }
-
-    public Float getPayfor() {
-        return payfor;
-    }
-
-    public void setPayfor(Float payfor) {
-        this.payfor = payfor;
-    }
-
-    public String getWorkload() {
-        return workload;
-    }
-
-    public void setWorkload(String workload) {
-        this.workload = workload;
-    }
-
-    public int getCarType() {
-        return carType;
-    }
-
-    public void setCarType(int carType) {
-        this.carType = carType;
-    }
-
-    public int getWorkSize() {
-        return workSize;
-    }
-
-    public void setWorkSize(int workSize) {
-        this.workSize = workSize;
+    public void setCarSeat(int carSeat) {
+        this.carSeat = carSeat;
     }
 }

@@ -7,7 +7,6 @@ import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkService;
 import com.autobon.order.util.OrderUtil;
-import com.autobon.platform.utils.ArrayUtil;
 import com.autobon.platform.utils.DateUtil;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.VerifyCode;
@@ -30,154 +29,45 @@ import java.util.*;
  * Created by yuh on 2016/2/22.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/mobile/technician/order")
 public class OrderController {
-    public final static String NO_UPLOAD_FILE = "没有要上传文件";
-    private OrderService orderService = null;
+    @Autowired OrderService orderService;
+    @Autowired ConstructionService constructionService;
+    @Autowired WorkService workService;
 
-    @Autowired
-    public void setOrderService(OrderService orderService) {
-        this.orderService = orderService;
+    @RequestMapping(method = RequestMethod.GET)
+    public JsonMessage list(HttpServletRequest request,
+             @RequestParam(value = "page", defaultValue = "1") int page,
+             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Technician technician = (Technician) request.getAttribute("user");
+        return new JsonMessage(true, "", "",
+                orderService.findByTechnicianId(technician.getId(), page, pageSize));
     }
 
-    private ConstructionService constructionService = null;
-
-    @Autowired
-    public void setConstructionService(ConstructionService constructionService) {
-        this.constructionService = constructionService;
+    @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)
+    public JsonMessage show(HttpServletRequest request,
+            @PathVariable("orderId") int orderId) {
+        return new JsonMessage(true, "", "", orderService.findOrder(orderId));
     }
 
-    private WorkService workService = null;
-
-    @Autowired
-    public void setWorkService(WorkService workService){
-        this.workService = workService;
-    }
-
-    @Autowired
-    private ArrayUtil arrayUtil;
-
-    @RequestMapping(value = "/mobile/order/orderList", method = RequestMethod.GET)
-    public JsonMessage orderList() throws Exception {
-        JsonMessage jsonMessage = new JsonMessage(true, "orderList");
-        List<Order> orderList = orderService.getOrderList();
-        jsonMessage.setData(orderList);
-        return jsonMessage;
-
-    }
-
-    @RequestMapping(value = "/mobile/order/getLocation", method = RequestMethod.GET)
-    public JsonMessage getLocation(
-            @RequestParam("orderId") int orderId) {
-        JsonMessage jsonMessage = new JsonMessage(true, "location");
-        Order order = orderService.getLocation(orderId);
-
-        jsonMessage.setData(order);
-        return jsonMessage;
-    }
-
-    @RequestMapping(value = "/mobile/construction/signIn", method = RequestMethod.POST)
-    public JsonMessage signIn(
+    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
+    public JsonMessage signIn(HttpServletRequest request,
             @RequestParam("rtpositionLon") String rtpositionLon,
             @RequestParam("rtpositionLat") String rtpositionLat,
-            @RequestParam("technicianId") int technicianId,
             @RequestParam("orderId") int orderId) {
-        JsonMessage jsonMessage = new JsonMessage(true, "signIn");
+        Technician t = (Technician) request.getAttribute("user");
+        Order o = orderService.findOrder(orderId);
+        if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
+        }
         Construction construction = new Construction();
         construction.setOrderId(orderId);
-        construction.setTechnicianId(technicianId);
+        construction.setTechnicianId(t.getId());
         construction.setRtpositionLon(rtpositionLon);
         construction.setRtpositionLat(rtpositionLat);
         construction.setSigninTime(new Date());
         construction = constructionService.save(construction);
-        jsonMessage.setData(construction);
-        return jsonMessage;
-    }
-
-    /**
-     * 上传工作前后照片
-     *
-     * @param request
-     * @param file
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/mobile/construction/uploadPic", method = RequestMethod.POST)
-    public JsonMessage uploadIdPhoto(HttpServletRequest request,
-                                     @RequestParam("file") MultipartFile file) throws Exception {
-        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
-
-        JsonMessage msg = new JsonMessage(true);
-        String path = "/uploads/construction/pic";
-        File dir = new File(request.getServletContext().getRealPath(path));
-        String originalFilename = file.getOriginalFilename();
-        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
-        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + (VerifyCode.generateRandomNumber(6)) + extension;
-
-        if (!dir.exists()) dir.mkdirs();
-        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-        String filePath = path + "/" + filename;
-        msg.setData(filePath);
-        return msg;
-    }
-
-    @RequestMapping(value = "/mobile/construction/saveBeforePic", method = RequestMethod.POST)
-    public JsonMessage saveBeforePic(@RequestParam("constructionId") int constructionId,
-                                     @RequestParam("filePaths") String... filePaths) {
-        JsonMessage jsonMessage = new JsonMessage(true, "saveBeforePic");
-        Construction construction = constructionService.findById(constructionId);
-
-        int fileLength = filePaths.length;
-        if (fileLength < 1 || fileLength > 3) {
-            return new JsonMessage(false, "图片数量有误");
-        } else if (fileLength == 1) {
-            construction.setBeforePicA(filePaths[0]);
-        } else if (fileLength == 2) {
-            construction.setBeforePicA(filePaths[0]);
-            construction.setBeforePicB(filePaths[1]);
-        } else if (fileLength == 3) {
-            construction.setBeforePicA(filePaths[0]);
-            construction.setBeforePicB(filePaths[1]);
-            construction.setBeforePicC(filePaths[2]);
-        }
-        constructionService.save(construction);
-        return jsonMessage;
-    }
-
-    @RequestMapping(value = "/mobile/construction/saveAfterPic", method = RequestMethod.POST)
-    public JsonMessage saveAfterPic(@RequestParam("constructionId") int constructionId,
-                                    @RequestParam("filePaths") String... filePaths) {
-        JsonMessage jsonMessage = new JsonMessage(true, "saveAfterPic");
-        Construction construction = constructionService.findById(constructionId);
-        int fileLength = filePaths.length;
-        if (fileLength < 3 || fileLength > 6) {
-            return new JsonMessage(false, "图片数量有误");
-        } else if (fileLength == 3) {
-            construction.setAfterPicA(filePaths[0]);
-            construction.setAfterPicB(filePaths[1]);
-            construction.setAfterPicC(filePaths[2]);
-        } else if (fileLength == 4) {
-            construction.setAfterPicA(filePaths[0]);
-            construction.setAfterPicB(filePaths[1]);
-            construction.setAfterPicC(filePaths[2]);
-            construction.setAfterPicD(filePaths[3]);
-        } else if (fileLength == 5) {
-            construction.setAfterPicA(filePaths[0]);
-            construction.setAfterPicB(filePaths[1]);
-            construction.setAfterPicC(filePaths[2]);
-            construction.setAfterPicD(filePaths[3]);
-            construction.setAfterPicE(filePaths[4]);
-        } else if (fileLength == 6) {
-            construction.setAfterPicA(filePaths[0]);
-            construction.setAfterPicB(filePaths[1]);
-            construction.setAfterPicC(filePaths[2]);
-            construction.setAfterPicD(filePaths[3]);
-            construction.setAfterPicE(filePaths[4]);
-            construction.setAfterPicF(filePaths[5]);
-        }
-        constructionService.save(construction);
-        return jsonMessage;
+        return new JsonMessage(true, "", "", construction);
     }
 
     /**
@@ -244,7 +134,7 @@ public class OrderController {
         //上传图片
         Iterator<String> itr = request.getFileNames();
         MultipartFile file = request.getFile(itr.next());
-        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", NO_UPLOAD_FILE);
+        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有要上传文件");
         String path = "/uploads/order/pic";
         File dir = new File(request.getServletContext().getRealPath(path));
         String originalFilename = file.getOriginalFilename();
@@ -360,7 +250,7 @@ public class OrderController {
             List<Construction> constructionList = constructionService.findByOrderIdAndTechnicianId(orderId, mainTechId);
             if(constructionList.size() == 1){
                 Construction construction = constructionList.get(0);
-                String workLoad = construction.getWorkload();
+                String workLoad = construction.getWorkItems();
                 String[] workArray = workLoad.split(",");
                 dataMap.put("mainTech",workArray);
 
@@ -376,56 +266,55 @@ public class OrderController {
     }
 
 
-    @RequestMapping(value = "/mobile/order/completeWork", method = RequestMethod.POST)
-    private JsonMessage completeWork(@RequestParam("constructionId") int constructionId,
-                                     @RequestParam("orderId") int orderId,
+    @RequestMapping(value = "/mobile/order/completeConstruction", method = RequestMethod.POST)
+    private JsonMessage completeWork(@RequestParam("orderId") int orderId,
                                      @RequestParam("carType") int carType,
-                                     @RequestParam("workArray") String[] workArray,
-                                     @RequestParam("workSize") int workSize) {
+                                     @RequestParam(value = "workItems", required = false) String[] workItems,
+                                     @RequestParam(value = "percent", required = false) Float percent) {
         JsonMessage jsonMessage = new JsonMessage(true, "completeWork");
         Order order = orderService.findOrder(orderId);
-        Construction construction = constructionService.findById(constructionId);
-        int orderType = order.getOrderType();
-        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        int technicianId = technician.getId();
-        int mainTechId = order.getMainTechId();
-        int secondTechId = order.getSecondTechId();
-        if (technicianId == mainTechId) {
-            this.saveWork(orderType, construction, workArray, carType, workSize);
-
-        } else if (technicianId == secondTechId) {
-            //先要查询主技师是否提交
-            List<Construction> constructionList = constructionService.findByOrderIdAndTechnicianId(orderId, mainTechId);
-            if (constructionList.size() == 1) {
-                Date endTime = constructionList.get(0).getEndTime();
-                if(endTime == null){
-                    return new JsonMessage(false, "等待主技术提交完成");
-                }
-                this.saveWork(orderType, construction, workArray, carType, workSize);
-            }else{
-                return  new JsonMessage(false,"主技师还没有开始施工");
-            }
-
-        } else{
-            return new JsonMessage(false,"你没有此订单");
-        }
+//        Construction construction = constructionService.findById(constructionId);
+//        int orderType = order.getOrderType();
+//        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+//        int technicianId = technician.getId();
+//        int mainTechId = order.getMainTechId();
+//        int secondTechId = order.getSecondTechId();
+//        if (technicianId == mainTechId) {
+//            this.saveWork(orderType, construction, workArray, carType, workSize);
+//
+//        } else if (technicianId == secondTechId) {
+//            //先要查询主技师是否提交
+//            List<Construction> constructionList = constructionService.findByOrderIdAndTechnicianId(orderId, mainTechId);
+//            if (constructionList.size() == 1) {
+//                Date endTime = constructionList.get(0).getEndTime();
+//                if(endTime == null){
+//                    return new JsonMessage(false, "等待主技术提交完成");
+//                }
+//                this.saveWork(orderType, construction, workArray, carType, workSize);
+//            }else{
+//                return  new JsonMessage(false,"主技师还没有开始施工");
+//            }
+//
+//        } else{
+//            return new JsonMessage(false,"你没有此订单");
+//        }
         return jsonMessage;
     }
 
     private void saveWork(int orderType, Construction construction, String[] workArray, int carType, int workSize) {
-        if (orderType == 1 || orderType == 2 || orderType == 3) {
-            //隔热膜
-            String workload = arrayUtil.arrayToString(workArray);
-            construction.setCarType(carType);
-            construction.setWorkload(workload);
-            construction.setEndTime(new Date());
-            constructionService.save(construction);
-
-        } else if (orderType == 4) {
-            construction.setWorkSize(workSize);
-            construction.setEndTime(new Date());
-            constructionService.save(construction);
-        }
+//        if (orderType == 1 || orderType == 2 || orderType == 3) {
+//            //隔热膜
+//            String workload = arrayUtil.arrayToString(workArray);
+//            construction.setCarType(carType);
+//            construction.setWorkload(workload);
+//            construction.setEndTime(new Date());
+//            constructionService.save(construction);
+//
+//        } else if (orderType == 4) {
+//            construction.setWorkSize(workSize);
+//            construction.setEndTime(new Date());
+//            constructionService.save(construction);
+//        }
     }
 
 

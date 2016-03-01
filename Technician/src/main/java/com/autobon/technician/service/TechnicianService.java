@@ -40,7 +40,7 @@ public class TechnicianService {
         repository.delete(id);
     }
 
-    public Page<Technician> getPage(int page, int pageSize) {
+    public Page<Technician> findAll(int page, int pageSize) {
         return repository.findAll(new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "createAt")));
     }

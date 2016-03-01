@@ -7,11 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 
@@ -99,14 +96,7 @@ public class Technician implements UserDetails {
 
     // 根据用户ID生成token
     public static String makeToken(int id) {
-        try {
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(Token.getBytes(), "AES"));
-            return "technician:" + Base64.getEncoder().encodeToString(cipher.doFinal(new Integer(id).toString().getBytes()));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return "";
+        return "technician:" + Crypto.encryptAesBase64(String.valueOf(id), Token);
     }
 
     // 从token返回用户Id
@@ -115,9 +105,7 @@ public class Technician implements UserDetails {
         if (arr.length < 2 || !arr[0].equals("technician")) return 0;
         else token = arr[1];
         try {
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Token.getBytes(), "AES"));
-            return Integer.parseInt(new String(cipher.doFinal(Base64.getDecoder().decode(token))));
+            return Integer.parseInt(Crypto.decryptAesBase64(token, Token));
         } catch (Exception ex) {
             log.info("无效token: " + token);
         }

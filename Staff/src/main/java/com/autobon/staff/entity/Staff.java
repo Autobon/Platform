@@ -2,6 +2,8 @@ package com.autobon.staff.entity;
 
 import com.autobon.shared.Crypto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,6 +14,7 @@ import java.util.Date;
 @Entity
 @Table(name="t_staff")
 public class Staff {
+    private static Logger log = LoggerFactory.getLogger(Staff.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,12 +35,12 @@ public class Staff {
 
     @Column private Date lastLoginAt;
 
-    @Column private String lastLoginIp;
-
-    @Column private int status; // 0: 禁用， 1： 可用
+    @Column private String lastLoginIp;   @Column private int status; // 0: 禁用， 1： 可用
 
     @JsonIgnore
     @Column private String role; // staff角色
+
+    private static String Token = "Autobon~!&&2016=";
 
     public Staff() {
         this.status = 1;
@@ -47,6 +50,24 @@ public class Staff {
 
     public static String encryptPassword(String password) {
         return Crypto.encryptBySha1(password);
+    }
+
+    // 根据用户ID生成token
+    public static String makeToken(int id) {
+        return "staff:" + Crypto.encryptAesBase64(String.valueOf(id), Token);
+    }
+
+    // 从token返回用户Id
+    public static int decodeToken(String token) {
+        String[] arr = token.split(":");
+        if (arr.length < 2 || !arr[0].equals("staff")) return 0;
+        else token = arr[1];
+        try {
+            return Integer.parseInt(Crypto.decryptAesBase64(token, Token));
+        } catch (Exception ex) {
+            log.info("无效token: " + token);
+        }
+        return 0;
     }
 
     public int getId() {

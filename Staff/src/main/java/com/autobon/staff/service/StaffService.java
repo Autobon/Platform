@@ -21,6 +21,10 @@ public class StaffService {
         return repository.findOne(id);
     }
 
+    public Staff save(Staff staff) {
+        return repository.save(staff);
+    }
+
     public Staff findByUsername(String username) {
         return repository.findByUsername(username);
     }

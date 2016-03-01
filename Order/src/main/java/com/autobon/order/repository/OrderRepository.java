@@ -18,6 +18,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     //findAllByOrderByPublishTimeDesc
     List<Order> findAllByStatusOrderByAddTimeAsc(int status);
 
+    Page<Order> findByTechnicianId(int techId, Pageable pageable);
+
 
 
     @Query("select od from Order od where 1=1 " +
