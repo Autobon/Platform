@@ -41,4 +41,8 @@ public class TechnicianController {
                     new JsonPage<>(technicianService.findByName(query, page, pageSize)));
         }
     }
+
+    //todo,同步实时位置
+
+
 }
