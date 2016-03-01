@@ -15,8 +15,8 @@ public class Location {
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
     private int id;
 
-    @Column(name = "get_time", nullable = false, insertable = true, updatable = true)
-    private Date getTime;
+    @Column(name = "add_time", nullable = false, insertable = true, updatable = true)
+    private Date addTime;
 
     @Column(name = "rtposition_lon", nullable = true, insertable = true, updatable = true)
     private String rtpositionLon;
@@ -35,12 +35,12 @@ public class Location {
         this.id = id;
     }
 
-    public Date getGetTime() {
-        return getTime;
+    public Date getAddTime() {
+        return addTime;
     }
 
-    public void setGetTime(Date getTime) {
-        this.getTime = getTime;
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
     }
 
     public String getRtpositionLon() {

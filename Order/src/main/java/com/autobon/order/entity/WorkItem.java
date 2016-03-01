@@ -6,8 +6,8 @@ import javax.persistence.*;
  * Created by yuh on 2016/2/29.
  */
 @Entity
-@Table(name="sys_work")
-public class Work {
+@Table(name="sys_work_item")
+public class WorkItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

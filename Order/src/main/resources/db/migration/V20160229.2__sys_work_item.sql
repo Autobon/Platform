@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS sys_work (
+CREATE TABLE IF NOT EXISTS sys_work_item (
   id int(11) NOT NULL,
   order_type int(2) NOT NULL COMMENT '订单类型(1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁)',
   order_type_name varchar(32) NOT NULL COMMENT '订单类型名称',

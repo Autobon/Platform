@@ -5,7 +5,7 @@ import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderShow;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
-import com.autobon.order.service.WorkService;
+import com.autobon.order.service.WorkItemService;
 import com.autobon.order.util.OrderUtil;
 import com.autobon.platform.utils.ArrayUtil;
 import com.autobon.platform.utils.DateUtil;
@@ -47,11 +47,11 @@ public class OrderController {
         this.constructionService = constructionService;
     }
 
-    private WorkService workService = null;
+    private WorkItemService workItemService = null;
 
     @Autowired
-    public void setWorkService(WorkService workService){
-        this.workService = workService;
+    public void setWorkItemService(WorkItemService workItemService){
+        this.workItemService = workItemService;
     }
 
     @Autowired
@@ -351,7 +351,7 @@ public class OrderController {
         int secondTechId = order.getSecondTechId();
         if (technicianId == mainTechId) {
             //查询工作项列表
-            List workList = workService.getWorkListByOrderType(orderType);
+            List workList = workItemService.getWorkListByOrderType(orderType);
             jsonMessage.setData(workList);
         }
         if(technicianId == secondTechId){
@@ -364,7 +364,7 @@ public class OrderController {
                 String[] workArray = workLoad.split(",");
                 dataMap.put("mainTech",workArray);
 
-                List workList = workService.getWorkListByOrderType(orderType);
+                List workList = workItemService.getWorkListByOrderType(orderType);
                 dataMap.put("workList",workList);
                 jsonMessage.setData(dataMap);
             }else{

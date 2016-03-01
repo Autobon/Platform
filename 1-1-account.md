@@ -428,3 +428,26 @@ GET /api/mobile/technician/search
 | totalElements | 总条数 |
 | totalPages | 总页数 |
 | list | 本次返回的记录数组 |
+
+
+
+## 11. 报告实时位置
+### URL及请求方法
+POST /api/mobile/technician/reportLocation
+
+### 请求参数
+
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| rtpostionLon| 是 | 实时位置经度 | 144.4 |
+| rtpositionLat | 是 | 实时位置维度 | 34.4 |
+
+### 返回数据
+{
+    "result": true,
+    "message": "setLocation",
+    "error": "",
+    "data": null
+}
+
+当前报告位置时间与最近报告的时间间隔不能小于1分钟
