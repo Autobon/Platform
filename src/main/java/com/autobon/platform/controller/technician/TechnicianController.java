@@ -42,7 +42,7 @@ public class TechnicianController {
         }
     }
 
-    //同步实时位置
+    //todo,同步实时位置
 
 
 }
