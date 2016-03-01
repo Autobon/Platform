@@ -1,16 +1,23 @@
 package com.autobon.platform.controller.technician;
 
+
+import com.autobon.order.entity.Location;
+import com.autobon.order.service.LocationService;
+
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -21,6 +28,9 @@ import java.util.regex.Pattern;
 public class TechnicianController {
     @Autowired
     private TechnicianService technicianService;
+
+    @Autowired
+    private LocationService locationService;
 
     @RequestMapping(value = {"/mobile/technician/search", "/admin/technician/search"},
             method = RequestMethod.GET)
@@ -41,4 +51,32 @@ public class TechnicianController {
                     new JsonPage<>(technicianService.findByName(query, page, pageSize)));
         }
     }
+
+    @RequestMapping(value="/mobile/technician/reportLocation",method = RequestMethod.POST)
+    public JsonMessage reportLocation(@RequestParam("rtpostionLon") String rtpostionLon,
+                                   @RequestParam("rtpositionLat") String rtpositionLat){
+        JsonMessage jsonMessage =new JsonMessage(true,"setLocation");
+        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        int technicianId = technician.getId();
+        //查询最近的位置信息
+        Location latestLocation = locationService.findLatestLocation(technicianId);
+        Date latestDate = latestLocation.getAddTime();
+        Date nowDate = new Date();
+        //判断时间间隔是否为一分钟
+        Long minCount = (nowDate.getTime() - latestDate.getTime())/(1000*60);
+        if(minCount>1){
+            //保存位置信息
+            Location location = new Location();
+            location.setAddTime(nowDate);
+            location.setRtpositionLat(rtpositionLat);
+            location.setRtpositionLon(rtpostionLon);
+            location.setTechnicianId(technicianId);
+            locationService.save(location);
+        }else{
+            return new JsonMessage(false,"时间间隔小于一分钟");
+        }
+        return jsonMessage;
+    }
+
+
 }
