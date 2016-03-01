@@ -5,5 +5,5 @@ CREATE TABLE `t_evaluate` (
   `check_options` varchar(100) DEFAULT NULL COMMENT '勾选项(逗号隔开)',
   `advice` varchar(255) DEFAULT NULL COMMENT '评价意见和建议',
   PRIMARY KEY (`Id`),
-  KEY `order_id` (`order_id`),
+  KEY `order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单评价表';
