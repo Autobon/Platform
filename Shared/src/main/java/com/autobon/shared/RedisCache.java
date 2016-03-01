@@ -1,4 +1,4 @@
-package com.autobon.share;
+package com.autobon.shared;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

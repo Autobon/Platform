@@ -1,7 +1,7 @@
 package com.autobon.platform.controller;
 
 
-import com.autobon.share.JsonMessage;
+import com.autobon.shared.JsonMessage;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

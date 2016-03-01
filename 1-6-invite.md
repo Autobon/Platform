@@ -189,7 +189,7 @@ POST /api/mobile/technician/order/1/invitation
 
 当技师端APP收到合作邀请时,应显示一个可供选择的界面,让用户选择接受或拒绝的操作.
 
-在用户收到合作邀请推送消息时, 在透传消息JSON中可获取邀请ID.
+在用户收到合作邀请推送消息时, 在透传消息JSON中可获取邀请订单ID.
 
 当合作邀请有人接单时, 发起邀请的技师将收到**邀请已接受** `action=INVITATION_ACCEPT` 推送消息, 如下:
 
