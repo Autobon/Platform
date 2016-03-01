@@ -3,7 +3,7 @@ package com.autobon.platform.controller.order;
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
 import com.autobon.order.service.OrderService;
-import com.autobon.share.JsonMessage;
+import com.autobon.shared.JsonMessage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import com.fasterxml.jackson.databind.ObjectMapper;

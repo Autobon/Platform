@@ -2,7 +2,7 @@ package com.autobon.platform.controller.technician;
 
 import com.autobon.platform.utils.ArrayUtil;
 import com.autobon.platform.utils.IdentityUtil;
-import com.autobon.share.JsonMessage;
+import com.autobon.shared.JsonMessage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;

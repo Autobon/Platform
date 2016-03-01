@@ -1,18 +1,6 @@
 package com.autobon.platform.staff;
 
 
-import com.autobon.platform.staff.controller.StaffController;
-import com.autobon.platform.staff.controller.StaffValidate;
-import com.autobon.share.JsonMessage;
-import com.autobon.staff.service.StaffService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.mock.web.MockHttpServletResponse;
-
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Created by liz on 2016/2/21.
  */

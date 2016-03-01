@@ -1,9 +1,9 @@
 package com.autobon.platform.controller;
 
-import com.autobon.share.JsonMessage;
-import com.autobon.share.RedisCache;
-import com.autobon.share.SmsSender;
-import com.autobon.share.VerifyCode;
+import com.autobon.shared.JsonMessage;
+import com.autobon.shared.RedisCache;
+import com.autobon.shared.SmsSender;
+import com.autobon.shared.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
