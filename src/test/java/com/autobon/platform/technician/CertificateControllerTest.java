@@ -79,9 +79,8 @@ public class CertificateControllerTest {
     @Test
     public void changeBankCard() throws Exception {
         mockMvcS.perform(post("/api/mobile/technician/changeBankCard")
-                .param("name","张三")
                 .param("bank","026")
-                .param("bankCardNo", "999999999")
+                .param("bankCardNo", "999999999222")
                 .cookie(new Cookie("autoken",token)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));

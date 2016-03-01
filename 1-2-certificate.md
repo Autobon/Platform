@@ -56,7 +56,6 @@ POST /api/mobile/technician/changeBankCard
 
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
-| name | 名字 | 张三 |
 | bank | 银行 | 026 |
 | bankCardNo | 银行卡号 | 999999999 |
 
