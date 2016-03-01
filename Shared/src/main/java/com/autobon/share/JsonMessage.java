@@ -1,4 +1,4 @@
-package com.autobon.platform.utils;
+package com.autobon.share;
 
 /**
  * Created by dave on 16/2/13.

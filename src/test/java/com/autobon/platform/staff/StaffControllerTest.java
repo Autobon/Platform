@@ -3,7 +3,7 @@ package com.autobon.platform.staff;
 
 import com.autobon.platform.staff.controller.StaffController;
 import com.autobon.platform.staff.controller.StaffValidate;
-import com.autobon.platform.utils.JsonMessage;
+import com.autobon.share.JsonMessage;
 import com.autobon.staff.service.StaffService;
 import org.junit.Assert;
 import org.junit.Before;

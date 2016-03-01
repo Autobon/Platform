@@ -2,7 +2,7 @@ package com.autobon.platform.controller.technician;
 
 import com.autobon.platform.utils.ArrayUtil;
 import com.autobon.platform.utils.IdentityUtil;
-import com.autobon.platform.utils.JsonMessage;
+import com.autobon.share.JsonMessage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**

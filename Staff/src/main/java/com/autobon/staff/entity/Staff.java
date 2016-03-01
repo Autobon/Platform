@@ -1,5 +1,8 @@
 package com.autobon.staff.entity;
 
+import com.autobon.share.Crypto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -16,6 +19,7 @@ public class Staff {
 
     @Column private String username;
 
+    @JsonIgnore
     @Column private String password;
 
     @Column private String email;
@@ -30,9 +34,18 @@ public class Staff {
 
     @Column private int status; // 0: 禁用， 1： 可用
 
+    @JsonIgnore
     @Column private String role; // staff角色
 
-    
+    public Staff() {
+        this.status = 1;
+        this.role = "";
+        this.createAt = new Date();
+    }
+
+    public static String encryptPassword(String password) {
+        return Crypto.encryptBySha1(password);
+    }
 
 
 }

@@ -1,4 +1,4 @@
-package com.autobon.platform.utils;
+package com.autobon.share;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

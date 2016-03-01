@@ -9,23 +9,17 @@ import com.autobon.order.service.WorkService;
 import com.autobon.order.util.OrderUtil;
 import com.autobon.platform.utils.ArrayUtil;
 import com.autobon.platform.utils.DateUtil;
-import com.autobon.platform.utils.JsonMessage;
-import com.autobon.platform.utils.VerifyCode;
+import com.autobon.share.JsonMessage;
+import com.autobon.share.VerifyCode;
 import com.autobon.technician.entity.Technician;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.time.LocalDateTime;
@@ -60,15 +54,9 @@ public class OrderController {
         this.workService = workService;
     }
 
-<<<<<<< HEAD
-=======
-    @Value("${com.autobon.upload.orderpic.path}")
-    private String orderpic_path;
-
     @Autowired
     private ArrayUtil arrayUtil;
 
->>>>>>> origin/dev
     @RequestMapping(value = "/mobile/order/orderList", method = RequestMethod.GET)
     public JsonMessage orderList() throws Exception {
         JsonMessage jsonMessage = new JsonMessage(true, "orderList");
@@ -265,11 +253,7 @@ public class OrderController {
                 + (VerifyCode.generateRandomNumber(6)) + extension;
         if (!dir.exists()) dir.mkdirs();
         file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-<<<<<<< HEAD
         orderShow.setPhoto(path + File.separator + filename);
-=======
-        orderShow.setPhoto("api/downOrderPic?pic=" + filename);
->>>>>>> origin/dev
         Order order = orderService.addOrder(orderShow);
 
         if(order != null){
@@ -318,23 +302,23 @@ public class OrderController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/upload/orderpic", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
-    public JsonMessage uploadOrderPic(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        Iterator<String> itr = request.getFileNames();
-        MultipartFile file = request.getFile(itr.next());
-        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", NO_UPLOAD_FILE);
-        JsonMessage msg = new JsonMessage(true);
-        File dir = new File(orderpic_path);
-        String originalFilename = file.getOriginalFilename();
-        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
-        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + (VerifyCode.generateRandomNumber(6)) + extension;
-        if (!dir.exists()) dir.mkdirs();
-        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-        msg.setData(orderpic_path + "\"/\" " + filename);
-        return msg;
-    }
+//    @RequestMapping(value = "/upload/orderpic", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+//    public JsonMessage uploadOrderPic(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
+//
+//        Iterator<String> itr = request.getFileNames();
+//        MultipartFile file = request.getFile(itr.next());
+//        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", NO_UPLOAD_FILE);
+//        JsonMessage msg = new JsonMessage(true);
+//        File dir = new File(orderpic_path);
+//        String originalFilename = file.getOriginalFilename();
+//        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+//        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+//                + (VerifyCode.generateRandomNumber(6)) + extension;
+//        if (!dir.exists()) dir.mkdirs();
+//        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
+//        msg.setData(orderpic_path + "\"/\" " + filename);
+//        return msg;
+//    }
 
 
     /**

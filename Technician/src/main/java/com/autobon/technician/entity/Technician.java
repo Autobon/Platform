@@ -1,5 +1,6 @@
 package com.autobon.technician.entity;
 
+import com.autobon.share.Crypto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,23 +96,7 @@ public class Technician implements UserDetails {
     }
 
     public static String encryptPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            digest.update(password.getBytes());
-            byte[] message = digest.digest();
-            StringBuffer sb = new StringBuffer();
-            for (byte b : message) {
-                String hex = Integer.toHexString(b & 0xFF);
-                if (hex.length() < 2) {
-                    sb.append('0');
-                }
-                sb.append(hex);
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-            return "";
-        }
+        return Crypto.encryptBySha1(password);
     }
 
     // 根据用户ID生成token

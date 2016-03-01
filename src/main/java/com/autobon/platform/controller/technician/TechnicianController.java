@@ -1,7 +1,7 @@
 package com.autobon.platform.controller.technician;
 
-import com.autobon.platform.utils.JsonMessage;
-import com.autobon.platform.utils.JsonPage;
+import com.autobon.share.JsonMessage;
+import com.autobon.share.JsonPage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;

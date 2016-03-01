@@ -1,6 +1,6 @@
 package com.autobon.platform.staff.controller;
 
-import com.autobon.platform.utils.JsonMessage;
+import com.autobon.share.JsonMessage;
 import com.autobon.staff.entity.StaffShow;
 import com.autobon.staff.service.StaffService;
 import org.slf4j.LoggerFactory;
