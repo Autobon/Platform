@@ -18,7 +18,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     //findAllByOrderByPublishTimeDesc
     List<Order> findAllByStatusOrderByAddTimeAsc(int status);
 
-    Page<Order> findByTechnicianId(int techId, Pageable pageable);
+    Page<Order> findByMainTechId(int techId, Pageable pageable);
 
 
 

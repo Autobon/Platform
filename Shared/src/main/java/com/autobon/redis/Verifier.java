@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Created by wh on 2016/1/14.
  */
-@Component
+//@Component
 public class Verifier {
     @Autowired
     SessionRedis sessionRedis;

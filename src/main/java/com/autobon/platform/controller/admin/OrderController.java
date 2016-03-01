@@ -1,7 +1,7 @@
 package com.autobon.platform.controller.admin;
 
-import com.autobon.order.entity.DetailedOrder;
-import com.autobon.order.service.DetailedOrderService;
+import com.autobon.order.entity.Order;
+import com.autobon.order.service.OrderService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/admin/order")
 public class OrderController {
     @Autowired
-    DetailedOrderService orderService;
+    OrderService orderService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage list(
@@ -26,7 +26,7 @@ public class OrderController {
 
     @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)
     public JsonMessage show(@PathVariable("orderId") int orderId) {
-        DetailedOrder order = orderService.get(orderId);
+        Order order = orderService.findOrder(orderId);
         if (order != null) return new JsonMessage(true, "", "", order);
         else return new JsonMessage(false, "ILLEGAL_PARAM", "没有这个订单");
     }

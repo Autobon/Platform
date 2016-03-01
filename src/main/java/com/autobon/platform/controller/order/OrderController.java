@@ -31,10 +31,9 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/mobile/technician/order")
 public class OrderController {
-<<<<<<< HEAD
     @Autowired OrderService orderService;
     @Autowired ConstructionService constructionService;
-    @Autowired WorkService workService;
+    @Autowired WorkItemService workItemService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage list(HttpServletRequest request,
@@ -43,40 +42,6 @@ public class OrderController {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
                 orderService.findByTechnicianId(technician.getId(), page, pageSize));
-=======
-    public final static String NO_UPLOAD_FILE = "没有要上传文件";
-    private OrderService orderService = null;
-
-    @Autowired
-    public void setOrderService(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
-    private ConstructionService constructionService = null;
-
-    @Autowired
-    public void setConstructionService(ConstructionService constructionService) {
-        this.constructionService = constructionService;
-    }
-
-    private WorkItemService workItemService = null;
-
-    @Autowired
-    public void setWorkItemService(WorkItemService workItemService){
-        this.workItemService = workItemService;
-    }
-
-    @Autowired
-    private ArrayUtil arrayUtil;
-
-    @RequestMapping(value = "/mobile/order/orderList", method = RequestMethod.GET)
-    public JsonMessage orderList() throws Exception {
-        JsonMessage jsonMessage = new JsonMessage(true, "orderList");
-        List<Order> orderList = orderService.getOrderList();
-        jsonMessage.setData(orderList);
-        return jsonMessage;
-
->>>>>>> origin/dev
     }
 
     @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)

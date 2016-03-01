@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by wh on 2016/1/14.
  */
-@Component
+//@Component
 public class SocketRedis {
 
     @Autowired

@@ -22,10 +22,10 @@ public class Construction {
     @Column(name = "technician_id",nullable = false, insertable = true, updatable = true)
     private int technicianId;
 
-    @Column(name = "rtposition_lon",nullable = true, insertable = true, updatable = true)
+    @Column(name = "position_lon",nullable = true, insertable = true, updatable = true)
     private String rtpositionLon;
 
-    @Column(name = "rtposition_lat",nullable = true, insertable = true, updatable = true)
+    @Column(name = "position_lat",nullable = true, insertable = true, updatable = true)
     private String rtpositionLat;
 
     @Column(name = "start_time",nullable = true, insertable = true, updatable = true)

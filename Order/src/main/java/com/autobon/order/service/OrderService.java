@@ -123,7 +123,12 @@ public class OrderService {
     }
 
     public Page<Order> findByTechnicianId(int techId, int page, int pageSize) {
-        return orderRepository.findByTechnicianId(techId, new PageRequest(page - 1, pageSize,
+        return orderRepository.findByMainTechId(techId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public Page<Order> findAll(int page, int pageSize) {
+        return orderRepository.findAll(new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
 }
