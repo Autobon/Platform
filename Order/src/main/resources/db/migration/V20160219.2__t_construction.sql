@@ -18,9 +18,9 @@ CREATE TABLE `t_construction` (
   `after_pic_f` varchar(255) DEFAULT NULL COMMENT '施工后照片_6',
   `payfor` float(5,1) DEFAULT NULL COMMENT '结算金额',
   `workload` varchar(100) DEFAULT NULL COMMENT '工作量（多项用逗号隔开）',
+   car_type int(2) DEFAULT NULL COMMENT '车辆类型(五座，七座)',
+   work_size int(10) DEFAULT NULL COMMENT '完成百分比',
   PRIMARY KEY (`Id`),
   KEY `order_id` (`order_id`),
-  KEY `technician_id` (`technician_id`),
-  CONSTRAINT `t_construction_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `t_order` (`Id`),
-  CONSTRAINT `t_construction_ibfk_2` FOREIGN KEY (`technician_id`) REFERENCES `t_technician` (`id`)
+  KEY `technician_id` (`technician_id`)
 ) DEFAULT CHARSET=utf8 COMMENT='施工表';
