@@ -13,21 +13,21 @@ import java.util.Date;
  */
 public interface StaffRepository extends JpaRepository<Staff,Integer>{
 
-    Staff findByUsername(String username);
-
-    @Query("select s from Staff s where" +
-            " (?1 is null or s.id = ?1)" +
-            " and (?2 is null or s.username = ?2)" +
-            " and (?3 is null or s.registTime >= ?3)" +
-            " and (?4 is null or s.registTime <= ?4)")
-    Page<Staff> findByKeys(Integer id, String userName, Date beginTime, Date endTime, Pageable p);
-
-    @Query("select s from Staff s where" +
-            " (?1 is null or s.id = ?1)" +
-            " and (?2 is null or s.username like ?2)" +
-            " and (?3 is null or s.registTime >= ?3)" +
-            " and (?4 is null or s.registTime <= ?4)")
-    Page<Staff> findMoreByKeys(Integer id,String userName,Date beginTime,Date endTime,Pageable p);
+//    Staff findByUsername(String username);
+//
+//    @Query("select s from Staff s where" +
+//            " (?1 is null or s.id = ?1)" +
+//            " and (?2 is null or s.username = ?2)" +
+//            " and (?3 is null or s.registTime >= ?3)" +
+//            " and (?4 is null or s.registTime <= ?4)")
+//    Page<Staff> findByKeys(Integer id, String userName, Date beginTime, Date endTime, Pageable p);
+//
+//    @Query("select s from Staff s where" +
+//            " (?1 is null or s.id = ?1)" +
+//            " and (?2 is null or s.username like ?2)" +
+//            " and (?3 is null or s.registTime >= ?3)" +
+//            " and (?4 is null or s.registTime <= ?4)")
+//    Page<Staff> findMoreByKeys(Integer id,String userName,Date beginTime,Date endTime,Pageable p);
 
 
 }

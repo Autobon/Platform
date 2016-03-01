@@ -1,4 +1,4 @@
-package com.autobon.platform.utils;
+package com.autobon.share;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
