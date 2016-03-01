@@ -70,6 +70,12 @@ public class Construction {
     @Column(name = "workload",nullable = true, insertable = true, updatable = true)
     private String workload;
 
+    @Column(name = "car_type",nullable = true, insertable = true, updatable = true)
+    private int carType;
+
+    @Column(name = "work_size",nullable = true, insertable = true, updatable = true)
+    private int workSize;
+
     public int getId() {
         return id;
     }
@@ -220,5 +226,21 @@ public class Construction {
 
     public void setWorkload(String workload) {
         this.workload = workload;
+    }
+
+    public int getCarType() {
+        return carType;
+    }
+
+    public void setCarType(int carType) {
+        this.carType = carType;
+    }
+
+    public int getWorkSize() {
+        return workSize;
+    }
+
+    public void setWorkSize(int workSize) {
+        this.workSize = workSize;
     }
 }

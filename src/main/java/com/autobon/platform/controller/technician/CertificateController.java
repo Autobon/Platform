@@ -86,13 +86,11 @@ public class CertificateController {
 
     @RequestMapping(value = "/technician/changeBankCard", method = RequestMethod.POST)
     public JsonMessage changeBankCard(
-            @RequestParam("name") String name,
             @RequestParam("bank") String bank,
             @RequestParam("bankCardNo") String bankCardNo) {
         JsonMessage jsonMessage = new JsonMessage(true,"changeBankCard");
 
         Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        technician.setName(name);
         technician.setBank(bank);
         technician.setBankCardNo(bankCardNo);
         technicianService.save(technician);

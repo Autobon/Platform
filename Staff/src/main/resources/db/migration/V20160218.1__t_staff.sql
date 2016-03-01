@@ -13,4 +13,4 @@ CREATE TABLE `t_staff` (
   UNIQUE KEY `staff_username_UNIQUE` (`username`),
   UNIQUE KEY `staff_email_UNIQUE` (`email`),
   UNIQUE KEY `staff_phone_UNIQUE` (`phone`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='员工登陆账户表';
+) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='员工登陆账户表';
