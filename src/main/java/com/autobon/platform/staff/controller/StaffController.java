@@ -1,15 +1,6 @@
 package com.autobon.platform.staff.controller;
 
-import com.autobon.share.JsonMessage;
-import com.autobon.staff.entity.StaffShow;
-import com.autobon.staff.service.StaffService;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by liz on 2016/2/18.

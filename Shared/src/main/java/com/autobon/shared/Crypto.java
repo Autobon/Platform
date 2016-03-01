@@ -1,4 +1,4 @@
-package com.autobon.share;
+package com.autobon.shared;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,9 +1,9 @@
 package com.autobon.platform.controller.technician;
 
-import com.autobon.share.JsonMessage;
-import com.autobon.share.RedisCache;
-import com.autobon.share.SmsSender;
-import com.autobon.share.VerifyCode;
+import com.autobon.shared.JsonMessage;
+import com.autobon.shared.RedisCache;
+import com.autobon.shared.SmsSender;
+import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.im4java.core.ConvertCmd;
