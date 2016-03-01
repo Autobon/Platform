@@ -1,7 +1,6 @@
 package com.autobon.staff.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,16 +9,30 @@ import java.util.Date;
 @Entity
 @Table(name="t_staff")
 public class Staff {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String username;
-    private String password;
-    private String email;
-    private String phone;
-    private Date createAt;
-    private Date lastLoginAt;
-    private String lastLoginIp;
-    private int status;
-    private String role;
+
+    @Column private String username;
+
+    @Column private String password;
+
+    @Column private String email;
+
+    @Column private String phone;
+
+    @Column private Date createAt;
+
+    @Column private Date lastLoginAt;
+
+    @Column private String lastLoginIp;
+
+    @Column private int status; // 0: 禁用， 1： 可用
+
+    @Column private String role; // staff角色
+
+    
 
 
 }
