@@ -1,6 +1,5 @@
 package com.autobon.platform.security;
 
-import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
@@ -39,27 +38,21 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
-        Authentication authentication = null;
         Cookie[] cookies = request.getCookies();
         Cookie cookie = null;
         if (cookies != null) {
             cookie = Arrays.stream(cookies).filter(c -> c.getName().equals("autoken")).findFirst().orElse(null);
         }
         String token = cookie != null ? cookie.getValue() : "";
+        UserDetails user = null;
         if (token.startsWith("technician:")) {
             int id = Technician.decodeToken(token);
-            Technician technician = null;
-            if (id > 0) technician = technicianService.get(id);
-            if (technician != null) authentication = new TokenAuthentication(technician);
-            else throw new BadCredentialsException("无效凭证");
+            if (id > 0) user = technicianService.get(id);
+            if (user == null) throw new BadCredentialsException("无效凭证");
         } else if (token.startsWith("staff:")) {
             //TODO
-//            int id = staffService.loadToken(token);
-//            Staff staff = staffService.get(id);
-//            if (staff != null) authentication = new TokenAuthentication(staff);
-//            else throw new BadCredentialsException("无效凭证");
         }
-        if (authentication == null) {
+        if (user == null) {
             GrantedAuthority authority = new GrantedAuthority() {
                 @Override
                 public String getAuthority() {
@@ -68,7 +61,7 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
             };
             ArrayList<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(authority);
-            UserDetails anonymous = new UserDetails() {
+            user = new UserDetails() {
                 @Override
                 public Collection<? extends GrantedAuthority> getAuthorities() {
                     return authorities;
@@ -104,8 +97,9 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
                     return true;
                 }
             };
-            authentication = new TokenAuthentication(anonymous);
         }
+        TokenAuthentication authentication = new TokenAuthentication(user);
+        request.setAttribute("user", user);
         return this.getAuthenticationManager().authenticate(authentication);
     }
 }

@@ -22,7 +22,8 @@ public class TechnicianController {
     @Autowired
     private TechnicianService technicianService;
 
-    @RequestMapping(value = "/mobile/technician/search", method = RequestMethod.GET)
+    @RequestMapping(value = {"/mobile/technician/search", "/admin/technician/search"},
+            method = RequestMethod.GET)
     public JsonMessage search(@RequestParam("query") String query,
             @RequestParam(value = "page",     defaultValue = "1" )  int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
@@ -31,12 +32,12 @@ public class TechnicianController {
             ArrayList<Technician> list = new ArrayList<>();
             if (t != null) {
                 list.add(t);
-                return new JsonMessage(true, "", new JsonPage<>(1, 20, 1, 1, 1, list));
+                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 1, 1, 1, list));
             } else {
-                return new JsonMessage(true, "", new JsonPage<>(1, 20, 0, 0, 0, list));
+                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 0, 0, 0, list));
             }
         } else {
-            return new JsonMessage(true, "",
+            return new JsonMessage(true, "", "",
                     new JsonPage<>(technicianService.findByName(query, page, pageSize)));
         }
     }

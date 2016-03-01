@@ -2,9 +2,7 @@ package com.autobon.platform.controller.order;
 
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
-import com.autobon.order.repository.ConstructionRepository;
 import com.autobon.order.entity.OrderShow;
-import com.autobon.order.repository.OrderRepository;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkService;
@@ -265,10 +263,11 @@ public class OrderController {
         file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
         orderShow.setPhoto("api/downOrderPic?pic=" + filename);
         Order order = orderService.addOrder(orderShow);
-        if (order != null) {
-            return new JsonMessage(true, "订单添加成功", OrderUtil.order2OrderShow(order));
-        } else {
-            return new JsonMessage(false, "订单添加失败");
+
+        if(order != null){
+            return  new JsonMessage(true, "", "订单添加成功",OrderUtil.order2OrderShow(order));
+        }else{
+            return  new JsonMessage(false, "订单添加失败");
         }
     }
 
@@ -282,10 +281,11 @@ public class OrderController {
     @RequestMapping(value = "/order/modify", method = RequestMethod.PUT)
     public JsonMessage updateOrder(@RequestBody OrderShow orderShow) throws Exception {
         Order order = orderService.updateOrder(orderShow);
-        if (order != null) {
-            return new JsonMessage(true, "订单修改成功", OrderUtil.order2OrderShow(order));
-        } else {
-            return new JsonMessage(false, "订单修改失败");
+
+        if(order != null){
+            return  new JsonMessage(true, "", "订单修改成功",OrderUtil.order2OrderShow(order));
+        }else{
+            return  new JsonMessage(false, "订单修改失败");
         }
     }
 

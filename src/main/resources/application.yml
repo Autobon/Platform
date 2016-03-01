@@ -1,4 +1,10 @@
 com.autobon:
+    getui:
+        host: http://sdk.open.api.igexin.com/serviceex
+        appId: zoCAUGD4Hi55CS6iW1OI77
+        appKey: ESlofHVour7DmT7xy7cnJ9
+        appSecret: 1VX09PPTcz7fdHBNYZVeB2
+        masterSecret: c9qs7jpn6s7dAPDkFr23W4
     sms.gateway: http://114.215.172.92/message/messageSend # SMS Gateway
     test.token: technician:HM6GlQ4/4AXxoe2ZfZVM2Q==
     gm-path: /usr/bin # graphicsMagick工具路径
