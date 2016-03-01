@@ -45,12 +45,6 @@ public class OrderController {
     @Autowired
     public void setConstructionService(ConstructionService constructionService){this.constructionService = constructionService;}
 
-    @Value("${com.autobon.upload.orderpic.path}")
-    private String orderpic_path;
-
-    //@Autowired
-    //private ConstructionRepository constructionRepository;
-
     @RequestMapping(value = "/mobile/order/orderList", method = RequestMethod.GET)
     public JsonMessage orderList() throws Exception{
         JsonMessage jsonMessage = new JsonMessage(true,"orderList");
@@ -236,14 +230,15 @@ public class OrderController {
         Iterator<String> itr=request.getFileNames();
         MultipartFile file=request.getFile(itr.next());
         if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", NO_UPLOAD_FILE);
-        File dir = new File(orderpic_path);
+        String path = "/uploads/order/pic";
+        File dir = new File(request.getServletContext().getRealPath(path));
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
                 + (VerifyCode.generateRandomNumber(6)) + extension;
         if (!dir.exists()) dir.mkdirs();
         file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-        orderShow.setPhoto("api/downOrderPic?pic="+filename);
+        orderShow.setPhoto(path + File.separator + filename);
         Order order = orderService.addOrder(orderShow);
         if(order != null){
             return  new JsonMessage(true, "", "订单添加成功",OrderUtil.order2OrderShow(order));
@@ -306,6 +301,12 @@ public class OrderController {
     }
 
 
+    /**
+     * 此方法已由PartnerInvitationController.invitePartner方法替代
+     * @param orderId
+     * @param technicianId
+     * @return
+     */
     @RequestMapping(value = "/mobile/order/addSecondTechId", method = RequestMethod.POST)
     private JsonMessage addSecondTechId(@RequestParam("orderId") int orderId,
                                      @RequestParam("technicianId") int technicianId){
