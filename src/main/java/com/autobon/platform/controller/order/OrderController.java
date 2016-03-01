@@ -371,7 +371,7 @@ public class OrderController {
             jsonMessage.setData(workList);
         }
         if(technicianId == secondTechId){
-            Map dataMap = new HashMap();
+            Map<String,Object> dataMap = new HashMap<String,Object>();
             //查询工作项列表，主技师已选列表
             List<Construction> constructionList = constructionService.findByOrderIdAndTechnicianId(orderId, mainTechId);
             if(constructionList.size() == 1){
