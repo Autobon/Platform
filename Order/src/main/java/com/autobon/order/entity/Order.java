@@ -66,6 +66,8 @@ public class Order {
 
     @Column private String creatorName;
 
+    @Column private String contactPhone;
+
     @Column private String positionLon;
 
     @Column private String positionLat;
@@ -164,6 +166,14 @@ public class Order {
 
     public void setCreatorName(String creatorName) {
         this.creatorName = creatorName;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
     public String getPositionLon() {

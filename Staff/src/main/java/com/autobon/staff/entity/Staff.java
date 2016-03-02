@@ -4,8 +4,12 @@ import com.autobon.shared.Crypto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -13,7 +17,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="t_staff")
-public class Staff {
+public class Staff implements UserDetails {
     private static Logger log = LoggerFactory.getLogger(Staff.class);
 
     @Id
@@ -158,5 +162,37 @@ public class Staff {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.status == 1;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> list = new ArrayList<>();
+        list.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "STAFF";
+            }
+        });
+        return list;
     }
 }

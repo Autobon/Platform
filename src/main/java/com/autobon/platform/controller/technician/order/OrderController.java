@@ -33,8 +33,7 @@ public class OrderController {
     @Autowired OrderService orderService;
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
-    @Autowired
-    CommentService commentService;
+    @Autowired CommentService commentService;
 
     // 获取主要责任人订单列表
     @RequestMapping(value = "/listMain", method = RequestMethod.GET)
@@ -69,8 +68,11 @@ public class OrderController {
             @RequestParam("orderId") int orderId) {
         Technician tech = (Technician) request.getAttribute("user");
         Order order = orderService.findOrder(orderId);
-        if (order.getStatus() != Order.Status.NEWLY_CREATED)
+        if (order.getStatus() == Order.Status.CANCELED) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
+        } else if (order.getStatus() != Order.Status.NEWLY_CREATED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "已有人接单");
+        }
 
         order.setMainTechId(tech.getId());
         order.setStatus(Order.Status.TAKEN_UP);
@@ -87,6 +89,8 @@ public class OrderController {
         Order o = orderService.findOrder(orderId);
         if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
+        } else if (o.getStatus() == Order.Status.CANCELED) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
         } else if (o.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已施工完成");
         } else if (o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
@@ -113,10 +117,13 @@ public class OrderController {
         Technician tech = (Technician) request.getAttribute("user");
         Order order = orderService.findOrder(orderId);
         List<Construction> list = constructionService.findByOrderIdAndTechnicianId(orderId, tech.getId());
-        if (list.size() < 1)
+        if (order.getStatus() == Order.Status.CANCELED) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
+        } else if (list.size() < 1) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "系统没有你的施工单, 请先点选\"开始工作\"");
-        if (order.getStatus() != Order.Status.IN_PROGRESS)
+        } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始工作或已结束工作");
+        }
 
         Construction construction = list.get(0);
         construction.setPositionLon(positionLon);

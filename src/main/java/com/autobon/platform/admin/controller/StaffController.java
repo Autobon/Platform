@@ -1,4 +1,4 @@
-package com.autobon.platform.staff.controller;
+package com.autobon.platform.admin.controller;
 
 import org.springframework.web.bind.annotation.*;
 

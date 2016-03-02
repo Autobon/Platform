@@ -1,13 +1,16 @@
 package com.autobon.getui;
 
+import com.autobon.getui.message.AppMessage;
 import com.autobon.getui.message.Message;
 import com.autobon.getui.payload.APNPayload;
 import com.autobon.getui.template.TransmissionTemplate;
+import com.autobon.getui.utils.AppConditions;
 import com.autobon.getui.utils.GtConfig;
 import com.autobon.getui.utils.Target;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by dave on 16/2/27.
@@ -48,7 +51,7 @@ public class PushService {
      */
     public boolean pushToSingle(String pushId, String notice, String json, int expireInSeconds) throws IOException {
         System.out.println(json);
-        Message message = buildTransmissionMessage(notice, json, expireInSeconds);
+        Message message = buildTransmissionMessage(notice, json, expireInSeconds, false);
 
         Target target = new Target();
         target.setAppId(config.getAppId());
@@ -66,7 +69,7 @@ public class PushService {
      * @throws IOException
      */
     public boolean pushToList(String[] pushIds, String notice, String json, int expireInSeconds) throws IOException {
-        Message message = buildTransmissionMessage(notice, json, expireInSeconds);
+        Message message = buildTransmissionMessage(notice, json, expireInSeconds, false);
         String contentId = GtPush.getContentId(config, message, "push_list");
 
         ArrayList<Target> targets = new ArrayList<>();
@@ -80,13 +83,27 @@ public class PushService {
     }
 
     /**
+     * 向配置的APP的所有用户发送推送消息
+     * @param notice
+     * @param json
+     * @param expireInSeconds
+     * @return
+     * @throws IOException
+     */
+    public boolean pushToApp(String notice, String json, int expireInSeconds) throws IOException {
+        Message message = buildTransmissionMessage(notice, json, expireInSeconds, true);
+        String contentId = GtPush.getContentId(config, message, "push_list");
+        return GtPush.pushToApp(config, contentId);
+    }
+
+    /**
      * 生成透传消息实例
      * @param notice
      * @param json
      * @param expireInSeconds
      * @return
      */
-    protected Message buildTransmissionMessage(String notice, String json, int expireInSeconds) {
+    protected Message buildTransmissionMessage(String notice, String json, int expireInSeconds, boolean isAppMessage) {
         TransmissionTemplate template = new TransmissionTemplate();
         template.setAppId(config.getAppId());
         template.setAppkey(config.getAppKey());
@@ -99,7 +116,15 @@ public class PushService {
         //payload.setBadge(1);
         template.setAPNInfo(payload);
 
-        Message message = new Message();
+        Message message;
+        if (isAppMessage) {
+            AppMessage appmsg = new AppMessage();
+            appmsg.setAppIdList(Arrays.asList(config.getAppId()));
+            appmsg.setConditions(new AppConditions());
+            message = appmsg;
+        } else {
+            message = new Message();
+        }
         message.setData(template);
         message.setOffline(expireInSeconds > 0);
         message.setOfflineExpireTime(expireInSeconds*1000);

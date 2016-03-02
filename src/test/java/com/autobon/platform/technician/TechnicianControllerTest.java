@@ -6,6 +6,7 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -20,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by dave on 16/2/26.
  */
 public class TechnicianControllerTest extends MvcTest {
-    @Autowired
+    @Autowired @Qualifier("PushServiceA")
     private PushService pushService;
     @Value("${com.autobon.test.token}")
     String token;
