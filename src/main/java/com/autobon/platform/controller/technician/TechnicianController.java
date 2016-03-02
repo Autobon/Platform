@@ -64,7 +64,7 @@ public class TechnicianController {
         Date nowDate = new Date();
         //判断时间间隔是否为一分钟
         Long minCount = (nowDate.getTime() - latestDate.getTime())/(1000*60);
-        if(minCount>1){
+        if(minCount>=1){
             //保存位置信息
             Location location = new Location();
             location.setAddTime(nowDate);
@@ -72,8 +72,6 @@ public class TechnicianController {
             location.setRtpositionLon(rtpostionLon);
             location.setTechnicianId(technicianId);
             locationService.save(location);
-        }else{
-            return new JsonMessage(false,"时间间隔小于一分钟");
         }
         return jsonMessage;
     }
