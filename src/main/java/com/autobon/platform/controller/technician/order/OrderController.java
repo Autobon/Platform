@@ -1,4 +1,4 @@
-package com.autobon.platform.controller.order;
+package com.autobon.platform.controller.technician.order;
 
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Construction;

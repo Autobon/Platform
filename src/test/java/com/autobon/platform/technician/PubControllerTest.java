@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class PubControllerTest extends MvcTest {
 
-
     @Test
     public void getSkills() throws Exception {
         this.mockMvc.perform(get("/api/mobile/pub/technician/skills"))

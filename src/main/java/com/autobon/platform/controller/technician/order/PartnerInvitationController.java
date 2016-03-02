@@ -1,4 +1,4 @@
-package com.autobon.platform.controller.order;
+package com.autobon.platform.controller.technician.order;
 
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
