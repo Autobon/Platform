@@ -72,8 +72,8 @@ POST /api/mobile/technician/order/comment
 | goodAttitude | 态度好 |1 |
 | advice | 建议 |1 |
 
-订单需要有绑定主技师。
+订单需要有指定主技师。
 
 
 ###返回结果
-
+{"result":true,"message":"comment","error":"","data":null}
