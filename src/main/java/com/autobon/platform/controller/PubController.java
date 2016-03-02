@@ -4,13 +4,11 @@ import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,22 +19,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/mobile/pub")
 public class PubController {
-    @Value("${com.autobon.skill}")
-    private String skills;
 
     @Autowired
     private WorkItemService workItemService;
 
     @RequestMapping(value = "/technician/skills", method = RequestMethod.GET)
     public JsonMessage getSkills() {
-        final int[] index = new int[]{0};
-        return new JsonMessage(true, "", "",
-                Arrays.stream(skills.split(",")).map((e) -> {
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("id", index[0]++);
-                    map.put("name", e);
-                    return map;
-                }).collect(Collectors.toList()));
+        return getOrderTypes();
     }
 
     @RequestMapping(value = "/orderTypes", method = RequestMethod.GET)
