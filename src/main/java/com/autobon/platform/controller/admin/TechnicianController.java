@@ -48,12 +48,16 @@ public class TechnicianController {
         if (tech != null) {
             if (verified) {
                 tech.setStatus(Technician.Status.VERIFIED);
-                pushService.pushToSingle(tech.getPushId(), "你已通过技师资格认证",
-                        "{\"action\":\"VERIFY_SUCCEED\"}", 3*24*3600);
+                String title = "你已通过技师资格认证";
+                pushService.pushToSingle(tech.getPushId(), title,
+                        "{\"action\":\"VERIFY_SUCCEED\",\"title\":\"" + title + "\"}",
+                        3*24*3600);
             } else {
                 tech.setStatus(Technician.Status.REJECTED);
-                pushService.pushToSingle(tech.getPushId(), "你的技师资格认证失败,请更新信息后重新申请认证",
-                        "{\"action\":\"VERIFY_FAILED\"}", 3*24*3600);
+                String title = "你的技师资格认证失败,请更新信息后重新申请认证";
+                pushService.pushToSingle(tech.getPushId(), title,
+                        "{\"action\":\"VERIFY_FAILED\",\"title\":\"" + title + "\"}",
+                        3*24*3600);
             }
             technicianService.save(tech);
             return new JsonMessage(true);

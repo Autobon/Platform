@@ -7,23 +7,20 @@ import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.order.util.OrderUtil;
-import com.autobon.platform.utils.DateUtil;
 import com.autobon.shared.JsonMessage;
-import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yuh on 2016/2/22.
@@ -35,6 +32,7 @@ public class OrderController {
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
 
+    // 获取主要责任人订单列表
     @RequestMapping(value = "/listMain", method = RequestMethod.GET)
     public JsonMessage listMain(HttpServletRequest request,
              @RequestParam(value = "page", defaultValue = "1") int page,
@@ -44,6 +42,7 @@ public class OrderController {
                 orderService.findByMainTechId(technician.getId(), page, pageSize));
     }
 
+    // 获取次要责任人订单列表
     @RequestMapping(value = "/listSecond", method = RequestMethod.GET)
     public JsonMessage listSecond(HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1") int page,
@@ -53,30 +52,74 @@ public class OrderController {
                 orderService.findBySecondTechId(technician.getId(), page, pageSize));
     }
 
+    // 获取订单信息
     @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)
     public JsonMessage show(HttpServletRequest request,
             @PathVariable("orderId") int orderId) {
         return new JsonMessage(true, "", "", orderService.findOrder(orderId));
     }
 
-    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public JsonMessage signIn(HttpServletRequest request,
-            @RequestParam("rtpositionLon") String rtpositionLon,
-            @RequestParam("rtpositionLat") String rtpositionLat,
+    // 抢单
+    @RequestMapping(value = "/takeup", method = RequestMethod.POST)
+    public JsonMessage takeUpOrder(HttpServletRequest request,
             @RequestParam("orderId") int orderId) {
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.findOrder(orderId);
+        if (order.getStatus() != Order.Status.NEWLY_CREATED)
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "已有人接单");
+
+        order.setMainTechId(tech.getId());
+        order.setStatus(Order.Status.TAKEN_UP);
+        orderService.save(order);
+        return new JsonMessage(true, "", "", order);
+    }
+
+    // 开始工作
+    @RequestMapping(value = "/start", method = RequestMethod.POST)
+    public JsonMessage startWork(HttpServletRequest request,
+            @RequestParam("orderId") int orderId,
+            @RequestParam(value = "ignoreInvitation", defaultValue = "false") boolean ignoreInvitation) {
         Technician t = (Technician) request.getAttribute("user");
         Order o = orderService.findOrder(orderId);
         if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
+        } else if (o.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已施工完成");
+        } else if (o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
+            return new JsonMessage(false, "INVITATION_NOT_FINISH", "你邀请的合作人还未接受或拒绝邀请");
+        } else if (o.getStatus() != Order.Status.IN_PROGRESS) { // 当第二个技师开始工作时,订单状态已进入IN_PROGRESS状态
+            o.setStatus(Order.Status.IN_PROGRESS);
+            orderService.save(o);
         }
+
         Construction construction = new Construction();
         construction.setOrderId(orderId);
         construction.setTechnicianId(t.getId());
-        construction.setRtpositionLon(rtpositionLon);
-        construction.setRtpositionLat(rtpositionLat);
-        construction.setSigninTime(new Date());
+        construction.setStartTime(new Date());
         construction = constructionService.save(construction);
         return new JsonMessage(true, "", "", construction);
+    }
+
+    // 工作签到
+    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
+    public JsonMessage signIn(HttpServletRequest request,
+            @RequestParam("positionLon") String positionLon,
+            @RequestParam("positionLat") String positionLat,
+            @RequestParam("orderId")     int orderId) {
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.findOrder(orderId);
+        List<Construction> list = constructionService.findByOrderIdAndTechnicianId(orderId, tech.getId());
+        if (list.size() < 1)
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "系统没有你的施工单, 请先点选\"开始工作\"");
+        if (order.getStatus() != Order.Status.IN_PROGRESS)
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始工作或已结束工作");
+
+        Construction construction = list.get(0);
+        construction.setPositionLon(positionLon);
+        construction.setPositionLat(positionLat);
+        construction.setSigninTime(new Date());
+        constructionService.save(construction);
+        return new JsonMessage(true);
     }
 
     // TODO 继续清理下面的代码
@@ -125,43 +168,43 @@ public class OrderController {
     @RequestMapping(value = "/order", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
     public JsonMessage addOrder(MultipartHttpServletRequest request) throws Exception {
         //生成订单编号 时间戳&用户ID&四位随机数
-        String timeStamp = DateUtil.generateTimeStamp();
-        String random = VerifyCode.generateRandomNumber(4);
-        StringBuffer orderNum = new StringBuffer(timeStamp);
-        OrderShow orderShow = new OrderShow();
-        orderNum = orderNum.append(orderShow.getCustomerId()).append(random);
-        orderShow.setOrderNum(orderNum.toString());
-
-        orderShow.setOrderType(Integer.valueOf(request.getParameter("orderType")));
-        orderShow.setAddTime(new Date());
-        if (request.getParameter("orderTime") != null)
-            orderShow.setOrderTime(DateUtil.string2Date(request.getParameter("orderTime")));
-        orderShow.setRemark(request.getParameter("remark"));
-        if (request.getParameter("customerType") != null)
-            orderShow.setCustomerType(Integer.valueOf(request.getParameter("customerType")));
-        if (request.getParameter("customerId") != null)
-            orderShow.setCustomerId(Integer.valueOf(request.getParameter("customerId")));
-
-        //上传图片
-        Iterator<String> itr = request.getFileNames();
-        MultipartFile file = request.getFile(itr.next());
-        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有要上传文件");
-        String path = "/uploads/order/pic";
-        File dir = new File(request.getServletContext().getRealPath(path));
-        String originalFilename = file.getOriginalFilename();
-        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
-        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + (VerifyCode.generateRandomNumber(6)) + extension;
-        if (!dir.exists()) dir.mkdirs();
-        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-        orderShow.setPhoto(path + File.separator + filename);
-        Order order = orderService.addOrder(orderShow);
-
-        if(order != null){
-            return  new JsonMessage(true, "", "订单添加成功",OrderUtil.order2OrderShow(order));
-        }else{
+//        String timeStamp = DateUtil.generateTimeStamp();
+//        String random = VerifyCode.generateRandomNumber(4);
+//        StringBuffer orderNum = new StringBuffer(timeStamp);
+//        OrderShow orderShow = new OrderShow();
+//        orderNum = orderNum.append(orderShow.getCustomerId()).append(random);
+//        orderShow.setOrderNum(orderNum.toString());
+//
+//        orderShow.setOrderType(Integer.valueOf(request.getParameter("orderType")));
+//        orderShow.setAddTime(new Date());
+//        if (request.getParameter("orderTime") != null)
+//            orderShow.setOrderTime(DateUtil.string2Date(request.getParameter("orderTime")));
+//        orderShow.setRemark(request.getParameter("remark"));
+//        if (request.getParameter("customerType") != null)
+//            orderShow.setCustomerType(Integer.valueOf(request.getParameter("customerType")));
+//        if (request.getParameter("customerId") != null)
+//            orderShow.setCustomerId(Integer.valueOf(request.getParameter("customerId")));
+//
+//        //上传图片
+//        Iterator<String> itr = request.getFileNames();
+//        MultipartFile file = request.getFile(itr.next());
+//        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有要上传文件");
+//        String path = "/uploads/order/pic";
+//        File dir = new File(request.getServletContext().getRealPath(path));
+//        String originalFilename = file.getOriginalFilename();
+//        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+//        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+//                + (VerifyCode.generateRandomNumber(6)) + extension;
+//        if (!dir.exists()) dir.mkdirs();
+//        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
+//        orderShow.setPhoto(path + File.separator + filename);
+//        Order order = orderService.addOrder(orderShow);
+//
+//        if(order != null){
+//            return  new JsonMessage(true, "", "订单添加成功",OrderUtil.order2OrderShow(order));
+//        }else{
             return  new JsonMessage(false, "订单添加失败");
-        }
+//        }
     }
 
     /**
@@ -233,7 +276,7 @@ public class OrderController {
         int secondTechId = order.getSecondTechId();
         if (technicianId == mainTechId) {
             //查询工作项列表
-            List workList = workItemService.getWorkListByOrderType(orderType);
+            List workList = workItemService.findByOrderType(orderType);
             jsonMessage.setData(workList);
         }
         if(technicianId == secondTechId){
@@ -246,7 +289,7 @@ public class OrderController {
                 String[] workArray = workLoad.split(",");
                 dataMap.put("mainTech",workArray);
 
-                List workList = workItemService.getWorkListByOrderType(orderType);
+                List workList = workItemService.findByOrderType(orderType);
                 dataMap.put("workList",workList);
                 jsonMessage.setData(dataMap);
             }else{

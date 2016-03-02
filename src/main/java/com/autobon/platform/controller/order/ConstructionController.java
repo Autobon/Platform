@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,69 +31,71 @@ public class ConstructionController {
     @Autowired OrderService orderService;
     @Autowired ConstructionService constructionService;
 
-    @RequestMapping(value = "/uploadBeforePhotos", method = RequestMethod.POST)
-    public JsonMessage uploadBeforePhotos(HttpServletRequest request,
-              @RequestParam("orderId") int orderId,
-              @RequestParam(value = "file", required = false) MultipartFile[] files,
-              @RequestParam(value = "append", defaultValue = "true") boolean append ) throws IOException {
-        return _savePhotos(files, orderId, request, true, append);
-    }
-
-    @RequestMapping(value = "/uploadAfterPhotos", method = RequestMethod.POST)
-    public JsonMessage uploadAfterPhotos(HttpServletRequest request,
-             @RequestParam("orderId") int orderId,
-             @RequestParam(value = "file", required = false) MultipartFile[] files,
-             @RequestParam(value = "append", defaultValue = "true") boolean append ) throws IOException {
-        return _savePhotos(files, orderId, request, false, append);
-    }
-
-
-    private JsonMessage _savePhotos(MultipartFile[] files, int orderId, HttpServletRequest request,
-                boolean isBeforePhoto, boolean append) throws IOException {
+    @RequestMapping(value = "/uploadPhoto", method = RequestMethod.POST)
+    public JsonMessage uploadPhoto(HttpServletRequest request,
+            @RequestParam("file")     MultipartFile file,
+            @RequestParam("no")       int no, // 图片序号
+            @RequestParam("orderId")  int orderId,
+            @RequestParam("isBefore") boolean isBefore) throws IOException {
         Technician tech = (Technician) request.getAttribute("user");
         Order order = orderService.findOrder(orderId);
         if (order == null || (tech.getId() != order.getMainTechId() && tech.getId() != order.getSecondTechId())) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
-        } else if (order.getEnumStatus() != Order.EnumStatus.IN_PROGRESS) {
+        } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "非施工中订单, 不允许上传照片");
-        } else if (files.length > 3) {
-            return new JsonMessage(false, "ILLEGAL_PARAM", "施工前照片只能上传1至3张");
         }
 
+        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
         List<Construction> list = constructionService.findByOrderIdAndTechnicianId(orderId, tech.getId());
         if (list.size() < 1) return new JsonMessage(false, "SYSTEM_CORRUPT", "系统没有你的施工单");
         Construction construction = list.get(0);
 
-        if (files == null || files.length == 0) {
-            if (!append) { // 清空上传文件操作
-                construction.setBeforePhotos("");
-                constructionService.save(construction);
-            } else {
-                return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
-            }
-        }
-
         String path = "/uploads/order";
         File dir = new File(request.getServletContext().getRealPath(path));
         if (!dir.exists()) dir.mkdirs();
-        ArrayList<String> urls = new ArrayList<>();
-        if (append) urls.addAll(Arrays.asList(construction.getBeforePhotos().split(",")));
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isEmpty()) continue;
-            String originalFilename = files[i].getOriginalFilename();
-            String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
-            String filename = "" + orderId + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"))
-                    + "-" + i + extension;
-            if (isBeforePhoto) filename = "b" + filename;
-            else filename = "a" + filename;
-            files[i].transferTo(new File(dir.getAbsoluteFile() + File.separator + filename));
-            urls.add(path + "/" + filename);
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+        String filename = "" + orderId + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"))
+                + "-" + no + extension;
+
+        if (isBefore) {
+            if (no < 1 || no > 3) return new JsonMessage(false, "ILLEGAL_PARAM", "施工前照片序号只能为1,2,3");
+            filename = "b" + filename;
+
+            String photos = construction.getBeforePhotos();
+            List<String> urlList = (photos == null || "".equals(photos)) ?
+                    Arrays.asList("", "", "") : Arrays.asList(photos.split(","));
+            urlList.set(no - 1, path + "/" + filename);
+            construction.setBeforePhotos(urlList.stream().collect(Collectors.joining(",")));
+        } else {
+            if (no < 1 || no > 6) return new JsonMessage(false, "ILLEGAL_PARAM", "施工后照片序号只能为1-6");
+            filename = "a" + filename;
+
+            String photos = construction.getAfterPhotos();
+            List<String> urlList = (photos == null || "".equals(photos)) ?
+                        Arrays.asList("", "", "", "", "", "") : Arrays.asList(photos.split(","));
+            urlList.set(no - 1, path + "/" + filename);
+            construction.setAfterPhotos(urlList.stream().collect(Collectors.joining(",")));
+        }
+        file.transferTo(new File(dir.getAbsoluteFile() + File.separator + filename));
+        constructionService.save(construction);
+
+        return new JsonMessage(true, "", "", path + "/" + filename);
+    }
+
+    @RequestMapping(value = "/finish", method = RequestMethod.POST)
+    public JsonMessage finish(HttpServletRequest request,
+            @RequestParam("orderId")   int orderId,
+            @RequestParam("carSeat")   int carSeat,
+            @RequestParam("workItems") String workItems) {
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.findOrder(orderId);
+        if (order == null || (tech.getId() != order.getMainTechId() && tech.getId() != order.getSecondTechId())) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
+        } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "非施工中订单, 不允许上传照片");
         }
 
-        String urlString = urls.stream().collect(Collectors.joining(","));
-        if (isBeforePhoto) construction.setBeforePhotos(urlString);
-        else construction.setAfterPhotos(urlString);
-        constructionService.save(construction);
-        return new JsonMessage(true, "", "", urls);
+        return null;
     }
 }

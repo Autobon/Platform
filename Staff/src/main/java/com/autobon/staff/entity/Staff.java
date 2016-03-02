@@ -35,7 +35,9 @@ public class Staff {
 
     @Column private Date lastLoginAt;
 
-    @Column private String lastLoginIp;   @Column private int status; // 0: 禁用， 1： 可用
+    @Column private String lastLoginIp;
+
+    @Column private int status; // 0: 禁用， 1： 可用
 
     @JsonIgnore
     @Column private String role; // staff角色

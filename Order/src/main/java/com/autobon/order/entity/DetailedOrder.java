@@ -167,11 +167,11 @@ public class DetailedOrder {
         this.partner = partner;
     }
 
-    public Order.EnumStatus getEnumStatus() {
-        return Order.EnumStatus.getStatus(this.status);
+    public Order.Status getEnumStatus() {
+        return Order.Status.getStatus(this.status);
     }
 
-    public void setEnumStatus(Order.EnumStatus status) {
+    public void setEnumStatus(Order.Status status) {
         this.status = status.getStatusCode();
     }
 }

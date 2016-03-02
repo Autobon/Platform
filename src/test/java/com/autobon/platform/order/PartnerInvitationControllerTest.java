@@ -45,7 +45,7 @@ public class PartnerInvitationControllerTest extends MvcTest {
         order.setOrderNum("test-order-num");
         order.setOrderType(1);
         order.setOrderTime(Date.from(LocalDateTime.now().plusDays(1).atZone(ZoneId.systemDefault()).toInstant()));
-        order.setStatus(0);
+        order.setStatusCode(0);
         order.setMainTechId(technician.getId());
         orderService.save(order);
     }

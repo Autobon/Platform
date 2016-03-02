@@ -5,19 +5,21 @@ CREATE TABLE `t_order` (
   `photo` varchar(255) DEFAULT NULL COMMENT '订单照片',
   `order_time` datetime DEFAULT NULL COMMENT '预约时间',
   `add_time` datetime DEFAULT NULL COMMENT '下单时间',
-  `status` int(1) NOT NULL DEFAULT '0' COMMENT '订单状态 0-未接单 1-已接单 (-1)-合作邀请已拒绝 2-工作中 3-已完成 4-已评价 5-已撤销',
-  `customer_type` int(1) NOT NULL DEFAULT '0' COMMENT '客户类型(1-合作商户 2-后台 3-用户)',
-  `customer_id` int(11) DEFAULT NULL COMMENT '下单客户编号',
-  `customer_name` varchar(255) DEFAULT NULL COMMENT '下单客户名称',
-  `customer_lon` varchar(20) DEFAULT NULL COMMENT '客户位置经度',
-  `customer_lat` varchar(20) DEFAULT NULL COMMENT '客户位置维度',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '订单状态 0-新建 1-已接单 2-已发出合作邀请等待结果 3-合作人已接受
+      4-合作人已拒绝 5-工作中 6-已完成 7-已评价 20-已撤销',
+  `creator_type` int(1) NOT NULL DEFAULT '0' COMMENT '下单人类型(1-合作商户 2-后台 3-用户)',
+  `creator_id` int(11) DEFAULT NULL COMMENT '下单人编号',
+  `creator_name` varchar(255) DEFAULT NULL COMMENT '下单人名称',
+  `creator_phone` varchar(50) DEFAULT NULL COMMENT '下单人联系电话',
+  `position_lon` varchar(20) DEFAULT NULL COMMENT '订单位置经度',
+  `position_lat` varchar(20) DEFAULT NULL COMMENT '订单位置维度',
   `remark` varchar(255) DEFAULT NULL COMMENT '订单备注',
   `main_tech_id` int(11) NOT NULL DEFAULT '0' COMMENT '主技师id',
   `second_tech_id` int(11) NOT NULL DEFAULT '0' COMMENT '合作技师id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_order_num` (`order_num`)
-)DEFAULT CHARSET=utf8 COMMENT='订单表';
+) DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 
-INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`customer_type`,`customer_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (1,'20160223134200014567',1,'','2016-02-24 14:00:00','2016-02-23 11:09:23',1,1,1,'bababala',0,0);
-INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`customer_type`,`customer_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (2,'20160223135200016789',2,NULL,'2016-02-24 14:00:00','2016-02-23 11:09:23',2,1,2,'somewords',0,0);
+INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`creator_type`,`creator_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (1,'20160223134200014567',1,'','2016-02-24 14:00:00','2016-02-23 11:09:23',1,1,1,'bababala',0,0);
+INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`creator_type`,`creator_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (2,'20160223135200016789',2,NULL,'2016-02-24 14:00:00','2016-02-23 11:09:23',2,1,2,'somewords',0,0);

@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="sys_codeitem")
-public class Codeitem {
+public class CodeItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

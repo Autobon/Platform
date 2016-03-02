@@ -1,6 +1,7 @@
 package com.autobon.platform.technician;
 
 import com.autobon.platform.Application;
+import com.autobon.platform.MvcTest;
 import com.autobon.technician.service.TechnicianService;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,10 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by yuh on 2016/2/17.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-public class PubControllerTest {
+public class PubControllerTest extends MvcTest {
     @Autowired
     WebApplicationContext wac;
     @Autowired

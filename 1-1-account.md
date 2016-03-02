@@ -62,7 +62,7 @@ POST /api/mobile/technician/register
     "voteRate": 0,
     "skill": null,
     "pushId": null,
-    "status": "NOTVERIFIED"
+    "statusCode": "NOTVERIFIED"
 }}
 ```
 
@@ -129,7 +129,7 @@ POST /api/mobile/technician/login
     "voteRate": 0,
     "skill": null,
     "pushId": null,
-    "status": "NOTVERIFIED"
+    "statusCode": "NOTVERIFIED"
 }}
 ```
 2.未注册手机
@@ -355,13 +355,13 @@ GET /api/mobile/technician
     "voteRate": 0,
     "skill": null,
     "pushId": null,
-    "status": "NOTVERIFIED"
+    "statusCode": "NOTVERIFIED"
 }}
 ```
 
-`status` 字段表示用户的帐户状态
+`statusCode` 字段表示用户的帐户状态
 
-| status | 帐户状态 |
+| statusCode | 帐户状态 |
 | ------ | ------ |
 | NOTVERIFIED | 未认证 |
 | VERIFIED | 已认证通过 |
@@ -377,8 +377,8 @@ GET /api/mobile/technician/search
 | 参数名称 | 是否必须 | 说明 | 举例 |
 | ------ | -------- | ---- | --- |
 | query| 是 | 手机号或姓名 | 张三 |
-| page | 否 | 从1开始，默认为1, 仅当query参数为姓名时有效 | 1 |
-| pageSize | 否 | 默认20, 仅当query参数为姓名时有效 | 20 |
+| page | 否 | 分页页码, 从1开始，默认为1, 仅当query参数为姓名时有效 | 1 |
+| pageSize | 否 | 每页条数, 默认20, 仅当query参数为姓名时有效 | 20 |
 
 ### 返回数据
 
@@ -412,7 +412,7 @@ GET /api/mobile/technician/search
         "voteRate": 0,
         "skill": "1,6",
         "pushId": null,
-        "status": "NOTVERIFIED"
+        "statusCode": "NOTVERIFIED"
         }]
     }
 }
@@ -440,7 +440,7 @@ POST /api/mobile/technician/reportLocation
 | 参数名称 | 是否必须 | 说明 | 举例 |
 | ------ | -------- | ---- | --- |
 | rtpostionLon| 是 | 实时位置经度 | 144.4 |
-| rtpositionLat | 是 | 实时位置维度 | 34.4 |
+| positionLat | 是 | 实时位置维度 | 34.4 |
 
 ### 返回数据
 {

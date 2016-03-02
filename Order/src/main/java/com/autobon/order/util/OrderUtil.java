@@ -22,9 +22,9 @@ public class OrderUtil{
         orderShow.setPhoto(order.getPhoto());
         orderShow.setOrderTime(order.getOrderTime());
         orderShow.setAddTime(order.getAddTime());
-        orderShow.setStatus(order.getStatus());
-        orderShow.setCustomerType(order.getCustomerType());
-        orderShow.setCustomerId(order.getCustomerId());
+        orderShow.setStatus(order.getStatusCode());
+        orderShow.setCustomerType(order.getCreatorType());
+        orderShow.setCustomerId(order.getCreatorId());
         orderShow.setRemark(order.getRemark());
         orderShow.setMainTechId(order.getMainTechId());
         orderShow.setSecondTechId(order.getSecondTechId());
@@ -46,9 +46,9 @@ public class OrderUtil{
         order.setPhoto(orderShow.getPhoto());
         order.setOrderTime(orderShow.getOrderTime());
         order.setAddTime(orderShow.getAddTime());
-        order.setStatus(orderShow.getStatus());
-        order.setCustomerType(orderShow.getCustomerType());
-        order.setCustomerId(orderShow.getCustomerId());
+        order.setStatusCode(orderShow.getStatus());
+        order.setCreatorType(orderShow.getCustomerType());
+        order.setCreatorId(orderShow.getCustomerId());
         order.setRemark(orderShow.getRemark());
         order.setMainTechId(orderShow.getMainTechId());
         order.setSecondTechId(orderShow.getSecondTechId());

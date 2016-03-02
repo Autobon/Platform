@@ -1,5 +1,7 @@
 package com.autobon.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -9,17 +11,24 @@ import java.util.Date;
 @Entity
 @Table(name="t_order")
 public class Order {
-    public enum EnumStatus {
-        INVITATION_NOT_ACCEPTED(0), INVITATION_ACCEPTED(1), INVITATION_REJECT(-1),
-        IN_PROGRESS(2), FINISHED(3), COMMENTED(4), CANCELED(5);
+    public enum Status {
+        NEWLY_CREATED(0), // 新建
+        TAKEN_UP(10), // 已有人抢单
+        SEND_INVITATION(20), // 已发送合作邀请并等待结果
+        INVITATION_ACCEPTED(30), // 合作邀请已接受
+        INVITATION_REJECTED(40), // 合作邀请已拒绝
+        IN_PROGRESS(50), // 订单开始工作中
+        FINISHED(60), // 订单已结束
+        COMMENTED(70), // 订单已评论
+        CANCELED(200); // 订单已取消
         private int statusCode;
 
-        EnumStatus(int statusCode) {
+        Status(int statusCode) {
             this.statusCode = statusCode;
         }
 
-        public static EnumStatus getStatus(int statusCode) {
-            for (EnumStatus s : EnumStatus.values()) {
+        public static Status getStatus(int statusCode) {
+            for (Status s : Status.values()) {
                 if (s.getStatusCode() == statusCode) return s;
             }
             return null;
@@ -28,52 +37,41 @@ public class Order {
             return this.statusCode;
         }
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
     private int id;
 
-    @Column(name="order_num",nullable = false, insertable = true, updatable = true)
-    private String orderNum;
+    @Column private String orderNum;
 
-    @Column(name="order_type",nullable = true, insertable = true, updatable = true)
-    private int orderType;
+    @Column private int orderType;
 
-    @Column(name="photo",nullable = true, insertable = true, updatable = true)
-    private String photo;
+    @Column private String photo;
 
-    @Column(name="order_time",nullable = true, insertable = true, updatable = true)
-    private Date orderTime;
+    @Column private Date orderTime;
 
-    @Column(name="add_time",nullable = true, insertable = true, updatable = true)
-    private Date addTime;
+    @Column private Date addTime;
 
-    @Column(name="status",nullable = true, insertable = true, updatable = true)
-    private int status;
+    @JsonIgnore
+    @Column(name="status")
+    private int statusCode;
 
-    @Column(name="customer_type",nullable = true, insertable = true, updatable = true)
-    private int customerType;
+    @Column private int creatorType;
 
-    @Column(name="customer_id",nullable = true, insertable = true, updatable = true)
-    private int customerId;
+    @Column private int creatorId;
 
-    @Column(name="customer_name",nullable = true, insertable = true, updatable = true)
-    private String customerName;
+    @Column private String creatorName;
 
-    @Column(name="customer_lon",nullable = true, insertable = true, updatable = true)
-    private String customerLon;
+    @Column private String positionLon;
 
-    @Column(name="customer_lat",nullable = true, insertable = true, updatable = true)
-    private String customerLat;
+    @Column private String positionLat;
 
-    @Column(name="remark",nullable = true, insertable = true, updatable = true)
-    private String remark;
+    @Column private String remark;
 
-    @Column(name="main_tech_id",nullable = true, insertable = true, updatable = true)
-    private int mainTechId;
+    @Column private int mainTechId;
 
-    @Column(name="second_tech_id",nullable = true, insertable = true, updatable = true)
-    private int secondTechId;
+    @Column private int secondTechId;
 
 
     public int getId() {
@@ -124,52 +122,52 @@ public class Order {
         this.addTime = addTime;
     }
 
-    public int getStatus() {
-        return status;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
-    public int getCustomerType() {
-        return customerType;
+    public int getCreatorType() {
+        return creatorType;
     }
 
-    public void setCustomerType(int customerType) {
-        this.customerType = customerType;
+    public void setCreatorType(int creatorType) {
+        this.creatorType = creatorType;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public int getCreatorId() {
+        return creatorId;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCreatorName() {
+        return creatorName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 
-    public String getCustomerLon() {
-        return customerLon;
+    public String getPositionLon() {
+        return positionLon;
     }
 
-    public void setCustomerLon(String customerLon) {
-        this.customerLon = customerLon;
+    public void setPositionLon(String positionLon) {
+        this.positionLon = positionLon;
     }
 
-    public String getCustomerLat() {
-        return customerLat;
+    public String getPositionLat() {
+        return positionLat;
     }
 
-    public void setCustomerLat(String customerLat) {
-        this.customerLat = customerLat;
+    public void setPositionLat(String positionLat) {
+        this.positionLat = positionLat;
     }
 
     public String getRemark() {
@@ -196,11 +194,11 @@ public class Order {
         this.secondTechId = secondTechId;
     }
 
-    public EnumStatus getEnumStatus() {
-        return EnumStatus.getStatus(this.status);
+    public Status getStatus() {
+        return Status.getStatus(this.statusCode);
     }
 
-    public void setEnumStatus(EnumStatus status) {
-        this.status = status.getStatusCode();
+    public void setStatus(Status status) {
+        this.statusCode = status.getStatusCode();
     }
 }

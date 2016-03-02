@@ -23,10 +23,10 @@ public class Construction {
     private int technicianId;
 
     @Column(name = "position_lon",nullable = true, insertable = true, updatable = true)
-    private String rtpositionLon;
+    private String positionLon;
 
     @Column(name = "position_lat",nullable = true, insertable = true, updatable = true)
-    private String rtpositionLat;
+    private String positionLat;
 
     @Column(name = "start_time",nullable = true, insertable = true, updatable = true)
     private Date startTime;
@@ -76,20 +76,20 @@ public class Construction {
         this.technicianId = technicianId;
     }
 
-    public String getRtpositionLon() {
-        return rtpositionLon;
+    public String getPositionLon() {
+        return positionLon;
     }
 
-    public void setRtpositionLon(String rtpositionLon) {
-        this.rtpositionLon = rtpositionLon;
+    public void setPositionLon(String positionLon) {
+        this.positionLon = positionLon;
     }
 
-    public String getRtpositionLat() {
-        return rtpositionLat;
+    public String getPositionLat() {
+        return positionLat;
     }
 
-    public void setRtpositionLat(String rtpositionLat) {
-        this.rtpositionLat = rtpositionLat;
+    public void setPositionLat(String positionLat) {
+        this.positionLat = positionLat;
     }
 
     public Date getStartTime() {

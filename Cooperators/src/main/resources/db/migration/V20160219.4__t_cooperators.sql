@@ -21,7 +21,7 @@ CREATE TABLE `t_cooperators` (
   `address` varchar(255) DEFAULT NULL COMMENT '详细地址',
   `contact` varchar(20) DEFAULT NULL COMMENT '联系人姓名',
   `contact_phone` varchar(20) DEFAULT NULL COMMENT '联系人电话',
-  `status` int(1) DEFAULT NULL COMMENT '状态 0-未审核 1-审核成功 2-审核失败 3-账号禁用',
+  `statusCode` int(1) DEFAULT NULL COMMENT '状态 0-未审核 1-审核成功 2-审核失败 3-账号禁用',
   `last_login_time` datetime DEFAULT NULL COMMENT '上次登录时间',
   `last_login_ip` varchar(20) DEFAULT NULL COMMENT '上次登录IP',
   `create_time` datetime DEFAULT NULL COMMENT '注册时间',

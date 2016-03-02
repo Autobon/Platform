@@ -1,4 +1,4 @@
-package com.autobon.platform.controller.staff;
+package com.autobon.platform.controller.admin;
 
 import com.autobon.shared.JsonMessage;
 import com.autobon.staff.entity.Staff;

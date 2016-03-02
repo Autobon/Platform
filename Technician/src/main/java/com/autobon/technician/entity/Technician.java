@@ -20,7 +20,7 @@ import java.util.Date;
 public class Technician implements UserDetails {
     private static Logger log = LoggerFactory.getLogger(Technician.class);
     public enum Status {
-        NOTVERIFIED(0), VERIFIED(1), REJECTED(2), BANNED(3);
+        NEWLY_CREATED(0), IN_VERIFICATION(1), VERIFIED(2), REJECTED(3), BANNED(4);
         private int statusCode;
 
         Status(int statusCode) {
@@ -86,7 +86,7 @@ public class Technician implements UserDetails {
     private static String Token = "Autobon~!@#2016=";
 
     public Technician() {
-        this.setStatus(Status.NOTVERIFIED);
+        this.setStatus(Status.NEWLY_CREATED);
         this.createAt = new Date();
     }
 

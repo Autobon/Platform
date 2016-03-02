@@ -22,22 +22,22 @@ public class OrderService {
     public void setOrderRepository(OrderRepository orderRepository){ this.orderRepository = orderRepository; }
 
 
-    public List<Order> getOrderList() {
-        List<Order> orderList01 = orderRepository.findAllByStatusOrderByAddTimeAsc(1);
-        List<Order> orderList02 = orderRepository.findAllByStatusOrderByAddTimeAsc(2);
-        List<Order> orderList = new ArrayList<>();
-        if(orderList01!=null && orderList01.size()>0){
-            for(Order order:orderList01){
-                orderList.add(order);
-            }
-        }
-        if(orderList02!=null && orderList02.size()>0){
-            for(Order order:orderList02){
-                orderList.add(order);
-            }
-        }
-        return orderList;
-    }
+//    public List<Order> getOrderList() {
+//        List<Order> orderList01 = orderRepository.findAllByStatusOrderByAddTimeAsc(1);
+//        List<Order> orderList02 = orderRepository.findAllByStatusOrderByAddTimeAsc(2);
+//        List<Order> orderList = new ArrayList<>();
+//        if(orderList01!=null && orderList01.size()>0){
+//            for(Order order:orderList01){
+//                orderList.add(order);
+//            }
+//        }
+//        if(orderList02!=null && orderList02.size()>0){
+//            for(Order order:orderList02){
+//                orderList.add(order);
+//            }
+//        }
+//        return orderList;
+//    }
 
     public Order getLocation(int orderId) {
         Order order = orderRepository.findOne(orderId);
@@ -68,9 +68,9 @@ public class OrderService {
         if(orderShow.getPhoto() != null) oldObj.setPhoto(orderShow.getPhoto());
         if(orderShow.getOrderTime() != null) oldObj.setOrderTime(orderShow.getOrderTime());
         if(orderShow.getAddTime() != null) oldObj.setAddTime(orderShow.getAddTime());
-        if(orderShow.getStatus() != 0) oldObj.setStatus(orderShow.getStatus());
-        if(orderShow.getCustomerType() != 0 )oldObj.setCustomerType(orderShow.getCustomerType());
-        if(orderShow.getCustomerId() != 0)oldObj.setCustomerId(orderShow.getCustomerId());
+        if(orderShow.getStatus() != 0) oldObj.setStatusCode(orderShow.getStatus());
+        if(orderShow.getCustomerType() != 0 )oldObj.setCreatorType(orderShow.getCustomerType());
+        if(orderShow.getCustomerId() != 0)oldObj.setCreatorId(orderShow.getCustomerId());
         if(orderShow.getRemark() != null)oldObj.setRemark(orderShow.getRemark());
         if(orderShow.getMainTechId() != 0)oldObj.setMainTechId(orderShow.getMainTechId());
         if(orderShow.getSecondTechId() != 0)oldObj.setSecondTechId(orderShow.getSecondTechId());

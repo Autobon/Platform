@@ -79,7 +79,7 @@ POST /api/mobile/technician/order/1/invite/2
     "voteRate": 0,
     "skill": "1",
     "pushId": null,
-    "status": "NOTVERIFIED"
+    "statusCode": "NOTVERIFIED"
 },
 "partner": {
     "id": 14,
@@ -100,7 +100,7 @@ POST /api/mobile/technician/order/1/invite/2
     "voteRate": 0,
     "skill": null,
     "pushId": "",
-    "status": "NOTVERIFIED"
+    "statusCode": "NOTVERIFIED"
 },
 "action": "INVITE_PARTNER",
 "order": {
@@ -110,12 +110,12 @@ POST /api/mobile/technician/order/1/invite/2
     "photo": null,
     "orderTime": 1456826762442,
     "addTime": null,
-    "status": 0,
-    "customerType": 0,
-    "customerId": 0,
-    "customerName": null,
-    "customerLon": null,
-    "customerLat": null,
+    "statusCode": 0,
+    "creatorType": 0,
+    "creatorId": 0,
+    "creatorName": null,
+    "positionLon": null,
+    "positionLat": null,
     "remark": null,
     "mainTechId": 1,
     "secondTechId": 14,
@@ -214,7 +214,7 @@ POST /api/mobile/technician/order/1/invitation
     "voteRate": 0,
     "skill": "1",
     "pushId": null,
-    "status": "NOTVERIFIED"
+    "statusCode": "NOTVERIFIED"
 },
 "partner": {
     "id": 14,
@@ -235,7 +235,7 @@ POST /api/mobile/technician/order/1/invitation
     "voteRate": 0,
     "skill": null,
     "pushId": "",
-    "status": "NOTVERIFIED"
+    "statusCode": "NOTVERIFIED"
 },
 "action": "INVITATION_ACCEPT",
 "order": {
@@ -245,12 +245,12 @@ POST /api/mobile/technician/order/1/invitation
     "photo": null,
     "orderTime": 1456826762442,
     "addTime": null,
-    "status": 1,
-    "customerType": 0,
-    "customerId": 0,
-    "customerName": null,
-    "customerLon": null,
-    "customerLat": null,
+    "statusCode": 1,
+    "creatorType": 0,
+    "creatorId": 0,
+    "creatorName": null,
+    "positionLon": null,
+    "positionLat": null,
     "remark": null,
     "mainTechId": 1,
     "secondTechId": 14,

@@ -28,7 +28,7 @@ POST /api/mobile/technician/commitCertificate
 * 返回结果
 
     ```
-    {"result":true,"message":"commitCertificate","error":null,"data":{"id":1,"phone":"18827075338","password":"7c4a8d09ca3762af61e59520943dc26494f8941b","name":"tom","gender":null,"avatar":null,"idNo":"422302198608266313","idPhoto":"/a/a.jpg","bank":"027","bankAddress":null,"bankCardNo":"88888888888","verifyAt":null,"lastLoginAt":null,"lastLoginIp":null,"createAt":1455779204000,"star":0,"voteRate":0.0,"skill":"1,6","available":false,"enabled":false,"status":"NOTVERIFIED","username":"18827075338","authorities":[{"authority":"TECHNICIAN"}],"activated":false,"banned":false,"accountNonExpired":true,"accountNonLocked":true,"credentialsNonExpired":true}}
+    {"result":true,"message":"commitCertificate","error":null,"data":{"id":1,"phone":"18827075338","password":"7c4a8d09ca3762af61e59520943dc26494f8941b","name":"tom","gender":null,"avatar":null,"idNo":"422302198608266313","idPhoto":"/a/a.jpg","bank":"027","bankAddress":null,"bankCardNo":"88888888888","verifyAt":null,"lastLoginAt":null,"lastLoginIp":null,"createAt":1455779204000,"star":0,"voteRate":0.0,"skill":"1,6","available":false,"enabled":false,"statusCode":"NOTVERIFIED","username":"18827075338","authorities":[{"authority":"TECHNICIAN"}],"activated":false,"banned":false,"accountNonExpired":true,"accountNonLocked":true,"credentialsNonExpired":true}}
     ```
 
 
@@ -42,7 +42,7 @@ POST /api/mobile/technician/getCertificate
 
 * 返回结果
     ```
-    {"result":true,"message":"getCertificate","error":null,"data":{"id":1,"phone":"18812345678","name":null,"gender":null,"avatar":null,"idNo":null,"idPhoto":null,"bank":null,"bankAddress":null,"bankCardNo":null,"verifyAt":null,"lastLoginAt":1455865153000,"lastLoginIp":"0:0:0:0:0:0:0:1","createAt":1455724800000,"star":0,"voteRate":0.0,"skill":null,"available":false,"status":"NOTVERIFIED","activated":false,"banned":false}}
+    {"result":true,"message":"getCertificate","error":null,"data":{"id":1,"phone":"18812345678","name":null,"gender":null,"avatar":null,"idNo":null,"idPhoto":null,"bank":null,"bankAddress":null,"bankCardNo":null,"verifyAt":null,"lastLoginAt":1455865153000,"lastLoginIp":"0:0:0:0:0:0:0:1","createAt":1455724800000,"star":0,"voteRate":0.0,"skill":null,"available":false,"statusCode":"NOTVERIFIED","activated":false,"banned":false}}
     ```
 ### 请求Cookie
 请求Cookie中必须有有效的autoken.

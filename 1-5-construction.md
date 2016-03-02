@@ -11,15 +11,15 @@ POST /api/mobile/construction/signIn
 
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
-| rtpositionLon | 经度 | 111.11111111 |
-| rtpositionLat | 维度 | 55.555555 |
+| positionLon | 经度 | 111.11111111 |
+| positionLat | 维度 | 55.555555 |
 | technicianId | 技师id | 1 |
 | orderId | 订单id | 1 |
 
 ### 用例
 | Method | URL | Header | Body | Result |
 | ------ | --- | ------ | ---- | ------ |
-| POST | /api/mobile/construction/signIn | | | {"result":true,"message":"signIn","error":null,"data":{"id":3,"orderId":1,"technicianId":1,"rtpositionLon":"111.11111111","rtpositionLat":"55.555555","startTime":null,"signinTime":1456457820198,"endTime":null,"beforePicA":null,"beforePicB":null,"beforePicC":null,"afterPicA":null,"afterPicB":null,"afterPicC":null,"afterPicD":null,"afterPicE":null,"afterPicF":null,"payfor":null,"workload":null}} |
+| POST | /api/mobile/construction/signIn | | | {"result":true,"message":"signIn","error":null,"data":{"id":3,"orderId":1,"technicianId":1,"positionLon":"111.11111111","positionLat":"55.555555","startTime":null,"signinTime":1456457820198,"endTime":null,"beforePicA":null,"beforePicB":null,"beforePicC":null,"afterPicA":null,"afterPicB":null,"afterPicC":null,"afterPicD":null,"afterPicE":null,"afterPicF":null,"payfor":null,"workload":null}} |
 
 ## 2.保存工作前图片
 保存在工作前图片地址，数量限制1到3
