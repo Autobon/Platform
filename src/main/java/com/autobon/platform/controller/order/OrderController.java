@@ -1,8 +1,10 @@
 package com.autobon.platform.controller.order;
 
+import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderShow;
+import com.autobon.order.service.CommentService;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkItemService;
@@ -34,6 +36,8 @@ public class OrderController {
     @Autowired OrderService orderService;
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
+    @Autowired
+    CommentService commentService;
 
     @RequestMapping(value = "/listMain", method = RequestMethod.GET)
     public JsonMessage listMain(HttpServletRequest request,
@@ -309,6 +313,53 @@ public class OrderController {
 //        }
     }
 
+    @RequestMapping(value="/comment",method = RequestMethod.POST)
+    public JsonMessage comment(@RequestParam("orderId") int orderId,
+                               @RequestParam("star") int star,
+                               @RequestParam("arriveOnTime") int arriveOnTime,
+                               @RequestParam("completeOnTime") int completeOnTime,
+                               @RequestParam("professional") int professional,
+                               @RequestParam("dressNeatly") int dressNeatly,
+                               @RequestParam("carProtect") int carProtect,
+                               @RequestParam("goodAttitude") int goodAttitude,
+                               @RequestParam("advice") String advice){
 
+        JsonMessage jsonMessage = new JsonMessage(true,"comment");
+        Order order = orderService.findOrder(orderId);
+        int mainTechId = order.getMainTechId();
+        int secondTechId = order.getSecondTechId();
+        if(mainTechId == 0){
+            return new JsonMessage(false,"此订单未指定技师");
+        }else{
+            Comment comment = new Comment();
+            comment.setTechnicianId(mainTechId);
+            comment.setOrderId(orderId);
+            comment.setStar(star);
+            comment.setArriveOnTime(arriveOnTime);
+            comment.setCompleteOnTime(completeOnTime);
+            comment.setProfessional(professional);
+            comment.setDressNeatly(dressNeatly);
+            comment.setCarProtect(carProtect);
+            comment.setGoodAttitude(goodAttitude);
+            comment.setAdvice(advice);
+            commentService.saveComment(comment);
+        }
+        if(secondTechId != 0){
+            Comment comment = new Comment();
+            comment.setTechnicianId(secondTechId);
+            comment.setOrderId(orderId);
+            comment.setStar(star);
+            comment.setArriveOnTime(arriveOnTime);
+            comment.setCompleteOnTime(completeOnTime);
+            comment.setProfessional(professional);
+            comment.setDressNeatly(dressNeatly);
+            comment.setCarProtect(carProtect);
+            comment.setGoodAttitude(goodAttitude);
+            comment.setAdvice(advice);
+            commentService.saveComment(comment);
+        }
+
+        return jsonMessage;
+    }
 
 }

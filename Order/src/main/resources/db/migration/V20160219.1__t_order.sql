@@ -19,5 +19,5 @@ CREATE TABLE `t_order` (
 )DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 
-INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`customer_type`,`customer_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (1,'20160223134200014567',1,'','2016-02-24 14:00:00','2016-02-23 11:09:23',1,1,1,'bababala',0,0);
-INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`customer_type`,`customer_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (2,'20160223135200016789',2,NULL,'2016-02-24 14:00:00','2016-02-23 11:09:23',2,1,2,'somewords',0,0);
+INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`customer_type`,`customer_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (1,'20160223134200014567',1,'','2016-02-24 14:00:00','2016-02-23 11:09:23',1,1,1,'bababala',2,1);
+INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`customer_type`,`customer_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (2,'20160223135200016789',2,NULL,'2016-02-24 14:00:00','2016-02-23 11:09:23',2,1,2,'somewords',1,2);
