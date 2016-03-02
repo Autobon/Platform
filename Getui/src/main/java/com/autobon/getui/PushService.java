@@ -42,7 +42,7 @@ public class PushService {
      * @param pushId 用户个推ID
      * @param notice 通知栏显示文字
      * @param json 透传给应用的json数据
-     * @param expireInSeconds 在指定秒数过期. 个推支持最多72小时
+     * @param expireInSeconds 在指定秒数过期. 个推支持最多72小时, 当小于等于0时,只有用户在线时才能收到推送消息
      * @return
      * @throws IOException
      */
@@ -61,7 +61,7 @@ public class PushService {
      * @param pushIds 群推的用户个推ID数组
      * @param notice 通知栏显示文字
      * @param json 透传给应用的json数据
-     * @param expireInSeconds 在指定秒数过期. 个推支持最多72小时
+     * @param expireInSeconds 在指定秒数过期. 个推支持最多72小时, 当小于等于0时,只有用户在线时才能收到推送消息
      * @return
      * @throws IOException
      */
@@ -101,7 +101,7 @@ public class PushService {
 
         Message message = new Message();
         message.setData(template);
-        message.setOffline(true);
+        message.setOffline(expireInSeconds > 0);
         message.setOfflineExpireTime(expireInSeconds*1000);
         return message;
     }
