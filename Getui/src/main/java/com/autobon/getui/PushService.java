@@ -50,7 +50,6 @@ public class PushService {
      * @throws IOException
      */
     public boolean pushToSingle(String pushId, String notice, String json, int expireInSeconds) throws IOException {
-        System.out.println(json);
         Message message = buildTransmissionMessage(notice, json, expireInSeconds, false);
 
         Target target = new Target();
