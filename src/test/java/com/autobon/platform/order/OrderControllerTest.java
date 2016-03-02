@@ -109,4 +109,22 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.result", is(true)));
     }
 
+
+    @Test
+    public void comment() throws Exception {
+        mockMvcS.perform(post("/api/mobile/technician/order/comment")
+                .param("orderId","1")
+                .param("star", "5")
+                .param("arriveOnTime","1")
+                .param("completeOnTime","1")
+                .param("professional","1")
+                .param("dressNeatly","1")
+                .param("carProtect","1")
+                .param("goodAttitude","1")
+                .param("advice","贴膜技术不错")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
 }
