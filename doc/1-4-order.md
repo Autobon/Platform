@@ -397,6 +397,15 @@ data字段是一个施工单对象
 "data": null}
 ```
 
+### f.你已开始工作,请不要重复操作
+
+```
+{"result": false,
+"message": "你已开始工作,请不要重复操作",
+"error": "REPEATED_OPERATION",
+"data": null}
+```
+
 ## 7. 订单签到
 技师到达施工位置后，点选**签到**
 ### URL及请求方法
@@ -447,5 +456,13 @@ data字段是一个施工单对象
 {"result": false,
 "message": "订单还未开始工作或已结束工作",
 "error": "ILLEGAL_OPERATION",
+"data": null}
+```
+### e.你已签到, 请不要重复操作
+
+```
+{"result": false,
+"message": "你已签到, 请不要重复操作",
+"error": "REPEATED_OPERATION",
 "data": null}
 ```

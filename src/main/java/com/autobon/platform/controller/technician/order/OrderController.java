@@ -109,6 +109,8 @@ public class OrderController {
         } else if (o.getStatus() != Order.Status.IN_PROGRESS) { // 当第二个技师开始工作时,订单状态已进入IN_PROGRESS状态
             o.setStatus(Order.Status.IN_PROGRESS);
             orderService.save(o);
+        } else if (constructionService.findByOrderIdAndTechnicianId(orderId, t.getId()).size() > 0) {
+            return new JsonMessage(false, "REPEATED_OPERATION", "你已开始工作,请不要重复操作");
         }
 
         Construction construction = new Construction();
@@ -137,6 +139,9 @@ public class OrderController {
         }
 
         Construction construction = list.get(0);
+        if (construction.getSigninTime() != null)
+            return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
+        
         construction.setPositionLon(positionLon);
         construction.setPositionLat(positionLat);
         construction.setSigninTime(new Date());
