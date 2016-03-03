@@ -73,7 +73,6 @@ public class StaffAccountController {
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword) {
 
-        // TODO 修改密码
         Staff staff = (Staff)request.getAttribute("user");
         if(oldPassword .equals(newPassword) ){
             return  new JsonMessage(false,"新旧密码不能相同");
