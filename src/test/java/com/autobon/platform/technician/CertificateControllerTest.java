@@ -56,24 +56,15 @@ public class CertificateControllerTest {
 
     @Test
     public void commitCertificate() throws Exception {
-        mockMvcS.perform(post("/api/mobile/technician/commitCertificate")
+        mockMvcS.perform(post("/api/mobile/technician/certificate")
                 .param("name", "tom")
                 .param("idNo","422302198608266313")
-                .param("skillArray",stringArray)
-                .param("bank","027")
+                .param("skills", "1,2")
+                .param("bank","工商银行")
                 .param("bankCardNo","88888888888")
-                .cookie(new Cookie("autoken",token)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(jsonPath("$.result", is(true)));
-    }
-
-    @Test
-    public void getCertificate() throws Exception {
-        mockMvcS.perform(post("/api/mobile/technician/getCertificate")
                 .cookie(new Cookie("autoken", token)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(jsonPath("$.result", is(true)));
-
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(jsonPath("$.result", is(true)));
     }
 
     @Test

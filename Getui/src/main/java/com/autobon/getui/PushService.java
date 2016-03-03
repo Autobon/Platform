@@ -69,7 +69,7 @@ public class PushService {
      */
     public boolean pushToList(String[] pushIds, String notice, String json, int expireInSeconds) throws IOException {
         Message message = buildTransmissionMessage(notice, json, expireInSeconds, false);
-        String contentId = GtPush.getContentId(config, message, "push_list");
+        String contentId = GtPush.getContentId(config, message, "push_to_list");
 
         ArrayList<Target> targets = new ArrayList<>();
         for (String pushId : pushIds) {
@@ -91,7 +91,7 @@ public class PushService {
      */
     public boolean pushToApp(String notice, String json, int expireInSeconds) throws IOException {
         Message message = buildTransmissionMessage(notice, json, expireInSeconds, true);
-        String contentId = GtPush.getContentId(config, message, "push_list");
+        String contentId = GtPush.getContentId(config, message, "push_to_app");
         return GtPush.pushToApp(config, contentId);
     }
 
@@ -119,7 +119,11 @@ public class PushService {
         if (isAppMessage) {
             AppMessage appmsg = new AppMessage();
             appmsg.setAppIdList(Arrays.asList(config.getAppId()));
-            appmsg.setConditions(new AppConditions());
+            AppConditions cdt = new AppConditions();
+            cdt.addCondition(AppConditions.PHONE_TYPE, new ArrayList<String>());
+            cdt.addCondition(AppConditions.REGION, new ArrayList<String>());
+            cdt.addCondition(AppConditions.TAG, new ArrayList<String>());
+            appmsg.setConditions(cdt);
             message = appmsg;
         } else {
             message = new Message();
