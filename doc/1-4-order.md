@@ -132,7 +132,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 }
 ```
 
-## 3. 获取订单信息
+## 3. 获取未完成订单列表（包括主,次责任人订单）
 
 ### URL及请求方法
 `GET /api/mobile/technician/order/listUnfinished`
