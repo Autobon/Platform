@@ -23,22 +23,22 @@ public class Comment {
     private int star;
 
     @Column(name = "arrive_on_time", nullable = true, insertable = true, updatable = true)
-    private int arriveOnTime;
+    private boolean arriveOnTime;
 
     @Column(name = "complete_on_time", nullable = true, insertable = true, updatable = true)
-    private int completeOnTime;
+    private boolean completeOnTime;
 
     @Column(name = "professional", nullable = true, insertable = true, updatable = true)
-    private int professional;
+    private boolean professional;
 
     @Column(name = "dress_neatly", nullable = true, insertable = true, updatable = true)
-    private int dressNeatly;
+    private boolean dressNeatly;
 
     @Column(name = "car_protect", nullable = true, insertable = true, updatable = true)
-    private int carProtect;
+    private boolean carProtect;
 
     @Column(name = "good_attitude", nullable = true, insertable = true, updatable = true)
-    private int goodAttitude;
+    private boolean goodAttitude;
 
     @Column(name = "advice", nullable = true, insertable = true, updatable = true)
     private String advice;
@@ -75,51 +75,51 @@ public class Comment {
         this.star = star;
     }
 
-    public int getArriveOnTime() {
+    public boolean isArriveOnTime() {
         return arriveOnTime;
     }
 
-    public void setArriveOnTime(int arriveOnTime) {
+    public void setArriveOnTime(boolean arriveOnTime) {
         this.arriveOnTime = arriveOnTime;
     }
 
-    public int getCompleteOnTime() {
+    public boolean isCompleteOnTime() {
         return completeOnTime;
     }
 
-    public void setCompleteOnTime(int completeOnTime) {
+    public void setCompleteOnTime(boolean completeOnTime) {
         this.completeOnTime = completeOnTime;
     }
 
-    public int getProfessional() {
+    public boolean isProfessional() {
         return professional;
     }
 
-    public void setProfessional(int professional) {
+    public void setProfessional(boolean professional) {
         this.professional = professional;
     }
 
-    public int getDressNeatly() {
+    public boolean isDressNeatly() {
         return dressNeatly;
     }
 
-    public void setDressNeatly(int dressNeatly) {
+    public void setDressNeatly(boolean dressNeatly) {
         this.dressNeatly = dressNeatly;
     }
 
-    public int getCarProtect() {
+    public boolean isCarProtect() {
         return carProtect;
     }
 
-    public void setCarProtect(int carProtect) {
+    public void setCarProtect(boolean carProtect) {
         this.carProtect = carProtect;
     }
 
-    public int getGoodAttitude() {
+    public boolean isGoodAttitude() {
         return goodAttitude;
     }
 
-    public void setGoodAttitude(int goodAttitude) {
+    public void setGoodAttitude(boolean goodAttitude) {
         this.goodAttitude = goodAttitude;
     }
 
