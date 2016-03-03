@@ -47,6 +47,7 @@ public class GtPush {
         map.put("action", "getContentIdAction");
         map.put("appkey", config.getAppKey());
         map.put("clientData", Base64.getEncoder().encodeToString(message.getData().getTransparent().toByteArray()));
+        map.put("transmissionContent", message.getData().getTransmissionContent());
         map.put("isOffline", message.isOffline());
         map.put("offlineExpireTime", message.getOfflineExpireTime());
         map.put("pushType", message.getData().getPushType());
