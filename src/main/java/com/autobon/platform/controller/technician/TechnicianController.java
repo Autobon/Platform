@@ -61,28 +61,18 @@ public class TechnicianController {
         //查询最近的位置信息
         Location latestLocation = locationService.findLatestLocation(technicianId);
         Date nowDate = new Date();
-        if(latestLocation!=null){
+        Location location = new Location();
+        location.setAddTime(nowDate);
+        location.setRtpositionLat(rtpositionLat);
+        location.setRtpositionLon(rtpostionLon);
+        location.setTechnicianId(technicianId);
+        if(latestLocation!=null) {
             Date latestDate = latestLocation.getAddTime();
             //判断时间间隔是否为一分钟
-            Long minCount = (nowDate.getTime() - latestDate.getTime())/(1000*60);
-            if(minCount>=1){
-                //保存位置信息
-                Location location = new Location();
-                location.setAddTime(nowDate);
-                location.setRtpositionLat(rtpositionLat);
-                location.setRtpositionLon(rtpostionLon);
-                location.setTechnicianId(technicianId);
-                locationService.save(location);
-            }
-        }else{
-            Location location = new Location();
-            location.setAddTime(nowDate);
-            location.setRtpositionLat(rtpositionLat);
-            location.setRtpositionLon(rtpostionLon);
-            location.setTechnicianId(technicianId);
-            locationService.save(location);
+            Long minCount = (nowDate.getTime() - latestDate.getTime()) / (1000 * 60);
+            if (minCount < 1) return jsonMessage;
         }
-
+        locationService.save(location);
         return jsonMessage;
     }
 
