@@ -7,6 +7,7 @@ com.autobon:
         masterSecret: c9qs7jpn6s7dAPDkFr23W4
     sms.gateway: http://114.215.172.92/message/messageSend # SMS Gateway
     test.token: technician:HM6GlQ4/4AXxoe2ZfZVM2Q==
+    test.adminToken: staff:ssEoVBwJ3rSYnidORQUvhQ==
     gm-path: /usr/bin # graphicsMagick工具路径
     env: TEST
     baiduKey: lhFpgbOkc15RHjiexfP2aDhg

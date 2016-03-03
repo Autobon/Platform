@@ -54,7 +54,7 @@ public class OrderController {
             @RequestParam("orderTime")   String orderTime,
             @RequestParam("positionLon") String positionLon,
             @RequestParam("positionLat") String positionLat,
-            @RequestParam(value = "contactPhone") String contactPhone,
+            @RequestParam("contactPhone") String contactPhone,
             @RequestParam(value = "photo", defaultValue = "") String photo,
             @RequestParam(value = "remark", required = false) String remark) throws Exception {
         Staff staff = (Staff) request.getAttribute("user");
@@ -68,7 +68,6 @@ public class OrderController {
         order.setContactPhone(contactPhone);
         order.setPositionLon(positionLon);
         order.setPositionLat(positionLat);
-        order.setOrderNum(Order.generateOrderNum());
         order.setOrderType(orderType);
         order.setOrderTime(Date.from(
                 LocalDateTime.from(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse(orderTime))

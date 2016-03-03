@@ -331,7 +331,6 @@ GET /api/mobile/technician
 
 ### 返回数据
 
-
 ```
 {"result": true,
 "message": "",
@@ -381,7 +380,6 @@ GET /api/mobile/technician/search
 | pageSize | 否 | 每页条数, 默认20, 仅当query参数为姓名时有效 | 20 |
 
 ### 返回数据
-
 
 ```
 {"result": true,
@@ -443,11 +441,14 @@ POST /api/mobile/technician/reportLocation
 | positionLat | 是 | 实时位置维度 | 34.4 |
 
 ### 返回数据
+
+```
 {
     "result": true,
     "message": "setLocation",
     "error": "",
     "data": null
 }
+```
 
-当前报告位置时间与最近报告的时间间隔不能小于1分钟
+当前报告位置时间与最近报告的时间间隔不能小于1分钟, 1分钟内多次提交以第一次提交为准.

@@ -16,11 +16,15 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     //findAllByOrderByPublishTimeDesc
 //    List<Order> findAllByStatusOrderByAddTimeAsc(int status);
 
-    Page<Order> findByMainTechId(int techId, Pageable pageable);
+    @Query("from Order o where o.mainTechId = ?1 and o.statusCode >= 60")
+    Page<Order> findFinishedOrderByMainTechId(int techId, Pageable pageable);
+
+    @Query("from Order o where o.secondTechId = ?1 and o.statusCode >= 60")
+    Page<Order> findFinishedOrderBySecondTechId(int techId, Pageable pageable);
 
 
-    Page<Order> findBySecondTechId(int techId, Pageable pageable);
-
+    @Query("from Order o where (o.mainTechId = ?1 or o.secondTechId = ?1) and o.statusCode < 60")
+    Page<Order> findUnFinishedOrderByTechId(int techId, Pageable pageable);
 
 
     @Query("select od from Order od where 1=1 " +

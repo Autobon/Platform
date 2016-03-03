@@ -49,6 +49,7 @@ public class PubController {
         return new JsonMessage(true, "", "", list.stream().map(i -> {
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("id", i.getId());
+                    map.put("seat", i.getCarSeat());
                     map.put("name", i.getWorkName());
                     return map;
                 }).collect(Collectors.toList()));

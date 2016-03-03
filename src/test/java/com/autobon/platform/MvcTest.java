@@ -29,7 +29,7 @@ public abstract class MvcTest {
     protected MockMvc mockMvcS;
 
     @Before
-    public void setUp() {
+    public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         mockMvcS = MockMvcBuilders.webAppContextSetup(wac).addFilter(springFilterChain).build();
     }
