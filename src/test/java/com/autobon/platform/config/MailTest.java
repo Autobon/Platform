@@ -1,4 +1,4 @@
-package com.autobon.platform.admin;
+package com.autobon.platform.config;
 
 import com.autobon.platform.MvcTest;
 import org.junit.Test;
