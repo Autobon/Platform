@@ -1,5 +1,6 @@
 # 订单
 ## 1. 创建订单
+创建后台订单, 测试用后台管理员token: `staff:ssEoVBwJ3rSYnidORQUvhQ==`
 
 ### URL及请求方法
 POST /api/web/order
@@ -19,6 +20,28 @@ POST /api/web/order
 ### 返回数据
 
 ````
-TODO
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 51,
+        "orderNum": "20160303141432Q4NA7P",
+        "orderType": 1,
+        "photo": "",
+        "orderTime": 1456804920000,
+        "addTime": 1456985672438,
+        "creatorType": 2,
+        "creatorId": 1,
+        "creatorName": "超级管理员",
+        "contactPhone": "18812345678",
+        "positionLon": "25.22342",
+        "positionLat": "36.45485",
+        "remark": "remark is here",
+        "mainTechId": 0,
+        "secondTechId": 0,
+        "status": "NEWLY_CREATED"
+    }
+}
 ````
 
