@@ -74,7 +74,16 @@ public class StaffAccountController {
             @RequestParam("newPassword") String newPassword) {
 
         // TODO 修改密码
-        return null;
+        Staff staff = (Staff)request.getAttribute("user");
+        if(oldPassword == newPassword){
+            return  new JsonMessage(false,"新旧密码不能相同");
+        }else if(!staff.getPassword().equals(Staff.encryptPassword(oldPassword))){
+            return new JsonMessage(false, "PASSWORD_MISMATCH", "密码错误");
+        }else{
+            staff.setPassword(Staff.encryptPassword(newPassword));
+            return new JsonMessage(true,"","",staff);
+        }
+
     }
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
@@ -83,6 +92,8 @@ public class StaffAccountController {
              @RequestParam(value = "email", required = false) String email) {
 
         // TODO 重置密码
+
+
         return null;
     }
 
