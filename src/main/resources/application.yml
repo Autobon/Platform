@@ -14,6 +14,7 @@ com.autobon:
     mail.host: smtp.qq.com
     mail.username:
     mail.password:
+    mail.port:
 
 # Tomcat
 server.port: 51234

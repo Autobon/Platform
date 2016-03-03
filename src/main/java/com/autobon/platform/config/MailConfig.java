@@ -20,10 +20,14 @@ public class MailConfig {
     @Value("${com.autobon.mail.password}")
     private String password;
 
+    @Value("${com.autobon.mail.port}")
+    private int port;
+
     @Bean
     public JavaMailSenderImpl javaMailService() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(host);
+        mailSender.setPort(port);
         mailSender.setUsername(username);
         mailSender.setPassword(password);
         return mailSender;
