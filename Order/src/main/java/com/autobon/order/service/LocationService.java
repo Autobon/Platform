@@ -22,6 +22,11 @@ public class LocationService {
 
     public Location findLatestLocation(int technicianId) {
         List<Location> locationList = locationRepository.findTop10ByTechnicianIdOrderByAddTimeDesc(technicianId);
-        return locationList.get(0);
+        if(locationList.size()>0){
+            return locationList.get(0);
+        }else{
+            return null;
+        }
+
     }
 }
