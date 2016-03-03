@@ -36,24 +36,34 @@ public class OrderController {
     @Autowired WorkItemService workItemService;
     @Autowired CommentService commentService;
 
-    // 获取主要责任人订单列表
+    // 获取已完成的主要责任人订单列表
     @RequestMapping(value = "/listMain", method = RequestMethod.GET)
     public JsonMessage listMain(HttpServletRequest request,
              @RequestParam(value = "page", defaultValue = "1") int page,
              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                new JsonPage<>(orderService.findByMainTechId(technician.getId(), page, pageSize)));
+                new JsonPage<>(orderService.findFinishedOrderByMainTechId(technician.getId(), page, pageSize)));
     }
 
-    // 获取次要责任人订单列表
+    // 获取已完成的次要责任人订单列表
     @RequestMapping(value = "/listSecond", method = RequestMethod.GET)
     public JsonMessage listSecond(HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                new JsonPage<>(orderService.findBySecondTechId(technician.getId(), page, pageSize)));
+                new JsonPage<>(orderService.findFinishedOrderBySecondTechId(technician.getId(), page, pageSize)));
+    }
+
+    // 获取未完成的订单
+    @RequestMapping(value = "/listUnfinished", method = RequestMethod.GET)
+    public JsonMessage listUnfinished(HttpServletRequest request,
+                                  @RequestParam(value = "page", defaultValue = "1") int page,
+                                  @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Technician technician = (Technician) request.getAttribute("user");
+        return new JsonMessage(true, "", "",
+                new JsonPage<>(orderService.findUnFinishedOrderByTechId(technician.getId(), page, pageSize)));
     }
 
     // 获取订单信息

@@ -122,13 +122,18 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Page<Order> findByMainTechId(int techId, int page, int pageSize) {
-        return orderRepository.findByMainTechId(techId, new PageRequest(page - 1, pageSize,
+    public Page<Order> findFinishedOrderByMainTechId(int techId, int page, int pageSize) {
+        return orderRepository.findFinishedOrderByMainTechId(techId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
 
-    public Page<Order> findBySecondTechId(int techId, int page, int pageSize) {
-        return orderRepository.findBySecondTechId(techId, new PageRequest(page - 1, pageSize,
+    public Page<Order> findFinishedOrderBySecondTechId(int techId, int page, int pageSize) {
+        return orderRepository.findFinishedOrderBySecondTechId(techId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public Page<Order> findUnFinishedOrderByTechId(int techId, int page, int pageSize) {
+        return orderRepository.findUnFinishedOrderByTechId(techId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
 

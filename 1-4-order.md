@@ -1,6 +1,17 @@
-# 一、订单列表及签到
+# 一、订单
 
-## 1. 作为主责任人订单列表
+订单状态列表:
+1. `NEWLY_CREATED` 新建
+2. `TAKEN_UP` 已有人抢单
+3. `SEND_INVITATION` 已发送合作邀请并等待结果
+4. `INVITATION_ACCEPTED` 合作邀请已接受
+5. `INVITATION_REJECTED` 合作邀请已拒绝
+6. `IN_PROGRESS` 订单开始工作中
+7. `FINISHED` 订单已结束
+8. `COMMENTED` 订单已评论
+9. `CANCELED` 订单已取消
+
+## 1. 已完成且作为主责任人订单列表
 
 ### URL及请求方法
 `GET /api/mobile/technician/order/listMain`
@@ -70,7 +81,7 @@
 
 data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查询技师](1-1-account.md)
 
-## 2. 作为次责任人订单列表
+## 2. 已完成且作为次责任人订单列表
 
 ### URL及请求方法
 `GET /api/mobile/technician/order/listSecond`
@@ -123,6 +134,93 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 ## 3. 获取订单信息
 
 ### URL及请求方法
+`GET /api/mobile/technician/order/listUnfinished`
+
+### 请求参数
+
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| page | 否 | 分页页码, 从1开始，默认为1 | 1 |
+| pageSize | 否 | 每页条数, 默认20 | 20 |
+
+
+### 返回数据
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "page": 1,
+        "totalElements": 3,
+        "totalPages": 1,
+        "pageSize": 20,
+        "count": 3,
+        "list": [
+            {
+                "id": 3,
+                "orderNum": "20160303145128PU4XYS",
+                "orderType": 0,
+                "photo": null,
+                "orderTime": null,
+                "addTime": 1456987888607,
+                "creatorType": 0,
+                "creatorId": 0,
+                "creatorName": null,
+                "contactPhone": null,
+                "positionLon": null,
+                "positionLat": null,
+                "remark": null,
+                "mainTechId": 1,
+                "secondTechId": 0,
+                "status": "NEWLY_CREATED"
+            },
+            {
+                "id": 2,
+                "orderNum": "20160223135200016789",
+                "orderType": 2,
+                "photo": null,
+                "orderTime": 1456293600000,
+                "addTime": 1456196963000,
+                "creatorType": 1,
+                "creatorId": 2,
+                "creatorName": null,
+                "contactPhone": null,
+                "positionLon": null,
+                "positionLat": null,
+                "remark": "somewords",
+                "mainTechId": 2,
+                "secondTechId": 1,
+                "status": "TAKEN_UP"
+            },
+            {
+                "id": 1,
+                "orderNum": "20160223134200014567",
+                "orderType": 1,
+                "photo": "",
+                "orderTime": 1456293600000,
+                "addTime": 1456196963000,
+                "creatorType": 1,
+                "creatorId": 1,
+                "creatorName": null,
+                "contactPhone": null,
+                "positionLon": null,
+                "positionLat": null,
+                "remark": "bababala",
+                "mainTechId": 1,
+                "secondTechId": 2,
+                "status": "TAKEN_UP"
+            }
+        ]
+    }
+}
+```
+
+
+## 4. 获取订单信息
+
+### URL及请求方法
 `GET /api/mobile/technician/order/${orderId}`
 
 ### 请求参数
@@ -162,7 +260,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 }
 ```
 
-## 4. 抢单
+## 5. 抢单
 技师收到订单推送信息后, 抢取订单
 ### URL及请求方法
 `POST /api/mobile/technician/order/takeup`
@@ -221,7 +319,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 "data": null}
 ```
 
-## 5. 开始工作
+## 6. 开始工作
 技师抢单成功后或接受合作邀请后, 点选**开始工作**
 ### URL及请求方法
 `POST /api/mobile/technician/order/start`
@@ -298,7 +396,7 @@ data字段是一个施工单对象
 "data": null}
 ```
 
-## 5. 订单签到
+## 7. 订单签到
 技师到达施工位置后，点选**签到**
 ### URL及请求方法
 `POST /api/mobile/technician/order/signIn`
