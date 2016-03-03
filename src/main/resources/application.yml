@@ -13,9 +13,9 @@ com.autobon:
     baiduKey: lhFpgbOkc15RHjiexfP2aDhg
     upload.orderpic.path: /home/autobon/upload/orderpic
     mail.host: smtp.qq.com
+    mail.port: 587
     mail.username:
     mail.password:
-    mail.port:
 
 # Tomcat
 server.port: 51234
