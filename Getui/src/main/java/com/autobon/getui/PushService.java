@@ -106,7 +106,7 @@ public class PushService {
         TransmissionTemplate template = new TransmissionTemplate();
         template.setAppId(config.getAppId());
         template.setAppkey(config.getAppKey());
-        template.setTransmissionType(1);
+        template.setTransmissionType(2);
         template.setTransmissionContent(json);
 
         //ios

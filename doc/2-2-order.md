@@ -14,7 +14,7 @@ POST /api/web/admin/order
 | positionLon | 否 | 订单位置经度 | 20.214411 |
 | positionLat | 否 | 订单位置维度 | 35.123521 |
 | contactPhone | 否 | 订单联系方式 | 18812345678 |
-| file | 是 | 订单图片 | |
+| photo | 是 | 订单图片网址, 上传时图片时返回的地址 | /uploads/order/o-122.jpg |
 | remark | 是 | 订单备注内容 |  |
 
 ### 返回数据
