@@ -3,7 +3,7 @@
 创建后台订单, 测试用后台管理员token: `staff:ssEoVBwJ3rSYnidORQUvhQ==`
 
 ### URL及请求方法
-POST /api/web/order
+POST /api/web/admin/order
 
 ### 请求参数
 
