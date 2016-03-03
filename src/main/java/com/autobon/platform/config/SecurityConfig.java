@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/mobile/technician/resetPassword").permitAll()
             .and().authorizeRequests().antMatchers("/api/mobile/technician/**")
                 .hasAuthority("TECHNICIAN")
-            .and().authorizeRequests().antMatchers("/api/mobile/staff/**")
+            .and().authorizeRequests().antMatchers("/api/web/**")
                 .hasAuthority("STAFF");
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

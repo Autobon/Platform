@@ -13,21 +13,21 @@ import java.io.IOException;
  */
 @Configuration
 public class GetuiConfig {
-    @Value("${com.autobon.getui.host}")
-    private String host;
-    @Value("${com.autobon.getui.appId}")
-    private String appId;
-    @Value("${com.autobon.getui.appKey}")
-    private String appKey;
-    @Value("${com.autobon.getui.appSecret}")
-    private String appSecret;
-    @Value("${com.autobon.getui.masterSecret}")
-    private String masterSecret;
+    @Value("${com.autobon.getui.a.host}")
+    private String hostA;
+    @Value("${com.autobon.getui.a.appId}")
+    private String appIdA;
+    @Value("${com.autobon.getui.a.appKey}")
+    private String appKeyA;
+    @Value("${com.autobon.getui.a.appSecret}")
+    private String appSecretA;
+    @Value("${com.autobon.getui.a.masterSecret}")
+    private String masterSecretA;
 
-    @Bean
-    public PushService getPushService() throws IOException {
+    @Bean(name = "PushServiceA")
+    public PushService getPushServiceA() throws IOException {
         PushService p = new PushService(
-                new GtConfig(host, appId, appKey, appSecret, masterSecret));
+                new GtConfig(hostA, appIdA, appKeyA, appSecretA, masterSecretA));
         // 在返回PushService实例前,与个推服务器建立一次连接,后面可直接发送推送消息
         if (!p.connect()) {
             throw new IOException("连接个推服务器失败");

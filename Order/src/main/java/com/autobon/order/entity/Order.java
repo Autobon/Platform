@@ -1,8 +1,11 @@
 package com.autobon.order.entity;
 
+import com.autobon.shared.VerifyCode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -45,7 +48,7 @@ public class Order {
 
     @Column private String orderNum;
 
-    @Column private int orderType;
+    @Column private int orderType; // 订单类型(1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁)
 
     @Column private String photo;
 
@@ -57,11 +60,13 @@ public class Order {
     @Column(name="status")
     private int statusCode;
 
-    @Column private int creatorType;
+    @Column private int creatorType; // 下单人类型(1-合作商户 2-后台 3-用户)
 
     @Column private int creatorId;
 
     @Column private String creatorName;
+
+    @Column private String contactPhone;
 
     @Column private String positionLon;
 
@@ -73,6 +78,15 @@ public class Order {
 
     @Column private int secondTechId;
 
+    public Order() {
+        this.setStatus(Status.NEWLY_CREATED);
+        this.addTime = new Date();
+    }
+
+    public static String generateOrderNum() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) +
+                VerifyCode.generateVerifyCode(6);
+    }
 
     public int getId() {
         return id;
@@ -152,6 +166,14 @@ public class Order {
 
     public void setCreatorName(String creatorName) {
         this.creatorName = creatorName;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
     public String getPositionLon() {

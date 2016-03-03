@@ -10,7 +10,7 @@ CREATE TABLE `t_order` (
   `creator_type` int(1) NOT NULL DEFAULT '0' COMMENT '下单人类型(1-合作商户 2-后台 3-用户)',
   `creator_id` int(11) DEFAULT NULL COMMENT '下单人编号',
   `creator_name` varchar(255) DEFAULT NULL COMMENT '下单人名称',
-  `creator_phone` varchar(50) DEFAULT NULL COMMENT '下单人联系电话',
+  `contact_phone` varchar(50) DEFAULT NULL COMMENT '订单联系电话',
   `position_lon` varchar(20) DEFAULT NULL COMMENT '订单位置经度',
   `position_lat` varchar(20) DEFAULT NULL COMMENT '订单位置维度',
   `remark` varchar(255) DEFAULT NULL COMMENT '订单备注',

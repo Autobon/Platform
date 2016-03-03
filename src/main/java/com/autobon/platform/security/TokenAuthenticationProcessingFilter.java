@@ -1,5 +1,6 @@
 package com.autobon.platform.security;
 
+import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
@@ -50,7 +51,9 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
             if (id > 0) user = technicianService.get(id);
             if (user == null) throw new BadCredentialsException("无效凭证");
         } else if (token.startsWith("staff:")) {
-            //TODO
+            int id = Staff.decodeToken(token);
+            if (id > 0) user = staffService.get(id);
+            if (user == null) throw new BadCredentialsException("无效凭证");
         }
         if (user == null) {
             GrantedAuthority authority = new GrantedAuthority() {

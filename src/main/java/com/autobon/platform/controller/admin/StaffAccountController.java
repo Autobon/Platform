@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * Created by dave on 16/3/1.
  */
 @RestController
-@RequestMapping("/api/web/staff")
+@RequestMapping("/api/web/admin")
 public class StaffAccountController {
     @Autowired StaffService staffService;
 
@@ -28,10 +28,8 @@ public class StaffAccountController {
             @RequestParam("email") String email,
             @RequestParam("password") String password) {
 
-        if (username.length() < 5) {
-            return new JsonMessage(false, "ILLEGAL_PARAM", "用户名至少6个字符");
-        } else if (Character.isDigit(username.charAt(0)) || username.contains("@")) {
-            return new JsonMessage(false, "ILLEGAL_PARAM", "用户名不能以数字开头, 且不可包含@字符");
+        if (!Pattern.matches("^[A-Za-z][0-9A-Za-z_]{5,}$", username)) {
+            return new JsonMessage(false, "ILLEGAL_PARAM", "用户名至少6个字符, 只能以字母开头, 只能使用数字和字母及下划线");
         } else if (staffService.findByUsername(username) != null) {
             return new JsonMessage(false, "OCCUPIED_USERNAME", "用户名已被占用");
         } else if (staffService.findByEmail(email) != null) {

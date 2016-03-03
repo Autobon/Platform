@@ -157,7 +157,6 @@ public class TechnicianAccountController {
     public JsonMessage changePassword(HttpServletRequest request,
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword) {
-        JsonMessage msg = new JsonMessage(true);
         if (newPassword.length() < 6) {
             return new JsonMessage(false, "ILLEGAL_PARAM", "密码至少6位");
         } else {

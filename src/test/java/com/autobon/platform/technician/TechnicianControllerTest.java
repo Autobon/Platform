@@ -6,6 +6,7 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -20,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by dave on 16/2/26.
  */
 public class TechnicianControllerTest extends MvcTest {
-    @Autowired
+    @Autowired @Qualifier("PushServiceA")
     private PushService pushService;
     @Value("${com.autobon.test.token}")
     String token;
@@ -51,7 +52,8 @@ public class TechnicianControllerTest extends MvcTest {
 
     @Test
     public void pushToList() throws Exception {
-        Assert.assertTrue(pushService.pushToList(new String[]{"0f54394e1ccea495b2f3f0b702d69766"},
+        Assert.assertTrue(pushService.pushToList(new String[]{"0f54394e1ccea495b2f3f0b702d69766",
+                        "114d241a51cc8540346622de3f36c9f2"},
                 "你的认证申请已获通过。",
                 "{\"action\":\"certificate_passed\", \"title\":\"你的认证申请已获通过。\"}",
                 60 * 60));
