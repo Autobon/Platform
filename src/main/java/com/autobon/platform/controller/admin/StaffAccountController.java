@@ -75,7 +75,7 @@ public class StaffAccountController {
 
         // TODO 修改密码
         Staff staff = (Staff)request.getAttribute("user");
-        if(oldPassword == newPassword){
+        if(oldPassword .equals(newPassword) ){
             return  new JsonMessage(false,"新旧密码不能相同");
         }else if(!staff.getPassword().equals(Staff.encryptPassword(oldPassword))){
             return new JsonMessage(false, "PASSWORD_MISMATCH", "密码错误");
