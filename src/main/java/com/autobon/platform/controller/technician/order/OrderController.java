@@ -141,7 +141,7 @@ public class OrderController {
         Construction construction = list.get(0);
         if (construction.getSigninTime() != null)
             return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
-        
+
         construction.setPositionLon(positionLon);
         construction.setPositionLat(positionLat);
         construction.setSigninTime(new Date());
