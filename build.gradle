@@ -38,6 +38,7 @@ dependencies {
     compile 'redis.clients:jedis:2.+'
     compile 'org.im4java:im4java:1.+'
     compile "com.alibaba:fastjson:1.2.+"
+    compile "javax.mail:mail:1.4.+"
     compile 'commons-fileupload:commons-fileupload:1.+'
     testCompile "org.springframework.boot:spring-boot-starter-test:1.+"
     testCompile "com.jayway.jsonpath:json-path:2.+"
