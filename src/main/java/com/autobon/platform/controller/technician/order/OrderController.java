@@ -10,6 +10,7 @@ import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.order.util.OrderUtil;
 import com.autobon.shared.JsonMessage;
+import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,7 +43,7 @@ public class OrderController {
              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                orderService.findByMainTechId(technician.getId(), page, pageSize));
+                new JsonPage<>(orderService.findByMainTechId(technician.getId(), page, pageSize)));
     }
 
     // 获取次要责任人订单列表
@@ -52,7 +53,7 @@ public class OrderController {
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                orderService.findBySecondTechId(technician.getId(), page, pageSize));
+                new JsonPage<>(orderService.findBySecondTechId(technician.getId(), page, pageSize)));
     }
 
     // 获取订单信息

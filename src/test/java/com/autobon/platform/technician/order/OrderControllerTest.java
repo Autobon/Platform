@@ -10,6 +10,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.servlet.http.Cookie;
+
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 /**
  * Created by dave on 16/3/2.
  */
@@ -34,33 +42,64 @@ public class OrderControllerTest extends MvcTest {
 
     @Test
     public void listMain() throws Exception {
-
+        mockMvcS.perform(get("/api/mobile/technician/order/listMain")
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.data.count", is(1+1)));
     }
 
     @Test
     public void listSecond() throws Exception {
-
+        mockMvcS.perform(get("/api/mobile/technician/order/listSecond")
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.data.count", is(0+1)));
     }
 
 
     @Test
     public void show() throws Exception {
-
+        mockMvcS.perform(get("/api/mobile/technician/order/" + myOrder.getId())
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.data.id", is(myOrder.getId())));
     }
 
     @Test
     public void takeUpOrder() throws Exception {
-
+        mockMvcS.perform(post("/api/mobile/technician/order/takeup")
+                .param("orderId", "" + newOrder.getId())
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.data.id", is(newOrder.getId())));
     }
 
     @Test
-    public void startWork() throws Exception {
-
+    public void signInFailed() throws Exception {
+        mockMvcS.perform(post("/api/mobile/technician/order/signIn")
+                .param("orderId", "" + myOrder.getId())
+                .param("positionLon", "12.3665")
+                .param("positionLat", "25.5654")
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.result", is(false)));
     }
 
     @Test
-    public void signIn() throws Exception {
+    public void startWorkAndSignIn() throws Exception {
+        mockMvcS.perform(post("/api/mobile/technician/order/start")
+                .param("orderId", "" + myOrder.getId())
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.result", is(true)));
 
+        mockMvcS.perform(post("/api/mobile/technician/order/signIn")
+                .param("orderId", "" + myOrder.getId())
+                .param("positionLon", "12.3665")
+                .param("positionLat", "25.5654")
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.result", is(true)));
     }
 
 }

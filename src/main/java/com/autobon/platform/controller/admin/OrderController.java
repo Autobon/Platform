@@ -68,7 +68,6 @@ public class OrderController {
         order.setContactPhone(contactPhone);
         order.setPositionLon(positionLon);
         order.setPositionLat(positionLat);
-        order.setOrderNum(Order.generateOrderNum());
         order.setOrderType(orderType);
         order.setOrderTime(Date.from(
                 LocalDateTime.from(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse(orderTime))

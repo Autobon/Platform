@@ -79,6 +79,7 @@ public class Order {
     @Column private int secondTechId;
 
     public Order() {
+        this.orderNum = generateOrderNum();
         this.setStatus(Status.NEWLY_CREATED);
         this.addTime = new Date();
     }
