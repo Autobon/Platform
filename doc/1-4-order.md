@@ -1,6 +1,7 @@
 # 一、订单
 
 订单状态列表:
+
 1. `NEWLY_CREATED` 新建
 2. `TAKEN_UP` 已有人抢单
 3. `SEND_INVITATION` 已发送合作邀请并等待结果
