@@ -76,7 +76,9 @@ public class OrderController {
             @RequestParam("orderId") int orderId) {
         Technician tech = (Technician) request.getAttribute("user");
         Order order = orderService.findOrder(orderId);
-        if (order.getStatus() == Order.Status.CANCELED) {
+        if (order == null) {
+            return new JsonMessage(false, "NO_SUCH_ORDER", "没有这个订单");
+        } else if (order.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
         } else if (order.getStatus() != Order.Status.NEWLY_CREATED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "已有人接单");
