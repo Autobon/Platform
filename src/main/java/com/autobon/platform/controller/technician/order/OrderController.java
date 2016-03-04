@@ -1,6 +1,5 @@
 package com.autobon.platform.controller.technician.order;
 
-import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderShow;
