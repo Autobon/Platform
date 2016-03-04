@@ -32,8 +32,17 @@ POST /api/mobile/technician/order/1/invite/2
 
 ```
 {"result": false,
-"message": "订单已进入工作模式或已有人接单",
-"error": "ILLEGAL_PARAM",
+"message": "订单已进入工作模式",
+"error": "ILLEGAL_OPERATION",
+"data": null}
+```
+
+3.订单已有人接受合作邀请
+
+```
+{"result": false,
+"message": "订单已有人接受合作邀请",
+"error": "ILLEGAL_OPERATION",
 "data": null}
 ```
 
@@ -42,7 +51,7 @@ POST /api/mobile/technician/order/1/invite/2
 ```
 {"result": false,
 "message": "主技师和合作技师不能为同一人",
-"error": "ILLEGAL_PARAM",
+"error": "ILLEGAL_OPERATION",
 "data": null}
 ```
 
@@ -51,7 +60,7 @@ POST /api/mobile/technician/order/1/invite/2
 ```
 {"result": false,
 "message": "系统中没有邀请的技师",
-"error": "ILLEGAL_PARAM",
+"error": "NO_SUCH_TECH",
 "data": null}
 ```
 
@@ -66,74 +75,6 @@ POST /api/mobile/technician/order/1/invite/2
 }
 ```
 
-当向其它技师发起合作邀请时,系统将向邀请的技师发送**合作邀请**推送消息.
-**合作邀请** `action=INVITE_PARTNER` 推送消息样例:
-
-```
-{
-"owner": {
-    "id": 1,
-    "phone": "18812345678",
-    "name": "tom",
-    "gender": null,
-    "avatar": null,
-    "idNo": "422302198608266313",
-    "idPhoto": "/etc/a.jpg",
-    "bank": "027",
-    "bankAddress": "光谷",
-    "bankCardNo": "88888888888",
-    "verifyAt": null,
-    "lastLoginAt": 1456195103000,
-    "lastLoginIp": "127.0.0.1",
-    "createAt": 1455724800000,
-    "star": 0,
-    "voteRate": 0,
-    "skill": "1",
-    "pushId": null,
-    "statusCode": "NOTVERIFIED"
-},
-"partner": {
-    "id": 14,
-    "phone": "tempPhoneNo",
-    "name": null,
-    "gender": null,
-    "avatar": null,
-    "idNo": null,
-    "idPhoto": null,
-    "bank": null,
-    "bankAddress": null,
-    "bankCardNo": null,
-    "verifyAt": null,
-    "lastLoginAt": null,
-    "lastLoginIp": null,
-    "createAt": 1456740362383,
-    "star": 0,
-    "voteRate": 0,
-    "skill": null,
-    "pushId": "",
-    "statusCode": "NOTVERIFIED"
-},
-"action": "INVITE_PARTNER",
-"order": {
-    "id": 15,
-    "orderNum": "test-order-num",
-    "orderType": 1,
-    "photo": null,
-    "orderTime": 1456826762442,
-    "addTime": null,
-    "statusCode": 0,
-    "creatorType": 0,
-    "creatorId": 0,
-    "creatorName": null,
-    "positionLon": null,
-    "positionLat": null,
-    "remark": null,
-    "mainTechId": 1,
-    "secondTechId": 14,
-    "enumStatus": "INVITATION_NOT_ACCEPTED"
-}
-}
-```
 
 ## 2. 接受或拒绝合作邀请
 ### URL及请求方法
@@ -196,76 +137,4 @@ POST /api/mobile/technician/order/1/invitation
 "message": "订单已开始或已结束",
 "error": "ILLEGAL_OPERATION",
 "data": null}
-```
-
-当技师端APP收到合作邀请时,应显示一个可供选择的界面,让用户选择接受或拒绝的操作.
-
-在用户收到合作邀请推送消息时, 在透传消息JSON中可获取邀请订单ID.
-
-当合作邀请有人接单时, 发起邀请的技师将收到**邀请已接受** `action=INVITATION_ACCEPT` 推送消息, 如下:
-
-```
-{
-"owner": {
-    "id": 1,
-    "phone": "18812345678",
-    "name": "tom",
-    "gender": null,
-    "avatar": null,
-    "idNo": "422302198608266313",
-    "idPhoto": "/etc/a.jpg",
-    "bank": "027",
-    "bankAddress": "光谷",
-    "bankCardNo": "88888888888",
-    "verifyAt": null,
-    "lastLoginAt": 1456195103000,
-    "lastLoginIp": "127.0.0.1",
-    "createAt": 1455724800000,
-    "star": 0,
-    "voteRate": 0,
-    "skill": "1",
-    "pushId": null,
-    "statusCode": "NOTVERIFIED"
-},
-"partner": {
-    "id": 14,
-    "phone": "tempPhoneNo",
-    "name": null,
-    "gender": null,
-    "avatar": null,
-    "idNo": null,
-    "idPhoto": null,
-    "bank": null,
-    "bankAddress": null,
-    "bankCardNo": null,
-    "verifyAt": null,
-    "lastLoginAt": null,
-    "lastLoginIp": null,
-    "createAt": 1456740362383,
-    "star": 0,
-    "voteRate": 0,
-    "skill": null,
-    "pushId": "",
-    "statusCode": "NOTVERIFIED"
-},
-"action": "INVITATION_ACCEPT",
-"order": {
-    "id": 15,
-    "orderNum": "test-order-num",
-    "orderType": 1,
-    "photo": null,
-    "orderTime": 1456826762442,
-    "addTime": null,
-    "statusCode": 1,
-    "creatorType": 0,
-    "creatorId": 0,
-    "creatorName": null,
-    "positionLon": null,
-    "positionLat": null,
-    "remark": null,
-    "mainTechId": 1,
-    "secondTechId": 14,
-    "enumStatus": "INVITATION_ACCEPTED"
-}
-}
 ```

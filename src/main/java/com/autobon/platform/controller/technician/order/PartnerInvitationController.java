@@ -54,9 +54,9 @@ public class PartnerInvitationController {
         } else if (order.getStatus() == Order.Status.INVITATION_ACCEPTED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已有人接受合作邀请");
         } else if (order.getMainTechId() == partner.getId()) {
-            return new JsonMessage(false, "ILLEGAL_PARAMS", "主技师和合作技师不能为同一人");
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "主技师和合作技师不能为同一人");
         } else if (partner == null) {
-            return new JsonMessage(false, "ILLEGAL_PARAMS", "系统中没有邀请的技师");
+            return new JsonMessage(false, "NO_SUCH_TECH", "系统中没有邀请的技师");
         } else if (!Arrays.stream(partner.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType()))) {
             String orderType = workItemService.getOrderTypes().stream()
                     .filter(t -> t.getOrderType() == order.getOrderType())
