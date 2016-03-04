@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /**
  * Created by dave on 16/3/3.
  */
@@ -20,15 +23,19 @@ public class OrderController {
     @Autowired OrderService orderService;
     @Autowired CommentService commentService;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+
     @RequestMapping(value="/comment",method = RequestMethod.POST)
     public JsonMessage comment(@RequestParam("orderId") int orderId,
                                @RequestParam("star") int star,
-                               @RequestParam("arriveOnTime") int arriveOnTime,
-                               @RequestParam("completeOnTime") int completeOnTime,
-                               @RequestParam("professional") int professional,
-                               @RequestParam("dressNeatly") int dressNeatly,
-                               @RequestParam("carProtect") int carProtect,
-                               @RequestParam("goodAttitude") int goodAttitude,
+                               @RequestParam(value = "arriveOnTime",defaultValue = "false") boolean arriveOnTime,
+                               @RequestParam(value = "completeOnTime",defaultValue = "false") boolean completeOnTime,
+                               @RequestParam(value = "professional",defaultValue = "false") boolean professional,
+                               @RequestParam(value = "dressNeatly",defaultValue = "false") boolean dressNeatly,
+                               @RequestParam(value = "carProtect",defaultValue = "false") boolean carProtect,
+                               @RequestParam(value = "goodAttitude",defaultValue = "false") boolean goodAttitude,
                                @RequestParam("advice") String advice){
 
         JsonMessage jsonMessage = new JsonMessage(true,"comment");
@@ -53,6 +60,7 @@ public class OrderController {
         commentService.saveComment(comment);
 
         if(secondTechId != 0){
+            entityManager.detach(comment);
             comment.setId(0);
             comment.setTechnicianId(secondTechId);
             commentService.saveComment(comment);
