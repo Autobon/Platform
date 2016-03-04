@@ -363,6 +363,7 @@ GET /api/mobile/technician
 | statusCode | 帐户状态 |
 | ------ | ------ |
 | NOTVERIFIED | 未认证 |
+| IN_VERIFICATION | 等待审核中 |
 | VERIFIED | 已认证通过 |
 | REJECTED | 认证未通过 |
 | BANNED | 帐户已被禁用 |

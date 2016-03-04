@@ -43,5 +43,206 @@
 当有技师向你发出合作邀请时, 被邀技师收到的推送消息.
 
 ```
+{
+    "action": "INVITE_PARTNER",
+    "title": "张三向你发起订单合作邀请",
+    "order": {
+        "id": 47,
+        "orderNum": "20160303120243AS54GE",
+        "orderType": 0,
+        "photo": null,
+        "orderTime": null,
+        "addTime": 1456977763758,
+        "creatorType": 0,
+        "creatorId": 0,
+        "creatorName": null,
+        "contactPhone": null,
+        "positionLon": null,
+        "positionLat": null,
+        "remark": null,
+        "mainTechId": 1,
+        "secondTechId": 0,
+        "status": "NEWLY_CREATED"
+    },
+    "owner": {
+        "id": 3,
+        "phone": "18827075330",
+        "name": "张三",
+        "gender": null,
+        "avatar": null,
+        "idNo": null,
+        "idPhoto": null,
+        "bank": null,
+        "bankAddress": null,
+        "bankCardNo": null,
+        "verifyAt": null,
+        "lastLoginAt": null,
+        "lastLoginIp": null,
+        "createAt": 1455868034249,
+        "star": 0,
+        "voteRate": 0,
+        "skill": null,
+        "pushId": null,
+        "statusCode": "VERIFIED"
+    },
+    "partner": {
+        "id": 5,
+        "phone": "18827071234",
+        "name": "李四",
+        "gender": null,
+        "avatar": null,
+        "idNo": null,
+        "idPhoto": null,
+        "bank": null,
+        "bankAddress": null,
+        "bankCardNo": null,
+        "verifyAt": null,
+        "lastLoginAt": null,
+        "lastLoginIp": null,
+        "createAt": 1455868034249,
+        "star": 0,
+        "voteRate": 0,
+        "skill": null,
+        "pushId": null,
+        "statusCode": "VERIFIED"
+    }
+}
+```
 
+### b. 邀请被接受
+
+```
+{
+    "action": "INVITATION_ACCEPTED",
+    "title": "李四已接受你的邀请",
+    "order": {
+        "id": 47,
+        "orderNum": "20160303120243AS54GE",
+        "orderType": 0,
+        "photo": null,
+        "orderTime": null,
+        "addTime": 1456977763758,
+        "creatorType": 0,
+        "creatorId": 0,
+        "creatorName": null,
+        "contactPhone": null,
+        "positionLon": null,
+        "positionLat": null,
+        "remark": null,
+        "mainTechId": 1,
+        "secondTechId": 0,
+        "status": "NEWLY_CREATED"
+    },
+    "owner": {
+        "id": 3,
+        "phone": "18827075330",
+        "name": "张三",
+        "gender": null,
+        "avatar": null,
+        "idNo": null,
+        "idPhoto": null,
+        "bank": null,
+        "bankAddress": null,
+        "bankCardNo": null,
+        "verifyAt": null,
+        "lastLoginAt": null,
+        "lastLoginIp": null,
+        "createAt": 1455868034249,
+        "star": 0,
+        "voteRate": 0,
+        "skill": null,
+        "pushId": null,
+        "statusCode": "VERIFIED"
+    },
+    "partner": {
+        "id": 5,
+        "phone": "18827071234",
+        "name": "李四",
+        "gender": null,
+        "avatar": null,
+        "idNo": null,
+        "idPhoto": null,
+        "bank": null,
+        "bankAddress": null,
+        "bankCardNo": null,
+        "verifyAt": null,
+        "lastLoginAt": null,
+        "lastLoginIp": null,
+        "createAt": 1455868034249,
+        "star": 0,
+        "voteRate": 0,
+        "skill": null,
+        "pushId": null,
+        "statusCode": "VERIFIED"
+    }
+}
+```
+
+### c. 邀请被拒绝
+
+```
+{
+    "action": "INVITATION_REJECTED",
+    "title": "李四已拒绝你的邀请",
+    "order": {
+        "id": 47,
+        "orderNum": "20160303120243AS54GE",
+        "orderType": 0,
+        "photo": null,
+        "orderTime": null,
+        "addTime": 1456977763758,
+        "creatorType": 0,
+        "creatorId": 0,
+        "creatorName": null,
+        "contactPhone": null,
+        "positionLon": null,
+        "positionLat": null,
+        "remark": null,
+        "mainTechId": 1,
+        "secondTechId": 0,
+        "status": "NEWLY_CREATED"
+    },
+    "owner": {
+        "id": 3,
+        "phone": "18827075330",
+        "name": "张三",
+        "gender": null,
+        "avatar": null,
+        "idNo": null,
+        "idPhoto": null,
+        "bank": null,
+        "bankAddress": null,
+        "bankCardNo": null,
+        "verifyAt": null,
+        "lastLoginAt": null,
+        "lastLoginIp": null,
+        "createAt": 1455868034249,
+        "star": 0,
+        "voteRate": 0,
+        "skill": null,
+        "pushId": null,
+        "statusCode": "VERIFIED"
+    },
+    "partner": {
+        "id": 5,
+        "phone": "18827071234",
+        "name": "李四",
+        "gender": null,
+        "avatar": null,
+        "idNo": null,
+        "idPhoto": null,
+        "bank": null,
+        "bankAddress": null,
+        "bankCardNo": null,
+        "verifyAt": null,
+        "lastLoginAt": null,
+        "lastLoginIp": null,
+        "createAt": 1455868034249,
+        "star": 0,
+        "voteRate": 0,
+        "skill": null,
+        "pushId": null,
+        "statusCode": "VERIFIED"
+    }
+}
 ```
