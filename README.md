@@ -14,3 +14,4 @@
 # 后台端API
 1. [账号及登录](doc/2-1-staff.md)
 2. [订单](doc/2-2-order.md)
+3. [技师](doc/2-3-tech.md)
