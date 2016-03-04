@@ -33,6 +33,7 @@ public class GtPushTest {
 
     @Test
     public void pushToList() throws Exception {
+        GtPush.connect(gtConfig);
         TransmissionTemplate template = new TransmissionTemplate();
         template.setAppId(gtConfig.getAppId());
         template.setAppkey(gtConfig.getAppKey());
@@ -63,6 +64,7 @@ public class GtPushTest {
 
     @Test
     public void pushToSingle() throws Exception {
+        GtPush.connect(gtConfig);
         TransmissionTemplate template = new TransmissionTemplate();
         template.setAppId(gtConfig.getAppId());
         template.setAppkey(gtConfig.getAppKey());

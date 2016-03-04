@@ -1,9 +1,9 @@
 package com.autobon.platform.controller.technician.order;
 
-import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderShow;
+import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.CommentService;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
@@ -20,10 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yuh on 2016/2/22.
@@ -83,6 +80,11 @@ public class OrderController {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
         } else if (order.getStatus() != Order.Status.NEWLY_CREATED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "已有人接单");
+        } else if (!Arrays.stream(tech.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType()))) {
+            String orderType = workItemService.getOrderTypes().stream()
+                    .filter(t -> t.getOrderType() == order.getOrderType())
+                    .findFirst().orElse(new WorkItem()).getOrderTypeName();
+            return new JsonMessage(false, "TECH_SKILL_NOT_SUFFICIANT", "你当前的认证技能没有" + orderType);
         }
 
         order.setMainTechId(tech.getId());

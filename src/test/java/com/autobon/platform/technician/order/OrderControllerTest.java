@@ -37,6 +37,7 @@ public class OrderControllerTest extends MvcTest {
         myOrder.setMainTechId(technician.getId());
         orderService.save(myOrder);
         newOrder = new Order();
+        newOrder.setOrderType(3);
         orderService.save(newOrder);
     }
 
@@ -79,7 +80,7 @@ public class OrderControllerTest extends MvcTest {
                 .param("orderId", "" + newOrder.getId())
                 .cookie(new Cookie("autoken", token)))
             .andDo(print())
-            .andExpect(jsonPath("$.data.id", is(newOrder.getId())));
+            .andExpect(jsonPath("$.error", is("TECH_SKILL_NOT_SUFFICIANT")));
     }
 
     @Test

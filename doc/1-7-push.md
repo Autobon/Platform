@@ -5,9 +5,22 @@
 
 ### a. 认证通过
 
+```
+{
+    "action": "VERIFICATION_SUCCEED",
+    "title": "你已通过技师资格认证"
+}
+```
 
 
 ### b. 认证失败
+
+```
+{
+    "action": "VERIFICATION_FAILED",
+    "title": "你的技师资格认证失败,请更新信息后重新申请认证"
+}
+```
 
 
 ## 2. 推送新订单
