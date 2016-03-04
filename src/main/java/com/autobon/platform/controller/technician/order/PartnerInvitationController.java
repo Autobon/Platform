@@ -2,7 +2,9 @@ package com.autobon.platform.controller.technician.order;
 
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
+import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.OrderService;
+import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -27,6 +30,7 @@ public class PartnerInvitationController {
 
     @Autowired private TechnicianService technicianService;
     @Autowired private OrderService orderService;
+    @Autowired private WorkItemService workItemService;
     @Autowired private PushService pushService;
 
     /**
@@ -53,6 +57,11 @@ public class PartnerInvitationController {
             return new JsonMessage(false, "ILLEGAL_PARAMS", "主技师和合作技师不能为同一人");
         } else if (partner == null) {
             return new JsonMessage(false, "ILLEGAL_PARAMS", "系统中没有邀请的技师");
+        } else if (!Arrays.stream(partner.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType()))) {
+            String orderType = workItemService.getOrderTypes().stream()
+                    .filter(t -> t.getOrderType() == order.getOrderType())
+                    .findFirst().orElse(new WorkItem()).getOrderTypeName();
+            return new JsonMessage(false, "TECH_SKILL_NOT_SUFFICIANT", partner.getName() + "的认证技能没有" + orderType);
         }
 
         order.setSecondTechId(partnerId);

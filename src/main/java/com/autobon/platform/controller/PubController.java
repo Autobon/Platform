@@ -31,10 +31,10 @@ public class PubController {
     @RequestMapping(value = "/orderTypes", method = RequestMethod.GET)
     public JsonMessage getOrderTypes() {
         return new JsonMessage(true, "", "",
-                workItemService.getOrderTypes().stream().map(l -> {
+                workItemService.getOrderTypes().stream().map(t -> {
                     HashMap<String, Object> m = new HashMap<>();
-                    m.put("id", l[0]);
-                    m.put("name", l[1]);
+                    m.put("id", t.getOrderType());
+                    m.put("name", t.getOrderTypeName());
                     return m;
                 }).collect(Collectors.toList()));
     }
