@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by yuh on 2016/2/29.
@@ -24,7 +25,12 @@ public class WorkItemService {
         return workItemRepository.findByOrderTypeAndCarSeat(orderType, carSeat);
     }
 
-    public List<Object[]> getOrderTypes() {
-        return workItemRepository.getOrderTypes();
+    public List<WorkItem> getOrderTypes() {
+        return workItemRepository.getOrderTypes().stream().map(i -> {
+            WorkItem wi = new WorkItem();
+            wi.setOrderType(Integer.parseInt(i[0].toString()));
+            wi.setOrderTypeName(i[1].toString());
+            return wi;
+        }).collect(Collectors.toList());
     }
 }

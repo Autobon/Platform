@@ -17,14 +17,14 @@ public class StaffAccountControllerTest extends MvcTest {
 
     @Test
     public void register() throws Exception {
-        mockMvc.perform(post("/api/web/staff/register")
+        mockMvc.perform(post("/api/web/admin/register")
                 .param("username", "admin-test")
                 .param("email", "ab@c.com")
                 .param("password", "123456"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(jsonPath("$.result", is(false)));
 
-        mockMvc.perform(post("/api/web/staff/register")
+        mockMvc.perform(post("/api/web/admin/register")
                 .param("username", "admin_test")
                 .param("email", "ab@c.com")
                 .param("password", "123456"))
@@ -34,7 +34,7 @@ public class StaffAccountControllerTest extends MvcTest {
 
     @Test
     public void login() throws Exception {
-        mockMvc.perform(post("/api/web/staff/login")
+        mockMvc.perform(post("/api/web/admin/login")
                 .param("username", "admin")
                 .param("password", "123456"))
             .andDo(MockMvcResultHandlers.print())
