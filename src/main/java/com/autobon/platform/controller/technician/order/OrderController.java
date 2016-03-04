@@ -80,7 +80,7 @@ public class OrderController {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
         } else if (order.getStatus() != Order.Status.NEWLY_CREATED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "已有人接单");
-        } else if (!Arrays.stream(tech.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType()))) {
+        } else if (tech.getSkill() == null || !Arrays.stream(tech.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType()))) {
             String orderType = workItemService.getOrderTypes().stream()
                     .filter(t -> t.getOrderType() == order.getOrderType())
                     .findFirst().orElse(new WorkItem()).getOrderTypeName();
