@@ -14,6 +14,8 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.transaction.Transactional;
 
 /**
+ * 需要使用MockMvc的单元测试, 可以继承此类, 就不用在测试类上加一堆注解.
+ * 比如: admin.TechnicianControllerTest
  * Created by dave on 16/2/26.
  */
 @RunWith(SpringJUnit4ClassRunner.class)

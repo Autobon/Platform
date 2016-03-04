@@ -55,6 +55,17 @@ POST /api/mobile/technician/order/1/invite/2
 "data": null}
 ```
 
+5.邀请的技师的认证技能没有....
+
+```
+{
+  "result": false,
+  "message": "张三的认证技能没有车身改色",
+  "error": "TECH_SKILL_NOT_SUFFICIANT",
+  "data": null
+}
+```
+
 当向其它技师发起合作邀请时,系统将向邀请的技师发送**合作邀请**推送消息.
 **合作邀请** `action=INVITE_PARTNER` 推送消息样例:
 
