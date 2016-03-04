@@ -1,60 +1,90 @@
-# 一、施工签到及上传工作前后照片
+# 一、施工
 
-## 1.签到
-在施工信息中记录签到坐标
-
+## 1.上传工作图片
+上传工作前和工作后图片，工作前可上传1-3张图片，工作后可上传3-6张图片
 
 ### URL及请求方法
-POST /api/mobile/construction/signIn
+POST /api/mobile/technician/construct/uploadPhoto
 
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
-| positionLon | 经度 | 111.11111111 |
-| positionLat | 维度 | 55.555555 |
-| technicianId | 技师id | 1 |
-| orderId | 订单id | 1 |
+| file | 上传的图片 | |
+| no | 图片序号 | 1 |
+| orderId | 订单ID | 1 |
+| isBefore | 是否是工作前图片，true或false  | true |
 
-### 用例
-| Method | URL | Header | Body | Result |
-| ------ | --- | ------ | ---- | ------ |
-| POST | /api/mobile/construction/signIn | | | {"result":true,"message":"signIn","error":null,"data":{"id":3,"orderId":1,"technicianId":1,"positionLon":"111.11111111","positionLat":"55.555555","startTime":null,"signinTime":1456457820198,"endTime":null,"beforePicA":null,"beforePicB":null,"beforePicC":null,"afterPicA":null,"afterPicB":null,"afterPicC":null,"afterPicD":null,"afterPicE":null,"afterPicF":null,"payfor":null,"workload":null}} |
+### 返回数据
 
-## 2.保存工作前图片
-保存在工作前图片地址，数量限制1到3
+#### a.请求成功
 
+```
+{
+    "result": true,
+    "error": "",
+    "message": "",
+    "date": "/uploads/order/b120160304165030-1.jpg"
+}
+```
+#### b.你没有这个订单
 
-### URL及请求方法
-POST /api/mobile/construction/saveBeforePic
+```
+{
+    "result": false,
+    "error": "ILLEGAL_OPERATION",
+    "message": "你没有这个订单",
+    "date": null
+}
+```
+#### c.非施工中订单, 不允许上传照片
 
-### 请求参数
+```
+{
+    "result": false,
+    "error": "ILLEGAL_OPERATION",
+    "message": "非施工中订单, 不允许上传照片",
+    "date": null
+}
+```
+#### d.没有上传文件
 
-| 参数名称 | 说明 | 举例 |
-| ------ | ---- | --- |
-| constructionId | 施工id | 3 |
-| filePaths | 文件路径数组 |"a/a.jpg","a/b.jpg","a/c.jpg" |
+```
+{
+    "result": false,
+    "error": "NO_UPLOAD_FILE",
+    "message": "没有上传文件",
+    "date": null
+}
+```
+#### e.系统没有你的施工单
 
-### 用例
-| Method | URL | Header | Body | Result |
-| ------ | --- | ------ | ---- | ------ |
-| POST | /api/mobile/construction/saveBeforePic | | | {"result":true,"message":"saveBeforePic","error":null,"data":null} |
+```
+{
+    "result": false,
+    "error": "SYSTEM_CORRUPT",
+    "message": "系统没有你的施工单",
+    "date": null
+}
+```
+#### f.施工前照片序号只能为1,2,3
 
-## 3.保存工作后图片
-保存在工作后图片地址，数量限制3到6
+```
+{
+    "result": false,
+    "error": "ILLEGAL_PARAM",
+    "message": "施工前照片序号只能为1,2,3",
+    "date": null
+}
+```
+#### g.施工后照片序号只能为1-6
 
+```
+{
+    "result": false,
+    "error": "ILLEGAL_PARAM",
+    "message": "施工后照片序号只能为1-6",
+    "date": null
+}
+```
 
-### URL及请求方法
-POST /api/mobile/construction/saveAfterPic
-
-### 请求参数
-
-| 参数名称 | 说明 | 举例 |
-| ------ | ---- | --- |
-| constructionId | 施工id | 3 |
-| filePaths | 文件路径数组 |"a/a.jpg","a/b.jpg","a/c.jpg","a/e.jpg","a/f.jpg" |
-
-### 用例
-| Method | URL | Header | Body | Result |
-| ------ | --- | ------ | ---- | ------ |
-| POST | /api/mobile/construction/saveAfterPic | | | {"result":true,"message":"saveAfterPic","error":null,"data":null} |
