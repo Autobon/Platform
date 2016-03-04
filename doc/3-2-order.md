@@ -14,13 +14,13 @@ POST /api/mobile/coop/order/comment
 | ------ | ---- | --- |
 | orderId | 订单id | 1 |
 | star | 星级 |5 |
-| arriveOnTime | 准时达到 |1 |
-| completeOnTime | 准时完成 |1 |
-| professional | 专业技能 |1 |
-| dressNeatly | 整洁着装 |1 |
-| carProtect | 车辆保护 |1 |
-| goodAttitude | 态度好 |1 |
-| advice | 建议 |1 |
+| arriveOnTime | 准时达到 |true |
+| completeOnTime | 准时完成 |true |
+| professional | 专业技能 |true |
+| dressNeatly | 整洁着装 |true |
+| carProtect | 车辆保护 |true |
+| goodAttitude | 态度好 |true |
+| advice | 建议 |贴膜技术不错 |
 
 订单需要有指定主技师。
 
