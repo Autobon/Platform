@@ -40,6 +40,7 @@ public class PartnerInvitationControllerTest extends MvcTest {
         partner = new Technician();
         partner.setPhone("tempPhoneNo");
         partner.setPushId("");
+        partner.setSkill("1");
         technicianService.save(partner);
         order = new Order();
         order.setOrderNum("test-order-num");

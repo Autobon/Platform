@@ -50,13 +50,13 @@ public class TechnicianController {
                 tech.setStatus(Technician.Status.VERIFIED);
                 String title = "你已通过技师资格认证";
                 pushService.pushToSingle(tech.getPushId(), title,
-                        "{\"action\":\"VERIFY_SUCCEED\",\"title\":\"" + title + "\"}",
+                        "{\"action\":\"VERIFICATION_SUCCEED\",\"title\":\"" + title + "\"}",
                         3*24*3600);
             } else {
                 tech.setStatus(Technician.Status.REJECTED);
                 String title = "你的技师资格认证失败,请更新信息后重新申请认证";
                 pushService.pushToSingle(tech.getPushId(), title,
-                        "{\"action\":\"VERIFY_FAILED\",\"title\":\"" + title + "\"}",
+                        "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
                         3*24*3600);
             }
             technicianService.save(tech);
