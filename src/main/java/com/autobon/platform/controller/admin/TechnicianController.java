@@ -28,19 +28,19 @@ public class TechnicianController {
                 new JsonPage<>(technicianService.findAll(page, pageSize)));
     }
 
-    @RequestMapping(value = "/{techId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{techId:[\\d]+}", method = RequestMethod.GET)
     public JsonMessage show(@PathVariable("techId") int techId) {
         return new JsonMessage(true, "", "", technicianService.get(techId));
     }
 
-    @RequestMapping(value = "/{techId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{techId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("techId") int techId) {
 
         // TODO 更新技师信息
         return null;
     }
 
-    @RequestMapping(value = "/verify/{techId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/verify/{techId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage verify(
             @PathVariable("techId") int techId,
             @RequestParam("verified") boolean verified) throws IOException {

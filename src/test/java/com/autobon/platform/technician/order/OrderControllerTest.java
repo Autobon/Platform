@@ -33,6 +33,8 @@ public class OrderControllerTest extends MvcTest {
     public void setup() {
         super.setup();
         technician = technicianService.get(Technician.decodeToken(token));
+        technician.setStatus(Technician.Status.VERIFIED);
+        technicianService.save(technician);
         myOrder = new Order();
         myOrder.setMainTechId(technician.getId());
         orderService.save(myOrder);

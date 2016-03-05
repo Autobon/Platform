@@ -3,7 +3,7 @@
 对技师进行信息认证. 认证成功或拒绝, 被认证的技师都将收到认证结果的推送消息. 推送消息,
 参见: [技师端推送消息-技师认证](1-7-push.md)
 ### URL及请求方法
-`GET /api/web/admin/technician/verify/{techId}`
+`POST /api/web/admin/technician/verify/{techId}`
 
 ### 请求参数
 

@@ -41,7 +41,7 @@ public class OrderController {
                 new JsonPage<>(orderService.findAll(page, pageSize)));
     }
 
-    @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{orderId:[\\d]+}", method = RequestMethod.GET)
     public JsonMessage show(@PathVariable("orderId") int orderId) {
         Order order = orderService.findOrder(orderId);
         if (order != null) return new JsonMessage(true, "", "", order);
