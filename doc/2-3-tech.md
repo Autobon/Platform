@@ -10,7 +10,7 @@
 | 参数名称 | 是否必须 | 说明 | 举例 |
 | ------ | -------- | ---- | --- |
 | techId | 是 | 技师ID, URL占位符参数| 1 |
-| verified | 是 | 认证通过或拒绝, true或false | true0 |
+| verified | 是 | 认证通过或拒绝, true或false | true |
 
 ### 返回数据
 

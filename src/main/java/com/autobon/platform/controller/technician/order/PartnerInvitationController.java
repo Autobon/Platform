@@ -57,6 +57,8 @@ public class PartnerInvitationController {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "主技师和合作技师不能为同一人");
         } else if (partner == null) {
             return new JsonMessage(false, "NO_SUCH_TECH", "系统中没有邀请的技师");
+        } else if (partner.getStatus() != Technician.Status.VERIFIED) {
+            return new JsonMessage(false, "NOT_VERIFIED", "受邀技师没有通过认证");
         } else if (partner.getSkill() == null ||
                 !Arrays.stream(partner.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType()))) {
             String orderType = workItemService.getOrderTypes().stream()
