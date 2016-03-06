@@ -11,6 +11,7 @@
 | ------ | -------- | ---- | --- |
 | techId | 是 | 技师ID, URL占位符参数| 1 |
 | verified | 是 | 认证通过或拒绝, true或false | true |
+| verifyMsg | 否 | 认证消息, 当拒绝认证通过时, 必须填写 | 身份证照片不清晰 |
 
 ### 返回数据
 
@@ -32,5 +33,14 @@
 {"result": false,
 "message": "没有这个技师",
 "error": "ILLEGAL_PARAM",
+"data": null}
+```
+
+#### c.请填写认证失败原因
+
+```
+{"result": false,
+"message": "请填写认证失败原因",
+"error": "INSUFFICIENT_PARAM",
 "data": null}
 ```

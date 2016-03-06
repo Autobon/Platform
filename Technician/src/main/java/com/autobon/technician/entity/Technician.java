@@ -65,6 +65,10 @@ public class Technician implements UserDetails {
 
     @Column private Date verifyAt; // 认证通过日期
 
+    @Column private Date requestVerifyAt; // 申请认证日期
+
+    @Column private String verifyMsg; // 认证审核消息
+
     @Column private Date lastLoginAt; // 最后登录时间
 
     @Column private String lastLoginIp; // 最后登录IP
@@ -214,6 +218,22 @@ public class Technician implements UserDetails {
 
     public void setVerifyAt(Date verifyAt) {
         this.verifyAt = verifyAt;
+    }
+
+    public Date getRequestVerifyAt() {
+        return requestVerifyAt;
+    }
+
+    public void setRequestVerifyAt(Date requestVerifyAt) {
+        this.requestVerifyAt = requestVerifyAt;
+    }
+
+    public String getVerifyMsg() {
+        return verifyMsg;
+    }
+
+    public void setVerifyMsg(String verifyMsg) {
+        this.verifyMsg = verifyMsg;
     }
 
     public Date getLastLoginAt() {
