@@ -75,6 +75,16 @@ POST /api/mobile/technician/order/1/invite/2
 }
 ```
 
+6.受邀技师没有通过认证
+
+```
+{
+  "result": false,
+  "message": "受邀技师没有通过认证",
+  "error": "NOT_VERIFIED",
+  "data": null
+}
+```
 
 ## 2. 接受或拒绝合作邀请
 ### URL及请求方法

@@ -36,6 +36,8 @@ POST /api/mobile/technician/certificate
         "bankAddress": "光谷",
         "bankCardNo": "88888888888",
         "verifyAt": null,
+        "requestVerifyAt": 1457277682096,
+        "verifyMsg": null,
         "lastLoginAt": 1456195103000,
         "lastLoginIp": "127.0.0.1",
         "createAt": 1455724800000,

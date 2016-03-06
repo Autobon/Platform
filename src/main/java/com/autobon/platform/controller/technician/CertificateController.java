@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -43,6 +44,7 @@ public class CertificateController {
         technician.setBank(bank);
         technician.setBankCardNo(bankCardNo);
         technician.setStatus(Technician.Status.IN_VERIFICATION);
+        technician.setRequestVerifyAt(new Date());
         technicianService.save(technician);
 
         return new JsonMessage(true, "", "", technician);

@@ -3,14 +3,15 @@
 对技师进行信息认证. 认证成功或拒绝, 被认证的技师都将收到认证结果的推送消息. 推送消息,
 参见: [技师端推送消息-技师认证](1-7-push.md)
 ### URL及请求方法
-`GET /api/web/admin/technician/verify/{techId}`
+`POST /api/web/admin/technician/verify/{techId}`
 
 ### 请求参数
 
 | 参数名称 | 是否必须 | 说明 | 举例 |
 | ------ | -------- | ---- | --- |
 | techId | 是 | 技师ID, URL占位符参数| 1 |
-| verified | 是 | 认证通过或拒绝, true或false | true0 |
+| verified | 是 | 认证通过或拒绝, true或false | true |
+| verifyMsg | 否 | 认证消息, 当拒绝认证通过时, 必须填写 | 身份证照片不清晰 |
 
 ### 返回数据
 
@@ -32,5 +33,14 @@
 {"result": false,
 "message": "没有这个技师",
 "error": "ILLEGAL_PARAM",
+"data": null}
+```
+
+#### c.请填写认证失败原因
+
+```
+{"result": false,
+"message": "请填写认证失败原因",
+"error": "INSUFFICIENT_PARAM",
 "data": null}
 ```

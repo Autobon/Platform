@@ -41,7 +41,7 @@ public class PartnerInvitationController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/{orderId}/invite/{partnerId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{orderId:[\\d]+}/invite/{partnerId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage invitePartner(HttpServletRequest request,
             @PathVariable("partnerId") int partnerId,
             @PathVariable("orderId")   int orderId) throws IOException {
@@ -57,6 +57,8 @@ public class PartnerInvitationController {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "主技师和合作技师不能为同一人");
         } else if (partner == null) {
             return new JsonMessage(false, "NO_SUCH_TECH", "系统中没有邀请的技师");
+        } else if (partner.getStatus() != Technician.Status.VERIFIED) {
+            return new JsonMessage(false, "NOT_VERIFIED", "受邀技师没有通过认证");
         } else if (partner.getSkill() == null ||
                 !Arrays.stream(partner.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType()))) {
             String orderType = workItemService.getOrderTypes().stream()
@@ -93,7 +95,7 @@ public class PartnerInvitationController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/{orderId}/invitation", method = RequestMethod.POST)
+    @RequestMapping(value = "/{orderId:[\\d]+}/invitation", method = RequestMethod.POST)
     public JsonMessage acceptInvitation(HttpServletRequest request,
             @RequestParam("accepted") boolean accepted,
             @PathVariable("orderId") int orderId) throws IOException {

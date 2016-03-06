@@ -1,7 +1,6 @@
 package com.autobon.technician.service;
 
 import com.autobon.technician.entity.Technician;
-import com.autobon.technician.repository.CodeItemRepository;
 import com.autobon.technician.repository.TechnicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,9 +18,6 @@ import java.util.regex.Pattern;
 public class TechnicianService {
     @Autowired
     private TechnicianRepository repository;
-
-    @Autowired
-    private CodeItemRepository codeitemRepository;
 
     public Technician get(int id) {
         return repository.findOne(id);

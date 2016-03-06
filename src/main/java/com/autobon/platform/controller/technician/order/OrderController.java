@@ -64,7 +64,7 @@ public class OrderController {
     }
 
     // 获取订单信息
-    @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{orderId:[\\d]+}", method = RequestMethod.GET)
     public JsonMessage show(HttpServletRequest request,
             @PathVariable("orderId") int orderId) {
         return new JsonMessage(true, "", "", orderService.findOrder(orderId));
@@ -78,6 +78,8 @@ public class OrderController {
         Order order = orderService.findOrder(orderId);
         if (order == null) {
             return new JsonMessage(false, "NO_SUCH_ORDER", "没有这个订单");
+        } else if (tech.getStatus() != Technician.Status.VERIFIED) {
+            return new JsonMessage(false, "NOT_VERIFIED", "你没有通过认证, 不能抢单");
         } else if (order.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
         } else if (order.getStatus() != Order.Status.NEWLY_CREATED) {

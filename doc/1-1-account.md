@@ -40,30 +40,34 @@ POST /api/mobile/technician/register
 1.请求成功
 
 ```
-{"result": true,
-"message": "",
-"error": null,
-"data":{
-    "id": 3,
-    "phone": "18827075330",
-    "name": null,
-    "gender": null,
-    "avatar": null,
-    "idNo": null,
-    "idPhoto": null,
-    "bank": null,
-    "bankAddress": null,
-    "bankCardNo": null,
-    "verifyAt": null,
-    "lastLoginAt": null,
-    "lastLoginIp": null,
-    "createAt": 1455868034249,
-    "star": 0,
-    "voteRate": 0,
-    "skill": null,
-    "pushId": null,
-    "statusCode": "NOTVERIFIED"
-}}
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 3,
+        "phone": "18827075300",
+        "name": null,
+        "gender": null,
+        "avatar": null,
+        "idNo": null,
+        "idPhoto": null,
+        "bank": null,
+        "bankAddress": null,
+        "bankCardNo": null,
+        "verifyAt": null,
+        "requestVerifyAt": null,
+        "verifyMsg": null,
+        "lastLoginAt": null,
+        "lastLoginIp": null,
+        "createAt": 1457277685096,
+        "star": 0,
+        "voteRate": 0,
+        "skill": null,
+        "pushId": null,
+        "status": "NEWLY_CREATED"
+    }
+}
 ```
 
 2.验证码错误
@@ -107,30 +111,34 @@ POST /api/mobile/technician/login
 1.登录成功
 
 ```
-{"result": true,
-"message": "",
-"error": null,
-"data":{
-    "id": 1,
-    "phone": "18812345678",
-    "name": null,
-    "gender": null,
-    "avatar": null,
-    "idNo": null,
-    "idPhoto": null,
-    "bank": null,
-    "bankAddress": null,
-    "bankCardNo": null,
-    "verifyAt": null,
-    "lastLoginAt": 1455867550725,
-    "lastLoginIp": "0:0:0:0:0:0:0:1",
-    "createAt": 1455724800000,
-    "star": 0,
-    "voteRate": 0,
-    "skill": null,
-    "pushId": null,
-    "statusCode": "NOTVERIFIED"
-}}
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 1,
+        "phone": "18812345678",
+        "name": "tom",
+        "gender": null,
+        "avatar": null,
+        "idNo": "422302198608266313",
+        "idPhoto": "/etc/a.jpg",
+        "bank": "工商银行",
+        "bankAddress": "光谷",
+        "bankCardNo": "88888888888",
+        "verifyAt": null,
+        "requestVerifyAt": 1457277682000,
+        "verifyMsg": null,
+        "lastLoginAt": 1457277685376,
+        "lastLoginIp": "127.0.0.1",
+        "createAt": 1455724800000,
+        "star": 0,
+        "voteRate": 0,
+        "skill": "1,2",
+        "pushId": null,
+        "status": "IN_VERIFICATION"
+    }
+}
 ```
 2.未注册手机
 
@@ -335,26 +343,28 @@ GET /api/mobile/technician
 {"result": true,
 "message": "",
 "error": null,
-"data":{
+"data": {
     "id": 1,
     "phone": "18812345678",
-    "name": null,
+    "name": "tom",
     "gender": null,
     "avatar": null,
-    "idNo": null,
-    "idPhoto": null,
-    "bank": null,
-    "bankAddress": null,
-    "bankCardNo": null,
+    "idNo": "422302198608266313",
+    "idPhoto": "/etc/a.jpg",
+    "bank": "工商银行",
+    "bankAddress": "光谷",
+    "bankCardNo": "88888888888",
     "verifyAt": null,
-    "lastLoginAt": 1455867550725,
-    "lastLoginIp": "0:0:0:0:0:0:0:1",
+    "requestVerifyAt": 1457277682000,
+    "verifyMsg": null,
+    "lastLoginAt": 1457277685376,
+    "lastLoginIp": "127.0.0.1",
     "createAt": 1455724800000,
     "star": 0,
     "voteRate": 0,
-    "skill": null,
+    "skill": "1,2",
     "pushId": null,
-    "statusCode": "NOTVERIFIED"
+    "status": "IN_VERIFICATION"
 }}
 ```
 
