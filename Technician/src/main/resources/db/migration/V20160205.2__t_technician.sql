@@ -23,7 +23,8 @@ CREATE TABLE `t_technician` (
   `push_id` VARCHAR(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
-  KEY `name_index` (`name`)
+  KEY `tech_name_index` (`name`),
+  KEY `tech_push_id` (`push_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `t_technician` (id, phone, password, name, gender, id_no, id_photo, avatar, bank, bank_address,

@@ -1,5 +1,15 @@
 # 帐户及登录
 
+技师的帐户状态
+
+| statusCode | 帐户状态 |
+| ------ | ------ |
+| NEWLY_CREATED | 未认证 |
+| IN_VERIFICATION | 等待审核中 |
+| VERIFIED | 已认证通过 |
+| REJECTED | 认证未通过 |
+| BANNED | 帐户已被禁用 |
+
 ## 1. 发送验证短信
 向指定手机号发送验证码短信.
 ### URL及请求方法
@@ -368,11 +378,11 @@ GET /api/mobile/technician
 }}
 ```
 
-`statusCode` 字段表示用户的帐户状态
+`statusCode` 字段表示技师的帐户状态
 
 | statusCode | 帐户状态 |
 | ------ | ------ |
-| NOTVERIFIED | 未认证 |
+| NEWLY_CREATED | 未认证 |
 | IN_VERIFICATION | 等待审核中 |
 | VERIFIED | 已认证通过 |
 | REJECTED | 认证未通过 |
