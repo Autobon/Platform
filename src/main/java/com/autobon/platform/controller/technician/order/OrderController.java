@@ -131,6 +131,13 @@ public class OrderController {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已开始工作,请不要重复操作");
         }
 
+        // 拒绝邀请或忽略邀请时,将第二责任人置空
+        if (o.getStatus() == Order.Status.INVITATION_REJECTED ||
+                (o.getStatus() == Order.Status.SEND_INVITATION && ignoreInvitation)) {
+            o.setSecondTechId(0);
+            orderService.save(o);
+        }
+
         Construction construction = new Construction();
         construction.setOrderId(orderId);
         construction.setTechnicianId(t.getId());
