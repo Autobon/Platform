@@ -330,7 +330,7 @@ POST /api/mobile/technician/pushId
 "data": null}
 ```
 
-## 9. 获取用户信息
+## 9. 获取技师信息
 ### URL及请求方法
 GET /api/mobile/technician
 

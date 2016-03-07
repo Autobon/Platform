@@ -13,8 +13,8 @@ public class Comment {
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
     private int id;
 
-    @Column(name = "technician_id", nullable = true, insertable = true, updatable = true)
-    private int technicianId;
+    @Column(name = "tech_id", nullable = true, insertable = true, updatable = true)
+    private int techId;
 
     @Column(name = "order_id", nullable = true, insertable = true, updatable = true)
     private int orderId;
@@ -51,12 +51,12 @@ public class Comment {
         this.id = id;
     }
 
-    public int getTechnicianId() {
-        return technicianId;
+    public int getTechId() {
+        return techId;
     }
 
-    public void setTechnicianId(int technicianId) {
-        this.technicianId = technicianId;
+    public void setTechId(int techId) {
+        this.techId = techId;
     }
 
     public int getOrderId() {

@@ -14,7 +14,17 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public void saveComment(Comment comment) {
-        commentRepository.save(comment);
+    public Comment save(Comment comment) {
+        return commentRepository.save(comment);
     }
+
+    public Comment get(int id) {
+        return commentRepository.findOne(id);
+    }
+
+    public Comment getByOrderIdAndTechId(int orderId, int techId) {
+        return commentRepository.getByOrderIdAndTechId(orderId, techId);
+    }
+
+
 }

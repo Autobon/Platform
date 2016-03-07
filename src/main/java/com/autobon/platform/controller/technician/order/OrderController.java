@@ -12,6 +12,7 @@ import com.autobon.order.util.OrderUtil;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,7 @@ import java.util.*;
 @RequestMapping("/api/mobile/technician/order")
 public class OrderController {
     @Autowired OrderService orderService;
+    @Autowired TechnicianService technicianService;
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
     @Autowired CommentService commentService;
@@ -67,7 +69,17 @@ public class OrderController {
     @RequestMapping(value = "/{orderId:[\\d]+}", method = RequestMethod.GET)
     public JsonMessage show(HttpServletRequest request,
             @PathVariable("orderId") int orderId) {
-        return new JsonMessage(true, "", "", orderService.findOrder(orderId));
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.findOrder(orderId);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("order", order);
+        map.put("mainTech", order.getMainTechId() > 0 ? technicianService.get(order.getMainTechId()) : null);
+        map.put("secondTech", order.getSecondTechId() > 0 ? technicianService.get(order.getSecondTechId()) : null);
+        map.put("construction", order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ?
+                    constructionService.findByOrderIdAndTechnicianId(order.getId(), tech.getId()) : null);
+        map.put("comment", order.getStatusCode() >= Order.Status.COMMENTED.getStatusCode() ?
+                    commentService.getByOrderIdAndTechId(order.getId(), tech.getId()) : null);
+        return new JsonMessage(true, "", "", map);
     }
 
     // 抢单
