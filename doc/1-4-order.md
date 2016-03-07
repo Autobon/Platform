@@ -224,8 +224,8 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 ```
 
 
-## 4. 获取订单信息
-
+## 4. 获取订单详细信息
+获取订单信息及主技师,次技师,施工信息(仅发起请求技师的施工信息),评论信息等内容.
 ### URL及请求方法
 `GET /api/mobile/technician/order/${orderId}`
 
@@ -246,22 +246,50 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
     "message": "",
     "error": "",
     "data": {
-        "id": 39,
-        "orderNum": "20160303120243RKM4QB",
-        "orderType": 0,
-        "photo": null,
-        "orderTime": null,
-        "addTime": 1456977763165,
-        "creatorType": 0,
-        "creatorId": 0,
-        "creatorName": null,
-        "contactPhone": null,
-        "positionLon": null,
-        "positionLat": null,
-        "remark": null,
-        "mainTechId": 1,
-        "secondTechId": 0,
-        "status": "NEWLY_CREATED"
+        "mainTech": {
+            "id": 1,
+            "phone": "18812345678",
+            "name": "tom",
+            "gender": null,
+            "avatar": null,
+            "idNo": "422302198608266313",
+            "idPhoto": "/etc/a.jpg",
+            "bank": "工商银行",
+            "bankAddress": "光谷",
+            "bankCardNo": "88888888888",
+            "verifyAt": null,
+            "requestVerifyAt": 1457277682000,
+            "verifyMsg": null,
+            "lastLoginAt": 1456195103000,
+            "lastLoginIp": "127.0.0.1",
+            "createAt": 1455724800000,
+            "star": 0,
+            "voteRate": 0,
+            "skill": "1,2",
+            "pushId": null,
+            "status": "VERIFIED"
+        },
+        "secondTech": null,
+        "construction": null,
+        "comment": null,
+        "order": {
+            "id": 5,
+            "orderNum": "20160307125948NTCKSM",
+            "orderType": 0,
+            "photo": null,
+            "orderTime": null,
+            "addTime": 1457326788046,
+            "creatorType": 0,
+            "creatorId": 0,
+            "creatorName": null,
+            "contactPhone": null,
+            "positionLon": null,
+            "positionLat": null,
+            "remark": null,
+            "mainTechId": 1,
+            "secondTechId": 0,
+            "status": "NEWLY_CREATED"
+        }
     }
 }
 ```
@@ -382,7 +410,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
     "data": {
         "id": 4,
         "orderId": 41,
-        "technicianId": 1,
+        "techId": 1,
         "positionLon": null,
         "positionLat": null,
         "startTime": 1456977763488,
