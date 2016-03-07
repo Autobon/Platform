@@ -235,7 +235,7 @@ public class TechnicianAccountController {
                 technicianService.save(oTech);
             }
         }
-        
+
         technician.setPushId(pushId);
         technicianService.save(technician);
         return new JsonMessage(true);
