@@ -45,6 +45,10 @@ public class TechnicianService {
                 new Sort(Sort.Direction.DESC, "createAt")));
     }
 
+    public Technician getByPushId(String pushId) {
+        return repository.getByPushId(pushId);
+    }
+
     public HashMap<String, Object> Authenticate(String account, String password) {
         Technician technician = null;
         HashMap<String, Object> ret = new HashMap<>();
