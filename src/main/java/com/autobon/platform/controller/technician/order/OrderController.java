@@ -67,6 +67,7 @@ public class OrderController {
     @RequestMapping(value = "/{orderId:[\\d]+}", method = RequestMethod.GET)
     public JsonMessage show(HttpServletRequest request,
             @PathVariable("orderId") int orderId) {
+        // TODO 添加订单评价, 施工记录, 主,次责任人
         return new JsonMessage(true, "", "", orderService.findOrder(orderId));
     }
 
