@@ -16,56 +16,56 @@ public class Cooperator {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column private int id;
 
-    @Column private String phone; // ÕËºÅ
+    @Column private String phone; // è´¦å·
 
-    @Column private String shortname; //ÆóÒµ¼ò³Æ
+    @Column private String shortname; //ä¼ä¸šç®€ç§°
 
     @JsonIgnore
-    @Column private String password; //ÃÜÂë
+    @Column private String password; //å¯†ç 
 
-    @Column private String fullname; //ÆóÒµÃû³Æ
+    @Column private String fullname; //ä¼ä¸šåç§°
 
-    @Column private String businessLicense; //ÓªÒµÖ´ÕÕºÅ
+    @Column private String businessLicense; //è¥ä¸šæ‰§ç…§å·
 
-    @Column private String corporationName; //·¨ÈËĞÕÃû
+    @Column private String corporationName; //æ³•äººå§“å
 
-    @Column private String corporationIdNo; //·¨ÈËÉí·İÖ¤ºÅ
+    @Column private String corporationIdNo; //æ³•äººèº«ä»½è¯å·
 
-    @Column private String bussinessLicensePic; //ÓªÒµÖ´ÕÕ¸±±¾ÕÕÆ¬
+    @Column private String bussinessLicensePic; //è¥ä¸šæ‰§ç…§å‰¯æœ¬ç…§ç‰‡
 
-    @Column private String corporationIdPicA; //·¨ÈËÉí·İÖ¤ÕıÃæÕÕ
+    @Column private String corporationIdPicA; //æ³•äººèº«ä»½è¯æ­£é¢ç…§
 
-    @Column private String corporationIdPicB; //·¨ÈËÉí·İÖ¤±³ÃæÕÕ
+    @Column private String corporationIdPicB; //æ³•äººèº«ä»½è¯èƒŒé¢ç…§
 
-    @Column private String longitude; //ÉÌ»§Î»ÖÃ¾­¶È
+    @Column private String longitude; //å•†æˆ·ä½ç½®ç»åº¦
 
-    @Column private String latitude; //ÉÌ»§Î»ÖÃÎ³¶È
+    @Column private String latitude; //å•†æˆ·ä½ç½®çº¬åº¦
 
-    @Column private String invoiceHeader; //·¢Æ±Ì§Í·
+    @Column private String invoiceHeader; //å‘ç¥¨æŠ¬å¤´
 
-    @Column private String taxIdNo; //ÄÉË°Ê¶±ğºÅ
+    @Column private String taxIdNo; //çº³ç¨è¯†åˆ«å·
 
-    @Column private String postcode; //ÓÊÕş±àÂë
+    @Column private String postcode; //é‚®æ”¿ç¼–ç 
 
-    @Column private String province; //Ê¡
+    @Column private String province; //çœ
 
-    @Column private String city; //ÊĞ
+    @Column private String city; //å¸‚
 
-    @Column private String district; //Çø
+    @Column private String district; //åŒº
 
-    @Column private String address; //ÏêÏ¸µØÖ·
+    @Column private String address; //è¯¦ç»†åœ°å€
 
-    @Column private String contact; //ÁªÏµÈËĞÕÃû
+    @Column private String contact; //è”ç³»äººå§“å
 
-    @Column private String contactPhone; //ÁªÏµÈËµç»°
+    @Column private String contactPhone; //è”ç³»äººç”µè¯
 
-    @Column private int statusCode; //×´Ì¬ 0-Î´ÉóºË 1-ÉóºË³É¹¦ 2-ÉóºËÊ§°Ü 3-ÕËºÅ½ûÓÃ
+    @Column private int statusCode; //çŠ¶æ€ 0-æœªå®¡æ ¸ 1-å®¡æ ¸æˆåŠŸ 2-å®¡æ ¸å¤±è´¥ 3-è´¦å·ç¦ç”¨
 
-    @Column private Date lastLoginTime; //ÉÏ´ÎµÇÂ¼Ê±¼ä
+    @Column private Date lastLoginTime; //ä¸Šæ¬¡ç™»å½•æ—¶é—´
 
-    @Column private String lastLoginIp; //ÉÏ´ÎµÇÂ¼IP
+    @Column private String lastLoginIp; //ä¸Šæ¬¡ç™»å½•IP
 
-    @Column private Date createTime; //×¢²áÊ±¼ä
+    @Column private Date createTime; //æ³¨å†Œæ—¶é—´
 
     public  Cooperator(){
         this.createTime=new Date();
