@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -30,6 +31,71 @@ public class ConstructionController {
     @Autowired OrderService orderService;
     @Autowired ConstructionService constructionService;
 
+    // 开始工作
+    @RequestMapping(value = "/start", method = RequestMethod.POST)
+    public JsonMessage startWork(HttpServletRequest request,
+            @RequestParam("orderId") int orderId,
+            @RequestParam(value = "ignoreInvitation", defaultValue = "false") boolean ignoreInvitation) {
+        Technician t = (Technician) request.getAttribute("user");
+        Order o = orderService.get(orderId);
+        if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
+        } else if (o.getStatus() == Order.Status.CANCELED) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
+        } else if (o.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已施工完成");
+        } else if (o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
+            return new JsonMessage(false, "INVITATION_NOT_FINISH", "你邀请的合作人还未接受或拒绝邀请");
+        } else if (o.getStatus() != Order.Status.IN_PROGRESS) { // 当第二个技师开始工作时,订单状态已进入IN_PROGRESS状态
+            o.setStatus(Order.Status.IN_PROGRESS);
+            orderService.save(o);
+        } else if (constructionService.getByTechIdAndOrderId(t.getId(), orderId) != null) {
+            return new JsonMessage(false, "REPEATED_OPERATION", "你已开始工作,请不要重复操作");
+        }
+
+        // 拒绝邀请或忽略邀请时,将第二责任人置空
+        if (o.getStatus() == Order.Status.INVITATION_REJECTED ||
+                (o.getStatus() == Order.Status.SEND_INVITATION && ignoreInvitation)) {
+            o.setSecondTechId(0);
+            orderService.save(o);
+        }
+
+        Construction construction = new Construction();
+        construction.setOrderId(orderId);
+        construction.setTechId(t.getId());
+        construction.setStartTime(new Date());
+        construction = constructionService.save(construction);
+        return new JsonMessage(true, "", "", construction);
+    }
+
+    // 工作签到
+    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
+    public JsonMessage signIn(HttpServletRequest request,
+            @RequestParam("positionLon") String positionLon,
+            @RequestParam("positionLat") String positionLat,
+            @RequestParam("orderId")     int orderId) {
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+        Construction cons = constructionService.getByTechIdAndOrderId(tech.getId(), orderId);
+
+        if (order.getStatus() == Order.Status.CANCELED) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
+        } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始工作或已结束工作");
+        } else if (cons == null) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "系统没有你的施工单, 请先点选\"开始工作\"");
+        } else if (cons.getSigninTime() != null) {
+            return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
+        }
+
+        cons.setPositionLon(positionLon);
+        cons.setPositionLat(positionLat);
+        cons.setSigninTime(new Date());
+        constructionService.save(cons);
+        return new JsonMessage(true);
+    }
+
+    // 上传施工照片
     @RequestMapping(value = "/uploadPhoto", method = RequestMethod.POST)
     public JsonMessage uploadPhoto(HttpServletRequest request,
             @RequestParam("file")     MultipartFile file) throws IOException {
@@ -47,6 +113,7 @@ public class ConstructionController {
         return new JsonMessage(true, "", "", path + "/" + filename);
     }
 
+    // 提交施工前照片
     @RequestMapping(value = "/beforePhoto", method = RequestMethod.POST)
     public JsonMessage setBeforePhoto(HttpServletRequest request,
             @RequestParam("orderId") int orderId,

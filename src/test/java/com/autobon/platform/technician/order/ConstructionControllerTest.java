@@ -49,6 +49,34 @@ public class ConstructionControllerTest  extends MvcTest {
     }
 
     @Test
+    public void signInFailed() throws Exception {
+        mockMvcS.perform(post("/api/mobile/technician/construct/signIn")
+                .param("orderId", "" + order.getId())
+                .param("positionLon", "12.3665")
+                .param("positionLat", "25.5654")
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.result", is(false)));
+    }
+
+    @Test
+    public void startWorkAndSignIn() throws Exception {
+        mockMvcS.perform(post("/api/mobile/technician/construct/start")
+                .param("orderId", "" + order.getId())
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.result", is(true)));
+
+        mockMvcS.perform(post("/api/mobile/technician/construct/signIn")
+                .param("orderId", "" + order.getId())
+                .param("positionLon", "12.3665")
+                .param("positionLat", "25.5654")
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
     public void setBeforePhoto() throws Exception {
         mockMvcS.perform(post("/api/mobile/technician/construct/beforePhoto")
                 .param("orderId", "" + order.getId())
