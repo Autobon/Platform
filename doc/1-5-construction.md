@@ -36,7 +36,7 @@ POST /api/mobile/technician/construct/uploadPhoto
 }
 ```
 
-## 2.提交工作前图片地址
+## 2.提交施工前图片地址
 
 ### URL及请求方法
 POST /api/mobile/technician/construct/beforePhoto

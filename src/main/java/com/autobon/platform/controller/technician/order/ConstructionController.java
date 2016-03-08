@@ -51,7 +51,7 @@ public class ConstructionController {
     public JsonMessage setBeforePhoto(HttpServletRequest request,
             @RequestParam("orderId") int orderId,
             @RequestParam("urls") String urls) {
-        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+)+$", urls)) {
+        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+)*$", urls)) {
             return new JsonMessage(false, "PHOTO_PATTERN_MISMATCH", "图片地址格式错误, 请查阅urls参数说明");
         } else if (urls.split(",").length > 3) {
             return new JsonMessage(false, "PHOTO_LIMIT_EXCCED", "图片数量超出限制, 最多3张");
