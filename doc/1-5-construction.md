@@ -46,7 +46,7 @@ data字段是一个施工单对象
 ```
 {"result": false,
 "message": "你没有这个订单",
-"error": "ILLEGAL_OPERATION",
+"error": "NO_ORDER",
 "data": null}
 ```
 
@@ -55,7 +55,7 @@ data字段是一个施工单对象
 ```
 {"result": false,
 "message": "订单已取消",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_CANCELED",
 "data": null}
 ```
 
@@ -64,7 +64,7 @@ data字段是一个施工单对象
 ```
 {"result": false,
 "message": "订单已施工完成",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_ENDED",
 "data": null}
 ```
 
@@ -117,7 +117,7 @@ data字段是一个施工单对象
 ```
 {"result": false,
 "message": "订单已取消",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_CANCELED",
 "data": null}
 ```
 
@@ -126,7 +126,7 @@ data字段是一个施工单对象
 ```
 {"result": false,
 "message": "系统没有你的施工单, 请先点选\"开始工作\"",
-"error": "ILLEGAL_OPERATION",
+"error": "NO_CONSTRUCTION",
 "data": null}
 ```
 
@@ -214,7 +214,7 @@ POST /api/mobile/technician/construct/beforePhoto
 {
     "result": false,
     "message": "图片地址格式错误, 请查阅urls参数说明",
-    "error": "PHOTO_PATTERN_MISMATCH",
+    "error": "URLS_PATTERN_MISMATCH",
     "data": null
 }
 ```
@@ -225,7 +225,7 @@ POST /api/mobile/technician/construct/beforePhoto
 {
     "result": false,
     "message": "图片数量超出限制, 最多3张",
-    "error": "PHOTO_LIMIT_EXCCED",
+    "error": "PHOTO_LIMIT_EXCEED",
     "data": null
 }
 ```

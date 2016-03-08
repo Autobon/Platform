@@ -39,11 +39,11 @@ public class ConstructionController {
         Technician t = (Technician) request.getAttribute("user");
         Order o = orderService.get(orderId);
         if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
+            return new JsonMessage(false, "NO_ORDER", "你没有这个订单");
         } else if (o.getStatus() == Order.Status.CANCELED) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
+            return new JsonMessage(false, "ORDER_CANCELED", "订单已取消");
         } else if (o.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已施工完成");
+            return new JsonMessage(false, "ORDER_ENDED", "订单已施工完成");
         } else if (o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
             return new JsonMessage(false, "INVITATION_NOT_FINISH", "你邀请的合作人还未接受或拒绝邀请");
         } else if (o.getStatus() != Order.Status.IN_PROGRESS) { // 当第二个技师开始工作时,订单状态已进入IN_PROGRESS状态
@@ -79,11 +79,11 @@ public class ConstructionController {
         Construction cons = constructionService.getByTechIdAndOrderId(tech.getId(), orderId);
 
         if (order.getStatus() == Order.Status.CANCELED) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
+            return new JsonMessage(false, "ORDER_CANCELED", "订单已取消");
         } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始工作或已结束工作");
         } else if (cons == null) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "系统没有你的施工单, 请先点选\"开始工作\"");
+            return new JsonMessage(false, "NO_CONSTRUCTION", "系统没有你的施工单, 请先点选\"开始工作\"");
         } else if (cons.getSigninTime() != null) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
         }
@@ -119,9 +119,9 @@ public class ConstructionController {
             @RequestParam("orderId") int orderId,
             @RequestParam("urls") String urls) {
         if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+)*$", urls)) {
-            return new JsonMessage(false, "PHOTO_PATTERN_MISMATCH", "图片地址格式错误, 请查阅urls参数说明");
+            return new JsonMessage(false, "URLS_PATTERN_MISMATCH", "图片地址格式错误, 请查阅urls参数说明");
         } else if (urls.split(",").length > 3) {
-            return new JsonMessage(false, "PHOTO_LIMIT_EXCCED", "图片数量超出限制, 最多3张");
+            return new JsonMessage(false, "PHOTO_LIMIT_EXCEED", "图片数量超出限制, 最多3张");
         }
 
         Technician tech = (Technician) request.getAttribute("user");
@@ -147,9 +147,9 @@ public class ConstructionController {
         Technician tech = (Technician) request.getAttribute("user");
         Order order = orderService.get(orderId);
         if (order == null || (tech.getId() != order.getMainTechId() && tech.getId() != order.getSecondTechId())) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
+            return new JsonMessage(false, "NO_SUCH_ORDER", "你没有这个订单");
         } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "非施工中订单, 不允许上传照片");
+            return new JsonMessage(false, "ORDER_NOT_IN_PROGRESS", "非施工中订单, 不允许上传照片");
         }
 
         return null;
