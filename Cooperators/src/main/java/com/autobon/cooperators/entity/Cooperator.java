@@ -33,9 +33,11 @@ public class Cooperator {
 
     @Column private String bussinessLicensePic; //营业执照副本照片
 
-    @Column private String corporationIdPicA; //法人身份证正面照
+    @Column(name = "corporation_id_pic_a")
+    private String corporationIdPicA; //法人身份证正面照
 
-    @Column private String corporationIdPicB; //法人身份证背面照
+    @Column(name = "corporation_id_pic_b")
+    private String corporationIdPicB; //法人身份证背面照
 
     @Column private String longitude; //商户位置经度
 
