@@ -88,9 +88,9 @@ public class OrderController {
         } else if (tech.getStatus() != Technician.Status.VERIFIED) {
             return new JsonMessage(false, "NOT_VERIFIED", "你没有通过认证, 不能抢单");
         } else if (order.getStatus() == Order.Status.CANCELED) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
+            return new JsonMessage(false, "ORDER_CANCELED", "订单已取消");
         } else if (order.getStatus() != Order.Status.NEWLY_CREATED) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "已有人接单");
+            return new JsonMessage(false, "ORDER_TAKEN_UP", "已有人接单");
         } else if (tech.getSkill() == null || !Arrays.stream(tech.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType()))) {
             String orderType = workItemService.getOrderTypes().stream()
                     .filter(t -> t.getOrderType() == order.getOrderType())

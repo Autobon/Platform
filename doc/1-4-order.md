@@ -340,7 +340,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 ```
 {"result": false,
 "message": "已有人接单",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_TAKEN_UP",
 "data": null}
 ```
 
@@ -349,7 +349,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 ```
 {"result": false,
 "message": "订单已取消",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_CANCELED",
 "data": null}
 ```
 
