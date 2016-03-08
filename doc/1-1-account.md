@@ -378,7 +378,6 @@ GET /api/mobile/technician
 }}
 ```
 
-
 `statusCode` 字段表示技师的帐户状态
 
 | statusCode | 帐户状态 |
