@@ -1,9 +1,9 @@
 CREATE TABLE `t_cooperators` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `phone` varchar(20) NOT NULL DEFAULT '' COMMENT '账号',
-  `subname` varchar(20) DEFAULT NULL COMMENT '企业简称',
+  `shortname` varchar(20) DEFAULT NULL COMMENT '企业简称',
   `password` varchar(20) DEFAULT NULL COMMENT '密码',
-  `wholename` varchar(255) DEFAULT NULL COMMENT '企业名称',
+  `fullname` varchar(255) DEFAULT NULL COMMENT '企业名称',
   `business_license` varchar(30) DEFAULT NULL COMMENT '营业执照号',
   `corporation_name` varchar(20) DEFAULT NULL COMMENT '法人姓名',
   `corporation_id_no` varchar(20) DEFAULT NULL COMMENT '法人身份证号',
@@ -21,9 +21,9 @@ CREATE TABLE `t_cooperators` (
   `address` varchar(255) DEFAULT NULL COMMENT '详细地址',
   `contact` varchar(20) DEFAULT NULL COMMENT '联系人姓名',
   `contact_phone` varchar(20) DEFAULT NULL COMMENT '联系人电话',
-  `statusCode` int(1) DEFAULT NULL COMMENT '状态 0-未审核 1-审核成功 2-审核失败 3-账号禁用',
+  `status_code` int(1) DEFAULT NULL COMMENT '状态 0-未审核 1-审核成功 2-审核失败 3-账号禁用',
   `last_login_time` datetime DEFAULT NULL COMMENT '上次登录时间',
   `last_login_ip` varchar(20) DEFAULT NULL COMMENT '上次登录IP',
   `create_time` datetime DEFAULT NULL COMMENT '注册时间',
-  PRIMARY KEY (`Id`)
+  PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8 COMMENT='合作商户表';
