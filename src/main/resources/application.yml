@@ -13,7 +13,7 @@ com.autobon:
     baiduKey: lhFpgbOkc15RHjiexfP2aDhg
 
 # Tomcat
-server.port: 51234
+server.port: 12345
 
 # Logging level (TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF)
 logging:
@@ -29,7 +29,7 @@ spring:
     resources.cache-period: 7200
 
     datasource:
-        url: jdbc:mysql://121.40.157.200:3306/autobondb?characterEncoding=utf8&useSSL=false
+        url: jdbc:mysql://127.0.0.1:3306/autobondb?characterEncoding=utf8&useSSL=false
         username: autobon
         password: autobon
     jpa:

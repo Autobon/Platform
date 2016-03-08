@@ -1,7 +1,7 @@
 # 一、施工
 
 ## 1.上传工作图片
-上传工作前和工作后图片，工作前可上传1-3张图片，工作后可上传3-6张图片
+上传工作前和工作后图片
 
 ### URL及请求方法
 POST /api/mobile/technician/construct/uploadPhoto
@@ -11,9 +11,6 @@ POST /api/mobile/technician/construct/uploadPhoto
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
 | file | 上传的图片 | |
-| no | 图片序号 | 1 |
-| orderId | 订单ID | 1 |
-| isBefore | 是否是工作前图片，true或false  | true |
 
 ### 返回数据
 
@@ -27,27 +24,8 @@ POST /api/mobile/technician/construct/uploadPhoto
     "date": "/uploads/order/b120160304165030-1.jpg"
 }
 ```
-#### b.你没有这个订单
 
-```
-{
-    "result": false,
-    "error": "ILLEGAL_OPERATION",
-    "message": "你没有这个订单",
-    "date": null
-}
-```
-#### c.非施工中订单, 不允许上传照片
-
-```
-{
-    "result": false,
-    "error": "ILLEGAL_OPERATION",
-    "message": "非施工中订单, 不允许上传照片",
-    "date": null
-}
-```
-#### d.没有上传文件
+#### b.没有上传文件
 
 ```
 {
@@ -57,34 +35,83 @@ POST /api/mobile/technician/construct/uploadPhoto
     "date": null
 }
 ```
-#### e.系统没有你的施工单
+
+## 2.提交工作前图片地址
+
+### URL及请求方法
+POST /api/mobile/technician/construct/beforePhoto
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| orderId | 订单ID | 1 |
+| urls | 多个图片地址用逗号拼接而成的字符串,不能有多余空格 | /uploads/1.jpg,/uplods/2.jpg |
+
+### 返回数据
+
+#### a.请求成功
+
+```
+{
+    "result": true,
+    "message": null,
+    "error": null,
+    "data": null
+}
+```
+
+### b.图片地址格式错误, 请查阅urls参数说明
 
 ```
 {
     "result": false,
-    "error": "SYSTEM_CORRUPT",
+    "message": "图片地址格式错误, 请查阅urls参数说明",
+    "error": "PHOTO_PATTERN_MISMATCH",
+    "data": null
+}
+```
+
+### c.图片数量超出限制, 最多3张
+
+```
+{
+    "result": false,
+    "message": "图片数量超出限制, 最多3张",
+    "error": "PHOTO_LIMIT_EXCCED",
+    "data": null
+}
+```
+
+### d.系统没有你的施工单
+
+```
+{
+    "result": false,
     "message": "系统没有你的施工单",
-    "date": null
+    "error": "NO_CONSTRUCTION",
+    "data": null
 }
 ```
-#### f.施工前照片序号只能为1,2,3
+
+### d.签到前不可上传照片
 
 ```
 {
     "result": false,
-    "error": "ILLEGAL_PARAM",
-    "message": "施工前照片序号只能为1,2,3",
-    "date": null
+    "message": "系统没有你的施工单",
+    "error": "CONSTRUCTION_NOT_SIGNIN",
+    "data": null
 }
 ```
-#### g.施工后照片序号只能为1-6
+
+### d.你已完成施工,不可再次上传照片
 
 ```
 {
     "result": false,
-    "error": "ILLEGAL_PARAM",
-    "message": "施工后照片序号只能为1-6",
-    "date": null
+    "message": "你已完成施工,不可再次上传照片",
+    "error": "CONSTRUCTION_ENDED",
+    "data": null
 }
 ```
-

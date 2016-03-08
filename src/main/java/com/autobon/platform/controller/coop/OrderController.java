@@ -39,7 +39,7 @@ public class OrderController {
                                @RequestParam("advice") String advice){
 
         JsonMessage jsonMessage = new JsonMessage(true,"comment");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         int mainTechId = order.getMainTechId();
         int secondTechId = order.getSecondTechId();
         if(mainTechId == 0){
@@ -47,7 +47,7 @@ public class OrderController {
         }
 
         Comment comment = new Comment();
-        comment.setTechnicianId(mainTechId);
+        comment.setTechId(mainTechId);
         comment.setOrderId(orderId);
         comment.setStar(star);
         comment.setArriveOnTime(arriveOnTime);
@@ -57,13 +57,13 @@ public class OrderController {
         comment.setCarProtect(carProtect);
         comment.setGoodAttitude(goodAttitude);
         comment.setAdvice(advice);
-        commentService.saveComment(comment);
+        commentService.save(comment);
 
         if(secondTechId != 0){
             entityManager.detach(comment);
             comment.setId(0);
-            comment.setTechnicianId(secondTechId);
-            commentService.saveComment(comment);
+            comment.setTechId(secondTechId);
+            commentService.save(comment);
         }
 
         return jsonMessage;

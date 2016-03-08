@@ -1,5 +1,15 @@
 # 帐户及登录
 
+技师的帐户状态
+
+| statusCode | 帐户状态 |
+| ------ | ------ |
+| NEWLY_CREATED | 未认证 |
+| IN_VERIFICATION | 等待审核中 |
+| VERIFIED | 已认证通过 |
+| REJECTED | 认证未通过 |
+| BANNED | 帐户已被禁用 |
+
 ## 1. 发送验证短信
 向指定手机号发送验证码短信.
 ### URL及请求方法
@@ -219,10 +229,12 @@ POST /api/mobile/technician/changePassword
 1.请求成功
 
 ```
-{"result": true,
-"message": null,
-"error": null,
-"data": null}
+{
+    "result": true,
+    "message": null,
+    "error": null,
+    "data": null
+}
 ```
 
 2.密码至少6位
@@ -330,7 +342,7 @@ POST /api/mobile/technician/pushId
 "data": null}
 ```
 
-## 9. 获取用户信息
+## 9. 获取技师信息
 ### URL及请求方法
 GET /api/mobile/technician
 
@@ -368,11 +380,11 @@ GET /api/mobile/technician
 }}
 ```
 
-`statusCode` 字段表示用户的帐户状态
+`statusCode` 字段表示技师的帐户状态
 
 | statusCode | 帐户状态 |
 | ------ | ------ |
-| NOTVERIFIED | 未认证 |
+| NEWLY_CREATED | 未认证 |
 | IN_VERIFICATION | 等待审核中 |
 | VERIFIED | 已认证通过 |
 | REJECTED | 认证未通过 |

@@ -2,24 +2,20 @@ package com.autobon.platform.controller.technician.order;
 
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
-import com.autobon.order.entity.OrderShow;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.CommentService;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkItemService;
-import com.autobon.order.util.OrderUtil;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -29,6 +25,7 @@ import java.util.*;
 @RequestMapping("/api/mobile/technician/order")
 public class OrderController {
     @Autowired OrderService orderService;
+    @Autowired TechnicianService technicianService;
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
     @Autowired CommentService commentService;
@@ -67,7 +64,17 @@ public class OrderController {
     @RequestMapping(value = "/{orderId:[\\d]+}", method = RequestMethod.GET)
     public JsonMessage show(HttpServletRequest request,
             @PathVariable("orderId") int orderId) {
-        return new JsonMessage(true, "", "", orderService.findOrder(orderId));
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("order", order);
+        map.put("mainTech", order.getMainTechId() > 0 ? technicianService.get(order.getMainTechId()) : null);
+        map.put("secondTech", order.getSecondTechId() > 0 ? technicianService.get(order.getSecondTechId()) : null);
+        map.put("construction", order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ?
+                    constructionService.getByTechIdAndOrderId(tech.getId(), order.getId()) : null);
+        map.put("comment", order.getStatusCode() >= Order.Status.COMMENTED.getStatusCode() ?
+                    commentService.getByOrderIdAndTechId(order.getId(), tech.getId()) : null);
+        return new JsonMessage(true, "", "", map);
     }
 
     // 抢单
@@ -75,7 +82,7 @@ public class OrderController {
     public JsonMessage takeUpOrder(HttpServletRequest request,
             @RequestParam("orderId") int orderId) {
         Technician tech = (Technician) request.getAttribute("user");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         if (order == null) {
             return new JsonMessage(false, "NO_SUCH_ORDER", "没有这个订单");
         } else if (tech.getStatus() != Technician.Status.VERIFIED) {
@@ -103,7 +110,7 @@ public class OrderController {
             @RequestParam("orderId") int orderId,
             @RequestParam(value = "ignoreInvitation", defaultValue = "false") boolean ignoreInvitation) {
         Technician t = (Technician) request.getAttribute("user");
-        Order o = orderService.findOrder(orderId);
+        Order o = orderService.get(orderId);
         if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
         } else if (o.getStatus() == Order.Status.CANCELED) {
@@ -115,13 +122,20 @@ public class OrderController {
         } else if (o.getStatus() != Order.Status.IN_PROGRESS) { // 当第二个技师开始工作时,订单状态已进入IN_PROGRESS状态
             o.setStatus(Order.Status.IN_PROGRESS);
             orderService.save(o);
-        } else if (constructionService.findByOrderIdAndTechnicianId(orderId, t.getId()).size() > 0) {
+        } else if (constructionService.getByTechIdAndOrderId(t.getId(), orderId) != null) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已开始工作,请不要重复操作");
+        }
+
+        // 拒绝邀请或忽略邀请时,将第二责任人置空
+        if (o.getStatus() == Order.Status.INVITATION_REJECTED ||
+                (o.getStatus() == Order.Status.SEND_INVITATION && ignoreInvitation)) {
+            o.setSecondTechId(0);
+            orderService.save(o);
         }
 
         Construction construction = new Construction();
         construction.setOrderId(orderId);
-        construction.setTechnicianId(t.getId());
+        construction.setTechId(t.getId());
         construction.setStartTime(new Date());
         construction = constructionService.save(construction);
         return new JsonMessage(true, "", "", construction);
@@ -134,174 +148,34 @@ public class OrderController {
             @RequestParam("positionLat") String positionLat,
             @RequestParam("orderId")     int orderId) {
         Technician tech = (Technician) request.getAttribute("user");
-        Order order = orderService.findOrder(orderId);
-        List<Construction> list = constructionService.findByOrderIdAndTechnicianId(orderId, tech.getId());
+        Order order = orderService.get(orderId);
+        Construction cons = constructionService.getByTechIdAndOrderId(tech.getId(), orderId);
+
         if (order.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
-        } else if (list.size() < 1) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "系统没有你的施工单, 请先点选\"开始工作\"");
         } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始工作或已结束工作");
+        } else if (cons == null) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "系统没有你的施工单, 请先点选\"开始工作\"");
+        } else if (cons.getSigninTime() != null) {
+            return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
         }
 
-        Construction construction = list.get(0);
-        if (construction.getSigninTime() != null)
-            return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
-
-        construction.setPositionLon(positionLon);
-        construction.setPositionLat(positionLat);
-        construction.setSigninTime(new Date());
-        constructionService.save(construction);
+        cons.setPositionLon(positionLon);
+        cons.setPositionLat(positionLat);
+        cons.setSigninTime(new Date());
+        constructionService.save(cons);
         return new JsonMessage(true);
     }
 
     // TODO 继续清理下面的代码
 
-    /**
-     * 根据条件查找订单列表
-     *
-     * @param orderNum        订单编号
-     * @param orderType       订单类型
-     * @param status          订单状态
-     * @param customerId      下单客户
-     * @param currentPage     当前页
-     * @param pageSize        分页数
-     * @param orderByProperty 按照什么字段排序
-     * @param ascOrDesc       排序方式
-     * @return 订单列表
-     * @throws Exception
-     */
-    @RequestMapping(value = "/order", method = RequestMethod.GET)
-    public JsonMessage findOrderByKeys(HttpServletResponse response,
-                                       @RequestParam(value = "orderNum", required = false) String orderNum,
-                                       @RequestParam(value = "orderType", required = false) Integer orderType,
-                                       @RequestParam(value = "status", required = false) Integer status,
-                                       @RequestParam(value = "customerId", required = false) Integer customerId,
-                                       @RequestParam(value = "currentPage", required = false) Integer currentPage,
-                                       @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                       @RequestParam(value = "orderByProperty", required = false) String orderByProperty,
-                                       @RequestParam(value = "ascOrDesc", required = false) Integer ascOrDesc) throws Exception {
-        JsonMessage jsonMessage = new JsonMessage(true);
-        Page<OrderShow> orderShowPage = orderService.findByKeys(orderNum, orderType, status, customerId, currentPage, pageSize, orderByProperty, ascOrDesc);
-        List<OrderShow> orderShowList = orderShowPage.getContent();
-        if (!orderShowList.isEmpty()) {
-            response.addHeader("page", String.valueOf(orderShowPage.getNumber() + 1));
-            response.addHeader("page-count", String.valueOf(orderShowPage.getTotalPages()));
-        }
-        jsonMessage.setData(orderShowList);
-        return jsonMessage;
-    }
 
-    /**
-     * 添加订单
-     *
-     * @return JsonMessage
-     * @throws Exception
-     */
-    @RequestMapping(value = "/order", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
-    public JsonMessage addOrder(MultipartHttpServletRequest request) throws Exception {
-        //生成订单编号 时间戳&用户ID&四位随机数
-//        String timeStamp = DateUtil.generateTimeStamp();
-//        String random = VerifyCode.generateRandomNumber(4);
-//        StringBuffer orderNum = new StringBuffer(timeStamp);
-//        OrderShow orderShow = new OrderShow();
-//        orderNum = orderNum.append(orderShow.getCustomerId()).append(random);
-//        orderShow.setOrderNum(orderNum.toString());
-//
-//        orderShow.setOrderType(Integer.valueOf(request.getParameter("orderType")));
-//        orderShow.setAddTime(new Date());
-//        if (request.getParameter("orderTime") != null)
-//            orderShow.setOrderTime(DateUtil.string2Date(request.getParameter("orderTime")));
-//        orderShow.setRemark(request.getParameter("remark"));
-//        if (request.getParameter("customerType") != null)
-//            orderShow.setCustomerType(Integer.valueOf(request.getParameter("customerType")));
-//        if (request.getParameter("customerId") != null)
-//            orderShow.setCustomerId(Integer.valueOf(request.getParameter("customerId")));
-//
-//        //上传图片
-//        Iterator<String> itr = request.getFileNames();
-//        MultipartFile file = request.getFile(itr.next());
-//        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有要上传文件");
-//        String path = "/uploads/order/pic";
-//        File dir = new File(request.getServletContext().getRealPath(path));
-//        String originalFilename = file.getOriginalFilename();
-//        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
-//        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-//                + (VerifyCode.generateRandomNumber(6)) + extension;
-//        if (!dir.exists()) dir.mkdirs();
-//        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-//        orderShow.setPhoto(path + File.separator + filename);
-//        Order order = orderService.addOrder(orderShow);
-//
-//        if(order != null){
-//            return  new JsonMessage(true, "", "订单添加成功",OrderUtil.order2OrderShow(order));
-//        }else{
-            return  new JsonMessage(false, "订单添加失败");
-//        }
-    }
-
-    /**
-     * 修改订单
-     *
-     * @param orderShow
-     * @return JsonMessage
-     * @throws Exception
-     */
-    @RequestMapping(value = "/order/modify", method = RequestMethod.PUT)
-    public JsonMessage updateOrder(@RequestBody OrderShow orderShow) throws Exception {
-        Order order = orderService.updateOrder(orderShow);
-
-        if(order != null){
-            return  new JsonMessage(true, "", "订单修改成功",OrderUtil.order2OrderShow(order));
-        }else{
-            return  new JsonMessage(false, "订单修改失败");
-        }
-    }
-
-    /**
-     * 绑定技师
-     *
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/order/{orderId}/technician/{techId}", method = RequestMethod.PUT)
-    public JsonMessage bindTechnician(@PathVariable("orderId") int orderId, @PathVariable("techId") int techId) throws Exception {
-        JsonMessage jsonMessage = new JsonMessage(true);
-
-        return jsonMessage;
-    }
-
-    /**
-     * 上传订单照片
-     *
-     * @param request
-     * @param
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/upload/orderpic", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
-    public JsonMessage uploadOrderPic(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
-
-//        Iterator<String> itr = request.getFileNames();
-//        MultipartFile file = request.getFile(itr.next());
-//        if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", NO_UPLOAD_FILE);
-//        JsonMessage msg = new JsonMessage(true);
-//        File dir = new File(orderpic_path);
-//        String originalFilename = file.getOriginalFilename();
-//        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
-//        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-//                + (VerifyCode.generateRandomNumber(6)) + extension;
-//        if (!dir.exists()) dir.mkdirs();
-//        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-//        msg.setData(orderpic_path + "\"/\" " + filename);
-//        return msg;
-        return null;
-    }
 
     @RequestMapping(value="/mobile/order/getWorkList",method = RequestMethod.POST)
     public JsonMessage getWorkList(@RequestParam("orderId") int orderId){
         JsonMessage jsonMessage = new JsonMessage(true, "getWorkList");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         int orderType = order.getOrderType();
         Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
         int technicianId = technician.getId();
@@ -313,12 +187,11 @@ public class OrderController {
             jsonMessage.setData(workList);
         }
         if(technicianId == secondTechId){
-            Map<String,Object> dataMap = new HashMap<String,Object>();
+            Map<String,Object> dataMap = new HashMap<>();
             //查询工作项列表，主技师已选列表
-            List<Construction> constructionList = constructionService.findByOrderIdAndTechnicianId(orderId, mainTechId);
-            if(constructionList.size() == 1){
-                Construction construction = constructionList.get(0);
-                String workLoad = construction.getWorkItems();
+            Construction cons = constructionService.getByTechIdAndOrderId(mainTechId, orderId);
+            if(cons != null){
+                String workLoad = cons.getWorkItems();
                 String[] workArray = workLoad.split(",");
                 dataMap.put("mainTech",workArray);
 
@@ -340,7 +213,7 @@ public class OrderController {
                                      @RequestParam(value = "workItems", required = false) String[] workItems,
                                      @RequestParam(value = "percent", required = false) Float percent) {
         JsonMessage jsonMessage = new JsonMessage(true, "completeWork");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
 //        Construction construction = constructionService.findById(constructionId);
 //        int orderType = order.getOrderType();
 //        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
