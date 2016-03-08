@@ -1,7 +1,7 @@
 CREATE TABLE `t_construction` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) DEFAULT NULL COMMENT '订单id',
-  `technician_id` int(11) DEFAULT NULL COMMENT '技师id',
+  `tech_id` int(11) DEFAULT NULL COMMENT '技师id',
   `position_lon` varchar(20) DEFAULT NULL COMMENT '实时位置经度',
   `position_lat` varchar(20) DEFAULT NULL COMMENT '实时位置纬度',
   `start_time` datetime DEFAULT NULL COMMENT '施工开始时间',
@@ -14,5 +14,5 @@ CREATE TABLE `t_construction` (
   `car_seat` int(11) DEFAULT '5' COMMENT '车辆座位数,5或7',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
-  KEY `technician_id` (`technician_id`)
+  KEY `tech_id` (`tech_id`)
 ) DEFAULT CHARSET=utf8 COMMENT='施工表';

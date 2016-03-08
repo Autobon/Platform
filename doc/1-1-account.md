@@ -229,10 +229,12 @@ POST /api/mobile/technician/changePassword
 1.请求成功
 
 ```
-{"result": true,
-"message": null,
-"error": null,
-"data": null}
+{
+    "result": true,
+    "message": null,
+    "error": null,
+    "data": null
+}
 ```
 
 2.密码至少6位

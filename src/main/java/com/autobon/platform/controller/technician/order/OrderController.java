@@ -71,7 +71,7 @@ public class OrderController {
         map.put("mainTech", order.getMainTechId() > 0 ? technicianService.get(order.getMainTechId()) : null);
         map.put("secondTech", order.getSecondTechId() > 0 ? technicianService.get(order.getSecondTechId()) : null);
         map.put("construction", order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ?
-                    constructionService.findByOrderIdAndTechnicianId(order.getId(), tech.getId()) : null);
+                    constructionService.getByTechIdAndOrderId(tech.getId(), order.getId()) : null);
         map.put("comment", order.getStatusCode() >= Order.Status.COMMENTED.getStatusCode() ?
                     commentService.getByOrderIdAndTechId(order.getId(), tech.getId()) : null);
         return new JsonMessage(true, "", "", map);
@@ -122,7 +122,7 @@ public class OrderController {
         } else if (o.getStatus() != Order.Status.IN_PROGRESS) { // 当第二个技师开始工作时,订单状态已进入IN_PROGRESS状态
             o.setStatus(Order.Status.IN_PROGRESS);
             orderService.save(o);
-        } else if (constructionService.findByOrderIdAndTechnicianId(orderId, t.getId()).size() > 0) {
+        } else if (constructionService.getByTechIdAndOrderId(t.getId(), orderId) != null) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已开始工作,请不要重复操作");
         }
 
@@ -135,7 +135,7 @@ public class OrderController {
 
         Construction construction = new Construction();
         construction.setOrderId(orderId);
-        construction.setTechnicianId(t.getId());
+        construction.setTechId(t.getId());
         construction.setStartTime(new Date());
         construction = constructionService.save(construction);
         return new JsonMessage(true, "", "", construction);
@@ -149,23 +149,22 @@ public class OrderController {
             @RequestParam("orderId")     int orderId) {
         Technician tech = (Technician) request.getAttribute("user");
         Order order = orderService.get(orderId);
-        List<Construction> list = constructionService.findByOrderIdAndTechnicianId(orderId, tech.getId());
+        Construction cons = constructionService.getByTechIdAndOrderId(tech.getId(), orderId);
+
         if (order.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
-        } else if (list.size() < 1) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "系统没有你的施工单, 请先点选\"开始工作\"");
         } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始工作或已结束工作");
+        } else if (cons == null) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "系统没有你的施工单, 请先点选\"开始工作\"");
+        } else if (cons.getSigninTime() != null) {
+            return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
         }
 
-        Construction construction = list.get(0);
-        if (construction.getSigninTime() != null)
-            return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
-
-        construction.setPositionLon(positionLon);
-        construction.setPositionLat(positionLat);
-        construction.setSigninTime(new Date());
-        constructionService.save(construction);
+        cons.setPositionLon(positionLon);
+        cons.setPositionLat(positionLat);
+        cons.setSigninTime(new Date());
+        constructionService.save(cons);
         return new JsonMessage(true);
     }
 
@@ -188,12 +187,11 @@ public class OrderController {
             jsonMessage.setData(workList);
         }
         if(technicianId == secondTechId){
-            Map<String,Object> dataMap = new HashMap<String,Object>();
+            Map<String,Object> dataMap = new HashMap<>();
             //查询工作项列表，主技师已选列表
-            List<Construction> constructionList = constructionService.findByOrderIdAndTechnicianId(orderId, mainTechId);
-            if(constructionList.size() == 1){
-                Construction construction = constructionList.get(0);
-                String workLoad = construction.getWorkItems();
+            Construction cons = constructionService.getByTechIdAndOrderId(mainTechId, orderId);
+            if(cons != null){
+                String workLoad = cons.getWorkItems();
                 String[] workArray = workLoad.split(",");
                 dataMap.put("mainTech",workArray);
 
