@@ -47,7 +47,7 @@ public class PartnerInvitationController {
             @PathVariable("orderId")   int orderId) throws IOException {
         Technician technician = (Technician) request.getAttribute("user");
         Technician partner = technicianService.get(partnerId);
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
 
         if (order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已进入工作模式");
@@ -100,7 +100,7 @@ public class PartnerInvitationController {
             @RequestParam("accepted") boolean accepted,
             @PathVariable("orderId") int orderId) throws IOException {
         Technician technician = (Technician) request.getAttribute("user");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
 
         if (order == null || order.getSecondTechId() != technician.getId()) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个邀请, 或订单已改邀他人");

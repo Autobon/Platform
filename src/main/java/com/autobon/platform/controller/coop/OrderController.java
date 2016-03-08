@@ -39,7 +39,7 @@ public class OrderController {
                                @RequestParam("advice") String advice){
 
         JsonMessage jsonMessage = new JsonMessage(true,"comment");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         int mainTechId = order.getMainTechId();
         int secondTechId = order.getSecondTechId();
         if(mainTechId == 0){

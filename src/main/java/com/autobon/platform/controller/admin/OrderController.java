@@ -43,7 +43,7 @@ public class OrderController {
 
     @RequestMapping(value = "/{orderId:[\\d]+}", method = RequestMethod.GET)
     public JsonMessage show(@PathVariable("orderId") int orderId) {
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         if (order != null) return new JsonMessage(true, "", "", order);
         else return new JsonMessage(false, "ILLEGAL_PARAM", "没有这个订单");
     }
