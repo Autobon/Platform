@@ -51,7 +51,7 @@ public class ConstructionController {
             @RequestParam("carSeat")   int carSeat,
             @RequestParam("workItems") String workItems) {
         Technician tech = (Technician) request.getAttribute("user");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         if (order == null || (tech.getId() != order.getMainTechId() && tech.getId() != order.getSecondTechId())) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
         } else if (order.getStatus() != Order.Status.IN_PROGRESS) {

@@ -2,25 +2,20 @@ package com.autobon.platform.controller.technician.order;
 
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
-import com.autobon.order.entity.OrderShow;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.CommentService;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkItemService;
-import com.autobon.order.util.OrderUtil;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -70,7 +65,7 @@ public class OrderController {
     public JsonMessage show(HttpServletRequest request,
             @PathVariable("orderId") int orderId) {
         Technician tech = (Technician) request.getAttribute("user");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         HashMap<String, Object> map = new HashMap<>();
         map.put("order", order);
         map.put("mainTech", order.getMainTechId() > 0 ? technicianService.get(order.getMainTechId()) : null);
@@ -87,7 +82,7 @@ public class OrderController {
     public JsonMessage takeUpOrder(HttpServletRequest request,
             @RequestParam("orderId") int orderId) {
         Technician tech = (Technician) request.getAttribute("user");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         if (order == null) {
             return new JsonMessage(false, "NO_SUCH_ORDER", "没有这个订单");
         } else if (tech.getStatus() != Technician.Status.VERIFIED) {
@@ -115,7 +110,7 @@ public class OrderController {
             @RequestParam("orderId") int orderId,
             @RequestParam(value = "ignoreInvitation", defaultValue = "false") boolean ignoreInvitation) {
         Technician t = (Technician) request.getAttribute("user");
-        Order o = orderService.findOrder(orderId);
+        Order o = orderService.get(orderId);
         if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
         } else if (o.getStatus() == Order.Status.CANCELED) {
@@ -153,7 +148,7 @@ public class OrderController {
             @RequestParam("positionLat") String positionLat,
             @RequestParam("orderId")     int orderId) {
         Technician tech = (Technician) request.getAttribute("user");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         List<Construction> list = constructionService.findByOrderIdAndTechnicianId(orderId, tech.getId());
         if (order.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
@@ -181,7 +176,7 @@ public class OrderController {
     @RequestMapping(value="/mobile/order/getWorkList",method = RequestMethod.POST)
     public JsonMessage getWorkList(@RequestParam("orderId") int orderId){
         JsonMessage jsonMessage = new JsonMessage(true, "getWorkList");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
         int orderType = order.getOrderType();
         Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
         int technicianId = technician.getId();
@@ -220,7 +215,7 @@ public class OrderController {
                                      @RequestParam(value = "workItems", required = false) String[] workItems,
                                      @RequestParam(value = "percent", required = false) Float percent) {
         JsonMessage jsonMessage = new JsonMessage(true, "completeWork");
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.get(orderId);
 //        Construction construction = constructionService.findById(constructionId);
 //        int orderType = order.getOrderType();
 //        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
