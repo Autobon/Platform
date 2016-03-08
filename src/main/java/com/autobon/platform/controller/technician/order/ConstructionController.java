@@ -1,5 +1,6 @@
 package com.autobon.platform.controller.technician.order;
 
+import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 
 /**
  * Created by dave on 16/3/1.
@@ -43,6 +45,31 @@ public class ConstructionController {
         file.transferTo(new File(dir.getAbsoluteFile() + File.separator + filename));
 
         return new JsonMessage(true, "", "", path + "/" + filename);
+    }
+
+    @RequestMapping(value = "/beforePhoto", method = RequestMethod.POST)
+    public JsonMessage setBeforePhoto(HttpServletRequest request,
+            @RequestParam("orderId") int orderId,
+            @RequestParam("urls") String urls) {
+        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+)+$", urls)) {
+            return new JsonMessage(false, "PHOTO_PATTERN_MISMATCH", "图片地址格式错误, 请查阅urls参数说明");
+        } else if (urls.split(",").length > 3) {
+            return new JsonMessage(false, "PHOTO_LIMIT_EXCCED", "图片数量超出限制, 最多3张");
+        }
+
+        Technician tech = (Technician) request.getAttribute("user");
+        Construction cons = constructionService.getByTechIdAndOrderId(tech.getId(), orderId);
+        if (cons == null) {
+            return new JsonMessage(false, "NO_CONSTRUCTION", "系统没有你的施工单");
+        } else if (cons.getSigninTime() == null) {
+            return new JsonMessage(false, "CONSTRUCTION_NOT_SIGNIN", "签到前不可上传照片");
+        } else if (cons.getEndTime() != null) {
+            return new JsonMessage(false, "CONSTRUCTION_ENDED", "你已完成施工,不可再次上传照片");
+        }
+
+        cons.setBeforePhotos(urls);
+        constructionService.save(cons);
+        return new JsonMessage(true);
     }
 
     @RequestMapping(value = "/finish", method = RequestMethod.POST)

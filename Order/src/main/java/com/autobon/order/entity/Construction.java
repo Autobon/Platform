@@ -19,8 +19,8 @@ public class Construction {
     @Column(name = "order_id",nullable = false, insertable = true, updatable = true)
     private int orderId;
 
-    @Column(name = "technician_id",nullable = false, insertable = true, updatable = true)
-    private int technicianId;
+    @Column(name = "tech_id",nullable = false, insertable = true, updatable = true)
+    private int techId;
 
     @Column(name = "position_lon",nullable = true, insertable = true, updatable = true)
     private String positionLon;
@@ -68,12 +68,12 @@ public class Construction {
         this.orderId = orderId;
     }
 
-    public int getTechnicianId() {
-        return technicianId;
+    public int getTechId() {
+        return techId;
     }
 
-    public void setTechnicianId(int technicianId) {
-        this.technicianId = technicianId;
+    public void setTechId(int techId) {
+        this.techId = techId;
     }
 
     public String getPositionLon() {

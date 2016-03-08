@@ -5,30 +5,24 @@ import com.autobon.order.repository.ConstructionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Created by yuh on 2016/2/29.
  */
 @Service
 public class ConstructionService {
-
-    private ConstructionRepository constructionRepository = null;
     @Autowired
-    public void setConstructionRepository(ConstructionRepository constructionRepository){ this.constructionRepository = constructionRepository; }
+    private ConstructionRepository repository;
 
     public Construction save(Construction construction) {
-        construction = constructionRepository.save(construction);
+        construction = repository.save(construction);
         return construction;
     }
 
-    public Construction findById(int constructionId) {
-        Construction construction = constructionRepository.findOne(constructionId);
-        return construction;
+    public Construction get(int id) {
+        return repository.findOne(id);
     }
 
-    public List<Construction> findByOrderIdAndTechnicianId(int orderId, int mainTechId) {
-        List<Construction> constructionList = constructionRepository.findByOrderIdAndTechnicianId(orderId, mainTechId);
-        return constructionList;
+    public Construction getByTechIdAndOrderId(int techId, int orderId) {
+        return repository.getByTechIdAndOrderId(techId, orderId);
     }
 }
