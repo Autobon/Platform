@@ -73,7 +73,7 @@ data字段是一个施工单对象
 ```
 {"result": false,
 "message": "你邀请的合作人还未接受或拒绝邀请",
-"error": "ILLEGAL_OPERATION",
+"error": "INVITATION_NOT_FINISH",
 "data": null}
 ```
 
