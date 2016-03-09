@@ -193,7 +193,7 @@ POST /api/mobile/technician/construct/beforePhoto
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
 | orderId | 订单ID | 1 |
-| urls | 多个图片地址用逗号拼接而成的字符串,不能有多余空格 | /uploads/1.jpg,/uplods/2.jpg |
+| urls | 多个图片地址用逗号拼接而成的字符串,至少1张,不能有多余空格 | /uploads/1.jpg,/uplods/2.jpg |
 
 ### 返回数据
 
@@ -260,5 +260,45 @@ POST /api/mobile/technician/construct/beforePhoto
     "message": "你已完成施工,不可再次上传照片",
     "error": "CONSTRUCTION_ENDED",
     "data": null
+}
+```
+
+## 4.完成施工
+
+### URL及请求方法
+POST /api/mobile/technician/construct/finish
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| orderId | 订单ID | 1 |
+| afterPhotos | 多个图片地址用逗号拼接而成的字符串,3-6张,不能有多余空格 | /uploads/1.jpg,/uplods/2.jpg |
+
+### 返回数据
+
+#### a.请求成功
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 15,
+        "orderId": 17,
+        "techId": 1,
+        "positionLon": null,
+        "positionLat": null,
+        "startTime": 1457511755869,
+        "signinTime": 1457511755869,
+        "endTime": 1457511756094,
+        "beforePhotos": "a.jpg",
+        "afterPhotos": "a.jpg,b.jpg,c.jpg",
+        "payment": 100,
+        "workItems": null,
+        "workPercent": 0.2,
+        "carSeat": 0
+    }
 }
 ```

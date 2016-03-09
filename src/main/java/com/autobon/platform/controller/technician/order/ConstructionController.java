@@ -2,8 +2,10 @@ package com.autobon.platform.controller.technician.order;
 
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
+import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
+import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
@@ -19,8 +21,12 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by dave on 16/3/1.
@@ -30,6 +36,7 @@ import java.util.regex.Pattern;
 public class ConstructionController {
     @Autowired OrderService orderService;
     @Autowired ConstructionService constructionService;
+    @Autowired WorkItemService workItemService;
 
     // 开始工作
     @RequestMapping(value = "/start", method = RequestMethod.POST)
@@ -139,19 +146,103 @@ public class ConstructionController {
         return new JsonMessage(true);
     }
 
+    // 施工完成
     @RequestMapping(value = "/finish", method = RequestMethod.POST)
     public JsonMessage finish(HttpServletRequest request,
-            @RequestParam("orderId")   int orderId,
-            @RequestParam("carSeat")   int carSeat,
-            @RequestParam("workItems") String workItems) {
-        Technician tech = (Technician) request.getAttribute("user");
-        Order order = orderService.get(orderId);
-        if (order == null || (tech.getId() != order.getMainTechId() && tech.getId() != order.getSecondTechId())) {
-            return new JsonMessage(false, "NO_SUCH_ORDER", "你没有这个订单");
-        } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
-            return new JsonMessage(false, "ORDER_NOT_IN_PROGRESS", "非施工中订单, 不允许上传照片");
+            @RequestParam("orderId") int orderId,
+            @RequestParam("afterPhotos") String afterPhotos,
+            @RequestParam(value = "carSeat", defaultValue = "0")  int carSeat,
+            @RequestParam(value = "workItems", defaultValue = "") String workItems,
+            @RequestParam(value = "percent", defaultValue = "0") float percent) {
+
+        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+){2,5}$", afterPhotos)) {
+            return new JsonMessage(false, "AFTER_PHOTOS_PATTERN_MISMATCH",
+                    "afterPhotos参数格式错误, 施工完成后照片应至少3张, 至多6张");
+        } else if (!"".equals(workItems) && !Pattern.matches("^(\\d+)(,\\d+)*$", workItems)) {
+            return new JsonMessage(false, "WORK_ITEMS_PATTERN_MISMATCH", "workItems参数格式错误");
+        } else if (percent < 0 || percent > 1) {
+            return new JsonMessage(false, "PERCENT_VALUE_INVALID", "百分比值应在0-1之间");
         }
 
-        return null;
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+        if (order == null) {
+            return new JsonMessage(false, "NO_SUCH_ORDER", "没有这个订单");
+        } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
+            return new JsonMessage(false, "ORDER_NOT_IN_PROGRESS", "订单未开始或已结束");
+        }
+
+        Construction cons = constructionService.getByTechIdAndOrderId(tech.getId(), order.getId());
+        if (cons == null) {
+            return new JsonMessage(false, "NO_CONSTRUCTION", "没有你的施工单");
+        } else if (cons.getBeforePhotos() == null || "".equals(cons.getBeforePhotos())) {
+            return new JsonMessage(false, "NO_BEFORE_PHOTO", "没有上传施工前照片");
+        }
+
+        ArrayList<String> thisItems = new ArrayList<>(Arrays.asList(workItems.split(",")));
+        thisItems.removeIf(""::equals);
+        List<WorkItem> workItemsList = workItemService.findByOrderTypeAndCarSeat(order.getOrderType(), carSeat);
+        boolean usePercent = workItemService.findByOrderType(order.getOrderType()).size() == 1;
+        // 非主技师应等待主技师先提交后再提交, 且不可重复主技师的工作项, 且按百分比算时, 与主技师百分比之和不可超过1
+        if (order.getMainTechId() != tech.getId()) {
+            Construction c = constructionService.getByTechIdAndOrderId(tech.getId(), orderId);
+            if (c == null || c.getEndTime() == null) {
+                return new JsonMessage(false, "MAIN_TECH_NOT_COMMIT", "请等待主技师先提交完成");
+            } else if (c.getCarSeat() != carSeat) {
+                return new JsonMessage(false, "CAR_SEAT_MISMATCH", "主技师提交车型为" + c.getCarSeat() + "座, 请保持一致");
+            }
+
+            if (!usePercent && c.getWorkItems() != null && !"".equals(c.getWorkItems())) {
+                List<String> mainItems = Arrays.asList(c.getWorkItems().split(","));
+                List<String> conflicts = thisItems.stream()
+                        .filter(mainItems::contains).collect(Collectors.toList());
+                if (conflicts.size() > 0) {
+                    String names = conflicts.stream().map(s -> workItemsList.stream()
+                            .filter(i -> String.valueOf(i.getId()).equals(s))
+                            .findFirst().get().getWorkName()).collect(Collectors.joining(","));
+                    return new JsonMessage(false, "WORK_ITEM_CONFLICT",
+                            "主技师已提交: \"" + names + "\", 请不要提交与主技师相同的工作项");
+                }
+            } else if (usePercent && c.getWorkPercent() + percent > 1) {
+                return new JsonMessage(false, "PERCENT_SUM_EXCEED",
+                        "工作量百分比与主技师之和超过100%, 主技师已完成" + (c.getWorkPercent()*100) + "%");
+            }
+        }
+
+        JsonMessage msg = null;
+        if ((!usePercent && "".equals(workItems)) || (usePercent && percent == 0f)) {// 没有任何工作
+            cons.setPayment(0f);
+            msg = new JsonMessage(true);
+        } else if (!usePercent) { // 使用工作项
+            List<WorkItem> thisWorkItems = thisItems.stream().map(i -> workItemsList.stream()
+                    .filter(ii -> String.valueOf(ii.getId()).equals(i)).findFirst().orElse(null))
+                    .collect(Collectors.toList());
+            if (thisWorkItems.contains(null)) {
+                String illegalItems = thisItems.stream().filter(i -> workItemsList.stream()
+                        .filter(ii -> String.valueOf(ii.getId()).equals(i)).findFirst().orElse(null) == null)
+                        .collect(Collectors.joining(", "));
+                msg = new JsonMessage(false, "WORK_ITEM_NOT_IN_LIST", "无效工作项: " + illegalItems);
+            } else {
+                float pay = thisWorkItems.stream().map(i -> i.getPrice()).reduce(0f, (a, b) -> a + b);
+                cons.setWorkItems(workItems);
+                cons.setPayment(pay);
+                msg = new JsonMessage(true);
+            }
+        } else { // 使用百分比
+            cons.setWorkPercent(percent);
+            cons.setPayment(workItemService.findByOrderType(order.getOrderType()).get(0).getPrice());
+            msg = new JsonMessage(true);
+        }
+
+        // 结束订单
+        if (msg.getResult() && (order.getSecondTechId() == 0 || order.getSecondTechId() == tech.getId())) {
+            cons.setAfterPhotos(afterPhotos);
+            cons.setEndTime(new Date());
+            constructionService.save(cons);
+            msg.setData(cons);
+            order.setStatus(Order.Status.FINISHED);
+            orderService.save(order);
+        }
+        return msg;
     }
 }

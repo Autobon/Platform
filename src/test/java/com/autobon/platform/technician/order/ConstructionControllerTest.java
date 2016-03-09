@@ -39,6 +39,8 @@ public class ConstructionControllerTest  extends MvcTest {
         technician = technicianService.get(Technician.decodeToken(token));
         order = new Order();
         order.setMainTechId(technician.getId());
+        order.setOrderType(4);
+        order.setStatus(Order.Status.IN_PROGRESS);
         orderService.save(order);
         construction = new Construction();
         construction.setOrderId(order.getId());
@@ -81,6 +83,19 @@ public class ConstructionControllerTest  extends MvcTest {
         mockMvcS.perform(post("/api/mobile/technician/construct/beforePhoto")
                 .param("orderId", "" + order.getId())
                 .param("urls", "a.jpg,b.jpg")
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void finish() throws Exception {
+        construction.setBeforePhotos("a.jpg");
+        constructionService.save(construction);
+        mockMvcS.perform(post("/api/mobile/technician/construct/finish")
+                .param("orderId", "" + order.getId())
+                .param("afterPhotos", "a.jpg,b.jpg,c.jpg")
+                .param("percent", "0.2")
                 .cookie(new Cookie("autoken", token)))
             .andDo(print())
             .andExpect(jsonPath("$.result", is(true)));
