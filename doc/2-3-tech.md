@@ -44,3 +44,57 @@
 "error": "INSUFFICIENT_PARAM",
 "data": null}
 ```
+
+2.技师查询列表
+后台查询技师列表信息，通过搜索字符查询技师列表
+### URL及请求方法
+`GET /api/web/admin/technician?query=18812345678&page=1&pageSize=10`
+
+### 请求参数
+
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| query | 否 | 搜索关键字，可以是手机号或者技师名字| 18812345678 |
+| page | 否 | 页码 | 1 |
+| pageSize | 否 | 每页显示数目 | 10 |
+
+### 返回数据
+...
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "page": 1,
+        "totalElements": 1,
+        "totalPages": 1,
+        "pageSize": 20,
+        "count": 1,
+        "list": [
+            {
+                "id": 1,
+                "phone": "18812345678",
+                "name": "tom",
+                "gender": null,
+                "avatar": null,
+                "idNo": "422302198608266313",
+                "idPhoto": "/etc/a.jpg",
+                "bank": "027",
+                "bankAddress": "光谷",
+                "bankCardNo": "88888888888",
+                "verifyAt": null,
+                "requestVerifyAt": null,
+                "verifyMsg": null,
+                "lastLoginAt": 1456195103000,
+                "lastLoginIp": "127.0.0.1",
+                "createAt": 1455724800000,
+                "star": 0,
+                "voteRate": 0,
+                "skill": "1",
+                "pushId": null,
+                "status": "NEWLY_CREATED"
+            }
+        ]
+    }
+}
+...

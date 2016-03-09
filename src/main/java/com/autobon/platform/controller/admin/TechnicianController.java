@@ -23,12 +23,25 @@ public class TechnicianController {
     @Autowired PushService pushService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public JsonMessage list(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-
-        return new JsonMessage(true, "", "",
-                new JsonPage<>(technicianService.findAll(page, pageSize)));
+    public JsonMessage search(@RequestParam(value = "query", defaultValue = "") String query,
+                              @RequestParam(value = "page",     defaultValue = "1" )  int page,
+                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        if ("".equals(query)) {
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(technicianService.findAll(page, pageSize)));
+        } else if (Pattern.matches("^[0-9]+$", query)) {
+            Technician t = technicianService.getByPhone(query);
+            ArrayList<Technician> list = new ArrayList<>();
+            if (t != null) {
+                list.add(t);
+                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 1, 1, 1, list));
+            } else {
+                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 0, 0, 0, list));
+            }
+        } else {
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(technicianService.findByName(query, page, pageSize)));
+        }
     }
 
     @RequestMapping(value = "/{techId:[\\d]+}", method = RequestMethod.GET)
@@ -74,25 +87,6 @@ public class TechnicianController {
         return new JsonMessage(true,"","",technician);
     }
 
-
-    @RequestMapping(value = "/admin/technician/search",method = RequestMethod.GET)
-    public JsonMessage search(@RequestParam("query") String query,
-                              @RequestParam(value = "page",     defaultValue = "1" )  int page,
-                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        if (Pattern.matches("^[0-9]+$", query)) {
-            Technician t = technicianService.getByPhone(query);
-            ArrayList<Technician> list = new ArrayList<>();
-            if (t != null) {
-                list.add(t);
-                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 1, 1, 1, list));
-            } else {
-                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 0, 0, 0, list));
-            }
-        } else {
-            return new JsonMessage(true, "", "",
-                    new JsonPage<>(technicianService.findByName(query, page, pageSize)));
-        }
-    }
 
     @RequestMapping(value = "/verify/{techId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage verify(
