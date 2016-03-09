@@ -263,7 +263,7 @@ POST /api/mobile/technician/construct/beforePhoto
 }
 ```
 
-## 4.完成施工
+## 5.完成施工
 
 ### URL及请求方法
 POST /api/mobile/technician/construct/finish
