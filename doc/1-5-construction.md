@@ -285,20 +285,152 @@ POST /api/mobile/technician/construct/finish
     "message": "",
     "error": "",
     "data": {
-        "id": 15,
-        "orderId": 17,
+        "id": 25,
+        "orderId": 30,
         "techId": 1,
         "positionLon": null,
         "positionLat": null,
-        "startTime": 1457511755869,
-        "signinTime": 1457511755869,
-        "endTime": 1457511756094,
+        "startTime": 1457513028797,
+        "signinTime": 1457513028797,
+        "endTime": 1457513028964,
         "beforePhotos": "a.jpg",
         "afterPhotos": "a.jpg,b.jpg,c.jpg",
-        "payment": 100,
+        "payment": 20,
         "workItems": null,
         "workPercent": 0.2,
         "carSeat": 0
     }
+}
+```
+
+#### b.afterPhotos参数格式错误, 施工完成后照片应至少3张, 至多6张
+
+```
+{
+    "result": false,
+    "message": "afterPhotos参数格式错误, 施工完成后照片应至少3张, 至多6张",
+    "error": "AFTER_PHOTOS_PATTERN_MISMATCH",
+    "data": null
+}
+```
+
+#### c.workItems参数格式错误
+
+```
+{
+    "result": false,
+    "message": "workItems参数格式错误",
+    "error": "WORK_ITEMS_PATTERN_MISMATCH",
+    "data": null
+}
+```
+
+#### d.百分比值应在0-1之间
+
+```
+{
+    "result": false,
+    "message": "百分比值应在0-1之间",
+    "error": "PERCENT_VALUE_INVALID",
+    "data": null
+}
+```
+
+#### e.没有这个订单
+
+```
+{
+    "result": false,
+    "message": "没有这个订单",
+    "error": "NO_SUCH_ORDER",
+    "data": null
+}
+```
+
+#### f.订单未开始或已结束
+
+```
+{
+    "result": false,
+    "message": "订单未开始或已结束",
+    "error": "ORDER_NOT_IN_PROGRESS",
+    "data": null
+}
+```
+
+#### g.没有你的施工单
+
+```
+{
+    "result": false,
+    "message": "没有你的施工单",
+    "error": "NO_CONSTRUCTION",
+    "data": null
+}
+```
+
+#### h.没有上传施工前照片
+
+```
+{
+    "result": false,
+    "message": "没有上传施工前照片",
+    "error": "NO_BEFORE_PHOTO",
+    "data": null
+}
+```
+
+#### i.请等待主技师先提交完成
+
+```
+{
+    "result": false,
+    "message": "请等待主技师先提交完成",
+    "error": "MAIN_TECH_NOT_COMMIT",
+    "data": null
+}
+```
+
+#### j.主技师提交车型为...座, 请保持一致
+
+```
+{
+    "result": false,
+    "message": "主技师提交车型为5座, 请保持一致",
+    "error": "CAR_SEAT_MISMATCH",
+    "data": null
+}
+```
+
+#### k.主技师已提交: ...., 请不要提交与主技师相同的工作项
+
+```
+{
+    "result": false,
+    "message": "主技师已提交: \"左前窗\", 请不要提交与主技师相同的工作项",
+    "error": "WORK_ITEM_CONFLICT",
+    "data": null
+}
+```
+
+#### l.工作量百分比与主技师之和超过100%, 主技师已完成..%
+
+```
+{
+    "result": false,
+    "message": "工作量百分比与主技师之和超过100%, 主技师已完成80%",
+    "error": "PERCENT_SUM_EXCEED",
+    "data": null
+}
+```
+
+#### m.无效工作项: ...
+
+```
+{
+    "result": false,
+    "message": "无效工作项: 1,2",
+    "error": "WORK_ITEM_NOT_IN_LIST",
+    "data": null
 }
 ```
