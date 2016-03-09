@@ -221,7 +221,7 @@ public class ConstructionController {
                 String illegalItems = thisItems.stream().filter(i -> workItemsList.stream()
                         .filter(ii -> String.valueOf(ii.getId()).equals(i)).findFirst().orElse(null) == null)
                         .collect(Collectors.joining(", "));
-                msg = new JsonMessage(false, "WORK_ITEM_NOT_IN_LIST", "无效工作项: " + illegalItems);
+                return new JsonMessage(false, "WORK_ITEM_NOT_IN_LIST", "无效工作项: " + illegalItems);
             } else {
                 float pay = thisWorkItems.stream().map(i -> i.getPrice()).reduce(0f, (a, b) -> a + b);
                 cons.setWorkItems(workItems);
@@ -230,16 +230,17 @@ public class ConstructionController {
             }
         } else { // 使用百分比
             cons.setWorkPercent(percent);
-            cons.setPayment(workItemService.findByOrderType(order.getOrderType()).get(0).getPrice());
+            cons.setPayment(workItemService.findByOrderType(order.getOrderType()).get(0).getPrice()*percent);
             msg = new JsonMessage(true);
         }
 
+        cons.setAfterPhotos(afterPhotos);
+        cons.setEndTime(new Date());
+        constructionService.save(cons);
+        msg.setData(cons);
+
         // 结束订单
-        if (msg.getResult() && (order.getSecondTechId() == 0 || order.getSecondTechId() == tech.getId())) {
-            cons.setAfterPhotos(afterPhotos);
-            cons.setEndTime(new Date());
-            constructionService.save(cons);
-            msg.setData(cons);
+        if (order.getSecondTechId() == 0 || order.getSecondTechId() == tech.getId()) {
             order.setStatus(Order.Status.FINISHED);
             orderService.save(order);
         }
