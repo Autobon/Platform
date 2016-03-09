@@ -88,9 +88,9 @@ public class OrderController {
         } else if (tech.getStatus() != Technician.Status.VERIFIED) {
             return new JsonMessage(false, "NOT_VERIFIED", "你没有通过认证, 不能抢单");
         } else if (order.getStatus() == Order.Status.CANCELED) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
+            return new JsonMessage(false, "ORDER_CANCELED", "订单已取消");
         } else if (order.getStatus() != Order.Status.NEWLY_CREATED) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "已有人接单");
+            return new JsonMessage(false, "ORDER_TAKEN_UP", "已有人接单");
         } else if (tech.getSkill() == null || !Arrays.stream(tech.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType()))) {
             String orderType = workItemService.getOrderTypes().stream()
                     .filter(t -> t.getOrderType() == order.getOrderType())
@@ -104,69 +104,7 @@ public class OrderController {
         return new JsonMessage(true, "", "", order);
     }
 
-    // 开始工作
-    @RequestMapping(value = "/start", method = RequestMethod.POST)
-    public JsonMessage startWork(HttpServletRequest request,
-            @RequestParam("orderId") int orderId,
-            @RequestParam(value = "ignoreInvitation", defaultValue = "false") boolean ignoreInvitation) {
-        Technician t = (Technician) request.getAttribute("user");
-        Order o = orderService.get(orderId);
-        if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个订单");
-        } else if (o.getStatus() == Order.Status.CANCELED) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
-        } else if (o.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已施工完成");
-        } else if (o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
-            return new JsonMessage(false, "INVITATION_NOT_FINISH", "你邀请的合作人还未接受或拒绝邀请");
-        } else if (o.getStatus() != Order.Status.IN_PROGRESS) { // 当第二个技师开始工作时,订单状态已进入IN_PROGRESS状态
-            o.setStatus(Order.Status.IN_PROGRESS);
-            orderService.save(o);
-        } else if (constructionService.getByTechIdAndOrderId(t.getId(), orderId) != null) {
-            return new JsonMessage(false, "REPEATED_OPERATION", "你已开始工作,请不要重复操作");
-        }
 
-        // 拒绝邀请或忽略邀请时,将第二责任人置空
-        if (o.getStatus() == Order.Status.INVITATION_REJECTED ||
-                (o.getStatus() == Order.Status.SEND_INVITATION && ignoreInvitation)) {
-            o.setSecondTechId(0);
-            orderService.save(o);
-        }
-
-        Construction construction = new Construction();
-        construction.setOrderId(orderId);
-        construction.setTechId(t.getId());
-        construction.setStartTime(new Date());
-        construction = constructionService.save(construction);
-        return new JsonMessage(true, "", "", construction);
-    }
-
-    // 工作签到
-    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public JsonMessage signIn(HttpServletRequest request,
-            @RequestParam("positionLon") String positionLon,
-            @RequestParam("positionLat") String positionLat,
-            @RequestParam("orderId")     int orderId) {
-        Technician tech = (Technician) request.getAttribute("user");
-        Order order = orderService.get(orderId);
-        Construction cons = constructionService.getByTechIdAndOrderId(tech.getId(), orderId);
-
-        if (order.getStatus() == Order.Status.CANCELED) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已取消");
-        } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始工作或已结束工作");
-        } else if (cons == null) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "系统没有你的施工单, 请先点选\"开始工作\"");
-        } else if (cons.getSigninTime() != null) {
-            return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
-        }
-
-        cons.setPositionLon(positionLon);
-        cons.setPositionLat(positionLat);
-        cons.setSigninTime(new Date());
-        constructionService.save(cons);
-        return new JsonMessage(true);
-    }
 
     // TODO 继续清理下面的代码
 

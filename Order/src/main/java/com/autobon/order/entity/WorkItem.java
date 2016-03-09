@@ -27,7 +27,7 @@ public class WorkItem {
     private String workName;
 
     @Column(name = "price", nullable = true, insertable = true, updatable = true)
-    private int price;
+    private float price;
 
     public int getId() {
         return id;
@@ -69,11 +69,11 @@ public class WorkItem {
         this.workName = workName;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 }

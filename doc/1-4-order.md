@@ -1,4 +1,4 @@
-# 一、订单
+# 订单
 
 订单状态列表:
 
@@ -270,12 +270,27 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
             "status": "VERIFIED"
         },
         "secondTech": null,
-        "construction": null,
+        "construction": {
+            "id": 15,
+            "orderId": 5,
+            "techId": 1,
+            "positionLon": null,
+            "positionLat": null,
+            "startTime": 1457511755869,
+            "signinTime": 1457511755869,
+            "endTime": 1457511756094,
+            "beforePhotos": "a.jpg",
+            "afterPhotos": "a.jpg,b.jpg,c.jpg",
+            "payment": 100,
+            "workItems": null,
+            "workPercent": 0.2,
+            "carSeat": 0
+        },
         "comment": null,
         "order": {
             "id": 5,
             "orderNum": "20160307125948NTCKSM",
-            "orderType": 0,
+            "orderType": 4,
             "photo": null,
             "orderTime": null,
             "addTime": 1457326788046,
@@ -340,7 +355,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 ```
 {"result": false,
 "message": "已有人接单",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_TAKEN_UP",
 "data": null}
 ```
 
@@ -349,7 +364,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 ```
 {"result": false,
 "message": "订单已取消",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_CANCELED",
 "data": null}
 ```
 
@@ -386,149 +401,3 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 }
 ```
 
-## 6. 开始工作
-技师抢单成功后或接受合作邀请后, 点选**开始工作**
-### URL及请求方法
-`POST /api/mobile/technician/order/start`
-
-### 请求参数
-
-| 参数名称 | 是否必须 | 说明 | 举例 |
-| ------ | -------- | ---- | --- |
-| orderId | 是 | 订单编号 | 1 |
-| ignoreInvitation | 否 | 是否忽略已发出的尚未回复的合作邀请, 默认为false | false |
-
-### 返回数据
-
-#### a.请求成功
-
-```
-{
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
-        "id": 4,
-        "orderId": 41,
-        "techId": 1,
-        "positionLon": null,
-        "positionLat": null,
-        "startTime": 1456977763488,
-        "signinTime": null,
-        "endTime": null,
-        "beforePhotos": null,
-        "afterPhotos": null,
-        "payment": null,
-        "workItems": null,
-        "carSeat": 0
-    }
-}
-```
-
-data字段是一个施工单对象
-
-#### b.你没有这个订单
-
-```
-{"result": false,
-"message": "你没有这个订单",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### c.订单已取消
-
-```
-{"result": false,
-"message": "订单已取消",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### d.订单已施工完成
-
-```
-{"result": false,
-"message": "订单已施工完成",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### e.你邀请的合作人还未接受或拒绝邀请
-
-```
-{"result": false,
-"message": "你邀请的合作人还未接受或拒绝邀请",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-### f.你已开始工作,请不要重复操作
-
-```
-{"result": false,
-"message": "你已开始工作,请不要重复操作",
-"error": "REPEATED_OPERATION",
-"data": null}
-```
-
-## 7. 订单签到
-技师到达施工位置后，点选**签到**
-### URL及请求方法
-`POST /api/mobile/technician/order/signIn`
-
-### 请求参数
-
-| 参数名称 | 是否必须 | 说明 | 举例 |
-| ------ | -------- | ---- | --- |
-| orderId | 是 | 订单编号 | 1 |
-| positionLon | 是 | 签到位置经度 | 23.25478 |
-| positionLat | 是 | 签到位置纬度 | 45.23145 |
-
-### 返回数据
-
-#### a.请求成功
-
-```
-{
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": null
-}
-```
-
-#### b.订单已取消
-
-```
-{"result": false,
-"message": "订单已取消",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### c.系统没有你的施工单
-
-```
-{"result": false,
-"message": "系统没有你的施工单, 请先点选\"开始工作\"",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### d.订单还未开始工作或已结束工作
-
-```
-{"result": false,
-"message": "订单还未开始工作或已结束工作",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-### e.你已签到, 请不要重复操作
-
-```
-{"result": false,
-"message": "你已签到, 请不要重复操作",
-"error": "REPEATED_OPERATION",
-"data": null}
-```
