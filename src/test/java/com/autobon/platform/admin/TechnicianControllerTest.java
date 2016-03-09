@@ -42,4 +42,21 @@ public class TechnicianControllerTest extends MvcTest {
             .andDo(print())
             .andExpect(jsonPath("$.result", is(true)));
     }
+
+    @Test
+    public void update() throws Exception {
+        mockMvcS.perform(post("/api/web/admin/technician/" + tech.getId())
+                .param("phone", "13070705003")
+                .param("name", "henry")
+                .param("gender", "man")
+                .param("idNo", "422111198602020011")
+                .param("idPhoto","a/a.jpg")
+                .param("bank","0003")
+                .param("bankAddress","wuhan guanggu")
+                .param("bankCardNo","99998888")
+                .param("skill","1,2,3")
+                .cookie(new Cookie("autoken", adminToken)))
+            .andDo(print())
+            .andExpect(jsonPath("$.result", is(true)));
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * Created by dave on 16/3/1.
@@ -35,10 +36,41 @@ public class TechnicianController {
     }
 
     @RequestMapping(value = "/{techId:[\\d]+}", method = RequestMethod.POST)
-    public JsonMessage update(@PathVariable("techId") int techId) {
+    public JsonMessage update(@PathVariable("techId") int techId,
+                              @RequestParam(value="phone",required = true) String phone,
+                              @RequestParam(value="name",required = true) String name,
+                              @RequestParam(value="gender",required = true) String gender,
+                              @RequestParam(value = "idNo",required = true) String idNo,
+                              @RequestParam(value = "idPhoto",required = true) String idPhoto,
+                              @RequestParam(value = "bank",required = true) String bank,
+                              @RequestParam(value = "bankAddress",required = true) String bankAddress,
+                              @RequestParam(value = "bankCardNo",required = true) String bankCardNo,
+                              @RequestParam(value = "skill",required = true) String skill) {
 
-        // TODO 更新技师信息
-        return null;
+        if (!Pattern.matches("^\\d{11}$", phone)) {
+            return  new JsonMessage(false,"ILLEGAL_PARAM","手机号格式错误");
+        } else if (technicianService.getByPhone(phone) != null) {
+            return new JsonMessage(false,"OCCUPIED_ID","手机号已被注册");
+        }
+
+        idNo = idNo.toUpperCase();
+        if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", idNo))
+            return new JsonMessage(false, "ILLEGAL_PARAM", "身份证号码有误");
+        if (!Pattern.matches("^\\d+(,\\d+)*$", skill))
+            return new JsonMessage(false, "ILLEGAL_PARAM", "参数skill格式错误, 请填写技能编号并用分号分隔");
+
+        Technician technician = technicianService.get(techId);
+        technician.setPhone(phone);
+        technician.setName(name);
+        technician.setGender(gender);
+        technician.setIdNo(idNo);
+        technician.setIdPhoto(idPhoto);
+        technician.setBank(bank);
+        technician.setBankAddress(bankAddress);
+        technician.setBankCardNo(bankCardNo);
+        technician.setSkill(skill);
+        technicianService.save(technician);
+        return new JsonMessage(true,"","",technician);
     }
 
     @RequestMapping(value = "/verify/{techId:[\\d]+}", method = RequestMethod.POST)
