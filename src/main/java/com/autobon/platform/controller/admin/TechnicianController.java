@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -71,6 +72,26 @@ public class TechnicianController {
         technician.setSkill(skill);
         technicianService.save(technician);
         return new JsonMessage(true,"","",technician);
+    }
+
+
+    @RequestMapping(value = "/admin/technician/search",method = RequestMethod.GET)
+    public JsonMessage search(@RequestParam("query") String query,
+                              @RequestParam(value = "page",     defaultValue = "1" )  int page,
+                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        if (Pattern.matches("^[0-9]+$", query)) {
+            Technician t = technicianService.getByPhone(query);
+            ArrayList<Technician> list = new ArrayList<>();
+            if (t != null) {
+                list.add(t);
+                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 1, 1, 1, list));
+            } else {
+                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 0, 0, 0, list));
+            }
+        } else {
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(technicianService.findByName(query, page, pageSize)));
+        }
     }
 
     @RequestMapping(value = "/verify/{techId:[\\d]+}", method = RequestMethod.POST)
