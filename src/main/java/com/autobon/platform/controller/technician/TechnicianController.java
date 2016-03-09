@@ -32,8 +32,7 @@ public class TechnicianController {
     @Autowired
     private LocationService locationService;
 
-    @RequestMapping(value = {"/mobile/technician/search", "/admin/technician/search"},
-            method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/technician/search",method = RequestMethod.GET)
     public JsonMessage search(@RequestParam("query") String query,
             @RequestParam(value = "page",     defaultValue = "1" )  int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
