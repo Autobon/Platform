@@ -185,7 +185,7 @@ public class ConstructionController {
         boolean usePercent = workItemService.findByOrderType(order.getOrderType()).size() == 1;
         // 非主技师应等待主技师先提交后再提交, 且不可重复主技师的工作项, 且按百分比算时, 与主技师百分比之和不可超过1
         if (order.getMainTechId() != tech.getId()) {
-            Construction c = constructionService.getByTechIdAndOrderId(tech.getId(), orderId);
+            Construction c = constructionService.getByTechIdAndOrderId(order.getMainTechId(), orderId);
             if (c == null || c.getEndTime() == null) {
                 return new JsonMessage(false, "MAIN_TECH_NOT_COMMIT", "请等待主技师先提交完成");
             } else if (c.getCarSeat() != carSeat) {
@@ -223,7 +223,7 @@ public class ConstructionController {
                         .collect(Collectors.joining(", "));
                 return new JsonMessage(false, "WORK_ITEM_NOT_IN_LIST", "无效工作项: " + illegalItems);
             } else {
-                float pay = thisWorkItems.stream().map(i -> i.getPrice()).reduce(0f, (a, b) -> a + b);
+                float pay = thisWorkItems.stream().map(WorkItem::getPrice).reduce(0f, (a, b) -> a + b);
                 cons.setWorkItems(workItems);
                 cons.setPayment(pay);
                 msg = new JsonMessage(true);
@@ -234,6 +234,7 @@ public class ConstructionController {
             msg = new JsonMessage(true);
         }
 
+        if (!usePercent) cons.setCarSeat(carSeat);
         cons.setAfterPhotos(afterPhotos);
         cons.setEndTime(new Date());
         constructionService.save(cons);

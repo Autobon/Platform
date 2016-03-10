@@ -8,8 +8,8 @@ import java.util.Date;
 /**
  * Created by dave on 16/3/1.
  */
-//@Entity
-//@Table(name = "t_order")
+@Entity
+@Table(name = "v_order")
 public class DetailedOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,11 +41,17 @@ public class DetailedOrder {
 
     @ManyToOne
     @JoinColumn(name = "main_tech_id")
-    private Technician ower; // 主技师
+    private Technician mainTech; // 主技师
 
     @ManyToOne
     @JoinColumn(name = "second_tech_id")
-    private Technician partner; // 合作技师
+    private Technician secondTech; // 合作技师
+
+    @OneToOne
+    private Comment comment;
+
+    @OneToOne
+    private Construction mainConstruct;
 
     public int getId() {
         return id;
@@ -151,20 +157,20 @@ public class DetailedOrder {
         this.remark = remark;
     }
 
-    public Technician getOwer() {
-        return ower;
+    public Technician getMainTech() {
+        return mainTech;
     }
 
-    public void setOwer(Technician ower) {
-        this.ower = ower;
+    public void setMainTech(Technician mainTech) {
+        this.mainTech = mainTech;
     }
 
-    public Technician getPartner() {
-        return partner;
+    public Technician getSecondTech() {
+        return secondTech;
     }
 
-    public void setPartner(Technician partner) {
-        this.partner = partner;
+    public void setSecondTech(Technician secondTech) {
+        this.secondTech = secondTech;
     }
 
     public Order.Status getEnumStatus() {

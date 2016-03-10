@@ -85,7 +85,7 @@ public class Order {
     }
 
     public static String generateOrderNum() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) +
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHH")) +
                 VerifyCode.generateVerifyCode(6);
     }
 
