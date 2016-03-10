@@ -1,13 +1,14 @@
 package com.autobon.order.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by yuh on 2016/3/2.
  */
 @Entity
 @Table(name="t_comment")
-public class Comment {
+public class Comment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)

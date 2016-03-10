@@ -1,18 +1,13 @@
 package com.autobon.platform.controller.technician.order;
 
-import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.WorkItem;
-import com.autobon.order.service.CommentService;
-import com.autobon.order.service.ConstructionService;
-import com.autobon.order.service.OrderService;
-import com.autobon.order.service.WorkItemService;
+import com.autobon.order.service.*;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +20,7 @@ import java.util.*;
 @RequestMapping("/api/mobile/technician/order")
 public class OrderController {
     @Autowired OrderService orderService;
+    @Autowired DetailedOrderService detailedOrderService;
     @Autowired TechnicianService technicianService;
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
@@ -37,7 +33,7 @@ public class OrderController {
              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                new JsonPage<>(orderService.findFinishedOrderByMainTechId(technician.getId(), page, pageSize)));
+                new JsonPage<>(detailedOrderService.findFinishedByMainTechId(technician.getId(), page, pageSize)));
     }
 
     // 获取已完成的次要责任人订单列表
@@ -47,34 +43,23 @@ public class OrderController {
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                new JsonPage<>(orderService.findFinishedOrderBySecondTechId(technician.getId(), page, pageSize)));
+                new JsonPage<>(detailedOrderService.findFinishedBySecondTechId(technician.getId(), page, pageSize)));
     }
 
     // 获取未完成的订单
     @RequestMapping(value = "/listUnfinished", method = RequestMethod.GET)
     public JsonMessage listUnfinished(HttpServletRequest request,
-                                  @RequestParam(value = "page", defaultValue = "1") int page,
-                                  @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                new JsonPage<>(orderService.findUnFinishedOrderByTechId(technician.getId(), page, pageSize)));
+                new JsonPage<>(detailedOrderService.findUnfinishedByTechId(technician.getId(), page, pageSize)));
     }
 
     // 获取订单信息
     @RequestMapping(value = "/{orderId:[\\d]+}", method = RequestMethod.GET)
-    public JsonMessage show(HttpServletRequest request,
-            @PathVariable("orderId") int orderId) {
-        Technician tech = (Technician) request.getAttribute("user");
-        Order order = orderService.get(orderId);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("order", order);
-        map.put("mainTech", order.getMainTechId() > 0 ? technicianService.get(order.getMainTechId()) : null);
-        map.put("secondTech", order.getSecondTechId() > 0 ? technicianService.get(order.getSecondTechId()) : null);
-        map.put("construction", order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ?
-                    constructionService.getByTechIdAndOrderId(tech.getId(), order.getId()) : null);
-        map.put("comment", order.getStatusCode() >= Order.Status.COMMENTED.getStatusCode() ?
-                    commentService.getByOrderIdAndTechId(order.getId(), tech.getId()) : null);
-        return new JsonMessage(true, "", "", map);
+    public JsonMessage show(@PathVariable("orderId") int orderId) {
+        return new JsonMessage(true, "", "", detailedOrderService.get(orderId));
     }
 
     // 抢单

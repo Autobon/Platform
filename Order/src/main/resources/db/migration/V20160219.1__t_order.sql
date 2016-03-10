@@ -14,8 +14,8 @@ CREATE TABLE `t_order` (
   `position_lon` varchar(20) DEFAULT NULL COMMENT '订单位置经度',
   `position_lat` varchar(20) DEFAULT NULL COMMENT '订单位置维度',
   `remark` varchar(255) DEFAULT NULL COMMENT '订单备注',
-  `main_tech_id` int(11) NOT NULL DEFAULT '0' COMMENT '主技师id',
-  `second_tech_id` int(11) NOT NULL DEFAULT '0' COMMENT '合作技师id',
+  `main_tech_id` int(11) DEFAULT NULL COMMENT '主技师id',
+  `second_tech_id` int(11) DEFAULT NULL COMMENT '合作技师id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_order_num` (`order_num`)
 ) DEFAULT CHARSET=utf8 COMMENT='订单表';
