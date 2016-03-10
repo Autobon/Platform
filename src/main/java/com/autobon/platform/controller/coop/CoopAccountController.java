@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -71,6 +75,65 @@ public class CoopAccountController {
             cooperator.setPassword(cooperator.encryptPassword(password));
             cooperatorService.save(cooperator);
             msg.setData(cooperator);
+        }
+        return msg;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public JsonMessage login(
+            HttpServletRequest request, HttpServletResponse response,
+            @RequestParam("shortname") String shortname,
+            @RequestParam("contactPhone") String contactPhone,
+            @RequestParam("password") String password) {
+
+        JsonMessage msg = new JsonMessage(true);
+        Cooperator cooperator = cooperatorService.getByContactPhone(contactPhone);
+
+        if (cooperator == null) {
+            msg.setResult(false);
+            msg.setError("NO_SUCH_USER");
+            msg.setMessage("手机号未注册");
+        } else if (!cooperator.getPassword().equals(cooperator.encryptPassword(password))) {
+            msg.setResult(false);
+            msg.setError("PASSWORD_MISMATCH");
+            msg.setMessage("密码错误");
+        }else if(!cooperator.getShortname().equals(shortname)){
+            msg.setResult(false);
+            msg.setError("NO_SUCH_USER");
+            msg.setMessage("手机号与企业简称不匹配");
+        } else {
+            response.addCookie(new Cookie("autoken", Cooperator.makeToken(cooperator.getId())));
+            //cooperator.setLastLoginAt(new Date());
+            cooperator.setLastLoginIp(request.getRemoteAddr());
+            cooperatorService.save(cooperator);
+            msg.setData(cooperator);
+        }
+        return msg;
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    public JsonMessage resetPassword(
+            @RequestParam("contactPhone")     String contactPhone,
+            @RequestParam("password")  String password,
+            @RequestParam("verifySms") String verifySms) throws Exception {
+
+        JsonMessage msg = new JsonMessage(true);
+        Cooperator cooperator = cooperatorService.getByContactPhone(contactPhone);
+        if (cooperator == null) {
+            msg.setResult(false);
+            msg.setError("NO_SUCH_USER");
+            msg.setMessage("手机号未注册");
+        } else if (!verifySms.equals(redisCache.get("verifySms:" + contactPhone))) {
+            msg.setResult(false);
+            msg.setError("ILLEGAL_PARAM");
+            msg.setMessage("验证码错误");
+        } else if (password.length() < 6) {
+            msg.setResult(false);
+            msg.setError("ILLEGAL_PARAM");
+            msg.setMessage("密码至少6位");
+        } else {
+            cooperator.setPassword(Cooperator.encryptPassword(password));
+            cooperatorService.save(cooperator);
         }
         return msg;
     }

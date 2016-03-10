@@ -2,8 +2,14 @@ package com.autobon.cooperators.entity;
 
 import com.autobon.shared.Crypto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -12,7 +18,28 @@ import java.util.Date;
 
 @Entity
 @Table(name = "t_cooperators")
-public class Cooperator {
+public class Cooperator  implements UserDetails {
+
+    private static Logger log = LoggerFactory.getLogger(Cooperator.class);
+    public enum Status {
+        NEWLY_CREATED(0), IN_VERIFICATION(1), VERIFIED(2), REJECTED(3), BANNED(4);
+        private int statusCode;
+
+        Status(int statusCode) {
+            this.statusCode = statusCode;
+        }
+
+        public static Status getStatus(int statusCode) {
+            for (Status s : Status.values()) {
+                if (s.getStatusCode() == statusCode) return s;
+            }
+            return null;
+        }
+        public int getStatusCode() {
+            return this.statusCode;
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column private int id;
@@ -62,13 +89,19 @@ public class Cooperator {
 
     @Column private String contactPhone; //联系人电话
 
-    @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败 3-账号禁用
+   // @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败 3-账号禁用
 
     @Column private Date lastLoginTime; //上次登录时间
 
     @Column private String lastLoginIp; //上次登录IP
 
     @Column private Date createTime; //注册时间
+
+    @JsonIgnore
+    @Column(name = "status")
+    private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
+
+    private static String Token = "Autobon~!@#2016=";
 
     public  Cooperator(){
         this.createTime=new Date();
@@ -98,6 +131,67 @@ public class Cooperator {
         this.shortname = shortname;
     }
 
+    public Status getStatus() {
+        return Status.getStatus(this.getStatusCode());
+    }
+
+    public void setStatus(Status s) {
+        this.setStatusCode(s.getStatusCode());
+    }
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> ret = new ArrayList<>();
+        ret.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "TECHNICIAN";
+            }
+        });
+        if (getStatus() == Status.VERIFIED) {
+            ret.add(new GrantedAuthority() {
+                @Override
+                public String getAuthority() {
+                    return "VERIFIED_TECHNICIAN";
+                }
+            });
+        }
+        return ret;
+    }
+
+
+    @JsonIgnore
+    @Override
+    public String getUsername() {
+        return phone;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return getStatus() != Status.BANNED;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return getStatus() != Status.BANNED;
+    }
+
+    @Override
     public String getPassword() {
         return password;
     }
@@ -284,5 +378,10 @@ public class Cooperator {
 
     public static String encryptPassword(String password) {
         return Crypto.encryptBySha1(password);
+    }
+
+    // 根据用户ID生成token
+    public static String makeToken(int id) {
+        return "cooperator:" + Crypto.encryptAesBase64(String.valueOf(id), Token);
     }
 }
