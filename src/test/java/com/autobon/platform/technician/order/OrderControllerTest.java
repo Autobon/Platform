@@ -73,7 +73,7 @@ public class OrderControllerTest extends MvcTest {
         mockMvcS.perform(get("/api/mobile/technician/order/" + myOrder.getId())
                 .cookie(new Cookie("autoken", token)))
             .andDo(print())
-            .andExpect(jsonPath("$.data.order.id", is(myOrder.getId())));
+            .andExpect(jsonPath("$.data.id", is(myOrder.getId())));
     }
 
     @Test

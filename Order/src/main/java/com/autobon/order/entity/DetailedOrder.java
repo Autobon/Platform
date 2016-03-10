@@ -2,6 +2,8 @@ package com.autobon.order.entity;
 
 import com.autobon.technician.entity.Technician;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -47,10 +49,12 @@ public class DetailedOrder {
 
     @ManyToOne
     @JoinColumn(name = "main_tech_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Technician mainTech; // 主技师
 
     @ManyToOne
     @JoinColumn(name = "second_tech_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Technician secondTech; // 合作技师
 
     @OneToOne

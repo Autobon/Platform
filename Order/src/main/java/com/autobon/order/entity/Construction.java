@@ -1,6 +1,7 @@
 package com.autobon.order.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="t_construction")
-public class Construction {
+public class Construction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
