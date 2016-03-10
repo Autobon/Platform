@@ -45,7 +45,7 @@
 "data": null}
 ```
 
-2.技师查询列表
+## 2.技师查询列表
 后台查询技师列表信息，通过搜索字符查询技师列表
 ### URL及请求方法
 `GET /api/web/admin/technician?query=18812345678&page=1&pageSize=10`
@@ -59,7 +59,7 @@
 | pageSize | 否 | 每页显示数目 | 10 |
 
 ### 返回数据
-...
+```
 {
     "result": true,
     "message": "",
@@ -97,10 +97,10 @@
         ]
     }
 }
-...
+```
 
 
-3.更新技师资料
+## 3.更新技师资料
 后台更新技师资料
 ### URL及请求方法
 `POST /api/web/admin/technician/1`
@@ -120,7 +120,7 @@
 | skill | 是 | 技能| 1,2,3 |
 
 ### 返回数据
-...
+```
 {
     "result": true,
     "message": "",
@@ -149,4 +149,4 @@
         "status": "NEWLY_CREATED"
     }
 }
-...
+```
