@@ -1,23 +1,25 @@
 package com.autobon.order.entity;
 
 import com.autobon.technician.entity.Technician;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
 
+import static com.autobon.order.entity.Order.Status;
+
 /**
  * Created by dave on 16/3/1.
  */
-//@Entity
-//@Table(name = "t_order")
+@Entity
+@Table(name = "v_order")
 public class DetailedOrder {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column private String orderNum;
 
-    @Column private int orderType;
+    @Column private int orderType; // 订单类型(1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁)
 
     @Column private String photo;
 
@@ -25,27 +27,46 @@ public class DetailedOrder {
 
     @Column private Date addTime;
 
-    @Column private int status;
+    @JsonIgnore
+    @Column(name="status")
+    private int statusCode;
 
-    @Column private int customerType;
+    @Column private int creatorType; // 下单人类型(1-合作商户 2-后台 3-用户)
 
-    @Column private int customerId;
+    @Column private int creatorId;
 
-    @Column private String customerName;
+    @Column private String creatorName;
 
-    @Column private String customerLon;
+    @Column private String contactPhone;
 
-    @Column private String customerLat;
+    @Column private String positionLon;
+
+    @Column private String positionLat;
 
     @Column private String remark;
 
     @ManyToOne
     @JoinColumn(name = "main_tech_id")
-    private Technician ower; // 主技师
+    private Technician mainTech; // 主技师
 
     @ManyToOne
     @JoinColumn(name = "second_tech_id")
-    private Technician partner; // 合作技师
+    private Technician secondTech; // 合作技师
+
+    @OneToOne
+    @JoinColumns({@JoinColumn(name = "id", referencedColumnName = "order_id", insertable = false, updatable = false),
+        @JoinColumn(name = "main_tech_id", referencedColumnName = "tech_id", insertable = false, updatable = false)})
+    private Construction mainConstruct;
+
+    @OneToOne
+    @JoinColumns({@JoinColumn(name = "id", referencedColumnName = "order_id", insertable = false, updatable = false),
+            @JoinColumn(name = "second_tech_id", referencedColumnName = "tech_id", insertable = false, updatable = false)})
+    private Construction secondConstruct;
+
+    @OneToOne
+    @JoinColumns({@JoinColumn(name = "id", referencedColumnName = "order_id", insertable = false, updatable = false),
+            @JoinColumn(name = "main_tech_id", referencedColumnName = "tech_id", insertable = false, updatable = false)})
+    private Comment comment;
 
     public int getId() {
         return id;
@@ -95,52 +116,60 @@ public class DetailedOrder {
         this.addTime = addTime;
     }
 
-    public int getStatus() {
-        return status;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
-    public int getCustomerType() {
-        return customerType;
+    public int getCreatorType() {
+        return creatorType;
     }
 
-    public void setCustomerType(int customerType) {
-        this.customerType = customerType;
+    public void setCreatorType(int creatorType) {
+        this.creatorType = creatorType;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public int getCreatorId() {
+        return creatorId;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCreatorName() {
+        return creatorName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 
-    public String getCustomerLon() {
-        return customerLon;
+    public String getContactPhone() {
+        return contactPhone;
     }
 
-    public void setCustomerLon(String customerLon) {
-        this.customerLon = customerLon;
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
-    public String getCustomerLat() {
-        return customerLat;
+    public String getPositionLon() {
+        return positionLon;
     }
 
-    public void setCustomerLat(String customerLat) {
-        this.customerLat = customerLat;
+    public void setPositionLon(String positionLon) {
+        this.positionLon = positionLon;
+    }
+
+    public String getPositionLat() {
+        return positionLat;
+    }
+
+    public void setPositionLat(String positionLat) {
+        this.positionLat = positionLat;
     }
 
     public String getRemark() {
@@ -151,27 +180,52 @@ public class DetailedOrder {
         this.remark = remark;
     }
 
-    public Technician getOwer() {
-        return ower;
+    public Technician getMainTech() {
+        return mainTech;
     }
 
-    public void setOwer(Technician ower) {
-        this.ower = ower;
+    public void setMainTech(Technician mainTech) {
+        this.mainTech = mainTech;
     }
 
-    public Technician getPartner() {
-        return partner;
+    public Technician getSecondTech() {
+        return secondTech;
     }
 
-    public void setPartner(Technician partner) {
-        this.partner = partner;
+    public void setSecondTech(Technician secondTech) {
+        this.secondTech = secondTech;
     }
 
-    public Order.Status getEnumStatus() {
-        return Order.Status.getStatus(this.status);
+    public Construction getMainConstruct() {
+        return mainConstruct;
     }
 
-    public void setEnumStatus(Order.Status status) {
-        this.status = status.getStatusCode();
+    public void setMainConstruct(Construction mainConstruct) {
+        this.mainConstruct = mainConstruct;
     }
+
+    public Construction getSecondConstruct() {
+        return secondConstruct;
+    }
+
+    public void setSecondConstruct(Construction secondConstruct) {
+        this.secondConstruct = secondConstruct;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public Status getStatus() {
+        return Status.getStatus(this.statusCode);
+    }
+
+    public void setStatus(Order status) {
+        this.statusCode = status.getStatusCode();
+    }
+
 }

@@ -226,7 +226,7 @@ public class TechnicianAccountController {
     public JsonMessage savePushId(HttpServletRequest request,
             @RequestParam("pushId") String pushId) {
         Technician technician = (Technician) request.getAttribute("user");
-        Technician oTech = technicianService.getByPhone(pushId);
+        Technician oTech = technicianService.getByPushId(pushId);
 
         if (oTech != null) {
             if (technician.getId() == oTech.getId()) return new JsonMessage(true);
