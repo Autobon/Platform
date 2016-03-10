@@ -43,7 +43,6 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
     private int id;
 
     @Column private String orderNum;
