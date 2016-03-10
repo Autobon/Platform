@@ -11,10 +11,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class CooperatorService {
     @Autowired
-    private CooperatorRepository repository;
+    private CooperatorRepository cooperatorRepository;
 
     public Cooperator get(int id){
-        return repository.findOne(id);
+        return cooperatorRepository.findOne(id);
     }
 
+    public Cooperator getByShortname(String shortname) {
+        return  cooperatorRepository.getByShortname(shortname);
+    }
+
+    public Cooperator getByContactPhone(String contactPhone) {
+        return cooperatorRepository.getByContactPhone(contactPhone);
+    }
+
+    public void save(Cooperator cooperator) {
+        cooperatorRepository.save(cooperator);
+    }
 }

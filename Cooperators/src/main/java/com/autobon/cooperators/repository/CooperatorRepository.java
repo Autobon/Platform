@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CooperatorRepository extends JpaRepository<Cooperator, Integer> {
 
+    Cooperator getByShortname(String shortname);
+
+    Cooperator getByContactPhone(String contactPhone);
 }

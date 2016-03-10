@@ -1,5 +1,6 @@
 package com.autobon.cooperators.entity;
 
+import com.autobon.shared.Crypto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -279,5 +280,9 @@ public class Cooperator {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public static String encryptPassword(String password) {
+        return Crypto.encryptBySha1(password);
     }
 }
