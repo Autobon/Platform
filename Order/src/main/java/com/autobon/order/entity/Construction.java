@@ -47,6 +47,9 @@ public class Construction implements Serializable {
     @Column(name = "payment")
     private float payment;
 
+    @Column
+    private int payStatus; //支付状态: 0-未出帐, 1-已出账进入月度账单, 2-已转账支付
+
     @Column(name = "work_items")
     private String workItems;
 
@@ -55,9 +58,6 @@ public class Construction implements Serializable {
 
     @Column(name = "car_seat",nullable = true, insertable = true, updatable = true)
     private int carSeat;
-
-    @Column
-    private boolean payed;
 
     public int getId() {
         return id;
@@ -147,6 +147,14 @@ public class Construction implements Serializable {
         this.payment = payment;
     }
 
+    public int getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(int payStatus) {
+        this.payStatus = payStatus;
+    }
+
     public String getWorkItems() {
         return workItems;
     }
@@ -169,13 +177,5 @@ public class Construction implements Serializable {
 
     public void setCarSeat(int carSeat) {
         this.carSeat = carSeat;
-    }
-
-    public boolean isPayed() {
-        return payed;
-    }
-
-    public void setPayed(boolean payed) {
-        this.payed = payed;
     }
 }

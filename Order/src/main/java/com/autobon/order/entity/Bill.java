@@ -22,9 +22,9 @@ public class Bill {
 
     @Column private float sum;
 
-    @Column private boolean transfered;
+    @Column private boolean payed;
 
-    @Column private Date transferAt;
+    @Column private Date payAt;
 
     public Bill(int techId, Date yearMonth) {
         this.techId = techId;
@@ -71,19 +71,19 @@ public class Bill {
         this.sum = sum;
     }
 
-    public boolean isTransfered() {
-        return transfered;
+    public boolean isPayed() {
+        return payed;
     }
 
-    public void setTransfered(boolean transfered) {
-        this.transfered = transfered;
+    public void setPayed(boolean payed) {
+        this.payed = payed;
     }
 
-    public Date getTransferAt() {
-        return transferAt;
+    public Date getPayAt() {
+        return payAt;
     }
 
-    public void setTransferAt(Date transferAt) {
-        this.transferAt = transferAt;
+    public void setPayAt(Date payAt) {
+        this.payAt = payAt;
     }
 }
