@@ -34,7 +34,6 @@ public class CooperatorService {
 
     public Page<Cooperator> findCoop(String fullname, String businessLicense, String contactPhone, Integer currentPage, Integer pageSize) {
         currentPage = currentPage == null?1:currentPage;
-        currentPage = currentPage == null?1:currentPage;
         currentPage = currentPage <= 0?1:currentPage;
         pageSize = pageSize == null?10:pageSize;
         pageSize = pageSize <= 0?10:pageSize;
