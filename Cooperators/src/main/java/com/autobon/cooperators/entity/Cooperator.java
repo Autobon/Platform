@@ -13,6 +13,12 @@ import java.util.Date;
 @Entity
 @Table(name = "t_cooperators")
 public class Cooperator {
+    private static String Token = "Autobon~!@#ABCD=";
+
+    public static String makeToken(int id) {
+        return "cooperator:" + Crypto.encryptAesBase64(String.valueOf(id), Token);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column private int id;
@@ -286,8 +292,5 @@ public class Cooperator {
         return Crypto.encryptBySha1(password);
     }
 
-    public static String makeToken(int id) {
-        return "cooperator:" + Crypto.encryptAesBase64(String.valueOf(id), Token);
-    }
-    private static String Token = "Autobon~!@#2016=";
+
 }

@@ -2,7 +2,7 @@ CREATE TABLE `t_cooperators` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `phone` varchar(20) NOT NULL DEFAULT '' COMMENT '账号',
   `shortname` varchar(20) DEFAULT NULL COMMENT '企业简称',
-  `password` varchar(20) DEFAULT NULL COMMENT '密码',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码',
   `fullname` varchar(255) DEFAULT NULL COMMENT '企业名称',
   `business_license` varchar(30) DEFAULT NULL COMMENT '营业执照号',
   `corporation_name` varchar(20) DEFAULT NULL COMMENT '法人姓名',
