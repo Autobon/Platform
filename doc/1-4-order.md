@@ -45,12 +45,12 @@
         "count": 1,
         "list": [
             {
-                "id": 13,
-                "orderNum": "16031020V32X5W",
-                "orderType": 0,
+                "id": 5,
+                "orderNum": "16031109BN39AJ",
+                "orderType": 4,
                 "photo": null,
                 "orderTime": null,
-                "addTime": 1457613855000,
+                "addTime": 1457659791000,
                 "creatorType": 0,
                 "creatorId": 0,
                 "creatorName": null,
@@ -79,35 +79,28 @@
                     "voteRate": 0,
                     "skill": "1",
                     "pushId": null,
-                    "status": "VERIFIED"
+                    "status": "NEWLY_CREATED"
                 },
-                "secondTech": {
+                "secondTech": null,
+                "mainConstruct": {
                     "id": 2,
-                    "phone": "18812340000",
-                    "name": "tom2",
-                    "gender": null,
-                    "avatar": null,
-                    "idNo": "422302198608266313000",
-                    "idPhoto": "/etc/a.jpg",
-                    "bank": "027",
-                    "bankAddress": "光谷",
-                    "bankCardNo": "88888888888",
-                    "verifyAt": null,
-                    "requestVerifyAt": null,
-                    "verifyMsg": null,
-                    "lastLoginAt": 1456195103000,
-                    "lastLoginIp": "127.0.0.1",
-                    "createAt": 1455724800000,
-                    "star": 0,
-                    "voteRate": 0,
-                    "skill": "1",
-                    "pushId": null,
-                    "status": "VERIFIED"
+                    "orderId": 5,
+                    "techId": 1,
+                    "positionLon": null,
+                    "positionLat": null,
+                    "startTime": 1457659790696,
+                    "signinTime": 1457659790696,
+                    "endTime": 1457659790927,
+                    "beforePhotos": "a.jpg",
+                    "afterPhotos": "a.jpg,b.jpg,c.jpg",
+                    "payment": 20,
+                    "workItems": null,
+                    "workPercent": 0.2,
+                    "carSeat": 0
                 },
-                "mainConstruct": null,
                 "secondConstruct": null,
                 "comment": null,
-                "status": "INVITATION_ACCEPTED"
+                "status": "IN_PROGRESS"
             }
         ]
     }
@@ -204,7 +197,22 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
                     "status": "VERIFIED"
                 },
                 "mainConstruct": null,
-                "secondConstruct": null,
+                "secondConstruct": {
+                    "id": 2,
+                    "orderId": 13,
+                    "techId": 2,
+                    "positionLon": null,
+                    "positionLat": null,
+                    "startTime": 1457659790696,
+                    "signinTime": 1457659790696,
+                    "endTime": 1457659790927,
+                    "beforePhotos": "a.jpg",
+                    "afterPhotos": "a.jpg,b.jpg,c.jpg",
+                    "payment": 20,
+                    "workItems": null,
+                    "workPercent": 0.2,
+                    "carSeat": 0
+                },
                 "comment": null,
                 "status": "INVITATION_ACCEPTED"
             }
@@ -354,12 +362,12 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
     "message": "",
     "error": "",
     "data": {
-        "id": 15,
-        "orderNum": "160310204GWYL3",
-        "orderType": 0,
+        "id": 5,
+        "orderNum": "16031109BN39AJ",
+        "orderType": 4,
         "photo": null,
         "orderTime": null,
-        "addTime": 1457613856000,
+        "addTime": 1457659791000,
         "creatorType": 0,
         "creatorId": 0,
         "creatorName": null,
@@ -388,13 +396,28 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
             "voteRate": 0,
             "skill": "1",
             "pushId": null,
-            "status": "VERIFIED"
+            "status": "NEWLY_CREATED"
         },
         "secondTech": null,
-        "mainConstruct": null,
+        "mainConstruct": {
+            "id": 2,
+            "orderId": 5,
+            "techId": 1,
+            "positionLon": null,
+            "positionLat": null,
+            "startTime": 1457659790696,
+            "signinTime": 1457659790696,
+            "endTime": 1457659790927,
+            "beforePhotos": "a.jpg",
+            "afterPhotos": "a.jpg,b.jpg,c.jpg",
+            "payment": 20,
+            "workItems": null,
+            "workPercent": 0.2,
+            "carSeat": 0
+        },
         "secondConstruct": null,
         "comment": null,
-        "status": "NEWLY_CREATED"
+        "status": "IN_PROGRESS"
     }
 }
 ```

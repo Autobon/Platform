@@ -19,6 +19,7 @@ public class ScheduledTask {
     @Autowired @Qualifier("PushServiceA")
     private PushService pushServiceA;
 
+    // 每隔1小时连接个推服务器一次,否则可能出现sigerr错误
     @Async
     @Scheduled(fixedRate = 3600*1000)
     public void connectGetui() {

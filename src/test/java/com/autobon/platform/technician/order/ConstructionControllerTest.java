@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -99,6 +100,12 @@ public class ConstructionControllerTest  extends MvcTest {
                 .param("orderId", "" + order.getId())
                 .param("afterPhotos", "a.jpg,b.jpg,c.jpg")
                 .param("percent", "0.2")
+                .cookie(new Cookie("autoken", token)))
+            .andDo(print())
+            .andExpect(jsonPath("$.result", is(true)));
+
+        mockMvcS.perform(get("/api/mobile/technician/order/" + order.getId())
+                .param("orderId", "" + order.getId())
                 .cookie(new Cookie("autoken", token)))
             .andDo(print())
             .andExpect(jsonPath("$.result", is(true)));
