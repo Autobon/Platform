@@ -71,7 +71,7 @@ public class CoopAccountController {
         } else {
             Cooperator cooperator = new Cooperator();
             cooperator.setShortname(shortname);
-            cooperator.setPhone(contactPhone);
+            cooperator.setContactPhone(contactPhone);
             cooperator.setPassword(cooperator.encryptPassword(password));
             cooperatorService.save(cooperator);
             msg.setData(cooperator);

@@ -79,3 +79,81 @@ POST /api/mobile/coop/register
 "error": "ILLEGAL_PARAM",
 "data": null}
 ```
+
+## 2. 帐户登录
+### URL及请求方法
+POST /api/mobile/coop/login
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| shortname | 企业简称 | tomcat |
+| contactPhone | 手机号 | 13072705335 |
+| password| 密码 | 123456 |
+
+### 返回数据
+1.登录成功
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 1,
+        "phone": "13072705335",
+        "shortname": "tomcat",
+        "fullname": null,
+        "businessLicense": null,
+        "corporationName": null,
+        "corporationIdNo": null,
+        "bussinessLicensePic": null,
+        "corporationIdPicA": null,
+        "corporationIdPicB": null,
+        "longitude": null,
+        "latitude": null,
+        "invoiceHeader": null,
+        "taxIdNo": null,
+        "postcode": null,
+        "province": null,
+        "city": null,
+        "district": null,
+        "address": null,
+        "contact": null,
+        "contactPhone": "13072705335",
+        "statusCode": 0,
+        "lastLoginTime": null,
+        "lastLoginIp": "127.0.0.1",
+        "createTime": 1457677133000
+    }
+}
+```
+2.未注册手机
+
+```
+{"result": false,
+"message": "手机号未注册",
+"error": "NO_SUCH_USER",
+"data": null}
+```
+
+3.密码错误
+
+```
+{"result": false,
+"message": "密码错误",
+"error": "PASSWORD_MISMATCH",
+"data": null}
+```
+
+4.手机号与企业简称不匹配
+
+```
+{"result": false,
+"message": "手机号与企业简称不匹配",
+"error": "NO_SUCH_USER",
+"data": null}
+```
+
+
+

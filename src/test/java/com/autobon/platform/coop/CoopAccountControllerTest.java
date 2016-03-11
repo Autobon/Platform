@@ -66,5 +66,14 @@ public class CoopAccountControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
     }
+    @Test
+    public void login() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/login")
+                .param("shortname","tomcat")
+                .param("contactPhone", "13072705335")
+                .param("password","123456"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
 
 }
