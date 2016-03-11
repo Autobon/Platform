@@ -87,4 +87,15 @@ public class CoopAccountControllerTest {
                 .andExpect(jsonPath("$.result", is(true)));
     }
 
+    @Test
+    public void changePassword() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/changePassword")
+                .param("oldPassword", "123456")
+                .param("newPassword", "221234")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(print())
+                .andExpect(jsonPath("$.result", is(true)));
+
+    }
+
 }
