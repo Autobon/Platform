@@ -19,8 +19,10 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.http.Cookie;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by yuh on 2016/3/11.
@@ -50,7 +52,11 @@ public class CoopAccountControllerTest {
 
     @Test
     public void register() throws Exception {
-        System.out.println(Cooperator.makeToken(1));
+        //System.out.println(Cooperator.makeToken(1));
+
+        mockMvc.perform(get("/api/mobile/verifySms").param("phone", "13072705335"))
+                .andExpect(status().isOk());
+
         mockMvcS.perform(post("/api/mobile/coop/register")
                 .param("shortname","tomcat")
                 .param("contactPhone", "13072705335")
