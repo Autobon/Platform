@@ -26,13 +26,8 @@ public class GetuiConfig {
 
     @Bean(name = "PushServiceA")
     public PushService getPushServiceA() throws IOException {
-        PushService p = new PushService(
+        return new PushService(
                 new GtConfig(hostA, appIdA, appKeyA, appSecretA, masterSecretA));
-        // 在返回PushService实例前,与个推服务器建立一次连接,后面可直接发送推送消息
-        if (!p.connect()) {
-            throw new IOException("连接个推服务器失败");
-        }
-        return p;
     }
 
 }

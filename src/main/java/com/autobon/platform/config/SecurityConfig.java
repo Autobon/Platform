@@ -43,13 +43,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(authenticationProcessingFilter(), BasicAuthenticationFilter.class);
         http.authorizeRequests().antMatchers(
-                "/api/mobile/technician/login",
-                "/api/mobile/technician/register",
-                "/api/mobile/technician/resetPassword").permitAll()
+                "/api/mobile/*/login",
+                "/api/mobile/*/register",
+                "/api/mobile/*/resetPassword").permitAll()
             .and().authorizeRequests().antMatchers("/api/mobile/technician/**")
                 .hasAuthority("TECHNICIAN")
             .and().authorizeRequests().antMatchers("/api/web/**")
-                .hasAuthority("STAFF");
+                .hasAuthority("STAFF")
+            .and().authorizeRequests().antMatchers("/api/mobile/coop/**")
+                .hasAuthority("COOPERATOR");
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().csrf().disable();

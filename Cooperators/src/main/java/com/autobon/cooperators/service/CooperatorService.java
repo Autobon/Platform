@@ -24,8 +24,8 @@ public class CooperatorService {
         return  cooperatorRepository.getByShortname(shortname);
     }
 
-    public Cooperator getByContactPhone(String contactPhone) {
-        return cooperatorRepository.getByContactPhone(contactPhone);
+    public Cooperator getByPhone(String phone) {
+        return cooperatorRepository.getByPhone(phone);
     }
 
     public void save(Cooperator cooperator) {

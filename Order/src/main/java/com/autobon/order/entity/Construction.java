@@ -56,6 +56,9 @@ public class Construction implements Serializable {
     @Column(name = "car_seat",nullable = true, insertable = true, updatable = true)
     private int carSeat;
 
+    @Column
+    private boolean payed;
+
     public int getId() {
         return id;
     }
@@ -166,5 +169,13 @@ public class Construction implements Serializable {
 
     public void setCarSeat(int carSeat) {
         this.carSeat = carSeat;
+    }
+
+    public boolean isPayed() {
+        return payed;
+    }
+
+    public void setPayed(boolean payed) {
+        this.payed = payed;
     }
 }

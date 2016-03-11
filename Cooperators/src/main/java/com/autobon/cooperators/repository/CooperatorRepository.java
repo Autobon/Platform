@@ -15,7 +15,7 @@ public interface CooperatorRepository extends JpaRepository<Cooperator, Integer>
 
     Cooperator getByShortname(String shortname);
 
-    Cooperator getByContactPhone(String contactPhone);
+    Cooperator getByPhone(String Phone);
 
     @Query("select c from Cooperator c " +
             "where (?1 is null or c.fullname =?1)" +
