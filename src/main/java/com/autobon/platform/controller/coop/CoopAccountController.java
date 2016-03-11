@@ -14,7 +14,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class CoopAccountController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
             @RequestParam("shortname") String shortname,
-            @RequestParam("contactPhone")     String contactPhone,
+            @RequestParam("phone")     String phone,
             @RequestParam("password")  String password,
             @RequestParam("verifySms") String verifySms) {
 
@@ -47,10 +46,10 @@ public class CoopAccountController {
             messages.add("企业简称已被注册");
         }
 
-        if (!Pattern.matches("^\\d{11}$", contactPhone)) {
+        if (!Pattern.matches("^\\d{11}$", phone)) {
             msg.setError("ILLEGAL_PARAM");
             messages.add("手机号格式错误");
-        } else if (cooperatorService.getByContactPhone(contactPhone) != null) {
+        } else if (cooperatorService.getByPhone(phone) != null) {
             msg.setError("OCCUPIED_ID");
             messages.add("手机号已被注册");
         }
@@ -59,7 +58,7 @@ public class CoopAccountController {
             msg.setError("ILLEGAL_PARAM");
             messages.add("密码至少6位");
         }
-        String code = redisCache.get("verifySms:" + contactPhone);
+        String code = redisCache.get("verifySms:" + phone);
         if (!verifySms.equals(code)) {
             msg.setError("ILLEGAL_PARAM");
             messages.add("验证码错误");
@@ -71,7 +70,7 @@ public class CoopAccountController {
         } else {
             Cooperator cooperator = new Cooperator();
             cooperator.setShortname(shortname);
-            cooperator.setContactPhone(contactPhone);
+            cooperator.setPhone(phone);
             cooperator.setPassword(cooperator.encryptPassword(password));
             cooperatorService.save(cooperator);
             msg.setData(cooperator);
@@ -83,17 +82,17 @@ public class CoopAccountController {
     public JsonMessage login(
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam("shortname") String shortname,
-            @RequestParam("contactPhone") String contactPhone,
+            @RequestParam("phone") String phone,
             @RequestParam("password") String password) {
 
         JsonMessage msg = new JsonMessage(true);
-        Cooperator cooperator = cooperatorService.getByContactPhone(contactPhone);
+        Cooperator cooperator = cooperatorService.getByPhone(phone);
 
         if (cooperator == null) {
             msg.setResult(false);
             msg.setError("NO_SUCH_USER");
             msg.setMessage("手机号未注册");
-        } else if (!cooperator.getPassword().equals(cooperator.encryptPassword(password))) {
+        } else if (!cooperator.getPassword().equals(Cooperator.encryptPassword(password))) {
             msg.setResult(false);
             msg.setError("PASSWORD_MISMATCH");
             msg.setMessage("密码错误");
@@ -113,17 +112,17 @@ public class CoopAccountController {
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public JsonMessage resetPassword(
-            @RequestParam("contactPhone")     String contactPhone,
+            @RequestParam("phone")     String phone,
             @RequestParam("password")  String password,
             @RequestParam("verifySms") String verifySms) throws Exception {
 
         JsonMessage msg = new JsonMessage(true);
-        Cooperator cooperator = cooperatorService.getByContactPhone(contactPhone);
+        Cooperator cooperator = cooperatorService.getByPhone(phone);
         if (cooperator == null) {
             msg.setResult(false);
             msg.setError("NO_SUCH_USER");
             msg.setMessage("手机号未注册");
-        } else if (!verifySms.equals(redisCache.get("verifySms:" + contactPhone))) {
+        } else if (!verifySms.equals(redisCache.get("verifySms:" + phone))) {
             msg.setResult(false);
             msg.setError("ILLEGAL_PARAM");
             msg.setMessage("验证码错误");

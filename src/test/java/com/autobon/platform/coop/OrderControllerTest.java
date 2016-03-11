@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class OrderControllerTest {
-    @Value("${com.autobon.test.token}")
+    @Value("${com.autobon.test.coopToken}")
     String token;
 
     @Autowired

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 public class DetailedOrderService {
     @Autowired DetailedOrderRepository repository;
 
-    public DetailedOrder get(int orderId) {
-        return repository.findOne(orderId);
+    public DetailedOrder get(int id) {
+        return repository.findOne(id);
     }
 
     public Page<DetailedOrder> findFinishedByMainTechId(int techId, int page, int pageSize) {

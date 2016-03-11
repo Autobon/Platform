@@ -9,7 +9,7 @@ POST /api/mobile/coop/register
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
 | shortname | 企业简称 | tomcat |
-| contactPhone | 手机号 | 13072705335 |
+| phone | 手机号 | 13072705335 |
 | password | 密码, 至少6位 | 123456 |
 | verifySms| 短信验证码 | 123456 |
 
@@ -88,7 +88,7 @@ POST /api/mobile/coop/login
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
 | shortname | 企业简称 | tomcat |
-| contactPhone | 手机号 | 13072705335 |
+| phone | 手机号 | 13072705335 |
 | password| 密码 | 123456 |
 
 ### 返回数据
@@ -120,7 +120,7 @@ POST /api/mobile/coop/login
         "district": null,
         "address": null,
         "contact": null,
-        "contactPhone": "13072705335",
+        "contactPhone": null,
         "statusCode": 0,
         "lastLoginTime": null,
         "lastLoginIp": "127.0.0.1",
@@ -163,7 +163,7 @@ POST /api/mobile/coop/resetPassword
 
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
-| contactPhone | 手机号 | 13072705335 |
+| phone | 手机号 | 13072705335 |
 | password | 新密码 | 123456 |
 | verifySms| 短信验证码 | 123456 |
 ### 返回数据
