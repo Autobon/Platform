@@ -138,4 +138,22 @@ public class CoopAccountController {
         return msg;
     }
 
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    public JsonMessage changePassword(HttpServletRequest request,
+                                      @RequestParam("oldPassword") String oldPassword,
+                                      @RequestParam("newPassword") String newPassword) {
+        if (newPassword.length() < 6) {
+            return new JsonMessage(false, "ILLEGAL_PARAM", "密码至少6位");
+        } else {
+            Cooperator cooperator = (Cooperator) request.getAttribute("user");
+            if (!cooperator.getPassword().equals(Cooperator.encryptPassword(oldPassword))) {
+                return new JsonMessage(false, "ILLEGAL_PARAM", "原密码错误");
+            }
+            cooperator.setPassword(Cooperator.encryptPassword(newPassword));
+            cooperatorService.save(cooperator);
+        }
+        return new JsonMessage(true);
+    }
+
 }

@@ -21,6 +21,7 @@ import javax.servlet.http.Cookie;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,8 +72,19 @@ public class CoopAccountControllerTest {
         mockMvcS.perform(post("/api/mobile/coop/login")
                 .param("shortname","tomcat")
                 .param("contactPhone", "13072705335")
-                .param("password","123456"))
+                .param("password", "123456"))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void resetPassword() throws Exception {
+        mockMvc.perform(get("/api/mobile/verifySms").param("phone", "13072705335"));
+        mockMvc.perform(post("/api/mobile/coop/resetPassword")
+                .param("contactPhone", "13072705335")
+                .param("password", "123456")
+                .param("verifySms", "123456"))
+                .andDo(print())
                 .andExpect(jsonPath("$.result", is(true)));
     }
 

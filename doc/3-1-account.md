@@ -155,5 +155,48 @@ POST /api/mobile/coop/login
 "data": null}
 ```
 
+## 3. 找回密码
+通过手机号和短信验证码设定新密码.
+### URL及请求方法
+POST /api/mobile/coop/resetPassword
+### 请求参数
 
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| contactPhone | 手机号 | 13072705335 |
+| password | 新密码 | 123456 |
+| verifySms| 短信验证码 | 123456 |
+### 返回数据
+1.请求成功
+
+```
+{"result": true,
+"message": "",
+"error": null,
+"data": null}
+```
+2.验证码错误
+
+```
+{"result": false,
+"message": "验证码错误",
+"error": "ILLEGAL_PARAM",
+"data": null}
+```
+3.密码至少6位
+
+```
+{"result": false,
+"message": "密码至少6位",
+"error": "ILLEGAL_PARAM",
+"data": null}
+```
+4.手机号未注册
+
+```
+{"result": false,
+"message": "手机号未注册",
+"error": "NO_SUCH_USER",
+"data": null}
+```
 
