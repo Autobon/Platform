@@ -79,7 +79,7 @@ public class Technician implements UserDetails {
 
     @Column private float voteRate; // 技师好评率
 
-    @Column private String skill; // 技师技能
+    @Column private String skill; // 技师技能,多个技能ID用逗号拼接而成的字符串
 
     @Column private String pushId; // 个推客户端ID, 由手机端更新
 

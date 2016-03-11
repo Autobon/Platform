@@ -28,12 +28,12 @@ POST /api/mobile/technician/order/1/invite/2
 "data": null}
 ```
 
-2.订单已进入工作模式或已有人接单
+2.订单已进入工作模式
 
 ```
 {"result": false,
 "message": "订单已进入工作模式",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_STARTED",
 "data": null}
 ```
 
@@ -42,7 +42,7 @@ POST /api/mobile/technician/order/1/invite/2
 ```
 {"result": false,
 "message": "订单已有人接受合作邀请",
-"error": "ILLEGAL_OPERATION",
+"error": "INVITATION_ACCEPTED",
 "data": null}
 ```
 

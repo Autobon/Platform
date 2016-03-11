@@ -14,12 +14,13 @@ CREATE TABLE `t_order` (
   `position_lon` varchar(20) DEFAULT NULL COMMENT '订单位置经度',
   `position_lat` varchar(20) DEFAULT NULL COMMENT '订单位置维度',
   `remark` varchar(255) DEFAULT NULL COMMENT '订单备注',
-  `main_tech_id` int(11) NOT NULL DEFAULT '0' COMMENT '主技师id',
-  `second_tech_id` int(11) NOT NULL DEFAULT '0' COMMENT '合作技师id',
+  `main_tech_id` int(11) DEFAULT NULL COMMENT '主技师id',
+  `second_tech_id` int(11) DEFAULT NULL COMMENT '合作技师id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_order_num` (`order_num`)
 ) DEFAULT CHARSET=utf8 COMMENT='订单表';
 
+CREATE VIEW `v_order` AS select * from t_order;
 
 INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`creator_type`,`creator_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (1,'20160223134200014567',1,'','2016-02-24 14:00:00','2016-02-23 11:09:23',10,1,1,'bababala',1,2);
 INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`creator_type`,`creator_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (2,'20160223135200016789',2,NULL,'2016-02-24 14:00:00','2016-02-23 11:09:23',10,1,2,'somewords',2,1);

@@ -1,4 +1,4 @@
-# 一、订单
+# 订单
 
 订单状态列表:
 
@@ -39,18 +39,18 @@
     "error": "",
     "data": {
         "page": 1,
-        "totalElements": 2,
+        "totalElements": 1,
         "totalPages": 1,
         "pageSize": 20,
-        "count": 2,
+        "count": 1,
         "list": [
             {
-                "id": 47,
-                "orderNum": "20160303120243AS54GE",
+                "id": 13,
+                "orderNum": "16031020V32X5W",
                 "orderType": 0,
                 "photo": null,
                 "orderTime": null,
-                "addTime": 1456977763758,
+                "addTime": 1457613855000,
                 "creatorType": 0,
                 "creatorId": 0,
                 "creatorName": null,
@@ -58,27 +58,56 @@
                 "positionLon": null,
                 "positionLat": null,
                 "remark": null,
-                "mainTechId": 1,
-                "secondTechId": 0,
-                "status": "NEWLY_CREATED"
-            },
-            {
-                "id": 1,
-                "orderNum": "20160223134200014567",
-                "orderType": 1,
-                "photo": "",
-                "orderTime": 1456293600000,
-                "addTime": 1456196963000,
-                "creatorType": 1,
-                "creatorId": 1,
-                "creatorName": null,
-                "contactPhone": null,
-                "positionLon": null,
-                "positionLat": null,
-                "remark": "bababala",
-                "mainTechId": 1,
-                "secondTechId": 2,
-                "status": null
+                "mainTech": {
+                    "id": 1,
+                    "phone": "18812345678",
+                    "name": "tom",
+                    "gender": null,
+                    "avatar": null,
+                    "idNo": "422302198608266313",
+                    "idPhoto": "/etc/a.jpg",
+                    "bank": "027",
+                    "bankAddress": "光谷",
+                    "bankCardNo": "88888888888",
+                    "verifyAt": null,
+                    "requestVerifyAt": null,
+                    "verifyMsg": null,
+                    "lastLoginAt": 1456195103000,
+                    "lastLoginIp": "127.0.0.1",
+                    "createAt": 1455724800000,
+                    "star": 0,
+                    "voteRate": 0,
+                    "skill": "1",
+                    "pushId": null,
+                    "status": "VERIFIED"
+                },
+                "secondTech": {
+                    "id": 2,
+                    "phone": "18812340000",
+                    "name": "tom2",
+                    "gender": null,
+                    "avatar": null,
+                    "idNo": "422302198608266313000",
+                    "idPhoto": "/etc/a.jpg",
+                    "bank": "027",
+                    "bankAddress": "光谷",
+                    "bankCardNo": "88888888888",
+                    "verifyAt": null,
+                    "requestVerifyAt": null,
+                    "verifyMsg": null,
+                    "lastLoginAt": 1456195103000,
+                    "lastLoginIp": "127.0.0.1",
+                    "createAt": 1455724800000,
+                    "star": 0,
+                    "voteRate": 0,
+                    "skill": "1",
+                    "pushId": null,
+                    "status": "VERIFIED"
+                },
+                "mainConstruct": null,
+                "secondConstruct": null,
+                "comment": null,
+                "status": "INVITATION_ACCEPTED"
             }
         ]
     }
@@ -115,22 +144,69 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
         "count": 1,
         "list": [
             {
-                "id": 2,
-                "orderNum": "20160223135200016789",
-                "orderType": 2,
+                "id": 13,
+                "orderNum": "16031020V32X5W",
+                "orderType": 0,
                 "photo": null,
-                "orderTime": 1456293600000,
-                "addTime": 1456196963000,
-                "creatorType": 1,
-                "creatorId": 2,
+                "orderTime": null,
+                "addTime": 1457613855000,
+                "creatorType": 0,
+                "creatorId": 0,
                 "creatorName": null,
                 "contactPhone": null,
                 "positionLon": null,
                 "positionLat": null,
-                "remark": "somewords",
-                "mainTechId": 2,
-                "secondTechId": 1,
-                "status": null
+                "remark": null,
+                "mainTech": {
+                    "id": 1,
+                    "phone": "18812345678",
+                    "name": "tom",
+                    "gender": null,
+                    "avatar": null,
+                    "idNo": "422302198608266313",
+                    "idPhoto": "/etc/a.jpg",
+                    "bank": "027",
+                    "bankAddress": "光谷",
+                    "bankCardNo": "88888888888",
+                    "verifyAt": null,
+                    "requestVerifyAt": null,
+                    "verifyMsg": null,
+                    "lastLoginAt": 1456195103000,
+                    "lastLoginIp": "127.0.0.1",
+                    "createAt": 1455724800000,
+                    "star": 0,
+                    "voteRate": 0,
+                    "skill": "1",
+                    "pushId": null,
+                    "status": "VERIFIED"
+                },
+                "secondTech": {
+                    "id": 2,
+                    "phone": "18812340000",
+                    "name": "tom2",
+                    "gender": null,
+                    "avatar": null,
+                    "idNo": "422302198608266313000",
+                    "idPhoto": "/etc/a.jpg",
+                    "bank": "027",
+                    "bankAddress": "光谷",
+                    "bankCardNo": "88888888888",
+                    "verifyAt": null,
+                    "requestVerifyAt": null,
+                    "verifyMsg": null,
+                    "lastLoginAt": 1456195103000,
+                    "lastLoginIp": "127.0.0.1",
+                    "createAt": 1455724800000,
+                    "star": 0,
+                    "voteRate": 0,
+                    "skill": "1",
+                    "pushId": null,
+                    "status": "VERIFIED"
+                },
+                "mainConstruct": null,
+                "secondConstruct": null,
+                "comment": null,
+                "status": "INVITATION_ACCEPTED"
             }
         ]
     }
@@ -159,18 +235,18 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
     "error": "",
     "data": {
         "page": 1,
-        "totalElements": 3,
+        "totalElements": 2,
         "totalPages": 1,
         "pageSize": 20,
-        "count": 3,
+        "count": 2,
         "list": [
             {
-                "id": 3,
-                "orderNum": "20160303145128PU4XYS",
+                "id": 13,
+                "orderNum": "16031020V32X5W",
                 "orderType": 0,
                 "photo": null,
                 "orderTime": null,
-                "addTime": 1456987888607,
+                "addTime": 1457613855000,
                 "creatorType": 0,
                 "creatorId": 0,
                 "creatorName": null,
@@ -178,8 +254,33 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
                 "positionLon": null,
                 "positionLat": null,
                 "remark": null,
-                "mainTechId": 1,
-                "secondTechId": 0,
+                "mainTech": {
+                    "id": 1,
+                    "phone": "18812345678",
+                    "name": "tom",
+                    "gender": null,
+                    "avatar": null,
+                    "idNo": "422302198608266313",
+                    "idPhoto": "/etc/a.jpg",
+                    "bank": "027",
+                    "bankAddress": "光谷",
+                    "bankCardNo": "88888888888",
+                    "verifyAt": null,
+                    "requestVerifyAt": null,
+                    "verifyMsg": null,
+                    "lastLoginAt": 1456195103000,
+                    "lastLoginIp": "127.0.0.1",
+                    "createAt": 1455724800000,
+                    "star": 0,
+                    "voteRate": 0,
+                    "skill": "1",
+                    "pushId": null,
+                    "status": "VERIFIED"
+                },
+                "secondTech": null,
+                "mainConstruct": null,
+                "secondConstruct": null,
+                "comment": null,
                 "status": "NEWLY_CREATED"
             },
             {
@@ -196,26 +297,33 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
                 "positionLon": null,
                 "positionLat": null,
                 "remark": "somewords",
-                "mainTechId": 2,
-                "secondTechId": 1,
-                "status": "TAKEN_UP"
-            },
-            {
-                "id": 1,
-                "orderNum": "20160223134200014567",
-                "orderType": 1,
-                "photo": "",
-                "orderTime": 1456293600000,
-                "addTime": 1456196963000,
-                "creatorType": 1,
-                "creatorId": 1,
-                "creatorName": null,
-                "contactPhone": null,
-                "positionLon": null,
-                "positionLat": null,
-                "remark": "bababala",
-                "mainTechId": 1,
-                "secondTechId": 2,
+                "mainTech": null,
+                "secondTech": {
+                    "id": 1,
+                    "phone": "18812345678",
+                    "name": "tom",
+                    "gender": null,
+                    "avatar": null,
+                    "idNo": "422302198608266313",
+                    "idPhoto": "/etc/a.jpg",
+                    "bank": "027",
+                    "bankAddress": "光谷",
+                    "bankCardNo": "88888888888",
+                    "verifyAt": null,
+                    "requestVerifyAt": null,
+                    "verifyMsg": null,
+                    "lastLoginAt": 1456195103000,
+                    "lastLoginIp": "127.0.0.1",
+                    "createAt": 1455724800000,
+                    "star": 0,
+                    "voteRate": 0,
+                    "skill": "1",
+                    "pushId": null,
+                    "status": "VERIFIED"
+                },
+                "mainConstruct": null,
+                "secondConstruct": null,
+                "comment": null,
                 "status": "TAKEN_UP"
             }
         ]
@@ -227,7 +335,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 ## 4. 获取订单详细信息
 获取订单信息及主技师,次技师,施工信息(仅发起请求技师的施工信息),评论信息等内容.
 ### URL及请求方法
-`GET /api/mobile/technician/order/${orderId}`
+`GET /api/mobile/technician/order/{orderId}`
 
 ### 请求参数
 
@@ -246,6 +354,19 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
     "message": "",
     "error": "",
     "data": {
+        "id": 15,
+        "orderNum": "160310204GWYL3",
+        "orderType": 0,
+        "photo": null,
+        "orderTime": null,
+        "addTime": 1457613856000,
+        "creatorType": 0,
+        "creatorId": 0,
+        "creatorName": null,
+        "contactPhone": null,
+        "positionLon": null,
+        "positionLat": null,
+        "remark": null,
         "mainTech": {
             "id": 1,
             "phone": "18812345678",
@@ -254,42 +375,26 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
             "avatar": null,
             "idNo": "422302198608266313",
             "idPhoto": "/etc/a.jpg",
-            "bank": "工商银行",
+            "bank": "027",
             "bankAddress": "光谷",
             "bankCardNo": "88888888888",
             "verifyAt": null,
-            "requestVerifyAt": 1457277682000,
+            "requestVerifyAt": null,
             "verifyMsg": null,
             "lastLoginAt": 1456195103000,
             "lastLoginIp": "127.0.0.1",
             "createAt": 1455724800000,
             "star": 0,
             "voteRate": 0,
-            "skill": "1,2",
+            "skill": "1",
             "pushId": null,
             "status": "VERIFIED"
         },
         "secondTech": null,
-        "construction": null,
+        "mainConstruct": null,
+        "secondConstruct": null,
         "comment": null,
-        "order": {
-            "id": 5,
-            "orderNum": "20160307125948NTCKSM",
-            "orderType": 0,
-            "photo": null,
-            "orderTime": null,
-            "addTime": 1457326788046,
-            "creatorType": 0,
-            "creatorId": 0,
-            "creatorName": null,
-            "contactPhone": null,
-            "positionLon": null,
-            "positionLat": null,
-            "remark": null,
-            "mainTechId": 1,
-            "secondTechId": 0,
-            "status": "NEWLY_CREATED"
-        }
+        "status": "NEWLY_CREATED"
     }
 }
 ```
@@ -340,7 +445,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 ```
 {"result": false,
 "message": "已有人接单",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_TAKEN_UP",
 "data": null}
 ```
 
@@ -349,7 +454,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 ```
 {"result": false,
 "message": "订单已取消",
-"error": "ILLEGAL_OPERATION",
+"error": "ORDER_CANCELED",
 "data": null}
 ```
 
@@ -386,149 +491,3 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 }
 ```
 
-## 6. 开始工作
-技师抢单成功后或接受合作邀请后, 点选**开始工作**
-### URL及请求方法
-`POST /api/mobile/technician/order/start`
-
-### 请求参数
-
-| 参数名称 | 是否必须 | 说明 | 举例 |
-| ------ | -------- | ---- | --- |
-| orderId | 是 | 订单编号 | 1 |
-| ignoreInvitation | 否 | 是否忽略已发出的尚未回复的合作邀请, 默认为false | false |
-
-### 返回数据
-
-#### a.请求成功
-
-```
-{
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
-        "id": 4,
-        "orderId": 41,
-        "techId": 1,
-        "positionLon": null,
-        "positionLat": null,
-        "startTime": 1456977763488,
-        "signinTime": null,
-        "endTime": null,
-        "beforePhotos": null,
-        "afterPhotos": null,
-        "payment": null,
-        "workItems": null,
-        "carSeat": 0
-    }
-}
-```
-
-data字段是一个施工单对象
-
-#### b.你没有这个订单
-
-```
-{"result": false,
-"message": "你没有这个订单",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### c.订单已取消
-
-```
-{"result": false,
-"message": "订单已取消",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### d.订单已施工完成
-
-```
-{"result": false,
-"message": "订单已施工完成",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### e.你邀请的合作人还未接受或拒绝邀请
-
-```
-{"result": false,
-"message": "你邀请的合作人还未接受或拒绝邀请",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-### f.你已开始工作,请不要重复操作
-
-```
-{"result": false,
-"message": "你已开始工作,请不要重复操作",
-"error": "REPEATED_OPERATION",
-"data": null}
-```
-
-## 7. 订单签到
-技师到达施工位置后，点选**签到**
-### URL及请求方法
-`POST /api/mobile/technician/order/signIn`
-
-### 请求参数
-
-| 参数名称 | 是否必须 | 说明 | 举例 |
-| ------ | -------- | ---- | --- |
-| orderId | 是 | 订单编号 | 1 |
-| positionLon | 是 | 签到位置经度 | 23.25478 |
-| positionLat | 是 | 签到位置纬度 | 45.23145 |
-
-### 返回数据
-
-#### a.请求成功
-
-```
-{
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": null
-}
-```
-
-#### b.订单已取消
-
-```
-{"result": false,
-"message": "订单已取消",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### c.系统没有你的施工单
-
-```
-{"result": false,
-"message": "系统没有你的施工单, 请先点选\"开始工作\"",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-
-#### d.订单还未开始工作或已结束工作
-
-```
-{"result": false,
-"message": "订单还未开始工作或已结束工作",
-"error": "ILLEGAL_OPERATION",
-"data": null}
-```
-### e.你已签到, 请不要重复操作
-
-```
-{"result": false,
-"message": "你已签到, 请不要重复操作",
-"error": "REPEATED_OPERATION",
-"data": null}
-```

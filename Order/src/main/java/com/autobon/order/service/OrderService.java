@@ -36,8 +36,8 @@ public class OrderService {
                 new Sort(Sort.Direction.DESC, "id")));
     }
 
-    public Page<Order> findUnFinishedOrderByTechId(int techId, int page, int pageSize) {
-        return orderRepository.findUnFinishedOrderByTechId(techId, new PageRequest(page - 1, pageSize,
+    public Page<Order> findUnfinishedOrderByTechId(int techId, int page, int pageSize) {
+        return orderRepository.findUnfinishedOrderByTechId(techId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
 

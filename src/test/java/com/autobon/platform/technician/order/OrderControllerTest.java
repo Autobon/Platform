@@ -73,7 +73,7 @@ public class OrderControllerTest extends MvcTest {
         mockMvcS.perform(get("/api/mobile/technician/order/" + myOrder.getId())
                 .cookie(new Cookie("autoken", token)))
             .andDo(print())
-            .andExpect(jsonPath("$.data.order.id", is(myOrder.getId())));
+            .andExpect(jsonPath("$.data.id", is(myOrder.getId())));
     }
 
     @Test
@@ -85,32 +85,6 @@ public class OrderControllerTest extends MvcTest {
             .andExpect(jsonPath("$.error", is("TECH_SKILL_NOT_SUFFICIANT")));
     }
 
-    @Test
-    public void signInFailed() throws Exception {
-        mockMvcS.perform(post("/api/mobile/technician/order/signIn")
-                .param("orderId", "" + myOrder.getId())
-                .param("positionLon", "12.3665")
-                .param("positionLat", "25.5654")
-                .cookie(new Cookie("autoken", token)))
-            .andDo(print())
-            .andExpect(jsonPath("$.result", is(false)));
-    }
 
-    @Test
-    public void startWorkAndSignIn() throws Exception {
-        mockMvcS.perform(post("/api/mobile/technician/order/start")
-                .param("orderId", "" + myOrder.getId())
-                .cookie(new Cookie("autoken", token)))
-            .andDo(print())
-            .andExpect(jsonPath("$.result", is(true)));
-
-        mockMvcS.perform(post("/api/mobile/technician/order/signIn")
-                .param("orderId", "" + myOrder.getId())
-                .param("positionLon", "12.3665")
-                .param("positionLat", "25.5654")
-                .cookie(new Cookie("autoken", token)))
-            .andDo(print())
-            .andExpect(jsonPath("$.result", is(true)));
-    }
 
 }

@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS sys_work_item (
   order_type_name varchar(32) NOT NULL COMMENT '订单类型名称',
   car_seat int(2) DEFAULT 0 COMMENT '5座，7座，没有则为0',
   work_name varchar(32) NOT NULL COMMENT '工作项',
-  price int(10) NOT NULL COMMENT '价格',
+  price float(5,2) NOT NULL COMMENT '价格',
   PRIMARY KEY (id)
 )DEFAULT CHARSET=utf8 COMMENT='工作项表';
 
@@ -98,4 +98,4 @@ INSERT INTO `sys_work_item` VALUES ('87', '3', '车身改色', '7', '后保险�
 INSERT INTO `sys_work_item` VALUES ('88', '3', '车身改色', '7', '车顶', '100');
 INSERT INTO `sys_work_item` VALUES ('89', '3', '车身改色', '7', '左后视镜', '100');
 INSERT INTO `sys_work_item` VALUES ('90', '3', '车身改色', '7', '右后视镜', '100');
-INSERT INTO `sys_work_item` VALUES ('91', '4', '美容清洁', null, '百分比', '100');
+INSERT INTO `sys_work_item` VALUES ('91', '4', '美容清洁', '0', '百分比', '100');

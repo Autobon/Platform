@@ -1,6 +1,7 @@
 package com.autobon.order.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="t_construction")
-public class Construction {
+public class Construction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
@@ -43,11 +44,14 @@ public class Construction {
     @Column(name = "after_photos",nullable = true, insertable = true, updatable = true)
     private String afterPhotos;
 
-    @Column(name = "payment",nullable = true, insertable = true, updatable = true)
-    private Float payment;
+    @Column(name = "payment")
+    private float payment;
 
-    @Column(name = "work_items",nullable = true, insertable = true, updatable = true)
+    @Column(name = "work_items")
     private String workItems;
+
+    @Column(name = "work_percent")
+    private float workPercent;
 
     @Column(name = "car_seat",nullable = true, insertable = true, updatable = true)
     private int carSeat;
@@ -132,11 +136,11 @@ public class Construction {
         this.afterPhotos = afterPhotos;
     }
 
-    public Float getPayment() {
+    public float getPayment() {
         return payment;
     }
 
-    public void setPayment(Float payment) {
+    public void setPayment(float payment) {
         this.payment = payment;
     }
 
@@ -146,6 +150,14 @@ public class Construction {
 
     public void setWorkItems(String workItems) {
         this.workItems = workItems;
+    }
+
+    public float getWorkPercent() {
+        return workPercent;
+    }
+
+    public void setWorkPercent(float workPercent) {
+        this.workPercent = workPercent;
     }
 
     public int getCarSeat() {

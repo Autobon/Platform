@@ -43,7 +43,6 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
     private int id;
 
     @Column private String orderNum;
@@ -85,7 +84,7 @@ public class Order {
     }
 
     public static String generateOrderNum() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) +
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHH")) +
                 VerifyCode.generateVerifyCode(6);
     }
 
