@@ -2,8 +2,14 @@ package com.autobon.cooperators.entity;
 
 import com.autobon.shared.Crypto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -12,12 +18,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "t_cooperators")
-public class Cooperator {
+public class Cooperator implements UserDetails {
+    private static Logger log = LoggerFactory.getLogger(Cooperator.class);
     private static String Token = "Autobon~!@#ABCD=";
-
-    public static String makeToken(int id) {
-        return "cooperator:" + Crypto.encryptAesBase64(String.valueOf(id), Token);
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -78,6 +81,22 @@ public class Cooperator {
 
     public  Cooperator(){
         this.createTime=new Date();
+    }
+
+    public static String makeToken(int id) {
+        return "cooperator:" + Crypto.encryptAesBase64(String.valueOf(id), Token);
+    }
+
+    public static int decodeToken(String token) {
+        String[] arr = token.split(":");
+        if (arr.length < 2 || !arr[0].equals("cooperator")) return 0;
+        else token = arr[1];
+        try {
+            return Integer.parseInt(Crypto.decryptAesBase64(token, Token));
+        } catch (Exception ex) {
+            log.info("无效token: " + token);
+        }
+        return 0;
     }
 
     public int getId() {
@@ -292,5 +311,46 @@ public class Cooperator {
         return Crypto.encryptBySha1(password);
     }
 
+    @JsonIgnore
+    @Override
+    public String getUsername() {
+        return phone;
+    }
 
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return this.statusCode == 1;
+    }
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> list = new ArrayList<>();
+        list.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "COOPERATOR";
+            }
+        });
+        return list;
+    }
 }

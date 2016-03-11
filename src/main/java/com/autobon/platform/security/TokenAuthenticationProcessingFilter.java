@@ -1,5 +1,7 @@
 package com.autobon.platform.security;
 
+import com.autobon.cooperators.entity.Cooperator;
+import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import com.autobon.technician.entity.Technician;
@@ -31,6 +33,8 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
     private TechnicianService technicianService;
     @Autowired
     private StaffService staffService;
+    @Autowired
+    private CooperatorService cooperatorService;
 
     public TokenAuthenticationProcessingFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
@@ -60,13 +64,14 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
             }
             if (user == null) throw new BadCredentialsException("无效凭证");
         }else if (token.startsWith("cooperator:")) {
-
+            int id = Cooperator.decodeToken(token);
+            if (id > 0) user = cooperatorService.get(id);
+            if (user == null) throw new BadCredentialsException("无效凭证");
         } else if (token.startsWith("staff:")) {
             int id = Staff.decodeToken(token);
             if (id > 0) user = staffService.get(id);
             if (user == null) throw new BadCredentialsException("无效凭证");
-        }
-        if (user == null) {
+        } else {
             GrantedAuthority authority = new GrantedAuthority() {
                 @Override
                 public String getAuthority() {
@@ -112,6 +117,7 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
                 }
             };
         }
+
         TokenAuthentication authentication = new TokenAuthentication(user);
         request.setAttribute("user", user);
         return this.getAuthenticationManager().authenticate(authentication);
