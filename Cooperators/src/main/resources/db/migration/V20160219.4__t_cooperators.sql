@@ -27,3 +27,5 @@ CREATE TABLE `t_cooperators` (
   `create_time` datetime DEFAULT NULL COMMENT '注册时间',
   PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8 COMMENT='合作商户表';
+
+insert into `t_cooperators` (`id`, `phone`, `shortname`, `password`, `fullname`, `business_license`, `corporation_name`, `corporation_id_no`, `bussiness_license_pic`, `corporation_id_pic_a`, `corporation_id_pic_b`, `longitude`, `latitude`, `invoice_header`, `tax_id_no`, `postcode`, `province`, `city`, `district`, `address`, `contact`, `contact_phone`, `status_code`, `last_login_time`, `last_login_ip`, `create_time`) values('1','13072705335','tomcat','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'13072705335','1',NULL,NULL,'2016-03-11 14:18:53');
