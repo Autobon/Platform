@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
  * Created by dave on 16/3/11.
  */
 @Component
-public class ScheduledTask {
-    private static Logger log = LoggerFactory.getLogger(ScheduledTask.class);
+public class GetuiTask {
+    private static final Logger log = LoggerFactory.getLogger(GetuiTask.class);
 
     @Autowired @Qualifier("PushServiceA")
     private PushService pushServiceA;

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Created by dave on 16/2/16.
@@ -48,8 +49,18 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
         UserDetails user = null;
         if (token.startsWith("technician:")) {
             int id = Technician.decodeToken(token);
-            if (id > 0) user = technicianService.get(id);
+            if (id > 0) {
+                user = technicianService.get(id);
+                if (user != null) {
+                    Technician technician = (Technician) user;
+                    technician.setLastLoginAt(new Date());
+                    technician.setLastLoginIp(request.getRemoteAddr());
+                    technicianService.save(technician);
+                }
+            }
             if (user == null) throw new BadCredentialsException("无效凭证");
+        }else if (token.startsWith("cooperator:")) {
+
         } else if (token.startsWith("staff:")) {
             int id = Staff.decodeToken(token);
             if (id > 0) user = staffService.get(id);

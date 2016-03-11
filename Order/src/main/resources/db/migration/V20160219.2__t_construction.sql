@@ -10,6 +10,7 @@ CREATE TABLE `t_construction` (
   `before_photos` varchar(1024) DEFAULT NULL COMMENT '施工前照片数组,用逗号隔开',
   `after_photos` varchar(2048) DEFAULT NULL COMMENT '施工后照片数组,用逗号隔开',
   `payment` FLOAT(8,2) DEFAULT '0' COMMENT '结算金额',
+  `payed` tinyint(1) DEFAULT '0' COMMENT '是否已付钱',
   `work_items` varchar(100) DEFAULT NULL COMMENT '工作项（多项用逗号隔开）',
   `work_percent` FLOAT(5,3) DEFAULT '0' COMMENT '工作占比, 用小数表示, 如0.2',
   `car_seat` int(11) DEFAULT '5' COMMENT '车辆座位数,5或7',

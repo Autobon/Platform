@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -47,6 +48,11 @@ public class TechnicianService {
 
     public Technician getByPushId(String pushId) {
         return repository.getByPushId(pushId);
+    }
+
+    public Page<Technician> findActivedFrom(Date date, int page, int pageSize) {
+        return repository.findActivedFrom(date, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "lastLoginAt")));
     }
 
     public HashMap<String, Object> Authenticate(String account, String password) {
