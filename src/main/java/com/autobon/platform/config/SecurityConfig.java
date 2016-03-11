@@ -31,17 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationManager;
     }
 
-    @Bean
-    public TokenAuthenticationProcessingFilter authenticationProcessingFilter() throws Exception {
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
         TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(
                 new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManagerBean());
-        return filter;
-    }
+        http.addFilterBefore(filter, BasicAuthenticationFilter.class);
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(authenticationProcessingFilter(), BasicAuthenticationFilter.class);
         http.authorizeRequests().antMatchers(
                 "/api/mobile/*/login",
                 "/api/mobile/*/register",

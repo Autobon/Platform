@@ -26,7 +26,6 @@ public class Crypto {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
             return "";
         }
     }
@@ -51,9 +50,7 @@ public class Crypto {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(alignBytes(key, 16), "AES"));
             return new String(cipher.doFinal(Base64.getDecoder().decode(text)));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        } catch (Exception ex) {}
         return "";
     }
 

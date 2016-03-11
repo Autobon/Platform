@@ -62,13 +62,15 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
                     technicianService.save(technician);
                 }
             }
-        }else if (token.startsWith("cooperator:")) {
+        } else if (token.startsWith("cooperator:")) {
             int id = Cooperator.decodeToken(token);
             if (id > 0) user = cooperatorService.get(id);
         } else if (token.startsWith("staff:")) {
             int id = Staff.decodeToken(token);
             if (id > 0) user = staffService.get(id);
-        } else {
+        }
+
+        if (user == null) {
             GrantedAuthority authority = new GrantedAuthority() {
                 @Override
                 public String getAuthority() {
