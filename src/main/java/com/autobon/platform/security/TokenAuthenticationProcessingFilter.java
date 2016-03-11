@@ -62,15 +62,12 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
                     technicianService.save(technician);
                 }
             }
-            if (user == null) throw new BadCredentialsException("无效凭证");
         }else if (token.startsWith("cooperator:")) {
             int id = Cooperator.decodeToken(token);
             if (id > 0) user = cooperatorService.get(id);
-            if (user == null) throw new BadCredentialsException("无效凭证");
         } else if (token.startsWith("staff:")) {
             int id = Staff.decodeToken(token);
             if (id > 0) user = staffService.get(id);
-            if (user == null) throw new BadCredentialsException("无效凭证");
         } else {
             GrantedAuthority authority = new GrantedAuthority() {
                 @Override
