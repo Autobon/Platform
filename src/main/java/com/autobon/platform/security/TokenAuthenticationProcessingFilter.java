@@ -6,8 +6,7 @@ import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,15 +28,12 @@ import java.util.Date;
  * Created by dave on 16/2/16.
  */
 public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
-    @Autowired
-    private TechnicianService technicianService;
-    @Autowired
-    private StaffService staffService;
-    @Autowired
-    private CooperatorService cooperatorService;
+    private ApplicationContext applicationContext;
 
-    public TokenAuthenticationProcessingFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+    public TokenAuthenticationProcessingFilter(ApplicationContext applicationContext,
+            RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
+        this.applicationContext = applicationContext;
         this.setContinueChainBeforeSuccessfulAuthentication(true);
     }
 
@@ -54,6 +50,7 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
         if (token.startsWith("technician:")) {
             int id = Technician.decodeToken(token);
             if (id > 0) {
+                TechnicianService technicianService = applicationContext.getBean(TechnicianService.class);
                 user = technicianService.get(id);
                 if (user != null) {
                     Technician technician = (Technician) user;
@@ -62,13 +59,15 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
                     technicianService.save(technician);
                 }
             }
-        }else if (token.startsWith("cooperator:")) {
+        } else if (token.startsWith("cooperator:")) {
             int id = Cooperator.decodeToken(token);
-            if (id > 0) user = cooperatorService.get(id);
+            if (id > 0) user = applicationContext.getBean(CooperatorService.class).get(id);
         } else if (token.startsWith("staff:")) {
             int id = Staff.decodeToken(token);
-            if (id > 0) user = staffService.get(id);
-        } else {
+            if (id > 0) user = applicationContext.getBean(StaffService.class).get(id);
+        }
+
+        if (user == null) {
             GrantedAuthority authority = new GrantedAuthority() {
                 @Override
                 public String getAuthority() {
