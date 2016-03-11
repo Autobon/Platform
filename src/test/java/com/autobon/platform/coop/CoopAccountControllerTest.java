@@ -62,8 +62,7 @@ public class CoopAccountControllerTest {
                 .param("shortname","tomcat")
                 .param("contactPhone", "13072705335")
                 .param("password","123456")
-                .param("verifySms","123456")
-                .cookie(new Cookie("autoken", token)))
+                .param("verifySms","123456"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
     }
