@@ -200,3 +200,37 @@ POST /api/mobile/coop/resetPassword
 "data": null}
 ```
 
+## 4. 更改密码
+已登录的情况下,修改密码
+### URL及请求方法
+POST /api/mobile/coop/changePassword
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| oldPassword| 旧密码 | 123456 |
+| newPassword| 新密码 | 111222 |
+
+### 请求Cookie
+请求Cookie中必须有有效的autoken.
+
+### 返回数据
+1.请求成功
+
+```
+{
+    "result": true,
+    "message": null,
+    "error": null,
+    "data": null
+}
+```
+
+2.密码至少6位
+
+```
+{"result": false,
+"message": "密码至少6位",
+"error": "ILLEGAL_PARAM",
+"data": null}
+```
