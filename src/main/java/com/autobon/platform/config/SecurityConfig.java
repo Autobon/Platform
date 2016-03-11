@@ -2,7 +2,10 @@ package com.autobon.platform.config;
 
 import com.autobon.platform.security.TokenAuthenticationProcessingFilter;
 import com.autobon.platform.security.TokenAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -24,6 +27,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private ApplicationContext applicationContext;
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -33,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(
+        TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(applicationContext,
                 new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManagerBean());
         http.addFilterBefore(filter, BasicAuthenticationFilter.class);
