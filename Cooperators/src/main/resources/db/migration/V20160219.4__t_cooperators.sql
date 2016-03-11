@@ -25,7 +25,7 @@ CREATE TABLE `t_cooperators` (
   `last_login_time` datetime DEFAULT NULL COMMENT '上次登录时间',
   `last_login_ip` varchar(20) DEFAULT NULL COMMENT '上次登录IP',
   `create_time` datetime DEFAULT NULL COMMENT '注册时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_coop_phone` (`phone`),
   UNIQUE KEY `uniq_coop_shortname` (`shortname`)
 )DEFAULT CHARSET=utf8 COMMENT='合作商户表';
