@@ -1,7 +1,5 @@
 package com.autobon.platform.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -19,7 +17,6 @@ import java.io.IOException;
  */
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
-    private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
 
     @Bean
     public MultipartResolver multipartResolver() {
