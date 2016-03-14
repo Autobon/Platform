@@ -10,5 +10,6 @@ CREATE TABLE IF NOT EXISTS t_comment (
   car_protect tinyint(1) DEFAULT FALSE COMMENT '车辆保护超级棒',
   good_attitude tinyint(1) DEFAULT FALSE COMMENT '好态度',
   advice varchar(255)  DEFAULT NULL COMMENT '建议',
+  create_at DATETIME DEFAULT NULL,
   PRIMARY KEY (id)
 )DEFAULT CHARSET=utf8 COMMENT='评论表';

@@ -5,6 +5,8 @@ import com.autobon.order.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by yuh on 2016/3/2.
  */
@@ -24,6 +26,11 @@ public class CommentService {
 
     public Comment getByOrderIdAndTechId(int orderId, int techId) {
         return commentRepository.getByOrderIdAndTechId(orderId, techId);
+    }
+
+    // 计算指定日期起的星级平均值
+    public float calcStarRateByTechId(int techId, Date fromDate) {
+        return commentRepository.calcStarRateByTechId(techId, fromDate);
     }
 
 

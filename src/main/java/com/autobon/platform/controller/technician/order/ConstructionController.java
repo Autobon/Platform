@@ -62,9 +62,8 @@ public class ConstructionController {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已开始工作,请不要重复操作");
         }
 
-        // 拒绝邀请或忽略邀请时,将第二责任人置空
-        if (o.getStatus() == Order.Status.INVITATION_REJECTED ||
-                (o.getStatus() == Order.Status.SEND_INVITATION && ignoreInvitation)) {
+        // 忽略邀请时,将第二责任人置空
+        if (o.getStatus() == Order.Status.SEND_INVITATION && ignoreInvitation) {
             o.setSecondTechId(0);
         }
         o.setStatus(Order.Status.IN_PROGRESS); // 任一技师开始工作时,订单状态进入IN_PROGRESS状态; 订单所有技师完成工作时,订单结束

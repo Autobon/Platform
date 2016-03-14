@@ -2,6 +2,7 @@
 
 ## 1. 帐户注册
 合作商户帐户注册.需要企业简称,手机号,密码,短信验证码完成注册.
+测试时, 可以使用token: `cooperator:pHpP/b+PYAbZ3bcSs7dqsQ==`
 ### URL及请求方法
 POST /api/mobile/coop/register
 ### 请求参数

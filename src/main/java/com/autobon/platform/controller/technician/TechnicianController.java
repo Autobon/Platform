@@ -3,19 +3,19 @@ package com.autobon.platform.controller.technician;
 
 import com.autobon.order.entity.Location;
 import com.autobon.order.service.LocationService;
-
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
-
+import com.autobon.technician.entity.DetailedTechnician;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/api")
 public class TechnicianController {
     @Autowired
-    private TechnicianService technicianService;
+    private DetailedTechnicianService technicianService;
 
     @Autowired
     private LocationService locationService;
@@ -37,8 +37,8 @@ public class TechnicianController {
             @RequestParam(value = "page",     defaultValue = "1" )  int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         if (Pattern.matches("^[0-9]+$", query)) {
-            Technician t = technicianService.getByPhone(query);
-            ArrayList<Technician> list = new ArrayList<>();
+            DetailedTechnician t = technicianService.getByPhone(query);
+            ArrayList<DetailedTechnician> list = new ArrayList<>();
             if (t != null) {
                 list.add(t);
                 return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 1, 1, 1, list));
@@ -52,10 +52,11 @@ public class TechnicianController {
     }
 
     @RequestMapping(value="/mobile/technician/reportLocation",method = RequestMethod.POST)
-    public JsonMessage reportLocation(@RequestParam("rtpostionLon") String rtpostionLon,
-                                   @RequestParam("rtpositionLat") String rtpositionLat){
+    public JsonMessage reportLocation(HttpServletRequest request,
+            @RequestParam("rtpostionLon") String rtpostionLon,
+            @RequestParam("rtpositionLat") String rtpositionLat){
         JsonMessage jsonMessage =new JsonMessage(true,"setLocation");
-        Technician technician = (Technician) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        Technician technician = (Technician) request.getAttribute("user");
         int technicianId = technician.getId();
         //查询最近的位置信息
         Location latestLocation = locationService.findLatestLocation(technicianId);

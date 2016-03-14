@@ -352,32 +352,37 @@ GET /api/mobile/technician
 ### 返回数据
 
 ```
-{"result": true,
-"message": "",
-"error": null,
-"data": {
-    "id": 1,
-    "phone": "18812345678",
-    "name": "tom",
-    "gender": null,
-    "avatar": null,
-    "idNo": "422302198608266313",
-    "idPhoto": "/etc/a.jpg",
-    "bank": "工商银行",
-    "bankAddress": "光谷",
-    "bankCardNo": "88888888888",
-    "verifyAt": null,
-    "requestVerifyAt": 1457277682000,
-    "verifyMsg": null,
-    "lastLoginAt": 1457277685376,
-    "lastLoginIp": "127.0.0.1",
-    "createAt": 1455724800000,
-    "star": 0,
-    "voteRate": 0,
-    "skill": "1,2",
-    "pushId": null,
-    "status": "IN_VERIFICATION"
-}}
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 1,
+        "phone": "18812345678",
+        "name": "tom",
+        "gender": null,
+        "avatar": null,
+        "idNo": "422302198608266313",
+        "idPhoto": "/etc/a.jpg",
+        "bank": "027",
+        "bankAddress": "光谷",
+        "bankCardNo": "88888888888",
+        "verifyAt": null,
+        "requestVerifyAt": null,
+        "verifyMsg": null,
+        "lastLoginAt": 1456195103000,
+        "lastLoginIp": "127.0.0.1",
+        "createAt": 1455724800000,
+        "skill": "1",
+        "pushId": null,
+        "starRate": null,
+        "balance": null,
+        "unpaidOrders": null,
+        "totalOrders": null,
+        "commentCount": null,
+        "status": "NEWLY_CREATED"
+    }
+}
 ```
 
 `statusCode` 字段表示技师的帐户状态
@@ -405,36 +410,44 @@ GET /api/mobile/technician/search
 ### 返回数据
 
 ```
-{"result": true,
-"message": "",
-"error": "",
-"data":{
-    "page": 1,
-    "totalElements": 1,
-    "totalPages": 1,
-    "pageSize": 20,
-    "count": 1,
-    "list":[{
-        "id": 1,
-        "phone": "18812345678",
-        "name": "tom",
-        "gender": null,
-        "avatar": null,
-        "idNo": "422302198608266313",
-        "idPhoto": "/etc/a.jpg",
-        "bank": "027",
-        "bankAddress": "光谷",
-        "bankCardNo": "88888888888",
-        "verifyAt": null,
-        "lastLoginAt": 1456195103000,
-        "lastLoginIp": "127.0.0.1",
-        "createAt": 1455724800000,
-        "star": 0,
-        "voteRate": 0,
-        "skill": "1,6",
-        "pushId": null,
-        "statusCode": "NOTVERIFIED"
-        }]
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "page": 1,
+        "totalElements": 1,
+        "totalPages": 1,
+        "pageSize": 20,
+        "count": 1,
+        "list": [
+            {
+                "id": 1,
+                "phone": "18812345678",
+                "name": "tom",
+                "gender": null,
+                "avatar": null,
+                "idNo": "422302198608266313",
+                "idPhoto": "/etc/a.jpg",
+                "bank": "027",
+                "bankAddress": "光谷",
+                "bankCardNo": "88888888888",
+                "verifyAt": null,
+                "requestVerifyAt": null,
+                "verifyMsg": null,
+                "lastLoginAt": 1456195103000,
+                "lastLoginIp": "127.0.0.1",
+                "createAt": 1455724800000,
+                "skill": "1",
+                "pushId": null,
+                "starRate": null,
+                "balance": null,
+                "unpaidOrders": null,
+                "totalOrders": null,
+                "commentCount": null,
+                "status": "NEWLY_CREATED"
+            }
+        ]
     }
 }
 ```

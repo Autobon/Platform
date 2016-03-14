@@ -1,43 +1,16 @@
 package com.autobon.technician.entity;
 
-import com.autobon.shared.Crypto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 /**
- * Created by dave on 16/2/5.
+ * Created by dave on 16/3/14.
  */
 @Entity
-@Table(name = "t_technician")
-public class Technician implements UserDetails {
-    private static Logger log = LoggerFactory.getLogger(Technician.class);
-    public enum Status {
-        NEWLY_CREATED(0), IN_VERIFICATION(1), VERIFIED(2), REJECTED(3), BANNED(4);
-        private int statusCode;
-
-        Status(int statusCode) {
-            this.statusCode = statusCode;
-        }
-
-        public static Status getStatus(int statusCode) {
-            for (Status s : Status.values()) {
-                if (s.getStatusCode() == statusCode) return s;
-            }
-            return null;
-        }
-        public int getStatusCode() {
-            return this.statusCode;
-        }
-    }
-
+@Table(name = "v_technician")
+public class DetailedTechnician {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -79,46 +52,15 @@ public class Technician implements UserDetails {
 
     @Column private String pushId; // 个推客户端ID, 由手机端更新
 
-    @JsonIgnore
-    @Column(name = "status")
-    private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
+    @Column private Float starRate; // 星级
 
-    private static String Token = "Autobon~!@#2016=";
+    @Column private Float balance; // 帐户余额, 未支付工单总额
 
-    public Technician() {
-        this.setStatus(Status.NEWLY_CREATED);
-        this.createAt = new Date();
-    }
+    @Column private Integer unpaidOrders; // 未付账订单条数
 
-    public static String encryptPassword(String password) {
-        return Crypto.encryptBySha1(password);
-    }
+    @Column private Integer totalOrders; // 订单总数
 
-    // 根据用户ID生成token
-    public static String makeToken(int id) {
-        return "technician:" + Crypto.encryptAesBase64(String.valueOf(id), Token);
-    }
-
-    // 从token返回用户Id
-    public static int decodeToken(String token) {
-        String[] arr = token.split(":");
-        if (arr.length < 2 || !arr[0].equals("technician")) return 0;
-        else token = arr[1];
-        try {
-            return Integer.parseInt(Crypto.decryptAesBase64(token, Token));
-        } catch (Exception ex) {
-            log.info("无效token: " + token);
-        }
-        return 0;
-    }
-
-    public Status getStatus() {
-        return Status.getStatus(this.getStatusCode());
-    }
-
-    public void setStatus(Status s) {
-        this.setStatusCode(s.getStatusCode());
-    }
+    @Column private Integer commentCount; // 评论条数
 
     public int getId() {
         return id;
@@ -272,6 +214,58 @@ public class Technician implements UserDetails {
         this.pushId = pushId;
     }
 
+    public Float getStarRate() {
+        return starRate;
+    }
+
+    public void setStarRate(Float starRate) {
+        this.starRate = starRate;
+    }
+
+    public Float getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Float balance) {
+        this.balance = balance;
+    }
+
+    public Integer getUnpaidOrders() {
+        return unpaidOrders;
+    }
+
+    public void setUnpaidOrders(Integer unpaidOrders) {
+        this.unpaidOrders = unpaidOrders;
+    }
+
+    public Integer getTotalOrders() {
+        return totalOrders;
+    }
+
+    public void setTotalOrders(Integer totalOrders) {
+        this.totalOrders = totalOrders;
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    @JsonIgnore
+    @Column(name = "status")
+    private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
+
+    public Technician.Status getStatus() {
+        return Technician.Status.getStatus(this.getStatusCode());
+    }
+
+    public void setStatus(Technician.Status s) {
+        this.setStatusCode(s.getStatusCode());
+    }
+
     protected int getStatusCode() {
         return statusCode;
     }
@@ -280,54 +274,4 @@ public class Technician implements UserDetails {
         this.statusCode = statusCode;
     }
 
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> ret = new ArrayList<>();
-        ret.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return "TECHNICIAN";
-            }
-        });
-        if (getStatus() == Status.VERIFIED) {
-            ret.add(new GrantedAuthority() {
-                @Override
-                public String getAuthority() {
-                    return "VERIFIED_TECHNICIAN";
-                }
-            });
-        }
-        return ret;
-    }
-
-    @JsonIgnore
-    @Override
-    public String getUsername() {
-        return phone;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return getStatus() != Status.BANNED;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isEnabled() {
-        return getStatus() != Status.BANNED;
-    }
 }

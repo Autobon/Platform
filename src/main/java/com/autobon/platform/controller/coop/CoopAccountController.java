@@ -14,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -102,7 +103,7 @@ public class CoopAccountController {
             msg.setMessage("手机号与企业简称不匹配");
         } else {
             response.addCookie(new Cookie("autoken", Cooperator.makeToken(cooperator.getId())));
-            //cooperator.setLastLoginAt(new Date());
+            cooperator.setLastLoginTime(new Date());
             cooperator.setLastLoginIp(request.getRemoteAddr());
             cooperatorService.save(cooperator);
             msg.setData(cooperator);
