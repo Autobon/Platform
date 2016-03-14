@@ -49,13 +49,13 @@ public class ConstructionController {
         Technician t = (Technician) request.getAttribute("user");
         Order o = orderService.get(orderId);
         if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
-            return new JsonMessage(false, "NO_ORDER", "你没有这个订单");
-        } else if (o.getSecondTechId() == t.getId() && o.getStatus() == Order.Status.SEND_INVITATION) {
-            return new JsonMessage(false, "NOT_ACCEPTED_INVITATION", "你还没有接受邀请");
+            return new JsonMessage(false, "NO_ORDER", "你没有这个订单或主技师已放弃邀请");
         } else if (o.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ORDER_CANCELED", "订单已取消");
         } else if (o.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
             return new JsonMessage(false, "ORDER_ENDED", "订单已施工完成");
+        } else if (o.getSecondTechId() == t.getId() && o.getStatus() == Order.Status.SEND_INVITATION) {
+            return new JsonMessage(false, "NOT_ACCEPTED_INVITATION", "你还没有接受邀请");
         } else if (o.getMainTechId() == t.getId() && o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
             return new JsonMessage(false, "INVITATION_NOT_FINISH", "你邀请的合作人还未接受或拒绝邀请");
         } else if (constructionService.getByTechIdAndOrderId(t.getId(), orderId) != null) {

@@ -5,7 +5,6 @@ import com.autobon.platform.security.TokenAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -39,8 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(applicationContext,
-                new AntPathRequestMatcher("/api/**"));
+        TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(
+                applicationContext, new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManagerBean());
         http.addFilterBefore(filter, BasicAuthenticationFilter.class);
 
@@ -48,12 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/mobile/*/login",
                 "/api/mobile/*/register",
                 "/api/mobile/*/resetPassword").permitAll()
-            .and().authorizeRequests().antMatchers("/api/mobile/technician/**")
-                .hasAuthority("TECHNICIAN")
-            .and().authorizeRequests().antMatchers("/api/web/**")
-                .hasAuthority("STAFF")
-            .and().authorizeRequests().antMatchers("/api/mobile/coop/**")
-                .hasAuthority("COOPERATOR");
+            .and().authorizeRequests().antMatchers("/api/mobile/technician/**").hasAuthority("TECHNICIAN")
+            .and().authorizeRequests().antMatchers("/api/web/**").hasAuthority("STAFF")
+            .and().authorizeRequests().antMatchers("/api/mobile/coop/**").hasAuthority("COOPERATOR");
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().csrf().disable();

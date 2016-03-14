@@ -41,11 +41,11 @@
 
 data字段是一个施工单对象
 
-#### b.你没有这个订单
+#### b.你没有这个订单或主技师已放弃邀请
 
 ```
 {"result": false,
-"message": "你没有这个订单",
+"message": "你没有这个订单或主技师已放弃邀请",
 "error": "NO_ORDER",
 "data": null}
 ```
@@ -68,7 +68,16 @@ data字段是一个施工单对象
 "data": null}
 ```
 
-#### e.你邀请的合作人还未接受或拒绝邀请
+#### e.你还没有接受邀请
+
+```
+{"result": false,
+"message": "你还没有接受邀请",
+"error": "NOT_ACCEPTED_INVITATION",
+"data": null}
+```
+
+#### f.你邀请的合作人还未接受或拒绝邀请
 
 ```
 {"result": false,
@@ -77,7 +86,7 @@ data字段是一个施工单对象
 "data": null}
 ```
 
-### f.你已开始工作,请不要重复操作
+### g.你已开始工作,请不要重复操作
 
 ```
 {"result": false,
