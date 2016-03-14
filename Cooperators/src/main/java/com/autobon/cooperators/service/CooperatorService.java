@@ -32,14 +32,14 @@ public class CooperatorService {
         cooperatorRepository.save(cooperator);
     }
 
-    public Page<Cooperator> findCoop(String fullname, String businessLicense, String contactPhone, Integer currentPage, Integer pageSize) {
+    public Page<Cooperator> findCoop(String fullname, String businessLicense, Integer statusCode, Integer currentPage, Integer pageSize) {
         currentPage = currentPage == null?1:currentPage;
         currentPage = currentPage <= 0?1:currentPage;
         pageSize = pageSize == null?10:pageSize;
         pageSize = pageSize <= 0?10:pageSize;
 
         Pageable p = new PageRequest(currentPage-1,pageSize);
-        Page<Cooperator> coopPage = cooperatorRepository.findCoop(fullname,businessLicense,contactPhone,p);
+        Page<Cooperator> coopPage = cooperatorRepository.findCoop(fullname,businessLicense,statusCode,p);
         return  coopPage;
     }
 }
