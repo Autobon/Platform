@@ -6,6 +6,7 @@ import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/web/admin/technician")
 public class TechnicianController {
     @Autowired TechnicianService technicianService;
-    @Autowired PushService pushService;
+    @Autowired @Qualifier("PushServiceA") PushService pushService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(@RequestParam(value = "query", defaultValue = "") String query,
