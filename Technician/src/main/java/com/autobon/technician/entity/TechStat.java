@@ -1,4 +1,4 @@
-package com.autobon.order.entity;
+package com.autobon.technician.entity;
 
 import javax.persistence.*;
 

@@ -5,6 +5,7 @@ import com.autobon.shared.RedisCache;
 import com.autobon.shared.SmsSender;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.TechnicianService;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/mobile/technician")
 public class TechnicianAccountController {
     @Autowired TechnicianService technicianService;
+    @Autowired DetailedTechnicianService detailedTechnicianService;
     @Autowired RedisCache redisCache;
     @Autowired SmsSender smsSender;
     @Autowired MultipartResolver resolver;
@@ -56,7 +58,7 @@ public class TechnicianAccountController {
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage getTechnicianInfo(HttpServletRequest request) {
         Technician technician = (Technician) request.getAttribute("user");
-        return new JsonMessage(true, "", "", technician);
+        return new JsonMessage(true, "", "", detailedTechnicianService.get(technician.getId()));
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

@@ -2,8 +2,10 @@ package com.autobon.platform.controller.coop;
 
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.order.service.CommentService;
 import com.autobon.order.service.OrderService;
+import com.autobon.technician.service.TechStatService;
 import com.autobon.shared.JsonMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * Created by dave on 16/3/3.
@@ -22,6 +27,7 @@ import javax.persistence.PersistenceContext;
 public class OrderController {
     @Autowired OrderService orderService;
     @Autowired CommentService commentService;
+    @Autowired TechStatService techStatService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -59,11 +65,32 @@ public class OrderController {
         comment.setAdvice(advice);
         commentService.save(comment);
 
+        // 写入技师星级统计
+        TechStat mainStat = techStatService.getByTechId(mainTechId);
+        if (mainStat == null) {
+            mainStat = new TechStat();
+            mainStat.setTechId(mainTechId);
+        }
+        mainStat.setStarRate(commentService.calcStarRateByTechId(mainTechId,
+                Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+        techStatService.save(mainStat);
+
+
         if(secondTechId != 0){
             entityManager.detach(comment);
             comment.setId(0);
             comment.setTechId(secondTechId);
             commentService.save(comment);
+
+            // 写入技师星级统计
+            TechStat secondStat = techStatService.getByTechId(secondTechId);
+            if (secondStat == null) {
+                secondStat = new TechStat();
+                secondStat.setTechId(secondTechId);
+            }
+            secondStat.setStarRate(commentService.calcStarRateByTechId(secondTechId,
+                    Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+            techStatService.save(secondStat);
         }
 
         return jsonMessage;

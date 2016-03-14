@@ -2,6 +2,7 @@ package com.autobon.order.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by yuh on 2016/3/2.
@@ -43,6 +44,13 @@ public class Comment implements Serializable {
 
     @Column(name = "advice", nullable = true, insertable = true, updatable = true)
     private String advice;
+
+    @Column
+    private Date createAt;
+
+    public Comment() {
+        this.createAt = new Date();
+    }
 
     public int getId() {
         return id;
@@ -130,5 +138,13 @@ public class Comment implements Serializable {
 
     public void setAdvice(String advice) {
         this.advice = advice;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
     }
 }

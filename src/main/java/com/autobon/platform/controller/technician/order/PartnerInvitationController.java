@@ -2,10 +2,10 @@ package com.autobon.platform.controller.technician.order;
 
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
-import com.autobon.order.entity.TechStat;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.OrderService;
-import com.autobon.order.service.TechStatService;
+import com.autobon.technician.service.TechStatService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.technician.entity.Technician;

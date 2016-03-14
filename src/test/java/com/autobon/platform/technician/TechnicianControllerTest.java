@@ -1,12 +1,8 @@
 package com.autobon.platform.technician;
 
-import com.autobon.getui.PushService;
 import com.autobon.platform.MvcTest;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -38,6 +34,15 @@ public class TechnicianControllerTest extends MvcTest {
                 .cookie(new Cookie("autoken", token)))
             .andDo(print())
             .andExpect(jsonPath("$.data.count", Matchers.greaterThanOrEqualTo(1)));
+    }
+
+    @Test
+    public void show() throws Exception {
+        mockMvcS.perform(get("/api/mobile/technician")
+                .param("query", phone)
+                .cookie(new Cookie("autoken", token)))
+                .andDo(print())
+                .andExpect(jsonPath("$.result", Matchers.is(true)));
     }
 
     @Test

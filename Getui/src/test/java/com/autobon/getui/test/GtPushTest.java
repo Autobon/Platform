@@ -8,6 +8,7 @@ import com.autobon.getui.template.TransmissionTemplate;
 import com.autobon.getui.utils.GtConfig;
 import com.autobon.getui.utils.Target;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ import java.util.List;
 public class GtPushTest {
     @Autowired
     private GtConfig gtConfig;
+
+    @Before
+    public void setup() throws Exception {
+        GtPush.connect(gtConfig);
+    }
 
     @Test
     public void connect() throws Exception {
