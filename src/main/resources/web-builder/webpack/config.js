@@ -11,7 +11,7 @@ export const production = {
             'angular-ui-bootstrap', 'angular-resource', 'angular-es6'],
     },
     output  : {
-        path      : path.resolve(__dirname, '../dist'),
+        path      : path.resolve(__dirname, '../../static'),
         publicPath: '/',
         filename  : 'bundle.js',
     },

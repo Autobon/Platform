@@ -9,8 +9,7 @@
 .vscode/
 .DS_Store
 
-node_modules/
-src/main/resources/static/script/lib/
+**/node_modules/
 build/
 **/*-dev.yml
 /*.properties

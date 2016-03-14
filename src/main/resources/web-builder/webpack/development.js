@@ -14,9 +14,10 @@ const server = new WebpackDevServer(compiler, {
     publicPath: '/',
     headers: {'Access-Control-Allow-Origin': '*'},
     stats: {colors: true},
+    historyApiFallback: true,
 });
 
-server.listen(9095, 'localhost', (err) => {
+server.listen(54321, 'localhost', (err) => {
     if (err) {
         throw err;
     }

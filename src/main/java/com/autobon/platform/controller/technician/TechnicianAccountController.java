@@ -44,9 +44,9 @@ public class TechnicianAccountController {
     @Value("${com.autobon.gm-path}") String gmPath;
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public JsonMessage handleUploadException(MaxUploadSizeExceededException ex) {
-        return new JsonMessage(false, "UPLOAD_SIZE_EXCEED", "上传图片不能超过2MB");
+        return new JsonMessage(false, "UPLOAD_SIZE_EXCEED", "上传文件单个不能超过2MB,一次总共不能超过10MB");
     }
 
     /**

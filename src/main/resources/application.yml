@@ -26,8 +26,6 @@ logging:
 # spring
 spring:
     profiles.active: dev
-    freemarker.cache: true
-    resources.cache-period: 7200
 
     datasource:
         url: jdbc:mysql://127.0.0.1:3306/autobondb?characterEncoding=utf8&useSSL=false
