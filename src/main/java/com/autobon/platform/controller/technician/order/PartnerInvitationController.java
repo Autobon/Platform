@@ -102,14 +102,16 @@ public class PartnerInvitationController {
         Technician technician = (Technician) request.getAttribute("user");
         Order order = orderService.get(orderId);
 
-        if (order == null || order.getSecondTechId() != technician.getId()) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个邀请, 或订单已改邀他人");
+        if (order == null) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "没有这个订单");
         } else if (order.getStatus() == Order.Status.INVITATION_ACCEPTED) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已接受邀请");
         } else if (order.getStatus() == Order.Status.INVITATION_REJECTED) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已拒绝邀请");
         } else if (order.getStatusCode() > Order.Status.IN_PROGRESS.getStatusCode() ) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已开始工作或已结束");
+        } else if (order.getSecondTechId() != technician.getId()) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个邀请, 或订单已改邀他人");
         }
 
         Technician mainTech = technicianService.get(order.getMainTechId());
