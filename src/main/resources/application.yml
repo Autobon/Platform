@@ -5,7 +5,11 @@ com.autobon:
         appKey: ESlofHVour7DmT7xy7cnJ9
         appSecret: 1VX09PPTcz7fdHBNYZVeB2
         masterSecret: c9qs7jpn6s7dAPDkFr23W4
-    sms.gateway: http://114.215.172.92/message/messageSend # SMS Gateway
+    sms:
+        appKey: 23326353
+        appSecret: 6bee28f8cd8e35b3f7448f45cc7bada9
+        signature: 身份验证
+        gateway: http://114.215.172.92/message/messageSend # SMS Gateway
     test.token: technician:HM6GlQ4/4AXxoe2ZfZVM2Q==
     test.adminToken: staff:ssEoVBwJ3rSYnidORQUvhQ==
     test.coopToken: cooperator:pHpP/b+PYAbZ3bcSs7dqsQ==

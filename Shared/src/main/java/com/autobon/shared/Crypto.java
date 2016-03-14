@@ -11,23 +11,36 @@ import java.util.Base64;
  */
 public class Crypto {
 
+    public static String encryptByMd5(String text) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(text.getBytes());
+            return byte2Hex(digest.digest());
+        } catch (NoSuchAlgorithmException ex) {
+            return "";
+        }
+    }
+
     public static String encryptBySha1(String text) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
             digest.update(text.getBytes());
-            byte[] message = digest.digest();
-            StringBuffer sb = new StringBuffer();
-            for (byte b : message) {
-                String hex = Integer.toHexString(b & 0xFF);
-                if (hex.length() < 2) {
-                    sb.append('0');
-                }
-                sb.append(hex);
-            }
-            return sb.toString();
+            return byte2Hex(digest.digest());
         } catch (NoSuchAlgorithmException ex) {
             return "";
         }
+    }
+
+    public static String byte2Hex(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        for (byte b : bytes) {
+            String hex = Integer.toHexString(b & 0xFF);
+            if (hex.length() < 2) {
+                sb.append('0');
+            }
+            sb.append(hex);
+        }
+        return sb.toString();
     }
 
     //AES加密,并返回BASE64编码
