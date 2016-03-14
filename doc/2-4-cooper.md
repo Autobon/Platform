@@ -100,3 +100,68 @@
 "data": null}
 ```
 
+## 3.更新合作商户资料
+后台更新合作商户资料
+### URL及请求方法
+`POST /api/web/admin/cooperator/update/1`
+
+### 请求参数
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| coopId | 是 | 合作商户id| 1 |
+| phone | 是 | 手机号码 | 13085856332 |
+| shortname | 是 | 企业简称 | A公司 |
+| fullname | 是 | 企业名称 | A汽车美容公司 |
+| businessLicense | 是 | 营业执照号 | 3335555 |
+| corporationName | 是 | 法人姓名 | 张三 |
+| corporationIdNo | 是 | 法人身份证号 | 422365196605050001 |
+| bussinessLicensePic | 是 | 营业执照副本照片 | a/a.jpg |
+| corporationIdPicA | 是 | 法人身份证正面照 | a/b.jpg |
+| corporationIdPicB | 是 | 法人身份证背面照| a/c.jpg |
+| longitude | 是 | 商户位置经度| 120.34 |
+| latitude | 是 | 商户位置纬度| 35.55 |
+| invoiceHeader | 是 | 发票抬头| 武汉市A科技公司 |
+| taxIdNo | 是 | 纳税识别号| 362362236 |
+| postcode | 是 | 邮政编码| 430000 |
+| province | 是 | 省| 湖北省 |
+| city | 是 | 市| 武汉市 |
+| district | 是 | 区| 光谷 |
+| address | 是 | 详细地址| 中山路3号 |
+| contact | 是 | 联系人姓名|李四 |
+| contactPhone | 是 | 联系人电话| 13025523002 |
+
+### 返回数据
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 1,
+        "phone": "13085856332",
+        "shortname": "A公司",
+        "fullname": "A汽车美容公司",
+        "businessLicense": "3335555",
+        "corporationName": "张三",
+        "corporationIdNo": "422365196605050001",
+        "bussinessLicensePic": "a/a.jpg",
+        "corporationIdPicA": "a/b.jpg",
+        "corporationIdPicB": "a/c.jpg",
+        "longitude": "120.34",
+        "latitude": "35.55",
+        "invoiceHeader": "武汉市A科技公司",
+        "taxIdNo": "362362236",
+        "postcode": "430000",
+        "province": "湖北省",
+        "city": "武汉市",
+        "district": "光谷",
+        "address": "中山路3号",
+        "contact": "李四",
+        "contactPhone": "13025523002",
+        "statusCode": 1,
+        "lastLoginTime": null,
+        "lastLoginIp": null,
+        "createTime": 1457677133000
+    }
+}
+```
