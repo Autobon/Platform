@@ -1,7 +1,7 @@
-package com.autobon.order.service;
+package com.autobon.technician.service;
 
-import com.autobon.order.entity.TechStat;
-import com.autobon.order.repository.TechStatRepository;
+import com.autobon.technician.entity.TechStat;
+import com.autobon.technician.repository.TechStatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
