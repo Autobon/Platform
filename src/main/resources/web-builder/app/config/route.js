@@ -1,4 +1,6 @@
-export default function routeConfig($routeProvider) {
+export default function routeConfig($routeProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
+
     $routeProvider
         .when('/', {
             template  : require('../controllers/main/main.html'),
@@ -10,4 +12,4 @@ export default function routeConfig($routeProvider) {
         .otherwise({redirectTo: '/'});
 }
 
-routeConfig.$inject = ['$routeProvider'];
+routeConfig.$inject = ['$routeProvider', '$locationProvider'];

@@ -31,7 +31,8 @@ public class OrderController {
     private static Logger log = LoggerFactory.getLogger(OrderController.class);
     @Value("${com.autobon.gm-path}") String gmPath;
     @Autowired OrderService orderService;
-    @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
+    @Autowired @Qualifier("PushServiceA")
+    PushService pushServiceA;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage list(

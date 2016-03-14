@@ -4,10 +4,11 @@ import 'angular-route';
 import 'angular-cookies';
 import 'angular-resource';
 import 'angular-sanitize';
+import 'angular-ui-router';
 
 import './directives';
 import controllers from './controllers';
-import factories from './factories';
+import services from './services';
 
 import routeConfig from './config/route';
 import {exception, compileProvider} from 'angular-es6';
@@ -15,8 +16,8 @@ import {exception, compileProvider} from 'angular-es6';
 export const App = 'app';
 
 export default angular
-    .module(App, ['ngRoute', 'ngResource', 'ngCookies', 'ngSanitize',
-        factories, controllers])
+    .module(App, ['ngRoute', 'ngResource', 'ngCookies', 'ngSanitize', 'ui.router',
+        services, controllers])
     .config(exception)
     .config(compileProvider)
     .config(routeConfig);

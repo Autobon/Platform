@@ -17,6 +17,12 @@
 当技师提交签到后,技师的施工记录中的signinTime将由null变为签到时间. 当技师提交工作前照片地址后, 施工记录中的beforePhotos字段不再为null,
 而是上传照片网址数组用逗号拼接而成的字符串.
 
+施工单支付状态 `payStatus` :
+
+1. 0 - 未出账
+2. 1 - 已出账,未支付
+3. 2 - 已完成支付
+
 ## 1. 已完成且作为主责任人订单列表
 
 ### URL及请求方法
@@ -94,6 +100,7 @@
                     "beforePhotos": "a.jpg",
                     "afterPhotos": "a.jpg,b.jpg,c.jpg",
                     "payment": 20,
+                    "payStatus": 0,
                     "workItems": null,
                     "workPercent": 0.2,
                     "carSeat": 0
@@ -209,6 +216,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
                     "beforePhotos": "a.jpg",
                     "afterPhotos": "a.jpg,b.jpg,c.jpg",
                     "payment": 20,
+                    "payStatus": 0,
                     "workItems": null,
                     "workPercent": 0.2,
                     "carSeat": 0
@@ -411,6 +419,7 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
             "beforePhotos": "a.jpg",
             "afterPhotos": "a.jpg,b.jpg,c.jpg",
             "payment": 20,
+            "payStatus": 0,
             "workItems": null,
             "workPercent": 0.2,
             "carSeat": 0
