@@ -1,6 +1,6 @@
-package com.autobon.platform.technician;
+package com.autobon.test.technician;
 
-import com.autobon.platform.MvcTest;
+import com.autobon.test.MvcTest;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.junit.Assert;

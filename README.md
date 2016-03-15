@@ -6,6 +6,7 @@
 5. [施工](doc/1-5-construction.md)
 6. [邀请合作人](doc/1-6-invite.md)
 7. [推送消息](doc/1-7-push.md)
+8. [帐单](doc/1-8-bill.md)
 
 # 合作商户端
 1. [帐户及登录](doc/3-1-account.md)

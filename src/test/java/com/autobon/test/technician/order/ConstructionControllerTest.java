@@ -1,10 +1,10 @@
-package com.autobon.platform.technician.order;
+package com.autobon.test.technician.order;
 
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
-import com.autobon.platform.MvcTest;
+import com.autobon.test.MvcTest;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.junit.Before;
@@ -34,7 +34,7 @@ public class ConstructionControllerTest  extends MvcTest {
     Construction construction;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         super.setup();
         technician = technicianService.get(Technician.decodeToken(token));
         order = new Order();

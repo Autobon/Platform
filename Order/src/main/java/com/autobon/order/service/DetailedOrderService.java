@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by dave on 16/3/10.
  */
@@ -32,6 +34,12 @@ public class DetailedOrderService {
     public Page<DetailedOrder> findUnfinishedByTechId(int techId, int page, int pageSize) {
         return repository.findUnfinishedByTechId(techId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    // 查找日期在start至end之间完成施工的订单, 包含start时间点, 不包含end时间点
+    public Page<DetailedOrder> findBetweenByTechId(int techId, Date start, Date end, int page, int pageSize) {
+        return repository.findBetweenByTechId(techId, start, end,
+                new PageRequest(page - 1, pageSize, Sort.Direction.ASC, "id"));
     }
 
     public Page<DetailedOrder> findAll(int page, int pageSize) {

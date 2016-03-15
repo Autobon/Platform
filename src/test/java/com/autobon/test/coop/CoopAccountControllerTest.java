@@ -1,6 +1,5 @@
-package com.autobon.platform.coop;
+package com.autobon.test.coop;
 
-import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.platform.Application;
 import org.junit.Before;
 import org.junit.Test;

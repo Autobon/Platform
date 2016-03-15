@@ -1,6 +1,6 @@
-package com.autobon.platform.technician;
+package com.autobon.test.technician;
 
-import com.autobon.platform.MvcTest;
+import com.autobon.test.MvcTest;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;

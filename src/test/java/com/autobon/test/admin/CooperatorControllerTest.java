@@ -1,6 +1,6 @@
-package com.autobon.platform.admin;
+package com.autobon.test.admin;
 
-import com.autobon.platform.MvcTest;
+import com.autobon.test.MvcTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
