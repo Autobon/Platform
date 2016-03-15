@@ -8,7 +8,6 @@ import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.DetailedTechnician;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.DetailedTechnicianService;
-import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

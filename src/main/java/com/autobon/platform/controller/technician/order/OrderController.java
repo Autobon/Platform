@@ -61,7 +61,7 @@ public class OrderController {
     }
 
     // 获取订单信息
-    @RequestMapping(value = "/{orderId:[\\d]+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{orderId:\\d+}", method = RequestMethod.GET)
     public JsonMessage show(@PathVariable("orderId") int orderId) {
         return new JsonMessage(true, "", "", detailedOrderService.get(orderId));
     }

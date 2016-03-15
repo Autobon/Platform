@@ -45,12 +45,12 @@ public class TechnicianController {
         }
     }
 
-    @RequestMapping(value = "/{techId:[\\d]+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{techId:\\d+}", method = RequestMethod.GET)
     public JsonMessage show(@PathVariable("techId") int techId) {
         return new JsonMessage(true, "", "", technicianService.get(techId));
     }
 
-    @RequestMapping(value = "/{techId:[\\d]+}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{techId:\\d+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("techId") int techId,
                               @RequestParam(value="phone",required = true) String phone,
                               @RequestParam(value="name",required = true) String name,
@@ -89,7 +89,7 @@ public class TechnicianController {
     }
 
 
-    @RequestMapping(value = "/verify/{techId:[\\d]+}", method = RequestMethod.POST)
+    @RequestMapping(value = "/verify/{techId:\\d+}", method = RequestMethod.POST)
     public JsonMessage verify(
             @PathVariable("techId") int techId,
             @RequestParam("verified") boolean verified,

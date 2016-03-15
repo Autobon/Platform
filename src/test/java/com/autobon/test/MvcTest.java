@@ -1,5 +1,6 @@
-package com.autobon.platform;
+package com.autobon.test;
 
+import com.autobon.platform.Application;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public abstract class MvcTest {
     protected MockMvc mockMvcS;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         mockMvcS = MockMvcBuilders.webAppContextSetup(wac).addFilter(springFilterChain).build();
     }

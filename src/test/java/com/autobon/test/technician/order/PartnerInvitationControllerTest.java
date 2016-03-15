@@ -1,8 +1,8 @@
-package com.autobon.platform.technician.order;
+package com.autobon.test.technician.order;
 
 import com.autobon.order.entity.Order;
 import com.autobon.order.service.OrderService;
-import com.autobon.platform.MvcTest;
+import com.autobon.test.MvcTest;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.junit.Before;
@@ -34,7 +34,7 @@ public class PartnerInvitationControllerTest extends MvcTest {
     private Order order;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         super.setup();
         technician = technicianService.get(Technician.decodeToken(token));
         partner = new Technician();

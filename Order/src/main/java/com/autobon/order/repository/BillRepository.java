@@ -16,5 +16,5 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
     Page<Bill> findByTechId(int techId, Pageable pageable);
 
-    Page<Bill> findByYearMonth(Date yearMonth, Pageable pageable);
+    Page<Bill> findByBillMonth(Date billMonth, Pageable pageable);
 }

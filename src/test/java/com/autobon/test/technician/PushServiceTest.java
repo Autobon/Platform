@@ -1,7 +1,7 @@
-package com.autobon.platform.technician;
+package com.autobon.test.technician;
 
 import com.autobon.getui.PushService;
-import com.autobon.platform.MvcTest;
+import com.autobon.test.MvcTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
