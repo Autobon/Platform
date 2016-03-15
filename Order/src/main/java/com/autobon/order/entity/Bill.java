@@ -16,7 +16,7 @@ public class Bill {
 
     @Column private int techId;
 
-    @Column private Date yearMonth;
+    @Column private Date billMonth; // 月帐所属的年,月
 
     @Column private int count;
 
@@ -26,9 +26,11 @@ public class Bill {
 
     @Column private Date payAt;
 
+    public Bill() {}
+
     public Bill(int techId, Date yearMonth) {
         this.techId = techId;
-        this.yearMonth = yearMonth;
+        this.billMonth = yearMonth;
     }
 
     public int getId() {
@@ -47,12 +49,12 @@ public class Bill {
         this.techId = techId;
     }
 
-    public Date getYearMonth() {
-        return yearMonth;
+    public Date getBillMonth() {
+        return billMonth;
     }
 
-    public void setYearMonth(Date yearMonth) {
-        this.yearMonth = yearMonth;
+    public void setBillMonth(Date billMonth) {
+        this.billMonth = billMonth;
     }
 
     public int getCount() {

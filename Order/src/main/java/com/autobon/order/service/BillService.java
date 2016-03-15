@@ -17,6 +17,10 @@ import java.util.Date;
 public class BillService {
     @Autowired BillRepository repository;
 
+    public Bill get(int id) {
+        return repository.findOne(id);
+    }
+
     public Bill save(Bill bill) {
         return repository.save(bill);
     }
@@ -26,8 +30,13 @@ public class BillService {
                 new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 
-    public Page<Bill> findByYearMonth(Date yearMonth, int page, int pageSize) {
-        return repository.findByYearMonth(yearMonth,
+    public Page<Bill> findByBillMonth(Date billMonth, int page, int pageSize) {
+        return repository.findByBillMonth(billMonth,
+                new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "sum"));
+    }
+
+    public Page<Bill> findAll(int page, int pageSize) {
+        return repository.findAll(
                 new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "sum"));
     }
 }

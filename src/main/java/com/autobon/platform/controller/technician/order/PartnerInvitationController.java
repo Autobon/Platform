@@ -46,7 +46,7 @@ public class PartnerInvitationController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/{orderId:[\\d]+}/invite/{partnerId:[\\d]+}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{orderId:\\d+}/invite/{partnerId:\\d+}", method = RequestMethod.POST)
     public JsonMessage invitePartner(HttpServletRequest request,
             @PathVariable("partnerId") int partnerId,
             @PathVariable("orderId")   int orderId) throws IOException {
@@ -100,7 +100,7 @@ public class PartnerInvitationController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/{orderId:[\\d]+}/invitation", method = RequestMethod.POST)
+    @RequestMapping(value = "/{orderId:\\d+}/invitation", method = RequestMethod.POST)
     public JsonMessage acceptInvitation(HttpServletRequest request,
             @RequestParam("accepted") boolean accepted,
             @PathVariable("orderId") int orderId) throws IOException {

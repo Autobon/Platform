@@ -1,6 +1,6 @@
-package com.autobon.platform.admin;
+package com.autobon.test.admin;
 
-import com.autobon.platform.MvcTest;
+import com.autobon.test.MvcTest;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
 import org.junit.Before;
@@ -29,7 +29,7 @@ public class TechnicianControllerTest extends MvcTest {
     private Technician tech;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         super.setup();
         tech = technicianService.get(Technician.decodeToken(techToken));
     }
