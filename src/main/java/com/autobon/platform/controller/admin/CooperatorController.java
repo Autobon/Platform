@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * Created by yuh on 2016/3/10.
@@ -78,7 +79,63 @@ public class CooperatorController {
 
     }
 
+    @RequestMapping(value = "/update/{coopId:[\\d]+}", method = RequestMethod.POST)
+    public JsonMessage update(@PathVariable("coopId") int coopId,
+                              @RequestParam(value="phone",required = true) String phone,
+                              @RequestParam(value="shortname",required = true) String shortname,
+                              @RequestParam(value="fullname",required = true) String fullname,
+                              @RequestParam(value = "businessLicense",required = true) String businessLicense,
+                              @RequestParam(value = "corporationName",required = true) String corporationName,
+                              @RequestParam(value = "corporationIdNo",required = true) String corporationIdNo,
+                              @RequestParam(value = "bussinessLicensePic",required = true) String bussinessLicensePic,
+                              @RequestParam(value = "corporationIdPicA",required = true) String corporationIdPicA,
+                              @RequestParam(value = "corporationIdPicB",required = true) String corporationIdPicB,
+                              @RequestParam(value = "longitude",required = true) String longitude,
+                              @RequestParam(value = "latitude",required = true) String latitude,
+                              @RequestParam(value = "invoiceHeader",required = true) String invoiceHeader,
+                              @RequestParam(value = "taxIdNo",required = true) String taxIdNo,
+                              @RequestParam(value = "postcode",required = true) String postcode,
+                              @RequestParam(value = "province",required = true) String province,
+                              @RequestParam(value = "city",required = true) String city,
+                              @RequestParam(value = "district",required = true) String district,
+                              @RequestParam(value = "address",required = true) String address,
+                              @RequestParam(value = "contact",required = true) String contact,
+                              @RequestParam(value = "contactPhone",required = true) String contactPhone) {
 
+        if (!Pattern.matches("^\\d{11}$", phone)) {
+            return  new JsonMessage(false,"ILLEGAL_PARAM","手机号格式错误");
+        } else if (cooperatorService.getByPhone(phone) != null) {
+            return new JsonMessage(false,"OCCUPIED_ID","手机号已被注册");
+        }
+
+        corporationIdNo = corporationIdNo.toUpperCase();
+        if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", corporationIdNo))
+            return new JsonMessage(false, "ILLEGAL_PARAM", "身份证号码有误");
+
+        Cooperator cooperator = cooperatorService.get(coopId);
+        cooperator.setPhone(phone);
+        cooperator.setShortname(shortname);
+        cooperator.setFullname(fullname);
+        cooperator.setBusinessLicense(businessLicense);
+        cooperator.setCorporationName(corporationName);
+        cooperator.setCorporationIdNo(corporationIdNo);
+        cooperator.setBussinessLicensePic(bussinessLicensePic);
+        cooperator.setCorporationIdPicA(corporationIdPicA);
+        cooperator.setCorporationIdPicB(corporationIdPicB);
+        cooperator.setLongitude(longitude);
+        cooperator.setLatitude(latitude);
+        cooperator.setInvoiceHeader(invoiceHeader);
+        cooperator.setTaxIdNo(taxIdNo);
+        cooperator.setPostcode(postcode);
+        cooperator.setProvince(province);
+        cooperator.setCity(city);
+        cooperator.setDistrict(district);
+        cooperator.setAddress(address);
+        cooperator.setContact(contact);
+        cooperator.setContactPhone(contactPhone);
+        cooperatorService.save(cooperator);
+        return new JsonMessage(true,"","",cooperator);
+    }
 
 
 }
