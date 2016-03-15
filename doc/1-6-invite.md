@@ -117,8 +117,8 @@ POST /api/mobile/technician/order/1/invitation
 
 ```
 {"result": false,
-"message": "你没有这个邀请, 或订单已改邀他人",
-"error": "ILLEGAL_OPERATION",
+"message": "无效操作: 订单已改邀他人或订单已强制开始",
+"error": "NO_SUCH_INVITATION",
 "data": null}
 ```
 
@@ -144,7 +144,7 @@ POST /api/mobile/technician/order/1/invitation
 
 ```
 {"result": false,
-"message": "订单已开始或已结束",
-"error": "ILLEGAL_OPERATION",
+"message": "订单已结束",
+"error": "ORDER_FINISHED",
 "data": null}
 ```

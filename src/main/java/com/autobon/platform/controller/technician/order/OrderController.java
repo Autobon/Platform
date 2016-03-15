@@ -1,11 +1,13 @@
 package com.autobon.platform.controller.technician.order;
 
 import com.autobon.order.entity.Order;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.*;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,8 @@ public class OrderController {
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
     @Autowired CommentService commentService;
+    @Autowired
+    TechStatService techStatService;
 
     // 获取已完成的主要责任人订单列表
     @RequestMapping(value = "/listMain", method = RequestMethod.GET)
@@ -86,6 +90,15 @@ public class OrderController {
         order.setMainTechId(tech.getId());
         order.setStatus(Order.Status.TAKEN_UP);
         orderService.save(order);
+
+        // 更新订单总数
+        TechStat stat = techStatService.getByTechId(tech.getId());
+        if (stat == null) {
+            stat = new TechStat();
+            stat.setTechId(tech.getId());
+        }
+        stat.setTotalOrders(stat.getTotalOrders() + 1);
+        techStatService.save(stat);
         return new JsonMessage(true, "", "", order);
     }
 

@@ -2,9 +2,11 @@ package com.autobon.platform.controller.technician.order;
 
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
+import com.autobon.technician.service.TechStatService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.VerifyCode;
@@ -37,6 +39,7 @@ public class ConstructionController {
     @Autowired OrderService orderService;
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
+    @Autowired TechStatService techStatService;
 
     // 开始工作
     @RequestMapping(value = "/start", method = RequestMethod.POST)
@@ -46,26 +49,25 @@ public class ConstructionController {
         Technician t = (Technician) request.getAttribute("user");
         Order o = orderService.get(orderId);
         if (o == null || (t.getId() != o.getMainTechId() && t.getId() != o.getSecondTechId())) {
-            return new JsonMessage(false, "NO_ORDER", "你没有这个订单");
+            return new JsonMessage(false, "NO_ORDER", "你没有这个订单或主技师已放弃邀请");
         } else if (o.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ORDER_CANCELED", "订单已取消");
         } else if (o.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
             return new JsonMessage(false, "ORDER_ENDED", "订单已施工完成");
-        } else if (o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
+        } else if (o.getSecondTechId() == t.getId() && o.getStatus() == Order.Status.SEND_INVITATION) {
+            return new JsonMessage(false, "NOT_ACCEPTED_INVITATION", "你还没有接受邀请");
+        } else if (o.getMainTechId() == t.getId() && o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
             return new JsonMessage(false, "INVITATION_NOT_FINISH", "你邀请的合作人还未接受或拒绝邀请");
-        } else if (o.getStatus() != Order.Status.IN_PROGRESS) { // 当第二个技师开始工作时,订单状态已进入IN_PROGRESS状态
-            o.setStatus(Order.Status.IN_PROGRESS);
-            orderService.save(o);
         } else if (constructionService.getByTechIdAndOrderId(t.getId(), orderId) != null) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已开始工作,请不要重复操作");
         }
 
-        // 拒绝邀请或忽略邀请时,将第二责任人置空
-        if (o.getStatus() == Order.Status.INVITATION_REJECTED ||
-                (o.getStatus() == Order.Status.SEND_INVITATION && ignoreInvitation)) {
+        // 忽略邀请时,将第二责任人置空
+        if (o.getStatus() == Order.Status.SEND_INVITATION && ignoreInvitation) {
             o.setSecondTechId(0);
-            orderService.save(o);
         }
+        o.setStatus(Order.Status.IN_PROGRESS); // 任一技师开始工作时,订单状态进入IN_PROGRESS状态; 订单所有技师完成工作时,订单结束
+        orderService.save(o);
 
         Construction construction = new Construction();
         construction.setOrderId(orderId);
@@ -245,6 +247,16 @@ public class ConstructionController {
             order.setStatus(Order.Status.FINISHED);
             orderService.save(order);
         }
+
+        // 更新余额及未支付订单数
+        TechStat stat = techStatService.getByTechId(tech.getId());
+        if (stat == null) {
+            stat = new TechStat();
+            stat.setTechId(tech.getId());
+        }
+        stat.setUnpaidOrders(stat.getUnpaidOrders() + 1);
+        stat.setBalance(stat.getBalance() + cons.getPayment());
+        techStatService.save(stat);
         return msg;
     }
 }

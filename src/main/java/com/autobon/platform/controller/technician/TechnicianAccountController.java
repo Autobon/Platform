@@ -5,6 +5,7 @@ import com.autobon.shared.RedisCache;
 import com.autobon.shared.SmsSender;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.TechnicianService;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/mobile/technician")
 public class TechnicianAccountController {
     @Autowired TechnicianService technicianService;
+    @Autowired DetailedTechnicianService detailedTechnicianService;
     @Autowired RedisCache redisCache;
     @Autowired SmsSender smsSender;
     @Autowired MultipartResolver resolver;
@@ -44,9 +46,9 @@ public class TechnicianAccountController {
     @Value("${com.autobon.gm-path}") String gmPath;
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public JsonMessage handleUploadException(MaxUploadSizeExceededException ex) {
-        return new JsonMessage(false, "UPLOAD_SIZE_EXCEED", "上传图片不能超过2MB");
+        return new JsonMessage(false, "UPLOAD_SIZE_EXCEED", "上传文件单个不能超过2MB,一次总共不能超过10MB");
     }
 
     /**
@@ -56,7 +58,7 @@ public class TechnicianAccountController {
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage getTechnicianInfo(HttpServletRequest request) {
         Technician technician = (Technician) request.getAttribute("user");
-        return new JsonMessage(true, "", "", technician);
+        return new JsonMessage(true, "", "", detailedTechnicianService.get(technician.getId()));
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

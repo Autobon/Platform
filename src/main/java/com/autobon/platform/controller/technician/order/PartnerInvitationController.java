@@ -2,8 +2,10 @@ package com.autobon.platform.controller.technician.order;
 
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.OrderService;
+import com.autobon.technician.service.TechStatService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.technician.entity.Technician;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +34,9 @@ public class PartnerInvitationController {
     @Autowired private TechnicianService technicianService;
     @Autowired private OrderService orderService;
     @Autowired private WorkItemService workItemService;
-    @Autowired private PushService pushService;
+    @Autowired private TechStatService techStatService;
+    @Autowired @Qualifier("PushServiceA")
+    private PushService pushService;
 
     /**
      * 发起合作邀请
@@ -103,13 +108,13 @@ public class PartnerInvitationController {
         Order order = orderService.get(orderId);
 
         if (order == null || order.getSecondTechId() != technician.getId()) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "你没有这个邀请, 或订单已改邀他人");
+            return new JsonMessage(false, "NO_SUCH_INVITATION", "无效操作: 订单已改邀他人或订单已强制开始");
         } else if (order.getStatus() == Order.Status.INVITATION_ACCEPTED) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已接受邀请");
         } else if (order.getStatus() == Order.Status.INVITATION_REJECTED) {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已拒绝邀请");
         } else if (order.getStatusCode() > Order.Status.IN_PROGRESS.getStatusCode() ) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单已开始工作或已结束");
+            return new JsonMessage(false, "ORDER_FINISHED", "订单已结束");
         }
 
         Technician mainTech = technicianService.get(order.getMainTechId());
@@ -120,6 +125,15 @@ public class PartnerInvitationController {
         if (accepted) {
             order.setStatus(Order.Status.INVITATION_ACCEPTED);
             orderService.save(order);
+            // 更新订单总数
+            TechStat stat = techStatService.getByTechId(technician.getId());
+            if (stat == null) {
+                stat = new TechStat();
+                stat.setTechId(technician.getId());
+            }
+            stat.setTotalOrders(stat.getTotalOrders() + 1);
+            techStatService.save(stat);
+
             String title = technician.getName() + "已接受你的邀请";
             map.put("title", title);
             map.put("action", "INVITATION_ACCEPTED");
