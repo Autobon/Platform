@@ -43,7 +43,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                     @Override
                     protected Resource getResource(String path, Resource location) throws IOException {
                         Resource resource;
-                        if (path.startsWith("uploads/")) {
+                        if (path.startsWith("api/")) {
+                            return null;
+                        } else if (path.startsWith("uploads/")) {
                             resource = new ServletContextResource(context, "/" + path);
                         } else {
                             resource = new ClassPathResource("/static/" + path);
