@@ -9,6 +9,7 @@ import com.autobon.technician.entity.DetailedTechnician;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.DetailedTechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,29 +51,28 @@ public class TechnicianController {
         }
     }
 
-    @RequestMapping(value="/mobile/technician/reportLocation",method = RequestMethod.POST)
+    @RequestMapping(value="/mobile/technician/reportLocation", method = RequestMethod.POST)
     public JsonMessage reportLocation(HttpServletRequest request,
-            @RequestParam("rtpostionLon") String rtpostionLon,
-            @RequestParam("rtpositionLat") String rtpositionLat){
-        JsonMessage jsonMessage =new JsonMessage(true,"setLocation");
-        Technician technician = (Technician) request.getAttribute("user");
-        int technicianId = technician.getId();
+            @RequestParam("positionLon") String positionLon,
+            @RequestParam("positionLat") String positionLat){
+        Technician tech = (Technician) request.getAttribute("user");
+
         //查询最近的位置信息
-        Location latestLocation = locationService.findLatestLocation(technicianId);
-        Date nowDate = new Date();
-        Location location = new Location();
-        location.setAddTime(nowDate);
-        location.setRtpositionLat(rtpositionLat);
-        location.setRtpositionLon(rtpostionLon);
-        location.setTechnicianId(technicianId);
-        if(latestLocation!=null) {
-            Date latestDate = latestLocation.getAddTime();
-            //判断时间间隔是否为一分钟
-            Long minCount = (nowDate.getTime() - latestDate.getTime()) / (1000 * 60);
-            if (minCount < 1) return jsonMessage;
+        Page<Location> locations = locationService.findByTechId(tech.getId(), 1, 1);
+        if (locations.getNumberOfElements() > 0) {
+            Location l = locations.getContent().get(0);
+            if (new Date().getTime() - l.getCreateAt().getTime() < 60*1000) {
+                return new JsonMessage(false, "TOO_FREQUENT_REQUEST", "请求间隔不得少于1分钟");
+            }
         }
+
+        Location location = new Location();
+        location.setTechId(tech.getId());
+        location.setCreateAt(new Date());
+        location.setPositionLat(positionLat);
+        location.setPositionLon(positionLon);
         locationService.save(location);
-        return jsonMessage;
+        return new JsonMessage(true);
     }
 
 

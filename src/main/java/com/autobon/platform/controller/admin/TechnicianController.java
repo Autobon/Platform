@@ -107,13 +107,13 @@ public class TechnicianController {
                     return new JsonMessage(false, "INSUFFICIENT_PARAM", "请填写认证失败原因");
                 }
                 tech.setStatus(Technician.Status.REJECTED);
+                tech.setVerifyMsg(verifyMsg);
                 String title = "你的技师资格认证失败: " + verifyMsg;
                 pushService.pushToSingle(tech.getPushId(), title,
                         "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
                         3*24*3600);
             }
             tech.setVerifyAt(new Date());
-            tech.setVerifyMsg(verifyMsg);
             technicianService.save(tech);
             return new JsonMessage(true);
         } else {

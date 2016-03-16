@@ -12,20 +12,15 @@ public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
     private int id;
 
-    @Column(name = "add_time", nullable = false, insertable = true, updatable = true)
-    private Date addTime;
+    @Column private Date createAt;
 
-    @Column(name = "rtposition_lon", nullable = true, insertable = true, updatable = true)
-    private String rtpositionLon;
+    @Column private String positionLon;
 
-    @Column(name = "rtposition_lat", nullable = true, insertable = true, updatable = true)
-    private String rtpositionLat;
+    @Column private String positionLat;
 
-    @Column(name = "technician_id", nullable = true, insertable = true, updatable = true)
-    private int technicianId;
+    @Column private int techId;
 
     public int getId() {
         return id;
@@ -35,35 +30,35 @@ public class Location {
         this.id = id;
     }
 
-    public Date getAddTime() {
-        return addTime;
+    public Date getCreateAt() {
+        return createAt;
     }
 
-    public void setAddTime(Date addTime) {
-        this.addTime = addTime;
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
     }
 
-    public String getRtpositionLon() {
-        return rtpositionLon;
+    public String getPositionLon() {
+        return positionLon;
     }
 
-    public void setRtpositionLon(String rtpositionLon) {
-        this.rtpositionLon = rtpositionLon;
+    public void setPositionLon(String positionLon) {
+        this.positionLon = positionLon;
     }
 
-    public String getRtpositionLat() {
-        return rtpositionLat;
+    public String getPositionLat() {
+        return positionLat;
     }
 
-    public void setRtpositionLat(String rtpositionLat) {
-        this.rtpositionLat = rtpositionLat;
+    public void setPositionLat(String positionLat) {
+        this.positionLat = positionLat;
     }
 
-    public int getTechnicianId() {
-        return technicianId;
+    public int getTechId() {
+        return techId;
     }
 
-    public void setTechnicianId(int technicianId) {
-        this.technicianId = technicianId;
+    public void setTechId(int techId) {
+        this.techId = techId;
     }
 }

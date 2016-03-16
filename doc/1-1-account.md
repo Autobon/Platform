@@ -473,18 +473,29 @@ POST /api/mobile/technician/reportLocation
 
 | 参数名称 | 是否必须 | 说明 | 举例 |
 | ------ | -------- | ---- | --- |
-| rtpostionLon| 是 | 实时位置经度 | 144.4 |
+| positionLon| 是 | 实时位置经度 | 144.4 |
 | positionLat | 是 | 实时位置维度 | 34.4 |
 
 ### 返回数据
 
+#### a.请求成功
+
 ```
 {
     "result": true,
-    "message": "setLocation",
+    "message": "",
     "error": "",
     "data": null
 }
 ```
 
-当前报告位置时间与最近报告的时间间隔不能小于1分钟, 1分钟内多次提交以第一次提交为准.
+#### b.请求间隔不得少于1分钟
+
+```
+{
+    "result": true,
+    "message": "请求间隔不得少于1分钟",
+    "error": "TOO_FREQUENT_REQUEST",
+    "data": null
+}
+```
