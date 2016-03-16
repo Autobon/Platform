@@ -79,6 +79,9 @@ public class Cooperator implements UserDetails {
 
     @Column private Date createTime; //注册时间
 
+    @Column
+    private Boolean isMain; //是否主账户
+
     public  Cooperator(){
         this.createTime=new Date();
     }
@@ -305,6 +308,14 @@ public class Cooperator implements UserDetails {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Boolean getIsMain() {
+        return isMain;
+    }
+
+    public void setIsMain(Boolean isMain) {
+        this.isMain = isMain;
     }
 
     public static String encryptPassword(String password) {
