@@ -24,10 +24,28 @@ public class GetuiConfig {
     @Value("${com.autobon.getui.a.masterSecret}")
     private String masterSecretA;
 
+    //coop
+    @Value("${com.autobon.getui.b.host}")
+    private String hostB;
+    @Value("${com.autobon.getui.b.appId}")
+    private String appIdB;
+    @Value("${com.autobon.getui.b.appKey}")
+    private String appKeyB;
+    @Value("${com.autobon.getui.b.appSecret}")
+    private String appSecretB;
+    @Value("${com.autobon.getui.b.masterSecret}")
+    private String masterSecretB;
+
     @Bean(name = "PushServiceA")
     public PushService getPushServiceA() throws IOException {
         return new PushService(
                 new GtConfig(hostA, appIdA, appKeyA, appSecretA, masterSecretA));
+    }
+
+    @Bean(name = "PushServiceB")
+    public PushService getPushServiceB() throws IOException {
+        return new PushService(
+                new GtConfig(hostB, appIdB, appKeyB, appSecretB, masterSecretB));
     }
 
 }
