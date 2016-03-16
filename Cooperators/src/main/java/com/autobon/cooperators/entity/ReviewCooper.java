@@ -27,6 +27,9 @@ public class ReviewCooper {
     @Column
     private String resultDesc;
 
+    @Column
+    private Boolean result;
+
     public int getId() {
         return id;
     }
@@ -65,5 +68,13 @@ public class ReviewCooper {
 
     public void setResultDesc(String resultDesc) {
         this.resultDesc = resultDesc;
+    }
+
+    public Boolean getResult() {
+        return result;
+    }
+
+    public void setResult(Boolean result) {
+        this.result = result;
     }
 }
