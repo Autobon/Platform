@@ -4,15 +4,18 @@ import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.entity.ReviewCooper;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
+import com.autobon.getui.PushService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.staff.entity.Staff;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -34,6 +37,11 @@ public class CooperatorController {
 
     @Autowired
     private ReviewCooperService reviewCooperService;
+
+    @Autowired
+    @Qualifier
+    ("PushServiceB")
+    PushService pushService;
 
     @RequestMapping(value = "/coopList", method = RequestMethod.POST)
     public JsonMessage coopList(@RequestParam(value="fullname",required = false) String fullname,
@@ -57,8 +65,9 @@ public class CooperatorController {
     @RequestMapping(value="/checkCoop/{coopId:[\\d]+}",method = RequestMethod.POST)
     public JsonMessage checkCoop(HttpServletRequest request,
                                  @PathVariable("coopId") int coopId,
-                                 @RequestParam(value = "statusCode") int statusCode,
-                                 @RequestParam(value = "resultDesc",required = false) String resultDesc){
+                                 @RequestParam("verified") boolean verified,
+                                // @RequestParam(value = "statusCode") int statusCode,
+                                 @RequestParam(value = "resultDesc",required = false) String resultDesc) throws IOException {
         Cooperator cooperator = cooperatorService.get(coopId);
         if (cooperator != null) {
             ReviewCooper reviewCooper = new ReviewCooper();
@@ -66,12 +75,28 @@ public class CooperatorController {
             reviewCooper.setReviewTime(new Date());
             Staff staff = (Staff) request.getAttribute("user");
             reviewCooper.setCheckedBy(staff.getName());
-            if(statusCode == 2){
+            if(verified){
                 if(resultDesc!=null){
                     reviewCooper.setResultDesc(resultDesc);
                 }
+                cooperator.setStatusCode(2);
+                String title = "你已通过合作商户资格认证";
+                pushService.pushToSingle(cooperator.getPushId(), title,
+                        "{\"action\":\"VERIFICATION_SUCCEED\",\"title\":\"" + title + "\"}",
+                        3*24*3600);
+            }else{
+                if (resultDesc.equals("")) {
+                    return new JsonMessage(false, "INSUFFICIENT_PARAM", "请填写认证失败原因");
+                }
+                cooperator.setStatusCode(1);
+                String title = "你的合作商户资格认证失败: " + resultDesc;
+                pushService.pushToSingle(cooperator.getPushId(), title,
+                        "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
+                        3*24*3600);
+
             }
             reviewCooperService.save(reviewCooper);
+            cooperatorService.save(cooperator);
             return new JsonMessage(true,"","",reviewCooper);
         } else {
             return new JsonMessage(false, "ILLEGAL_PARAM", "没有这个合作商户");
