@@ -48,7 +48,7 @@ public class TechnicianControllerTest extends MvcTest {
     @Test
     public void reportLocation() throws Exception {
         mockMvcS.perform(post("/api/mobile/technician/reportLocation")
-                .param("postionLon","144.4")
+                .param("positionLon","144.4")
                 .param("positionLat", "34.4")
                 .cookie(new Cookie("autoken",token)))
             .andDo(MockMvcResultHandlers.print())
