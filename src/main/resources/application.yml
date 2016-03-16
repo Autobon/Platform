@@ -5,6 +5,12 @@ com.autobon:
         appKey: ESlofHVour7DmT7xy7cnJ9
         appSecret: 1VX09PPTcz7fdHBNYZVeB2
         masterSecret: c9qs7jpn6s7dAPDkFr23W4
+    getui.b:
+        host: http://sdk.open.api.igexin.com/serviceex
+        appId: IED5iJnuVu8dklsGy35E54
+        appKey: 22mn0WmsqS6k7omIUytIo4
+        appSecret: QIBL2KCDIX5wbklRBLIxUA
+        masterSecret: bMG7Hlt8Vd8sfifVetKqg4
     sms:
         appKey: 23326353
         appSecret: 6bee28f8cd8e35b3f7448f45cc7bada9

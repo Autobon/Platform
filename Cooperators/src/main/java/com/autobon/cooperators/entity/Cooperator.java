@@ -79,6 +79,12 @@ public class Cooperator implements UserDetails {
 
     @Column private Date createTime; //注册时间
 
+    @Column
+    private Boolean isMain; //是否主账户
+
+    @Column
+    private String pushId; // 个推客户端ID, 由手机端更新
+
     public  Cooperator(){
         this.createTime=new Date();
     }
@@ -305,6 +311,22 @@ public class Cooperator implements UserDetails {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Boolean getIsMain() {
+        return isMain;
+    }
+
+    public void setIsMain(Boolean isMain) {
+        this.isMain = isMain;
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 
     public static String encryptPassword(String password) {

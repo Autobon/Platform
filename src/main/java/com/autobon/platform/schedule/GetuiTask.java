@@ -19,12 +19,16 @@ public class GetuiTask {
     @Autowired @Qualifier("PushServiceA")
     private PushService pushServiceA;
 
+    @Autowired @Qualifier("PushServiceB")
+    private PushService pushServiceB;
+
     // 每隔1小时连接个推服务器一次,否则可能出现sigerr错误
     @Async
     @Scheduled(fixedRate = 3600*1000)
     public void connectGetui() {
         try {
             pushServiceA.connect();
+            pushServiceB.connect();
             log.info("连接个推服务器成功");
         } catch (Exception e) {
             log.info("连接个推服务器失败");
