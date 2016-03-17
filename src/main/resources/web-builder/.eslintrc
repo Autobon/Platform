@@ -8,6 +8,7 @@
     "indent": [2, 4],
     "one-var": 0,
     "guard-for-in": 0,
+    "func-names": 0,
     "comma-dangle": [2, "always-multiline"]
   }
 }

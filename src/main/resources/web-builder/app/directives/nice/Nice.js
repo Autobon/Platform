@@ -9,19 +9,21 @@ export default class Nice extends Injector {
 
         this.template = template;
         this.restrict = 'E';
-        this.scope = '';
+        this.scope = {};
         this.link.$inject = ['scope'];
+        this.counter = 1;
     }
 
     link(scope) {
         scope.onClick = () => this.onClick();
         scope.text = 'Directives are working';
-        scope.counter = 1;
+        scope.counter = 0;
     }
 
     onClick() {
         const { scope } = this.link.$injected;
 
-        scope.text = 'Directives events are working too (' + scope.counter++ + ')';
+        scope.text = 'Directives events are working too (' +
+            [scope.counter++, this.counter++] + ')';
     }
 }

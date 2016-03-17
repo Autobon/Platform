@@ -1,4 +1,3 @@
-import 'core-js/shim'; // polyfill for older browsers
 import angular from 'angular';
 import 'angular-route';
 import 'angular-cookies';
@@ -7,21 +6,27 @@ import 'angular-sanitize';
 import 'angular-ui-router';
 
 import directives from './directives';
-import controllers from './controllers';
+import controllers, {templateCache} from './controllers';
 import services from './services';
-
-import routeConfig from './config/route';
-import httpConfig from './config/http';
+import config from './config';
 
 export const App = 'app';
 
-export default angular
-    .module(App, ['ngRoute', 'ngResource', 'ngCookies', 'ngSanitize', 'ui.router',
-        directives, services, controllers])
-    .config(routeConfig)
-    .config(httpConfig);
+const app = angular.module(App, ['ngRoute', 'ngResource', 'ngCookies',
+                'ngSanitize', 'ui.router', directives, services, controllers])
+            .provider('template', function() {
+                this.$get = () => {return templateCache;};
+            });
 
+config.forEach(c => {
+    app.config(c);
+});
+
+
+import 'bootstrap/dist/css/bootstrap.css';
 window.name = 'NG_DEFER_BOOTSTRAP!';
 angular.element().ready(() => {
     angular.resumeBootstrap([App]);
 });
+
+export default app;

@@ -1,6 +1,5 @@
-package com.autobon.test.technician;
+package com.autobon.test;
 
-import com.autobon.test.MvcTest;
 import org.junit.Test;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -16,7 +15,7 @@ public class PubControllerTest extends MvcTest {
 
     @Test
     public void getSkills() throws Exception {
-        this.mockMvc.perform(get("/api/mobile/pub/technician/skills"))
+        this.mockMvc.perform(get("/api/pub/technician/skills"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
@@ -24,7 +23,7 @@ public class PubControllerTest extends MvcTest {
 
     @Test
     public void getOrderTypes() throws Exception {
-        this.mockMvc.perform(get("/api/mobile/pub/orderTypes"))
+        this.mockMvc.perform(get("/api/pub/orderTypes"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
@@ -32,7 +31,7 @@ public class PubControllerTest extends MvcTest {
 
     @Test
     public void getWorkItems() throws Exception{
-        this.mockMvc.perform(get("/api/mobile/pub/technician/workItems")
+        this.mockMvc.perform(get("/api/pub/technician/workItems")
                 .param("orderType", "1"))
             .andExpect(status().isOk())
             .andDo(MockMvcResultHandlers.print())

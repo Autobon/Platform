@@ -1,9 +1,31 @@
 # 公共数据接口
 
-## 1. 获取技师技能项列表
+## 1. 发送验证短信
+向指定手机号发送验证码短信.
+### URL及请求方法
+GET /api/mobile/verifySms
+### 请求参数
+请求参数均为URL参数.
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| phone | 手机号 | 18812345678 |
+
+### 用例
+
+
+| Method | URL | Header | Body | Result |
+| ------ | --- | ------ | ---- | ------ |
+| GET | /api/mobile/verifySms?phone=18812345678 | | | {"result":true,"message":"","error":null,"data":null} |
+
+### 完成时间
+完成于: **2016年2月15日**
+更新于: **2016年2月15日**
+
+## 2. 获取技师技能项列表
 获取技师认证时的技能选项列表
 ### URL及请求方法
-`GET /api/mobile/pub/technician/skills`
+`GET /api/pub/technician/skills`
 
 ### 请求参数
 无
@@ -36,10 +58,10 @@
 }
 ```
 
-## 2. 获取订单类型列表
+## 3. 获取订单类型列表
 获取订单种类列表
 ### URL及请求方法
-`GET /api/mobile/pub/orderTypes`
+`GET /api/pub/orderTypes`
 
 ### 请求参数
 无
@@ -72,11 +94,11 @@
 }
 ```
 
-## 3. 获取订单工作项
+## 4. 获取订单工作项
 获取订单工作项列表
 
 ### URL及请求方法
-GET /api/mobile/pub/technician/workItems
+GET /api/pub/technician/workItems
 
 ### 请求参数
 
