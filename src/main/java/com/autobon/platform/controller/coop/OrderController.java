@@ -1,5 +1,7 @@
 package com.autobon.platform.controller.coop;
 
+import com.autobon.cooperators.entity.Cooperator;
+import com.autobon.getui.PushService;
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
 import com.autobon.technician.entity.TechStat;
@@ -7,7 +9,12 @@ import com.autobon.order.service.CommentService;
 import com.autobon.order.service.OrderService;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.shared.JsonMessage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,9 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.regex.Pattern;
 
 /**
  * Created by dave on 16/3/3.
@@ -25,6 +37,11 @@ import java.util.Date;
 @RestController("coopOrderController")
 @RequestMapping("/api/mobile/coop/order")
 public class OrderController {
+    private static Logger log = LoggerFactory.getLogger(OrderController.class);
+
+    @Autowired @Qualifier("PushServiceA")
+    PushService pushServiceA;
+
     @Autowired OrderService orderService;
     @Autowired CommentService commentService;
     @Autowired TechStatService techStatService;
@@ -95,4 +112,39 @@ public class OrderController {
 
         return jsonMessage;
     }
+
+    @RequestMapping(value="/createOrder",method = RequestMethod.POST)
+    public JsonMessage createOrder(HttpServletRequest request,
+                                @RequestParam("photo") String photo,
+                                @RequestParam("remark") String remark,
+                                @RequestParam("orderTime") String orderTime,
+                                @RequestParam("orderType") int orderType) throws Exception {
+
+        Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
+            return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
+
+        Order order = new Order();
+        order.setCreatorType(1);
+        order.setCreatorId(cooperator.getId());
+        order.setCreatorName(cooperator.getFullname());
+        order.setPhoto(photo);
+        order.setRemark(remark);
+        order.setOrderTime(Date.from(
+                LocalDateTime.from(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse(orderTime))
+                        .atZone(ZoneId.systemDefault()).toInstant()));
+        order.setOrderType(orderType);
+        orderService.save(order);
+
+        String msgTitle = "你收到新订单推送消息";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "NEW_ORDER");
+        map.put("order", order);
+        map.put("title", msgTitle);
+        boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
+        if (!result) log.info("订单: " + order.getOrderNum() + "的推送消息发送失败");
+        return new JsonMessage(true, "", "", order);
+
+    }
+
 }
