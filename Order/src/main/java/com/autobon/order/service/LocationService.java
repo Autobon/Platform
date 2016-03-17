@@ -3,9 +3,10 @@ package com.autobon.order.service;
 import com.autobon.order.entity.Location;
 import com.autobon.order.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by yuh on 2016/3/1.
@@ -14,19 +15,13 @@ import java.util.List;
 public class LocationService {
 
     @Autowired
-    private LocationRepository locationRepository;
+    private LocationRepository repository;
 
-    public void save(Location location) {
-        locationRepository.save(location);
+    public Location save(Location location) {
+        return repository.save(location);
     }
 
-    public Location findLatestLocation(int technicianId) {
-        List<Location> locationList = locationRepository.findTop10ByTechnicianIdOrderByAddTimeDesc(technicianId);
-        if(locationList.size()>0){
-            return locationList.get(0);
-        }else{
-            return null;
-        }
-
+    public Page<Location> findByTechId(int techId, int page, int pageSize) {
+        return repository.findByTechId(techId, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 }

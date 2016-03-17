@@ -87,7 +87,9 @@ public class ConstructionController {
         Order order = orderService.get(orderId);
         Construction cons = constructionService.getByTechIdAndOrderId(tech.getId(), orderId);
 
-        if (order.getStatus() == Order.Status.CANCELED) {
+        if (order == null) {
+            return new JsonMessage(false, "NO_ORDER", "没有这个订单");
+        } else if (order.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ORDER_CANCELED", "订单已取消");
         } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
             return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始工作或已结束工作");

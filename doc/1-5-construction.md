@@ -147,7 +147,7 @@ data字段是一个施工单对象
 "error": "ILLEGAL_OPERATION",
 "data": null}
 ```
-### e.你已签到, 请不要重复操作
+#### e.你已签到, 请不要重复操作
 
 ```
 {"result": false,
@@ -155,6 +155,16 @@ data字段是一个施工单对象
 "error": "REPEATED_OPERATION",
 "data": null}
 ```
+
+#### f.没有这个订单
+
+```
+{"result": false,
+"message": "没有这个订单",
+"error": "NO_ORDER",
+"data": null}
+```
+
 
 ## 3.上传施工图片
 上传工作前和工作后图片
