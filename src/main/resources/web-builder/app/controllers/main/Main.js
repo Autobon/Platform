@@ -1,20 +1,23 @@
 import './main.less';
 import angular from 'angular';
-import { Inject } from 'angular-es6';
+import { Injector } from 'ngES6';
 
-export default class Main extends Inject {
-    static $inject = ['$scope', '$http'];
+export default class Main extends Injector {
+    static $inject = ['$scope', 'LoginService'];
 
     constructor(...args) {
         super(...args);
-        let {$scope} = this.$inject;
-
-        $scope.count = 0;
+        this.attachMethodsTo(this.$injected.$scope);
+        this.count = 0;
     }
 
-    onThisClick($event) {
-        console.log(Main.$instance);
-        console.log(Main.$injected);
+    onclick($event) {
+        const {LoginService} = this.$injected;
+
         angular.element($event.target).text('hello ' + ++this.count);
+        LoginService.login('18827075338', '123456').success(data => {
+            console.log(data);
+        });
     }
+
 }

@@ -1,7 +1,7 @@
 import template from './nice.html';
-import { Inject } from 'angular-es6';
+import { Injector } from 'ngES6';
 
-export default class Nice extends Inject {
+export default class Nice extends Injector {
     static $inject = ['$http'];
 
     constructor(...args) {
@@ -9,16 +9,19 @@ export default class Nice extends Inject {
 
         this.template = template;
         this.restrict = 'E';
+        this.scope = '';
     }
 
     link(scope) {
-        scope.onClick = () => this.onClick();
+        let self = this;
+        scope.onClick = () => this.onClick.apply(self);
         scope.text = 'Directives are working';
+        scope.counter = 1;
     }
 
     onClick() {
-        const { scope } = this.link.$inject;
+        const { scope } = this.link.$injected;
 
-        scope.text = 'Directives events are working too';
+        scope.text = 'Directives events are working too (' + scope.counter++ + ')';
     }
 }

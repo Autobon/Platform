@@ -1,5 +1,5 @@
-import { load } from 'angular-es6';
+import { loader } from 'ngES6';
 const MODULE_NAME = 'app.controllers';
 
-load.controllers(require.context('./', true, /.*\.js$/), MODULE_NAME);
+loader.controllers(require.context('./', true, /^(?!\.\/index\.js$).+\.js$/), MODULE_NAME);
 export default MODULE_NAME;

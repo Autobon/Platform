@@ -7,8 +7,8 @@ export const production = {
     entry   : {
         app   : [path.resolve(__dirname, '../app/main.js')],
         vendor: ['core-js/shim', 'console-polyfill',
-            'angular', 'angular-route', 'angular-cookies',
-            'angular-ui-bootstrap', 'angular-resource', 'angular-es6'],
+            'angular', 'angular-route', 'angular-cookies', 'angular-resource',
+            'angular-sanitize', 'angular-ui-router', 'angular-ui-bootstrap'],
     },
     output  : {
         path      : path.resolve(__dirname, '../../static'),

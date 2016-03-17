@@ -6,21 +6,20 @@ import 'angular-resource';
 import 'angular-sanitize';
 import 'angular-ui-router';
 
-import './directives';
+import directives from './directives';
 import controllers from './controllers';
 import services from './services';
 
 import routeConfig from './config/route';
-import {exception, compileProvider} from 'angular-es6';
+import httpConfig from './config/http';
 
 export const App = 'app';
 
 export default angular
     .module(App, ['ngRoute', 'ngResource', 'ngCookies', 'ngSanitize', 'ui.router',
-        services, controllers])
-    .config(exception)
-    .config(compileProvider)
-    .config(routeConfig);
+        directives, services, controllers])
+    .config(routeConfig)
+    .config(httpConfig);
 
 window.name = 'NG_DEFER_BOOTSTRAP!';
 angular.element().ready(() => {
