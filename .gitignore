@@ -16,14 +16,3 @@ build/
 bundle.js
 vendor.bundle.js
 *.js.map
-src/main/resources/static/vendor.bundle.js.map
-
-src/main/resources/static/bundle.js.map
-
-src/main/resources/static/bundle.js
-
-src/main/resources/static/bundle.js.map
-
-src/main/resources/static/bundle.js
-
-src/main/resources/static/vendor.bundle.js.map
