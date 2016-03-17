@@ -360,7 +360,7 @@ public class Cooperator implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return this.statusCode == 1;
+        return this.statusCode != 3;
     }
 
     @JsonIgnore
