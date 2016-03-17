@@ -10,11 +10,11 @@ export default class Nice extends Injector {
         this.template = template;
         this.restrict = 'E';
         this.scope = '';
+        this.link.$inject = ['scope'];
     }
 
     link(scope) {
-        let self = this;
-        scope.onClick = () => this.onClick.apply(self);
+        scope.onClick = () => this.onClick();
         scope.text = 'Directives are working';
         scope.counter = 1;
     }

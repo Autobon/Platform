@@ -97,7 +97,7 @@
         "voteRate": 0,
         "skill": null,
         "pushId": null,
-        "statusCode": "VERIFIED"
+        "status": "VERIFIED"
     },
     "partner": {
         "id": 5,
@@ -118,7 +118,7 @@
         "voteRate": 0,
         "skill": null,
         "pushId": null,
-        "statusCode": "VERIFIED"
+        "status": "VERIFIED"
     }
 }
 ```
@@ -166,7 +166,7 @@
         "voteRate": 0,
         "skill": null,
         "pushId": null,
-        "statusCode": "VERIFIED"
+        "status": "VERIFIED"
     },
     "partner": {
         "id": 5,
@@ -187,7 +187,7 @@
         "voteRate": 0,
         "skill": null,
         "pushId": null,
-        "statusCode": "VERIFIED"
+        "status": "VERIFIED"
     }
 }
 ```
@@ -235,7 +235,7 @@
         "voteRate": 0,
         "skill": null,
         "pushId": null,
-        "statusCode": "VERIFIED"
+        "status": "VERIFIED"
     },
     "partner": {
         "id": 5,
@@ -256,7 +256,7 @@
         "voteRate": 0,
         "skill": null,
         "pushId": null,
-        "statusCode": "VERIFIED"
+        "status": "VERIFIED"
     }
 }
 ```

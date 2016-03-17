@@ -7,9 +7,23 @@
 .gradle/
 .idea/
 .vscode/
-.DS_Store
+**/.DS_Store
 
 **/node_modules/
 build/
 **/*-dev.yml
 /*.properties
+bundle.js
+vendor.bundle.js
+*.js.map
+src/main/resources/static/vendor.bundle.js.map
+
+src/main/resources/static/bundle.js.map
+
+src/main/resources/static/bundle.js
+
+src/main/resources/static/bundle.js.map
+
+src/main/resources/static/bundle.js
+
+src/main/resources/static/vendor.bundle.js.map
