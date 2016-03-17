@@ -65,4 +65,17 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.result", is(true)));
     }
 
+
+    @Test
+    public void createOrder() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/order/createOrder")
+                .param("photo", "a/a.jpg")
+                .param("remark", "remark is here")
+                .param("orderTime", "2016-03-01 12:02")
+                .param("orderType", "1")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
 }
