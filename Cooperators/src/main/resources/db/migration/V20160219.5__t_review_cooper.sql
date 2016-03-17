@@ -4,5 +4,6 @@ CREATE TABLE `t_review_cooper` (
   `review_time` datetime DEFAULT NULL COMMENT '审核时间',
   `checked_by` varchar(30) DEFAULT NULL COMMENT '审核人',
   `result_desc` varchar(255) DEFAULT NULL COMMENT '审核失败原因描述',
+  result tinyint(1) DEFAULT TRUE  COMMENT '审核是否成功,默认成功true',
   PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8 COMMENT='合作商户审核表';

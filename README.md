@@ -10,7 +10,8 @@
 
 # 合作商户端
 1. [帐户及登录](doc/3-1-account.md)
-1. [订单](doc/3-2-order.md)
+2. [订单](doc/3-2-order.md)
+3. [合作商户](doc/3-3-cooper.md)
 
 # 后台端API
 1. [账号及登录](doc/2-1-staff.md)

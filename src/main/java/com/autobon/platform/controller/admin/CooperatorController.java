@@ -76,10 +76,8 @@ public class CooperatorController {
             Staff staff = (Staff) request.getAttribute("user");
             reviewCooper.setCheckedBy(staff.getName());
             if(verified){
-                if(resultDesc!=null){
-                    reviewCooper.setResultDesc(resultDesc);
-                }
-                cooperator.setStatusCode(2);
+                cooperator.setStatusCode(1);
+                reviewCooper.setResult(true);
                 String title = "你已通过合作商户资格认证";
                 pushService.pushToSingle(cooperator.getPushId(), title,
                         "{\"action\":\"VERIFICATION_SUCCEED\",\"title\":\"" + title + "\"}",
@@ -88,7 +86,11 @@ public class CooperatorController {
                 if (resultDesc.equals("")) {
                     return new JsonMessage(false, "INSUFFICIENT_PARAM", "请填写认证失败原因");
                 }
-                cooperator.setStatusCode(1);
+                if(resultDesc!=null){
+                    reviewCooper.setResultDesc(resultDesc);
+                }
+                cooperator.setStatusCode(2);
+                reviewCooper.setResult(false);
                 String title = "你的合作商户资格认证失败: " + resultDesc;
                 pushService.pushToSingle(cooperator.getPushId(), title,
                         "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
