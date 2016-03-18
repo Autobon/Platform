@@ -4,6 +4,8 @@ import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
+import com.autobon.order.service.DetailedOrderService;
+import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.order.service.CommentService;
 import com.autobon.order.service.OrderService;
@@ -45,6 +47,8 @@ public class OrderController {
     @Autowired OrderService orderService;
     @Autowired CommentService commentService;
     @Autowired TechStatService techStatService;
+    @Autowired
+    DetailedOrderService detailedOrderService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -146,5 +150,36 @@ public class OrderController {
         return new JsonMessage(true, "", "", order);
 
     }
+
+    @RequestMapping(value="/listUnfinished",method = RequestMethod.POST)
+    public JsonMessage listUnfinished(HttpServletRequest request,
+                                      @RequestParam(value = "page", defaultValue = "1") int page,
+                                      @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        return new JsonMessage(true, "", "",
+                new JsonPage<>(detailedOrderService.findUnfinishedByCoopId(cooperator.getId(), page, pageSize)));
+
+    }
+
+    @RequestMapping(value="/listFinished",method = RequestMethod.POST)
+    public JsonMessage listFinished(HttpServletRequest request,
+                                      @RequestParam(value = "page", defaultValue = "1") int page,
+                                      @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        return new JsonMessage(true, "", "",
+                new JsonPage<>(detailedOrderService.findFinishedByCoopId(cooperator.getId(), page, pageSize)));
+
+    }
+
+    @RequestMapping(value="/listUncomment",method = RequestMethod.POST)
+    public JsonMessage listUncomment(HttpServletRequest request,
+                                      @RequestParam(value = "page", defaultValue = "1") int page,
+                                      @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        return new JsonMessage(true, "", "",
+                new JsonPage<>(detailedOrderService.findUncommentByCoopId(cooperator.getId(), page, pageSize)));
+
+    }
+
 
 }
