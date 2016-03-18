@@ -6,9 +6,9 @@ export const production = {
     context : path.resolve(__dirname, '..'),
     entry   : {
         app   : [path.resolve(__dirname, '../app/main.js')],
-        vendor: ['core-js/shim', 'console-polyfill',
-            'angular', 'angular-route', 'angular-cookies', 'angular-resource',
-            'angular-sanitize', 'angular-ui-router', 'angular-ui-bootstrap'],
+        vendor: ['angular', 'angular-route', 'angular-animate',
+                'angular-ui-router', 'angular-ui-bootstrap',
+                'jquery'],
     },
     output  : {
         path      : path.resolve(__dirname, '../../static'),
@@ -30,7 +30,7 @@ export const production = {
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel'},
             {test: /\.json$/, loader: 'json'},
             {test: /\.html$/, exclude: /node_modules/, loader: 'html'},
-            {test: /\.(png|woff|gif)$/, loader: 'url?limit=100000'},
+            {test: /\.(jpg|png|woff|gif)$/, loader: 'url?limit=100000'},
             {test: /\.(woff2|svg|ttf|eot)$/, loader: 'file'}
         ],
     },
@@ -41,6 +41,10 @@ export const production = {
     },
     progress: true,
     plugins : [
+        new webpack.ProvidePlugin({
+            $     : "jquery",
+            jQuery: "jquery"
+        }),
         new webpack.ResolverPlugin(
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
         ),
@@ -60,7 +64,7 @@ export const production = {
         }),
         // print a webpack progress
         new webpack.ProgressPlugin((percentage, message) => {
-            const MOVE_LEFT = new Buffer('1b5b3130303044', 'hex').toString();
+            const MOVE_LEFT  = new Buffer('1b5b3130303044', 'hex').toString();
             const CLEAR_LINE = new Buffer('1b5b304b', 'hex').toString();
 
             process.stdout.write(CLEAR_LINE + Math.round(percentage * 100) + '% :' + message + MOVE_LEFT);
@@ -71,12 +75,16 @@ export const production = {
 
 export const development = {
     ...production,
-    output  : {
+    output : {
         path      : path.resolve(__dirname, '../build'),
         publicPath: '/',
         filename  : 'bundle.js',
     },
     plugins: [
+        new webpack.ProvidePlugin({
+            $     : "jquery",
+            jQuery: "jquery"
+        }),
         new webpack.ResolverPlugin(
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
         ),
@@ -89,7 +97,7 @@ export const development = {
         }),
         // print a webpack progress
         new webpack.ProgressPlugin((percentage, message) => {
-            const MOVE_LEFT = new Buffer('1b5b3130303044', 'hex').toString();
+            const MOVE_LEFT  = new Buffer('1b5b3130303044', 'hex').toString();
             const CLEAR_LINE = new Buffer('1b5b304b', 'hex').toString();
 
             process.stdout.write(CLEAR_LINE + Math.round(percentage * 100) + '% :' + message + MOVE_LEFT);
