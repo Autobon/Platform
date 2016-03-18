@@ -1,6 +1,29 @@
-<div class="page-console">
-    <div class="page-header">
-
+<div class="page-console page-admin">
+    <div class="console-header">
+        <div class="pull-left logo"></div>
+        <ul class="pull-right list-inline top-menu">
+            <li>admin</li>
+            <li>管理员</li>
+            <li>
+                <div uib-dropdown is-open="false">
+                    <a href id="top-menu-settings" class="top-menu-settings" uib-dropdown-toggle></a>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="top-menu-settings">
+                        <li role="menuitem"><a href="#">帐号管理</a></li>
+                        <li class="divider"></li>
+                        <li role="menuitem"><a href="#">消息管理</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href class="logout"></a></li>
+        </ul>
     </div>
-
+    <ul class="console-nav list-inline">
+        <li><a href="#">首页</a></li><li>
+            <a href="#">订单管理</a></li><li>
+            <a href="#">商户管理</a></li><li>
+            <a href="#">技师管理</a></li><li>
+            <a href="#">财务管理</a></li><li>
+            <a href="#">统计分析</a>
+        </li>
+    </ul>
 </div>

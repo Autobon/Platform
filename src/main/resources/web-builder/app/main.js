@@ -25,8 +25,8 @@ config.forEach(c => {
     app.config(c);
 });
 
-
 import 'bootstrap/dist/css/bootstrap.css';
+import './styles/common.scss';
 window.name = 'NG_DEFER_BOOTSTRAP!';
 angular.element().ready(() => {
     angular.resumeBootstrap([App]);

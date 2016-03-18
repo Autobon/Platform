@@ -1,0 +1,117 @@
+.page-console {
+  background-color: #dcd4bd;
+
+  .console-header {
+    width: 100%;
+    height: 64px;
+    background: url("image/bg-header.jpg") no-repeat;
+    background-size: cover;
+
+    .logo {
+      width: 251px;
+      height: 40px;
+      margin-top: 15px;
+      margin-left: 15px;
+      background: url("image/logo.png") no-repeat;
+    }
+
+    .top-menu {
+      margin-right: 30px;
+      margin-top: 15px;
+      height: 40px;
+
+      > li {
+        vertical-align: top;
+        line-height: 40px;
+
+        > a.logout {
+          width: 50px;
+          height: 40px;
+          display: inline-block;
+          background: url("image/ico-logout.png") center center no-repeat;
+
+          &:hover {
+            background-image: url("image/ico-logout-.png");
+          }
+        }
+
+        .dropdown {
+          height: 40px;
+          .top-menu-settings {
+            width: 50px;
+            height: 40px;
+            border: none;
+            display: inline-block;
+            background: url("image/ico-setting.png") center center no-repeat;
+            &:hover {
+              background: url("image/ico-setting-.png") center center no-repeat;
+            }
+          }
+
+          .dropdown-menu {
+            min-width: 100px;
+            margin-top: 0;
+            padding-top: 0;
+            border: none;
+            border-top: 1px solid rgba(0,0,0,0.6);
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            background-color: rgba(0,0,0,0.5);
+            li {
+              line-height: 30px;
+              &.divider {
+                margin: 0;
+                background-color: rgba(0,0,0,0.2);
+              }
+
+              > a {
+                width: 100%;
+                color: #fba828;
+                padding: 0 20px;
+                line-height: 30px;
+                display: inline-block;
+                &:hover {
+                  background-color: rgba(0,0,0,0.3);
+                }
+              }
+            }
+          } // .dropdown-menu
+
+          &.open .top-menu-settings {
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            background: rgba(0,0,0,0.5) url("image/ico-setting-.png") center center no-repeat;
+          }
+        } // .drop-down
+      }
+    } // .top-menu
+
+  } // .console-header
+
+  .console-nav {
+    background-color: #fba828;
+    line-height: 40px;
+
+    li {
+      padding: 0;
+      margin: 0;
+      &:first-child {
+        margin-left: 20px;
+      }
+
+      a {
+        color: #865100;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 0 40px;
+        display: inline-block;
+        border-right: 1px solid #E99210;
+        &:hover {
+          color: #734600;
+          text-decoration: none;
+          background-color: #fcb639;
+        }
+      }
+    }
+  } // .console-nav
+}

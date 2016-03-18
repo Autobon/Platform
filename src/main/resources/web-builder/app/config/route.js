@@ -1,24 +1,30 @@
-export default function routeConfig($locationProvider, $routeProvider, templateProvider) {
+export default function routeConfig(
+    $locationProvider, $urlRouterProvider, $stateProvider, templateProvider) {
     $locationProvider.html5Mode(true);
     const templateCache = templateProvider.$get();
 
-    $routeProvider
-        .when('/', {
-            template  : templateCache.LoginCtrl,
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+        .state('home', {
+            url: '/',
             controller: 'LoginCtrl',
+            template: templateCache.LoginCtrl,
         })
-        .when('/console', {
-            template  : templateCache.ConsoleCtrl,
+        .state('console', {
+            url: '/console',
             controller: 'ConsoleCtrl',
+            template: templateCache.ConsoleCtrl,
         })
-        .when('/main', {
-            template  : templateCache.Main,
+        .state('main', {
+            url: '/main',
             controller: 'Main',
+            template  : templateCache.Main,
         })
-        .when('/test', {
+        .state('test', {
+            url: '/test',
             template: 'ABDDDD',
-        })
-        .otherwise({redirectTo: '/'});
+        });
 }
 
-routeConfig.$inject = ['$locationProvider', '$routeProvider', 'templateProvider'];
+routeConfig.$inject = ['$locationProvider', '$urlRouterProvider', '$stateProvider', 'templateProvider'];

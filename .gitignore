@@ -21,3 +21,4 @@ vendor.bundle.js
 /src/main/resources/static/*.ttf
 /src/main/resources/static/*.eot
 /src/main/resources/static/*.jpg
+/src/main/resources/static/*.png
