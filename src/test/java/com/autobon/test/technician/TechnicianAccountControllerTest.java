@@ -28,16 +28,8 @@ public class TechnicianAccountControllerTest extends MvcTest {
     String password = "123456";
 
     @Test
-    public void sendVerifySms() throws Exception {
-        mockMvc.perform(get("/api/mobile/verifySms").param("phone", phone))
-            .andExpect(status().isOk())
-            .andDo(print())
-            .andExpect(jsonPath("$.result", is(true)));
-    }
-
-    @Test
     public void register() throws Exception {
-        mockMvc.perform(get("/api/mobile/verifySms").param("phone", phone))
+        mockMvc.perform(get("/api/pub/verifySms").param("phone", phone))
                 .andExpect(status().isOk());
 
         mockMvc.perform(post("/api/mobile/technician/register")
@@ -81,7 +73,7 @@ public class TechnicianAccountControllerTest extends MvcTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.result", is(true)));
 
-        mockMvc.perform(get("/api/mobile/verifySms").param("phone", phoneT));
+        mockMvc.perform(get("/api/pub/verifySms").param("phone", phoneT));
         mockMvc.perform(post("/api/mobile/technician/resetPassword")
                 .param("phone", phoneT)
                 .param("password", "123456")
