@@ -61,8 +61,9 @@ public class StaffAccountController {
             staff = staffService.findByUsername(username);
         }
 
-        if (staff == null) return new JsonMessage(false, "NO_SUCH_USER", "用户不存在");
-        else if (!staff.getPassword().equals(Staff.encryptPassword(password))) {
+        if (staff == null) {
+            return new JsonMessage(false, "NO_SUCH_USER", "用户不存在");
+        } else if (!staff.getPassword().equals(Staff.encryptPassword(password))) {
             return new JsonMessage(false, "PASSWORD_MISMATCH", "密码错误");
         } else {
             response.addCookie(new Cookie("autoken", Staff.makeToken(staff.getId())));
@@ -77,12 +78,12 @@ public class StaffAccountController {
 
         Staff staff = (Staff)request.getAttribute("user");
         if(oldPassword .equals(newPassword) ){
-            return  new JsonMessage(false,"新旧密码不能相同");
+            return  new JsonMessage(false, "SAME_PASSWORD", "新旧密码不能相同");
         }else if(!staff.getPassword().equals(Staff.encryptPassword(oldPassword))){
             return new JsonMessage(false, "PASSWORD_MISMATCH", "密码错误");
         }else{
             staff.setPassword(Staff.encryptPassword(newPassword));
-            return new JsonMessage(true,"","",staff);
+            return new JsonMessage(true);
         }
 
     }
