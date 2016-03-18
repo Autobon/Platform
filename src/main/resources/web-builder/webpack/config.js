@@ -70,7 +70,6 @@ export const production = {
             process.stdout.write(CLEAR_LINE + Math.round(percentage * 100) + '% :' + message + MOVE_LEFT);
         }),
     ],
-    devtool : 'source-map',
 };
 
 export const development = {
@@ -104,4 +103,5 @@ export const development = {
         }),
     ],
     watch  : true,
+    devtool : 'source-map',
 };

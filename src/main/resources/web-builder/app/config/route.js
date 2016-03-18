@@ -7,8 +7,12 @@ export default function routeConfig($locationProvider, $routeProvider, templateP
             template  : templateCache.LoginCtrl,
             controller: 'LoginCtrl',
         })
+        .when('/console', {
+            template  : templateCache.ConsoleCtrl,
+            controller: 'ConsoleCtrl',
+        })
         .when('/main', {
-            template: templateCache.Main,
+            template  : templateCache.Main,
             controller: 'Main',
         })
         .when('/test', {
