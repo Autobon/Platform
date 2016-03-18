@@ -247,6 +247,7 @@ public class ConstructionController {
         // 结束订单
         if (order.getSecondTechId() == 0 || order.getSecondTechId() == tech.getId()) {
             order.setStatus(Order.Status.FINISHED);
+            order.setFinishTime(new Date());
             orderService.save(order);
         }
 
