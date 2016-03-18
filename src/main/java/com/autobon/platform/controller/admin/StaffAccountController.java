@@ -1,6 +1,7 @@
 package com.autobon.platform.controller.admin;
 
 import com.autobon.shared.JsonMessage;
+import com.autobon.shared.SmsSender;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/web/admin")
 public class StaffAccountController {
     @Autowired StaffService staffService;
+    @Autowired SmsSender smsSender;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -87,8 +89,8 @@ public class StaffAccountController {
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public JsonMessage resetPassword(HttpServletRequest request,
-             @RequestParam(value = "phone", required = false) String phone,
-             @RequestParam(value = "email", required = false) String email) {
+             @RequestParam("phone") String phone,
+             @RequestParam("verifyCode") String verifyCode) {
 
         // TODO 重置密码
 
@@ -107,7 +109,8 @@ public class StaffAccountController {
 
     @RequestMapping(value = "/changePhone", method = RequestMethod.POST)
     public JsonMessage changePhone(HttpServletRequest request,
-                                   @RequestParam("phone") String phone) {
+            @RequestParam("phone") String phone,
+            @RequestParam("verifyCode") String verifyCode) {
 
         // TODO 修改手机号
         return null;

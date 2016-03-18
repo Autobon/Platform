@@ -62,7 +62,7 @@ public class PubController {
         if (env.equals("TEST")) {
             code = "123456";
         } else {
-            smsSender.send(phone, "【车邻邦】你的验证码是：" + code + ", 请不要把验证码泄露给其他人。");
+            smsSender.sendVerifyCode(phone, code);
         }
         redisCache.set("verifySms:" + phone, code, 5*60);
         return new JsonMessage(true);
