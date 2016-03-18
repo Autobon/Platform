@@ -1,6 +1,7 @@
 package com.autobon.platform.controller.admin;
 
 import com.autobon.shared.JsonMessage;
+import com.autobon.shared.SmsSender;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/web/admin")
 public class StaffAccountController {
     @Autowired StaffService staffService;
+    @Autowired SmsSender smsSender;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -59,8 +61,9 @@ public class StaffAccountController {
             staff = staffService.findByUsername(username);
         }
 
-        if (staff == null) return new JsonMessage(false, "NO_SUCH_USER", "用户不存在");
-        else if (!staff.getPassword().equals(Staff.encryptPassword(password))) {
+        if (staff == null) {
+            return new JsonMessage(false, "NO_SUCH_USER", "用户不存在");
+        } else if (!staff.getPassword().equals(Staff.encryptPassword(password))) {
             return new JsonMessage(false, "PASSWORD_MISMATCH", "密码错误");
         } else {
             response.addCookie(new Cookie("autoken", Staff.makeToken(staff.getId())));
@@ -75,20 +78,20 @@ public class StaffAccountController {
 
         Staff staff = (Staff)request.getAttribute("user");
         if(oldPassword .equals(newPassword) ){
-            return  new JsonMessage(false,"新旧密码不能相同");
+            return  new JsonMessage(false, "SAME_PASSWORD", "新旧密码不能相同");
         }else if(!staff.getPassword().equals(Staff.encryptPassword(oldPassword))){
             return new JsonMessage(false, "PASSWORD_MISMATCH", "密码错误");
         }else{
             staff.setPassword(Staff.encryptPassword(newPassword));
-            return new JsonMessage(true,"","",staff);
+            return new JsonMessage(true);
         }
 
     }
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public JsonMessage resetPassword(HttpServletRequest request,
-             @RequestParam(value = "phone", required = false) String phone,
-             @RequestParam(value = "email", required = false) String email) {
+             @RequestParam("phone") String phone,
+             @RequestParam("verifyCode") String verifyCode) {
 
         // TODO 重置密码
 
@@ -107,7 +110,8 @@ public class StaffAccountController {
 
     @RequestMapping(value = "/changePhone", method = RequestMethod.POST)
     public JsonMessage changePhone(HttpServletRequest request,
-                                   @RequestParam("phone") String phone) {
+            @RequestParam("phone") String phone,
+            @RequestParam("verifyCode") String verifyCode) {
 
         // TODO 修改手机号
         return null;

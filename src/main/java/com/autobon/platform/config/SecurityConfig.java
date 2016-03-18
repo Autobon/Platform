@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 /**
  * Created by dave on 16/2/16.
@@ -38,8 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(
-                applicationContext, new AntPathRequestMatcher("/api/**"));
+        TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(applicationContext,
+                new RegexRequestMatcher("^/api/(mobile|web)/.+", null),
+                new RegexRequestMatcher("^/api/(mobile|web)/[^/]+/(login|register|resetPassword).*", null));
         filter.setAuthenticationManager(authenticationManagerBean());
         http.addFilterBefore(filter, BasicAuthenticationFilter.class);
 

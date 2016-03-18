@@ -1,8 +1,9 @@
-package com.autobon.test.technician;
+package com.autobon.test.common;
 
 import com.autobon.getui.PushService;
 import com.autobon.test.MvcTest;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +14,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class PushServiceTest extends MvcTest {
     @Autowired @Qualifier("PushServiceA")
     private PushService pushService;
+
+    @Before
+    public void setup() throws Exception {
+        super.setup();
+        pushService.connect();
+    }
 
     @Test
     public void pushToSingle() throws Exception {

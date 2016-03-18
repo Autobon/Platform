@@ -1,8 +1,8 @@
 /**
  * Created by dave on 16/1/25.
  */
-import { load } from 'angular-es6';
+import { loader } from 'ngES6';
 const MODULE_NAME = 'app.filters';
 
-load.filters(require.context('./', true, /.*\.js$/), MODULE_NAME);
+loader.filters(require.context('./', true, /^(?!\.\/index\.js$).+\.js$/), MODULE_NAME);
 export default MODULE_NAME;

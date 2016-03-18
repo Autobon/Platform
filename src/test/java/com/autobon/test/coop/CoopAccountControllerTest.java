@@ -54,7 +54,7 @@ public class CoopAccountControllerTest {
     public void register() throws Exception {
         //System.out.println(Cooperator.makeToken(1));
 
-        mockMvc.perform(get("/api/mobile/verifySms").param("phone", "13072705335"))
+        mockMvc.perform(get("/api/pub/verifySms").param("phone", "13072705335"))
                 .andExpect(status().isOk());
 
         mockMvcS.perform(post("/api/mobile/coop/register")
@@ -77,7 +77,7 @@ public class CoopAccountControllerTest {
 
     @Test
     public void resetPassword() throws Exception {
-        mockMvc.perform(get("/api/mobile/verifySms").param("phone", "13072705335"));
+        mockMvc.perform(get("/api/pub/verifySms").param("phone", "13072705335"));
         mockMvc.perform(post("/api/mobile/coop/resetPassword")
                 .param("phone", "13072705335")
                 .param("password", "123456")

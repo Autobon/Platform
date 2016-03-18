@@ -1,19 +1,19 @@
 /**
  * Created by dave on 16/3/14.
  */
-import { Inject } from 'angular-es6';
+import { Injector } from 'ngES6';
 
-export default class LoginCtrl extends Inject {
+export default class LoginCtrl extends Injector {
     static $inject = ['$scope', 'LoginService'];
 
     constructor(...args) {
         super(...args);
-        let {$scope} = this.$inject;
+        let {$scope} = this.$injected;
         $scope.ctrl = this;
     }
 
     login() {
-        const {$scope, LoginService} = this.$inject;
+        const {$scope, LoginService} = this.$injected;
         LoginService.login($scope.username, $scope.password);
     }
 }

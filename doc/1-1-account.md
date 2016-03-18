@@ -10,30 +10,7 @@
 | REJECTED | 认证未通过 |
 | BANNED | 帐户已被禁用 |
 
-## 1. 发送验证短信
-向指定手机号发送验证码短信.
-### URL及请求方法
-GET /api/mobile/verifySms
-### 请求参数
-请求参数均为URL参数.
-
-| 参数名称 | 说明 | 举例 |
-| ------ | ---- | --- |
-| phone | 手机号 | 18812345678 |
-
-### 用例
-
-
-| Method | URL | Header | Body | Result |
-| ------ | --- | ------ | ---- | ------ |
-| GET | /api/mobile/verifySms?phone=18812345678 | | | {"result":true,"message":"","error":null,"data":null} |
-
-### 完成时间
-完成于: **2016年2月15日**
-更新于: **2016年2月15日**
-
-
-## 2. 帐户注册
+## 1. 帐户注册
 技师帐户注册.需要手机号,密码,短信验证码完成注册.
 ### URL及请求方法
 POST /api/mobile/technician/register
@@ -107,7 +84,7 @@ POST /api/mobile/technician/register
 "data": null}
 ```
 
-## 3. 帐户登录
+## 2. 帐户登录
 ### URL及请求方法
 POST /api/mobile/technician/login
 ### 请求参数
@@ -167,7 +144,7 @@ POST /api/mobile/technician/login
 "error": "PASSWORD_MISMATCH",
 "data": null}
 ```
-## 4. 找回密码
+## 3. 找回密码
 通过手机号和短信验证码设定新密码.
 ### URL及请求方法
 POST /api/mobile/technician/resetPassword
@@ -211,7 +188,7 @@ POST /api/mobile/technician/resetPassword
 "error": "NO_SUCH_USER",
 "data": null}
 ```
-## 5. 更改密码
+## 4. 更改密码
 已登录的情况下,修改密码
 ### URL及请求方法
 POST /api/mobile/technician/changePassword
@@ -246,7 +223,7 @@ POST /api/mobile/technician/changePassword
 "data": null}
 ```
 
-## 6. 上传头像
+## 5. 上传头像
 ### URL及请求方法
 POST /api/mobile/technician/avatar
 ### 请求参数
@@ -285,7 +262,7 @@ POST /api/mobile/technician/avatar
 "data": null}
 ```
 
-## 7. 上传身份证照片
+## 6. 上传身份证照片
 ### URL及请求方法
 POST /api/mobile/technician/idPhoto
 ### 请求参数
@@ -324,7 +301,7 @@ POST /api/mobile/technician/idPhoto
 "data": null}
 ```
 
-## 8. 更新个推ID
+## 7. 更新个推ID
 ### URL及请求方法
 POST /api/mobile/technician/pushId
 ### 请求参数
@@ -342,7 +319,7 @@ POST /api/mobile/technician/pushId
 "data": null}
 ```
 
-## 9. 获取技师信息
+## 8. 获取技师信息
 ### URL及请求方法
 GET /api/mobile/technician
 
@@ -395,7 +372,7 @@ GET /api/mobile/technician
 | REJECTED | 认证未通过 |
 | BANNED | 帐户已被禁用 |
 
-## 10. 查询技师
+## 9. 查询技师
 ### URL及请求方法
 GET /api/mobile/technician/search
 
@@ -465,7 +442,7 @@ GET /api/mobile/technician/search
 
 
 
-## 11. 报告实时位置
+## 10. 报告实时位置
 ### URL及请求方法
 POST /api/mobile/technician/reportLocation
 

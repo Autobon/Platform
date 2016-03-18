@@ -29,12 +29,26 @@ import java.util.Date;
  */
 public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
     private ApplicationContext applicationContext;
+    private RequestMatcher ignoresAuthenticationRequestMatcher;
 
     public TokenAuthenticationProcessingFilter(ApplicationContext applicationContext,
             RequestMatcher requiresAuthenticationRequestMatcher) {
+        this(applicationContext, requiresAuthenticationRequestMatcher, null);
+    }
+
+    public TokenAuthenticationProcessingFilter(ApplicationContext applicationContext,
+            RequestMatcher requiresAuthenticationRequestMatcher, RequestMatcher ignoresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
         this.applicationContext = applicationContext;
+        this.ignoresAuthenticationRequestMatcher = ignoresAuthenticationRequestMatcher;
         this.setContinueChainBeforeSuccessfulAuthentication(true);
+    }
+
+    @Override
+    protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
+        return  super.requiresAuthentication(request, response) &&
+                    (this.ignoresAuthenticationRequestMatcher == null ||
+                        !this.ignoresAuthenticationRequestMatcher.matches(request));
     }
 
     @Override

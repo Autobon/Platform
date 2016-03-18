@@ -62,6 +62,10 @@ public class DetailedTechnician {
 
     @Column private Integer commentCount; // 评论条数
 
+    @JsonIgnore
+    @Column(name = "status")
+    private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
+
     public int getId() {
         return id;
     }
@@ -253,10 +257,6 @@ public class DetailedTechnician {
     public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
     }
-
-    @JsonIgnore
-    @Column(name = "status")
-    private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
 
     public Technician.Status getStatus() {
         return Technician.Status.getStatus(this.getStatusCode());

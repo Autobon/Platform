@@ -7,8 +7,8 @@ export const production = {
     entry   : {
         app   : [path.resolve(__dirname, '../app/main.js')],
         vendor: ['core-js/shim', 'console-polyfill',
-            'angular', 'angular-route', 'angular-cookies',
-            'angular-ui-bootstrap', 'angular-resource', 'angular-es6'],
+            'angular', 'angular-route', 'angular-cookies', 'angular-resource',
+            'angular-sanitize', 'angular-ui-router', 'angular-ui-bootstrap'],
     },
     output  : {
         path      : path.resolve(__dirname, '../../static'),
@@ -24,14 +24,14 @@ export const production = {
         ],
         loaders   : [
             {test: /[\/]angular\.js$/, loader: 'exports?angular'},
-            {test: /\.css$/, loader: 'style-loader!css-loader!postcss-loader'},
-            {test: /\.less$/, loader: 'style-loader!css-loader!postcss-loader!less-loader'},
-            {test: /\.scss$/, loader: 'style-loader!css-loader!postcss-loader!sass-loader'},
-            {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
-            {test: /\.json$/, loader: 'json-loader'},
-            {test: /\.html$/, exclude: /node_modules/, loader: 'html-loader'},
-            {test: /\.(png|woff|gif)$/, loader: 'url-loader?limit=100000'},
-            {test: /\.(woff2|svg|ttf|eot)$/, loader: 'file-loader'}
+            {test: /\.css$/, loader: 'style!css!postcss'},
+            {test: /\.less$/, loader: 'style!css!postcss!less'},
+            {test: /\.scss$/, loader: 'style!css!postcss!sass'},
+            {test: /\.js$/, exclude: /node_modules/, loader: 'babel'},
+            {test: /\.json$/, loader: 'json'},
+            {test: /\.html$/, exclude: /node_modules/, loader: 'html'},
+            {test: /\.(png|woff|gif)$/, loader: 'url?limit=100000'},
+            {test: /\.(woff2|svg|ttf|eot)$/, loader: 'file'}
         ],
     },
     resolve : {

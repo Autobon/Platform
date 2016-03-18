@@ -1,9 +1,10 @@
-export default function routeConfig($routeProvider, $locationProvider) {
+export default function routeConfig($locationProvider, $routeProvider, templateProvider) {
     $locationProvider.html5Mode(true);
+    const templateCache = templateProvider.$get();
 
     $routeProvider
         .when('/', {
-            template  : require('../controllers/main/main.html'),
+            template  : templateCache.Main,
             controller: 'Main',
         })
         .when('/test', {
@@ -12,4 +13,4 @@ export default function routeConfig($routeProvider, $locationProvider) {
         .otherwise({redirectTo: '/'});
 }
 
-routeConfig.$inject = ['$routeProvider', '$locationProvider'];
+routeConfig.$inject = ['$locationProvider', '$routeProvider', 'templateProvider'];
