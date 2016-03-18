@@ -30,8 +30,8 @@ export const production = {
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel'},
             {test: /\.json$/, loader: 'json'},
             {test: /\.html$/, exclude: /node_modules/, loader: 'html'},
-            {test: /\.(jpg|png|woff|gif)$/, loader: 'url?limit=100000'},
-            {test: /\.(woff2|svg|ttf|eot)$/, loader: 'file'}
+            {test: /\.(jpg|png|gif|woff|woff2)$/, loader: 'url?limit=50000'},
+            {test: /\.(svg|ttf|eot)$/, loader: 'file'}
         ],
     },
     resolve : {
