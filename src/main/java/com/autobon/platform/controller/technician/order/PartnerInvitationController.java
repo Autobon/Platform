@@ -5,6 +5,7 @@ import com.autobon.order.entity.Order;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.OrderService;
+import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
@@ -32,6 +33,7 @@ public class PartnerInvitationController {
     private static Logger log = LoggerFactory.getLogger(PartnerInvitationController.class);
 
     @Autowired private TechnicianService technicianService;
+    @Autowired private DetailedTechnicianService detailedTechnicianService;
     @Autowired private OrderService orderService;
     @Autowired private WorkItemService workItemService;
     @Autowired private TechStatService techStatService;
@@ -81,8 +83,7 @@ public class PartnerInvitationController {
         map.put("action", "INVITE_PARTNER");
         map.put("title", title);
         map.put("order", order);
-        map.put("owner", technician);
-        map.put("partner", partner);
+        map.put("owner", detailedTechnicianService.get(technician.getId()));
         boolean result = pushService.pushToSingle(partner.getPushId(),
                             title,
                             new ObjectMapper().writeValueAsString(map),

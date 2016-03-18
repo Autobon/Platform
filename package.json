@@ -14,15 +14,12 @@
   "dependencies": {
     "angular": "^1.5.1",
     "angular-animate": "^1.5.1",
-    "angular-cookies": "^1.5.1",
-    "angular-mocks": "^1.5.1",
-    "angular-resource": "^1.5.1",
     "angular-route": "^1.5.1",
-    "angular-sanitize": "^1.5.1",
     "angular-ui-bootstrap": "^1.1.1",
     "angular-ui-router": "^0.2.18",
-    "bootstrap": "^3.3.6",
-    "ngES6": "git://github.com/web-es6/ngES6.git"
+    "ngES6": "git://github.com/web-es6/ngES6.git",
+    "jquery": "^2.2.2",
+    "bootstrap": "^3.3.6"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.1",
@@ -52,7 +49,6 @@
     "script-loader": "^0.6.1",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
-    "console-polyfill": "^0.2.2",
     "webpack": "^1.12.12",
     "webpack-dev-server": "^1.14.1"
   }

@@ -1,5 +1,5 @@
 import './main.less';
-import angular from 'angular';
+import $ from 'jquery';
 import { Injector } from 'ngES6';
 
 export default class Main extends Injector {
@@ -16,7 +16,7 @@ export default class Main extends Injector {
     onclick(e) {
         const {$scope, LoginService} = this.$injected;
 
-        angular.element(e.target).text('hello [' + [$scope.counter++, this.counter++] + ']');
+        $(e.target).text('hello [' + [$scope.counter++, this.counter++] + ']');
         LoginService.login('18827075338', '123456').success(data => {
             console.log(data);
         });

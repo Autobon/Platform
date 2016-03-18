@@ -4,11 +4,11 @@
 import { Injector } from 'ngES6';
 
 export default class LoginService extends Injector {
-    static $inject = ['$http'];
+    static $inject = ['$http', 'Settings'];
 
     login(username, password) {
-        const {$http} = this.$injected;
-        return $http.post('http://localhost:12345/api/mobile/technician/login',
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/mobile/technician/login',
             {phone: username, password: password});
     }
 }
