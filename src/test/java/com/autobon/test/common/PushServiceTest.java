@@ -1,6 +1,7 @@
-package com.autobon.test;
+package com.autobon.test.common;
 
 import com.autobon.getui.PushService;
+import com.autobon.test.MvcTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

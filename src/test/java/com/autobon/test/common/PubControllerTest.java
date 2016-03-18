@@ -1,5 +1,6 @@
-package com.autobon.test;
+package com.autobon.test.common;
 
+import com.autobon.test.MvcTest;
 import org.junit.Test;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
