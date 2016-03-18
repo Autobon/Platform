@@ -49,15 +49,15 @@ gradle.projectsEvaluated {
     }
 }
 
-task webpack(type: Exec) {
-    workingDir "${projectDir}"
-    commandLine 'npm', 'run', 'build'
-}
-
-bootRun.dependsOn webpack
-
-bootRun {
-    addResources = true
-}
+//task webpack(type: Exec) {
+//    workingDir "${projectDir}"
+//    commandLine 'npm', 'run', 'build'
+//}
+//
+//bootRun.dependsOn webpack
+//
+//bootRun {
+//    addResources = true
+//}
 
 defaultTasks "build"
