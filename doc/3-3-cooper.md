@@ -89,3 +89,78 @@ post("/api/mobile/coop/check")
 }
 ```
 
+## 2.上传营业执照副本照片
+上传营业执照副本照片
+
+### URL及请求方法
+POST /api/mobile/coop/bussinessLicensePic
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| file | 上传的图片 | |
+
+### 返回数据
+
+#### a.请求成功
+
+```
+{
+    "result": true,
+    "error": "",
+    "message": "",
+    "date": "/uploads/coop/bussinessLicensePic/20160304165030100001.jpg"
+}
+```
+
+#### b.没有上传文件
+
+```
+{
+    "result": false,
+    "error": "NO_UPLOAD_FILE",
+    "message": "没有上传文件",
+    "date": null
+}
+```
+
+## 3.上传法人身份证正面照
+上传法人身份证正面照
+
+### URL及请求方法
+POST /api/mobile/coop/corporationIdPicA
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| file | 上传的图片 | |
+
+### 返回数据
+
+#### a.请求成功
+
+```
+{
+    "result": true,
+    "error": "",
+    "message": "",
+    "date": "/uploads/coop/corporationIdPicA/20160304165030100002.jpg"
+}
+```
+
+#### b.没有上传文件
+
+```
+{
+    "result": false,
+    "error": "NO_UPLOAD_FILE",
+    "message": "没有上传文件",
+    "date": null
+}
+```
+
+
+
+
