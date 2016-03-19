@@ -1,5 +1,4 @@
 import angular from 'angular';
-import 'angular-route';
 import 'angular-animate';
 import 'angular-ui-router';
 import 'angular-ui-bootstrap';

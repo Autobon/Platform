@@ -13,7 +13,7 @@ public class HomeController {
      * 静态页面处理程序
      * @return 返回HTML静态页面
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/console/**"}, method = RequestMethod.GET)
     public String index() {
         return "forward:/index.html";
     }
