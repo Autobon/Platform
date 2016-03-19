@@ -44,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(applicationContext,
-                new RegexRequestMatcher("^/api/(mobile|web)/.+", null),
-                new RegexRequestMatcher("^/api/(mobile|web)/[^/]+/(login|register|resetPassword).*", null));
+                new RegexRequestMatcher("/api/(mobile|web)/.+", null),
+                new RegexRequestMatcher("/api/(mobile|web)/[^/]+/(login|register|resetPassword).*", null));
         filter.setAuthenticationManager(authenticationManagerBean());
         http.addFilterBefore(filter, BasicAuthenticationFilter.class);
 
