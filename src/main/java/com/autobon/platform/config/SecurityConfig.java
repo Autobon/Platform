@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                                 new CacheControlHeadersWriter());
         // 由于
         // 1. springMVC对已有缓存控制设置的请求响应,无法再次更改缓存时间.
-        // 2. spring security对所有有启用缓存控制的请求默认添加了no-cache设置,即缓存时间为0
+        // 2. spring security对所有启用缓存控制的请求默认添加了no-cache设置,即缓存时间为0
         // 所以这里默认禁用cache control,只对api请求启用,而spring security自动将启用缓存的请求的缓存时间更改为no-cache.
         // 而静态文件没有启用缓存控制,spring security不会添加缓存设置.在webconfig中对静态资源添加的缓存控制设定就可以生效.
         http.headers().cacheControl().disable().addHeaderWriter(headerWriter)

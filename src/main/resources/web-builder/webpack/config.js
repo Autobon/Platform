@@ -6,7 +6,7 @@ export const production = {
     context : path.resolve(__dirname, '..'),
     entry   : {
         app   : [path.resolve(__dirname, '../app/main.js')],
-        vendor: ['angular', 'angular-route', 'angular-animate',
+        vendor: ['angular', 'angular-animate', 'angular-ui-router',
                 'angular-ui-bootstrap', 'jquery'],
     },
     output  : {

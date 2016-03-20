@@ -11,7 +11,7 @@ import config from './config';
 
 export const App = 'app';
 
-const app = angular.module(App, ['ngRoute', 'ngAnimate', 'ui.router', 'ui.bootstrap',
+const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                 directives, services, controllers])
             .provider('template', function() {
                 this.$get = () => {return templateCache;};

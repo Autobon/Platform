@@ -16,12 +16,12 @@ export default function routeConfig(
             controller: 'ConsoleCtrl',
             template: templateCache.ConsoleCtrl,
         })
-        .state('main', {
+        .state('console.main', {
             url: '/main',
             controller: 'Main',
             template  : templateCache.Main,
         })
-        .state('test', {
+        .state('console.test', {
             url: '/test',
             template: 'ABDDDD',
         });

@@ -1,6 +1,16 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+}
+
 .page-admin {
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  position: absolute;
+  display: table;
 }

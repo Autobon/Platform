@@ -12,3 +12,12 @@
     @content
   }
 }
+
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: " ";
+    clear: both;
+    display: table;
+  }
+}

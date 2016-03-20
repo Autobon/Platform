@@ -1,3 +1,5 @@
+@import "../../styles/_variables.scss";
+@import "../../styles/_mixins.scss";
 .page-console {
   background-color: #dcd4bd;
 
@@ -6,6 +8,7 @@
     height: 64px;
     background: url("image/bg-header.jpg") no-repeat;
     background-size: cover;
+    display: table-row;
 
     .logo {
       width: 251px;
@@ -89,8 +92,9 @@
   } // .console-header
 
   .console-nav {
-    background-color: #fba828;
-    line-height: 40px;
+    background-color: $color-primary;
+    display: table-row;
+    height: 40px;
 
     li {
       padding: 0;
@@ -100,18 +104,39 @@
       }
 
       a {
-        color: #865100;
+        color: darken($color-primary, 30%);
         font-size: 16px;
         font-weight: bold;
         padding: 0 40px;
+        line-height: 40px;
         display: inline-block;
-        border-right: 1px solid #E99210;
+        border-right: 1px solid darken($color-primary, 10%);
         &:hover {
           color: #734600;
           text-decoration: none;
-          background-color: #fcb639;
+          background-color: lighten($color-primary, 10%);
         }
       }
     }
   } // .console-nav
+
+  .console-content {
+    display: table-row;
+  }
+
+  .console-footer {
+    display: table-row;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+
+    .text-box {
+      font-size: 12px;
+      display: inline-block;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      background-color: #c6bda3;
+      padding: 0 20px;
+    }
+  }
 }
