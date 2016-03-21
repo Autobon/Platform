@@ -26,8 +26,10 @@ POST /api/mobile/coop/order/comment
 
 
 ### 返回结果
-{"result":true,"message":"comment","error":"","data":null}
 
+````
+{"result":true,"message":"comment","error":"","data":null}
+````
 
 ## 2.创建订单
 合作商户创建订单并推送
@@ -47,6 +49,8 @@ POST /api/mobile/coop/order/createOrder
 
 
 ### 返回结果
+
+````
 {
     "result": true,
     "message": "",
@@ -71,6 +75,8 @@ POST /api/mobile/coop/order/createOrder
     }
 }
 
+````
+
 
 ## 3.商户端未完成订单列表
 商户端未完成订单列表
@@ -88,6 +94,8 @@ POST /api/mobile/coop/order/listUnfinished
 
 
 ### 返回结果
+
+````
    {
        "result": true,
        "message": "",
@@ -144,7 +152,7 @@ POST /api/mobile/coop/order/listUnfinished
            ]
        }
    }
-
+````
 
 
 ## 4.商户端已完成订单列表
@@ -163,6 +171,8 @@ POST /api/mobile/coop/order/listFinished
 
 
 ### 返回结果
+
+````
  {
      "result": true,
      "message": "",
@@ -220,6 +230,7 @@ POST /api/mobile/coop/order/listFinished
      }
  }
 
+````
 
 ## 5.商户端未评论订单列表
 商户端未评论订单列表
@@ -237,6 +248,8 @@ POST /api/mobile/coop/order/listUncomment
 
 
 ### 返回结果
+
+````
 {
     "result": true,
     "message": "",
@@ -294,6 +307,8 @@ POST /api/mobile/coop/order/listUncomment
     }
 }
 
+````
+
 ## 6.查看技师详情
 查看技师详情
 
@@ -311,6 +326,8 @@ GET /api/mobile/coop/technician/getTechnician?orderId=1
 
 
 ### 返回结果
+
+````
 {
     "result": true,
     "message": "",
@@ -337,5 +354,7 @@ GET /api/mobile/coop/technician/getTechnician?orderId=1
         "status": "NEWLY_CREATED"
     }
 }
+
+````
 
 

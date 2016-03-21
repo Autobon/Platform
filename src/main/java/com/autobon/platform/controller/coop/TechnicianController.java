@@ -27,7 +27,8 @@ public class TechnicianController {
     @RequestMapping(value="/getTechnician",method = RequestMethod.GET)
     public JsonMessage getTechnician(@RequestParam(value="orderId") int orderId){
         Order order = orderService.get(orderId);
-        int techId = order.getMainTechId();
+        int techId = 0 ;
+        techId = order.getMainTechId();
         Technician technician = technicianService.get(techId);
         return new JsonMessage(true,"","",technician);
     }
