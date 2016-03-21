@@ -1,0 +1,42 @@
+@import "../../styles/_variables.scss";
+
+.home-board {
+  padding-top: 150px;
+
+  .desktop-item {
+    > a {
+      display: block;
+      color: $color-text;
+
+      dl {
+        padding-left: 20px;
+        height: 120px;
+        display: table-cell;
+        vertical-align: middle;
+        dt {
+          font-size: 32px;
+        }
+        dd {
+          font-size: 24px;
+        }
+      }
+
+      .ico {
+        width: 120px;
+        height: 120px;
+        display: inline-block;
+        background: center center no-repeat;
+
+        &.ico-order {
+          background-image: url("image/icon-01.png");
+        }
+        &.ico-coop {
+          background-image: url("image/icon-02.png");
+        }
+        &.ico-tech {
+          background-image: url("image/icon-03.png");
+        }
+      }
+    }
+  }
+}

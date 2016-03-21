@@ -1,4 +1,4 @@
-import { Injector } from 'ngES6';
+import {Injector} from 'ngES6';
 import './login.scss';
 
 export default class LoginCtrl extends Injector {
