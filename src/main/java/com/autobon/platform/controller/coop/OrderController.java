@@ -96,8 +96,8 @@ public class OrderController {
                 Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
         techStatService.save(mainStat);
 
-
-        if(secondTechId != 0){
+        //根据原形只对主责任人进行评价
+/*        if(secondTechId != 0){
             entityManager.detach(comment);
             comment.setId(0);
             comment.setTechId(secondTechId);
@@ -112,7 +112,7 @@ public class OrderController {
             secondStat.setStarRate(commentService.calcStarRateByTechId(secondTechId,
                     Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
             techStatService.save(secondStat);
-        }
+        }*/
 
         return jsonMessage;
     }
