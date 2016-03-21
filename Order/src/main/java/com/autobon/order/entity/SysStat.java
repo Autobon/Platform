@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by lu on 2016/3/21.
  */
 @Entity
-@Table(name="t_sys_stat")
+@Table(name="sys_stat")
 public class SysStat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
