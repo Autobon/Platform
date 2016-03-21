@@ -78,4 +78,31 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.result", is(true)));
     }
 
+    @Test
+    public void listUnfinished() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/order/listUnfinished")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void listFinished() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/order/listFinished")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void listUncomment() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/order/listUncomment")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+
+
+
 }

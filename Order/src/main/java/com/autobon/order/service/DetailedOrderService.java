@@ -46,4 +46,22 @@ public class DetailedOrderService {
         return repository.findAll(new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
+
+    public Page<DetailedOrder> findUnfinishedByCoopId(int coopId, int page, int pageSize) {
+
+        return repository.findUnfinishedByCoopId(coopId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public Page<DetailedOrder> findFinishedByCoopId(int coopId, int page, int pageSize) {
+
+        return repository.findFinishedByCoopId(coopId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public Page<DetailedOrder> findUncommentByCoopId(int coopId, int page, int pageSize) {
+
+        return repository.findUncommentByCoopId(coopId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
 }
