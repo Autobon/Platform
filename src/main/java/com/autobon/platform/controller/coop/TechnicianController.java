@@ -27,10 +27,17 @@ public class TechnicianController {
     @RequestMapping(value="/getTechnician",method = RequestMethod.GET)
     public JsonMessage getTechnician(@RequestParam(value="orderId") int orderId){
         Order order = orderService.get(orderId);
-        int techId = 0 ;
-        techId = order.getMainTechId();
-        Technician technician = technicianService.get(techId);
-        return new JsonMessage(true,"","",technician);
+        if(order != null){
+            int techId = 0 ;
+            techId = order.getMainTechId();
+            if(techId!=0){
+                Technician technician = technicianService.get(techId);
+                return new JsonMessage(true,"","",technician);
+            }else{
+                return new JsonMessage(false,"ILLEGAL_PARAM","订单没有关联主技师");
+            }
+        }
+        return new JsonMessage(false,"ILLEGAL_PARAM","没有此订单");
     }
 
 
