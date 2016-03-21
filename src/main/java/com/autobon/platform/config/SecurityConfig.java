@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(filter, BasicAuthenticationFilter.class);
 
         http.authorizeRequests().antMatchers(
+                "/api/web/admin/login",
                 "/api/mobile/*/login",
                 "/api/mobile/*/register",
                 "/api/mobile/*/resetPassword").permitAll()

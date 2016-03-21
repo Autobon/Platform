@@ -1,0 +1,48 @@
+@import "../../styles/_variables.scss";
+@import "../../styles/_mixins.scss";
+.page-title {
+  color: $color-text;
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+
+  .ico.ico-order {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background: url("image/ico-01.png") no-repeat center center;
+  }
+}
+
+.row-search {
+  height: 40px;
+  background: lighten($color-bg, 5%);
+  @include clearfix;
+
+  .form-inline {
+    margin-top: 3px;
+    padding-left: 15px;
+
+    .btn.btn-search {
+      padding-left: 30px;
+      background: $color-btn url("image/ico-search.png") no-repeat 5px center;
+    }
+  }
+
+  .btn-new-order {
+    width: 100px;
+    height: 40px;
+    padding: 0 10px;
+    line-height: 40px;
+    margin-right: 15px;
+    text-decoration: none;
+    background: #e1dac6 url("image/ico-add.png") no-repeat 75px center;
+    color: lighten($color-text, 30%);
+    font-size: 14px;
+    font-weight: bold;
+
+    &:hover {
+      background-color: #D6CDB1;
+    }
+  }
+}

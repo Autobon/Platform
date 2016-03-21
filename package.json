@@ -18,7 +18,8 @@
     "angular-ui-router": "^0.2.18",
     "ngES6": "git://github.com/web-es6/ngES6.git",
     "jquery": "^2.2.2",
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "moment": ""
   },
   "devDependencies": {
     "autoprefixer": "^6.3.1",

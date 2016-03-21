@@ -21,6 +21,11 @@ export default function routeConfig(
             controller: 'HomeCtrl',
             template: templateCache.HomeCtrl,
         })
+        .state('console.order', {
+            url: '/order',
+            controller: 'OrderCtrl',
+            template: templateCache.OrderCtrl,
+        })
         .state('console.main', {
             url: '/main',
             controller: 'Main',

@@ -1,2 +1,4 @@
 $color-primary: #fba828 !default;
-$color-text: darken($color-primary, 40%) !default;
+$color-text:    #3d3c3a !default;
+$color-bg:      #dcd4bd !default;
+$color-btn:     lighten($color-primary, 20%) !default;

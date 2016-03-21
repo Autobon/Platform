@@ -1,7 +1,7 @@
 @import "../../styles/_variables.scss";
 @import "../../styles/_mixins.scss";
 .page-console {
-  background-color: #dcd4bd;
+  background-color: $color-bg;
 
   .console-header {
     width: 100%;
@@ -111,7 +111,7 @@
         line-height: 40px;
         display: inline-block;
         border-right: 1px solid darken($color-primary, 10%);
-        &:hover {
+        &:hover, &.active {
           color: #734600;
           text-decoration: none;
           background-color: lighten($color-primary, 10%);
@@ -127,6 +127,7 @@
   .console-footer {
     display: table-row;
     height: 20px;
+    width: 100%;
     line-height: 20px;
     text-align: center;
 

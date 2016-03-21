@@ -35,11 +35,35 @@ public class OrderController {
     PushService pushServiceA;
 
     @RequestMapping(method = RequestMethod.GET)
-    public JsonMessage list(
+    public JsonMessage search(
+            @RequestParam(value = "orderNum", required = false) String orderNum,
+            @RequestParam(value = "orderCreator", required = false) String orderCreator,
+            @RequestParam(value = "orderType", required = false) Integer orderType,
+            @RequestParam(value = "orderStatus", required = false) String orderStatus,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        String creatorName = null;
+        String contactPhone = null;
+        Integer statusCode = null;
+
+        if (orderCreator != null) {
+            if (Pattern.matches("[\\d\\-]+", orderCreator)) {
+                contactPhone = orderCreator;
+            } else {
+                creatorName = orderCreator;
+            }
+        }
+
+        if (orderStatus != null) {
+            try {
+                Order.Status s = Order.Status.valueOf(orderStatus);
+                statusCode = s.getStatusCode();
+            } catch (Exception e) {}
+        }
+
         return new JsonMessage(true, "", "",
-                new JsonPage<>(orderService.findAll(page, pageSize)));
+                new JsonPage<>(orderService.find(orderNum, creatorName, contactPhone,
+                        orderType, statusCode, page, pageSize)));
     }
 
     @RequestMapping(value = "/{orderId:\\d+}", method = RequestMethod.GET)
