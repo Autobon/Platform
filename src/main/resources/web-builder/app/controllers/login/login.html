@@ -1,0 +1,15 @@
+<div class="page-login">
+    <form class="form-login" name="form">
+        <div class="logo-login"></div>
+        <uib-alert type="warning" close="msg = ''" ng-show="msg">{{msg}}</uib-alert>
+        <div class="block-field f-account">
+            <input ng-model="account" name="account" type="text" placeholder="手机号" required>
+        </div>
+        <div class="block-field f-password">
+            <input ng-model="password" type="password" placeholder="密码" required>
+        </div>
+        <button class="btn-submit" ng-click="login()" ng-disabled="form.$invalid">登&nbsp;&nbsp;录</button>
+    </form>
+
+    <div class="page-footer">@Copyright 2016 车邻邦</div>
+</div>

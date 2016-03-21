@@ -3,7 +3,7 @@
 ## 1. 发送验证短信
 向指定手机号发送验证码短信.
 ### URL及请求方法
-GET /api/mobile/verifySms
+GET /api/pub/verifySms
 ### 请求参数
 请求参数均为URL参数.
 
@@ -16,7 +16,7 @@ GET /api/mobile/verifySms
 
 | Method | URL | Header | Body | Result |
 | ------ | --- | ------ | ---- | ------ |
-| GET | /api/mobile/verifySms?phone=18812345678 | | | {"result":true,"message":"","error":null,"data":null} |
+| GET | /api/pub/verifySms?phone=18812345678 | | | {"result":true,"message":"","error":null,"data":null} |
 
 ### 完成时间
 完成于: **2016年2月15日**

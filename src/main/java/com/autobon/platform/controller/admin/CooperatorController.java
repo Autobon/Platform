@@ -106,6 +106,7 @@ public class CooperatorController {
 
     }
 
+
     @RequestMapping(value = "/update/{coopId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("coopId") int coopId,
                               @RequestParam(value="phone",required = true) String phone,
