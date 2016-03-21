@@ -6,6 +6,6 @@ CREATE TABLE `sys_stat` (
   `stat_time` datetime DEFAULT NULL COMMENT  '统计日期',
   `stat_type` varchar(50) DEFAULT NULL COMMENT '统计类型(day-按天统计  month-按月统计)',
   PRIMARY KEY (`id`),
-  INDEX idx_create_at(create_at),
+  INDEX idx_stat_time(stat_time),
   INDEX idx_stat_type(stat_type)
 )  DEFAULT CHARSET=utf8 COMMENT='系统统计数据表';

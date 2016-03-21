@@ -23,10 +23,6 @@ public class SysStat {
 
     @Column private String statType; //统计类型 (day-按天统计  month-按月统计)
 
-    public SysStat(){
-        this.statTime=new Date();
-    }
-
     public int getId() {
         return id;
     }
