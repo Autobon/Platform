@@ -32,12 +32,12 @@ public class GtPushTest {
         GtPush.connect(gtConfig);
     }
 
-    /*
     @Test
     public void connect() throws Exception {
         Assert.assertTrue(GtPush.connect(gtConfig));
     }
 
+        /*
     @Test
     public void pushToList() throws Exception {
         GtPush.connect(gtConfig);
@@ -96,10 +96,9 @@ public class GtPushTest {
         Assert.assertTrue(GtPush.pushToSingle(gtConfig, message, target));
     }
 
+    */
     @Test
     public void close() throws Exception {
         Assert.assertTrue(GtPush.close(gtConfig));
     }
-    */
-
 }

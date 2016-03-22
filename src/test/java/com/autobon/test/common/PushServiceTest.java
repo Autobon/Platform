@@ -27,7 +27,7 @@ public class PushServiceTest extends MvcTest {
                 "你的认证申请已获通过。",
                 "{\"action\":\"certificate_passed\", \"title\":\"你的认证申请已获通过。\"}",
                 60 * 60));
-    }*/
+    }
 
     @Test
     public void pushToList() throws Exception {
@@ -37,7 +37,7 @@ public class PushServiceTest extends MvcTest {
                 "{\"action\":\"certificate_passed\", \"title\":\"你的认证申请已获通过。\"}",
                 60 * 60));
     }
-
+*/
     @Test
     public void pushToApp() throws Exception {
         Assert.assertTrue(pushService.pushToApp("你的认证申请已获通过。", "can you see me", 3600));
