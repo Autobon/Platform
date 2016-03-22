@@ -58,7 +58,6 @@ public class CertificateController {
         technician.setBank(bank);
         technician.setBankCardNo(bankCardNo);
         technicianService.save(technician);
-
         return new JsonMessage(true);
     }
 

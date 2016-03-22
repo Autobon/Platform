@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
     /**
      * 静态页面处理程序
+     *
      * @return 返回HTML静态页面
      */
     @RequestMapping(value = {"/", "/console/**"}, method = RequestMethod.GET)

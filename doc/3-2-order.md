@@ -1,7 +1,7 @@
 # 订单
 
 
-## 3.订单评论
+## 1.订单评论
 评论
 
 
@@ -26,10 +26,12 @@ POST /api/mobile/coop/order/comment
 
 
 ### 返回结果
+
+````
 {"result":true,"message":"comment","error":"","data":null}
+````
 
-
-## 4.创建订单
+## 2.创建订单
 合作商户创建订单并推送
 
 ### URL及请求方法
@@ -47,6 +49,8 @@ POST /api/mobile/coop/order/createOrder
 
 
 ### 返回结果
+
+````
 {
     "result": true,
     "message": "",
@@ -70,3 +74,287 @@ POST /api/mobile/coop/order/createOrder
         "status": "NEWLY_CREATED"
     }
 }
+
+````
+
+
+## 3.商户端未完成订单列表
+商户端未完成订单列表
+
+### URL及请求方法
+POST /api/mobile/coop/order/listUnfinished
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| page | 页码(默认值为1) | 1 |
+| pageSize | 每页显示数目（默认值为20） | 20 |
+
+
+
+### 返回结果
+
+````
+   {
+       "result": true,
+       "message": "",
+       "error": "",
+       "data": {
+           "page": 1,
+           "totalElements": 1,
+           "totalPages": 1,
+           "pageSize": 20,
+           "count": 1,
+           "list": [
+               {
+                   "id": 1,
+                   "orderNum": "20160223134200014567",
+                   "orderType": 1,
+                   "photo": "",
+                   "orderTime": 1456293600000,
+                   "addTime": 1456196963000,
+                   "finishTime": null,
+                   "creatorType": 1,
+                   "creatorId": 1,
+                   "creatorName": null,
+                   "contactPhone": null,
+                   "positionLon": null,
+                   "positionLat": null,
+                   "remark": "bababala",
+                   "mainTech": {
+                       "id": 1,
+                       "phone": "18812345678",
+                       "name": "tom",
+                       "gender": null,
+                       "avatar": null,
+                       "idNo": "422302198608266313",
+                       "idPhoto": "/etc/a.jpg",
+                       "bank": "027",
+                       "bankAddress": "光谷",
+                       "bankCardNo": "88888888888",
+                       "verifyAt": null,
+                       "requestVerifyAt": null,
+                       "verifyMsg": null,
+                       "lastLoginAt": 1456195103000,
+                       "lastLoginIp": "127.0.0.1",
+                       "createAt": 1455724800000,
+                       "skill": "1",
+                       "pushId": null,
+                       "status": "NEWLY_CREATED"
+                   },
+                   "secondTech": null,
+                   "mainConstruct": null,
+                   "secondConstruct": null,
+                   "comment": null,
+                   "status": "TAKEN_UP"
+               }
+           ]
+       }
+   }
+````
+
+
+## 4.商户端已完成订单列表
+商户端已完成订单列表
+
+### URL及请求方法
+POST /api/mobile/coop/order/listFinished
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| page | 页码(默认值为1) | 1 |
+| pageSize | 每页显示数目（默认值为20） | 20 |
+
+
+
+### 返回结果
+
+````
+ {
+     "result": true,
+     "message": "",
+     "error": "",
+     "data": {
+         "page": 1,
+         "totalElements": 1,
+         "totalPages": 1,
+         "pageSize": 20,
+         "count": 1,
+         "list": [
+             {
+                 "id": 2,
+                 "orderNum": "20160223135200016789",
+                 "orderType": 1,
+                 "photo": null,
+                 "orderTime": 1456293600000,
+                 "addTime": 1456196963000,
+                 "finishTime": null,
+                 "creatorType": 1,
+                 "creatorId": 1,
+                 "creatorName": null,
+                 "contactPhone": null,
+                 "positionLon": null,
+                 "positionLat": null,
+                 "remark": "somewords",
+                 "mainTech": null,
+                 "secondTech": {
+                     "id": 1,
+                     "phone": "18812345678",
+                     "name": "tom",
+                     "gender": null,
+                     "avatar": null,
+                     "idNo": "422302198608266313",
+                     "idPhoto": "/etc/a.jpg",
+                     "bank": "027",
+                     "bankAddress": "光谷",
+                     "bankCardNo": "88888888888",
+                     "verifyAt": null,
+                     "requestVerifyAt": null,
+                     "verifyMsg": null,
+                     "lastLoginAt": 1456195103000,
+                     "lastLoginIp": "127.0.0.1",
+                     "createAt": 1455724800000,
+                     "skill": "1",
+                     "pushId": null,
+                     "status": "NEWLY_CREATED"
+                 },
+                 "mainConstruct": null,
+                 "secondConstruct": null,
+                 "comment": null,
+                 "status": "FINISHED"
+             }
+         ]
+     }
+ }
+
+````
+
+## 5.商户端未评论订单列表
+商户端未评论订单列表
+
+### URL及请求方法
+POST /api/mobile/coop/order/listUncomment
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| page | 页码(默认值为1) | 1 |
+| pageSize | 每页显示数目（默认值为20） | 20 |
+
+
+
+### 返回结果
+
+````
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "page": 1,
+        "totalElements": 1,
+        "totalPages": 1,
+        "pageSize": 20,
+        "count": 1,
+        "list": [
+            {
+                "id": 2,
+                "orderNum": "20160223135200016789",
+                "orderType": 1,
+                "photo": null,
+                "orderTime": 1456293600000,
+                "addTime": 1456196963000,
+                "finishTime": null,
+                "creatorType": 1,
+                "creatorId": 1,
+                "creatorName": null,
+                "contactPhone": null,
+                "positionLon": null,
+                "positionLat": null,
+                "remark": "somewords",
+                "mainTech": null,
+                "secondTech": {
+                    "id": 1,
+                    "phone": "18812345678",
+                    "name": "tom",
+                    "gender": null,
+                    "avatar": null,
+                    "idNo": "422302198608266313",
+                    "idPhoto": "/etc/a.jpg",
+                    "bank": "027",
+                    "bankAddress": "光谷",
+                    "bankCardNo": "88888888888",
+                    "verifyAt": null,
+                    "requestVerifyAt": null,
+                    "verifyMsg": null,
+                    "lastLoginAt": 1456195103000,
+                    "lastLoginIp": "127.0.0.1",
+                    "createAt": 1455724800000,
+                    "skill": "1",
+                    "pushId": null,
+                    "status": "NEWLY_CREATED"
+                },
+                "mainConstruct": null,
+                "secondConstruct": null,
+                "comment": null,
+                "status": "FINISHED"
+            }
+        ]
+    }
+}
+
+````
+
+## 6.查看技师详情
+查看技师详情
+
+
+### URL及请求方法
+GET /api/mobile/coop/technician/getTechnician?orderId=1
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| orderId | 订单id | 1 |
+
+订单需要有指定主技师。
+
+
+### 返回结果
+
+````
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 1,
+        "phone": "18812345678",
+        "name": "tom",
+        "gender": null,
+        "avatar": null,
+        "idNo": "422302198608266313",
+        "idPhoto": "/etc/a.jpg",
+        "bank": "027",
+        "bankAddress": "光谷",
+        "bankCardNo": "88888888888",
+        "verifyAt": null,
+        "requestVerifyAt": null,
+        "verifyMsg": null,
+        "lastLoginAt": 1456195103000,
+        "lastLoginIp": "127.0.0.1",
+        "createAt": 1455724800000,
+        "skill": "1",
+        "pushId": null,
+        "status": "NEWLY_CREATED"
+    }
+}
+
+````
+
+
