@@ -125,6 +125,11 @@ public class OrderController {
                                 @RequestParam("orderType") int orderType) throws Exception {
 
         Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        int statuCode = cooperator.getStatusCode();
+        if(statuCode !=1){
+            return new JsonMessage(false, "ILLEGAL_PARAM", "商户未通过验证");
+        }
+
         if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
             return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
 

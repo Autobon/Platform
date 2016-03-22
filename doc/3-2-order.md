@@ -76,6 +76,16 @@ POST /api/mobile/coop/order/createOrder
 }
 
 ````
+#### a.商户未通过验证
+
+```
+{
+    "result": false,
+    "message": "商户未通过验证",
+    "error": "ILLEGAL_PARAM",
+    "data": null
+}
+```
 
 
 ## 3.商户端未完成订单列表
@@ -356,5 +366,26 @@ GET /api/mobile/coop/technician/getTechnician?orderId=1
 }
 
 ````
+
+#### a.订单id错误
+
+```
+{
+    "result": false,
+    "message": "没有此订单",
+    "error": "ILLEGAL_PARAM",
+    "data": null
+}
+```
+#### b.订单没有关联主技师
+
+```
+{
+    "result": false,
+    "message": "订单没有关联主技师",
+    "error": "ILLEGAL_PARAM",
+    "data": null
+}
+```
 
 

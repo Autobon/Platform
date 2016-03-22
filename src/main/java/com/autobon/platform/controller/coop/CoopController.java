@@ -122,4 +122,10 @@ public class CoopController {
         return msg;
     }
 
+    @RequestMapping(value = "/getCoop",method = RequestMethod.GET)
+    public JsonMessage getCoop(HttpServletRequest request) throws  Exception{
+        Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        return new JsonMessage(true,"","",cooperator);
+    }
+
 }
