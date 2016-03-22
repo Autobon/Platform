@@ -16,7 +16,7 @@ export default class LoginCtrl extends Injector {
             if (!res.data.result) {
                 $scope.msg = res.data.message;
             } else {
-                $state.go('console');
+                $state.go('console.home');
             }
         });
     }

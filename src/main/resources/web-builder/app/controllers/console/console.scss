@@ -24,36 +24,33 @@
       height: 40px;
 
       > li {
-        vertical-align: top;
         line-height: 40px;
 
-        > a.logout {
+        > a, .dropdown .dropdown-toggle {
           width: 50px;
           height: 40px;
+          line-height: 40px;
+          text-align: center;
+          font-size: 20px;
+          color: $color-text;
           display: inline-block;
-          background: url("image/ico-logout.png") center center no-repeat;
-
+          text-decoration: none;
           &:hover {
-            background-image: url("image/ico-logout-.png");
+            color: $color-primary;
           }
         }
 
         .dropdown {
-          height: 40px;
-          .top-menu-settings {
-            width: 50px;
-            height: 40px;
-            border: none;
-            display: inline-block;
-            background: url("image/ico-setting.png") center center no-repeat;
-            &:hover {
-              background: url("image/ico-setting-.png") center center no-repeat;
-            }
+          &.open .dropdown-toggle {
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            background: rgba(0,0,0,0.5);
+            color: $color-primary;
           }
 
           .dropdown-menu {
             min-width: 100px;
-            margin-top: 0;
+            margin-top: -4px;
             padding-top: 0;
             border: none;
             border-top: 1px solid rgba(0,0,0,0.6);
@@ -80,11 +77,6 @@
             }
           } // .dropdown-menu
 
-          &.open .top-menu-settings {
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
-            background: rgba(0,0,0,0.5) url("image/ico-setting-.png") center center no-repeat;
-          }
         } // .drop-down
       }
     } // .top-menu

@@ -17,13 +17,19 @@ export default class OrderCtrl extends Injector {
 
     getOrders() {
         const {$scope, OrderService} = this.$injected;
-        OrderService.search($scope.filter, $scope.pagination.page, $scope.pagination.pageSize).then(function(res) {
+        OrderService.search($scope.filter, $scope.pagination.page, $scope.pagination.pageSize).then(res => {
             console.log(res.data);
-            if (res.data.result === true) {
+            if (res.data.result) {
                 $scope.orders = res.data.data.list;
                 $scope.pagination.totalItems = res.data.data.totalElements;
             }
         });
+    }
+
+    reset() {
+        const $scope = this.$injected.$scope;
+        $scope.filter = {};
+        $scope.pagination = {page: 1, totalItems: 0, pageSize: 20};
     }
 
 }

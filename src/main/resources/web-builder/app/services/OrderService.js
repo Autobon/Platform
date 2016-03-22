@@ -7,4 +7,9 @@ export default class OrderService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/order', {params: {...params, page: page, pageSize: pageSize}});
     }
+
+    getDetail(orderId) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/' + orderId);
+    }
 }

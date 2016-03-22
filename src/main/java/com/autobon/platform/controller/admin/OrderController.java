@@ -1,7 +1,9 @@
 package com.autobon.platform.controller.admin;
 
 import com.autobon.getui.PushService;
+import com.autobon.order.entity.DetailedOrder;
 import com.autobon.order.entity.Order;
+import com.autobon.order.service.DetailedOrderService;
 import com.autobon.order.service.OrderService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
@@ -31,6 +33,7 @@ public class OrderController {
     private static Logger log = LoggerFactory.getLogger(OrderController.class);
     @Value("${com.autobon.gm-path}") String gmPath;
     @Autowired OrderService orderService;
+    @Autowired DetailedOrderService detailedOrderService;
     @Autowired @Qualifier("PushServiceA")
     PushService pushServiceA;
 
@@ -68,7 +71,7 @@ public class OrderController {
 
     @RequestMapping(value = "/{orderId:\\d+}", method = RequestMethod.GET)
     public JsonMessage show(@PathVariable("orderId") int orderId) {
-        Order order = orderService.get(orderId);
+        DetailedOrder order = detailedOrderService.get(orderId);
         if (order != null) return new JsonMessage(true, "", "", order);
         else return new JsonMessage(false, "ILLEGAL_PARAM", "没有这个订单");
     }

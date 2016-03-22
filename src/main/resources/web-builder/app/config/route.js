@@ -1,5 +1,4 @@
-export default function routeConfig(
-    $locationProvider, $urlRouterProvider, $stateProvider, templateProvider) {
+export default function routeConfig($locationProvider, $urlRouterProvider, $stateProvider, templateProvider) {
     $locationProvider.html5Mode(true);
     const templateCache = templateProvider.$get();
 
@@ -7,32 +6,37 @@ export default function routeConfig(
 
     $stateProvider
         .state('home', {
-            url: '/',
+            url       : '/',
             controller: 'LoginCtrl',
-            template: templateCache.LoginCtrl,
+            template  : templateCache.LoginCtrl,
         })
         .state('console', {
-            url: '/console',
+            url       : '/console',
             controller: 'ConsoleCtrl',
-            template: templateCache.ConsoleCtrl,
+            template  : templateCache.ConsoleCtrl,
         })
         .state('console.home', {
-            url: '/home',
+            url       : '/home',
             controller: 'HomeCtrl',
-            template: templateCache.HomeCtrl,
+            template  : templateCache.HomeCtrl,
         })
         .state('console.order', {
-            url: '/order',
+            url       : '/order',
             controller: 'OrderCtrl',
-            template: templateCache.OrderCtrl,
+            template  : templateCache.OrderCtrl,
+        })
+        .state('console.order.detail', {
+            url       : '/{orderId:\\d+}',
+            controller: 'OrderDetailCtrl',
+            template  : templateCache.OrderDetailCtrl,
         })
         .state('console.main', {
-            url: '/main',
+            url       : '/main',
             controller: 'Main',
             template  : templateCache.Main,
         })
         .state('console.test', {
-            url: '/test',
+            url     : '/test',
             template: 'ABDDDD',
         });
 }

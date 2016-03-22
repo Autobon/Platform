@@ -65,3 +65,12 @@ table.table-striped {
 .ui-select-bootstrap .ui-select-choices-row.active > a {
   background-color: $color-primary;
 }
+
+.btn-primary {
+  background-color: $color-btn;
+  border-color: #CCC;
+  &:hover {
+    background-color: darken($color-btn, 5%);
+    border-color: #CCC;
+  }
+}

@@ -1,5 +1,5 @@
 <div class="page-title">
-    <span class="ico ico-order pull-left"></span>订单管理
+    <span class="glyphicon glyphicon-list-alt"></span>&nbsp;订单管理
 </div>
 <div class="row-search">
     <form class="form-inline pull-left">
@@ -24,9 +24,11 @@
                     ng-options="key as value for (key, value) in Settings.orderStatus">
             </select>
         </div>
-        <button class="btn btn-default btn-search"><span class="ico ico-search"></span>&nbsp;查找</button>
+        <button class="btn btn-primary" ng-click="getOrders()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button class="btn btn-default" ng-click="reset()">重置</button>
     </form>
-    <a href class="pull-right btn-new-order">发布订单<span class="ico ico-add"></span></a>
+    <a href class="pull-right btn-new-order">发布订单&nbsp;<span class="
+glyphicon glyphicon-plus"></span></a>
 </div>
 <br>
 <div class="container-fluid">
