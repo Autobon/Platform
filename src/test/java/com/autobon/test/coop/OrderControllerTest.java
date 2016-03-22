@@ -51,7 +51,7 @@ public class OrderControllerTest {
     @Test
     public void comment() throws Exception {
         mockMvcS.perform(post("/api/mobile/coop/order/comment")
-                .param("orderId","1")
+                .param("orderId","2")
                 .param("star", "5")
                 .param("arriveOnTime","true")
                 .param("completeOnTime","true")

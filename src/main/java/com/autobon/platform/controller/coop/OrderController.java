@@ -67,6 +67,8 @@ public class OrderController {
 
         JsonMessage jsonMessage = new JsonMessage(true,"comment");
         Order order = orderService.get(orderId);
+        if(order.getStatus() == Order.Status.FINISHED){
+
         int mainTechId = order.getMainTechId();
         int secondTechId = order.getSecondTechId();
         if(mainTechId == 0){
@@ -85,6 +87,9 @@ public class OrderController {
         comment.setGoodAttitude(goodAttitude);
         comment.setAdvice(advice);
         commentService.save(comment);
+
+        order.setStatus(Order.Status.COMMENTED);
+        orderService.save(order);
 
         // 写入技师星级统计
         TechStat mainStat = techStatService.getByTechId(mainTechId);
@@ -115,6 +120,10 @@ public class OrderController {
         }*/
 
         return jsonMessage;
+
+        }else{
+            return new JsonMessage(false,"订单未完成或已评论");
+        }
     }
 
     @RequestMapping(value="/createOrder",method = RequestMethod.POST)

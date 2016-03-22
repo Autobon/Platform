@@ -31,6 +31,18 @@ POST /api/mobile/coop/order/comment
 {"result":true,"message":"comment","error":"","data":null}
 ````
 
+#### a.订单未完成或已评论
+
+```
+{
+    "result": false,
+    "message": "订单未完成或已评论",
+    "error": "",
+    "data": null
+}
+```
+
+
 ## 2.创建订单
 合作商户创建订单并推送
 
