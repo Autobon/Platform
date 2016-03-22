@@ -29,8 +29,8 @@ export const production = {
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel'},
             {test: /\.json$/, loader: 'json'},
             {test: /\.html$/, exclude: /node_modules/, loader: 'html'},
-            {test: /\.(jpg|png|gif|woff|woff2)$/, loader: 'url?limit=50000'},
-            {test: /\.(svg|ttf|eot)$/, loader: 'file'}
+            {test: /\.(jpg|png|gif|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url?limit=50000'},
+            {test: /\.(svg|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file'}
         ],
     },
     resolve : {
@@ -49,12 +49,12 @@ export const production = {
         ),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
         // angular-ui is not ready for uglify
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                screw_ie8: true,
-                warnings : false,
-            },
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compressor: {
+        //         screw_ie8: true,
+        //         warnings : false,
+        //     },
+        // }),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify('production'),
@@ -69,6 +69,7 @@ export const production = {
             process.stdout.write(CLEAR_LINE + Math.round(percentage * 100) + '% :' + message + MOVE_LEFT);
         }),
     ],
+    devtool : 'source-map',
 };
 
 export const development = {

@@ -2,7 +2,7 @@ import {Injector} from 'ngES6';
 import './order.scss';
 
 export default class OrderCtrl extends Injector {
-    static $inject   = ['$scope', 'Settings', 'OrderService'];
+    static $inject   = ['$scope', '$state', '$stateParams', 'Settings', 'OrderService'];
     static $template = require('./order.html');
 
     constructor(...args) {

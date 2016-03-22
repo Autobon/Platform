@@ -19,6 +19,7 @@
     "ngES6": "git://github.com/web-es6/ngES6.git",
     "jquery": "^2.2.2",
     "bootstrap": "^3.3.6",
+    "font-awesome": "",
     "moment": ""
   },
   "devDependencies": {

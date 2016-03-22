@@ -38,6 +38,7 @@ config.forEach(c => {
 });
 
 import 'bootstrap/dist/css/bootstrap.css';
+import 'font-awesome/css/font-awesome.min.css';
 import './styles/common.scss';
 window.name = 'NG_DEFER_BOOTSTRAP!';
 angular.element().ready(() => {

@@ -31,7 +31,7 @@
 glyphicon glyphicon-plus"></span></a>
 </div>
 <br>
-<div class="container-fluid">
+<div class="container-fluid" ng-if="!currentOrder">
     <div class="table-responsive">
         <table class="table table-striped">
             <thead><tr><th>序号</th><th>订单类型</th><th>预约时间</th><th>下单人</th><th>下单时间</th><th>订单状态</th><th>操作</th></tr></thead>
@@ -48,3 +48,4 @@ glyphicon glyphicon-plus"></span></a>
     </footer>
 </div>
 
+<div ui-view></div>
