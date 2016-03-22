@@ -32,6 +32,7 @@ public class GtPushTest {
         GtPush.connect(gtConfig);
     }
 
+    /*
     @Test
     public void connect() throws Exception {
         Assert.assertTrue(GtPush.connect(gtConfig));
@@ -68,6 +69,7 @@ public class GtPushTest {
         Assert.assertTrue(GtPush.pushToList(gtConfig, contentId, targets));
     }
 
+
     @Test
     public void pushToSingle() throws Exception {
         GtPush.connect(gtConfig);
@@ -98,5 +100,6 @@ public class GtPushTest {
     public void close() throws Exception {
         Assert.assertTrue(GtPush.close(gtConfig));
     }
+    */
 
 }
