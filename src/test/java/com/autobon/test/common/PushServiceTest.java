@@ -21,13 +21,13 @@ public class PushServiceTest extends MvcTest {
         pushService.connect();
     }
 
-    @Test
+/*    @Test
     public void pushToSingle() throws Exception {
         Assert.assertTrue(pushService.pushToSingle("0f54394e1ccea495b2f3f0b702d69766",
                 "你的认证申请已获通过。",
                 "{\"action\":\"certificate_passed\", \"title\":\"你的认证申请已获通过。\"}",
                 60 * 60));
-    }
+    }*/
 
     @Test
     public void pushToList() throws Exception {
