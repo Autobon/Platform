@@ -1,6 +1,8 @@
 package com.autobon.platform.controller.coop;
 
+import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
+import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,8 @@ public class CoopAccountController {
     @Autowired
     private CooperatorService cooperatorService;
 
+    @Autowired
+    private CoopAccountService coopAccountService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -154,6 +159,14 @@ public class CoopAccountController {
             cooperatorService.save(cooperator);
         }
         return new JsonMessage(true);
+    }
+
+    @RequestMapping(value = "/getSaleList",method = RequestMethod.POST)
+    public JsonMessage getSaleList(HttpServletRequest request) throws Exception{
+        Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        int coopId = cooperator.getId();
+        List<CoopAccount> coopAccountList = coopAccountService.findCoopAccountByCooperatorId(coopId);
+        return new JsonMessage(true,"","",coopAccountList);
     }
 
 }
