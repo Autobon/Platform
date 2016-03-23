@@ -53,4 +53,12 @@ public class CoopControllerTest extends MvcTest {
                 .andExpect(jsonPath("$.result", is(true)));
     }
 
+    @Test
+    public void coopCheckResult() throws Exception {
+        mockMvcS.perform(get("/api/mobile/coop/coopCheckResult")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
 }
