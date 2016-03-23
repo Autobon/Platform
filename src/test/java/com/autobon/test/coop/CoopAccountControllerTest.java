@@ -96,5 +96,13 @@ public class CoopAccountControllerTest {
                 .andExpect(jsonPath("$.result", is(true)));
 
     }
+    @Test
+    public void getSaleList() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/getSaleList")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(print())
+                .andExpect(jsonPath("$.result", is(true)));
+
+    }
 
 }

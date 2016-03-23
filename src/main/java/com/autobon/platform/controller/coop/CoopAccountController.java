@@ -169,4 +169,16 @@ public class CoopAccountController {
         return new JsonMessage(true,"","",coopAccountList);
     }
 
+    @RequestMapping(value = "/saleFired",method = RequestMethod.POST)
+    public JsonMessage saleFired(@RequestParam("coopAccountId") int coopAccountId) throws Exception{
+        CoopAccount coopAccount = coopAccountService.getById(coopAccountId);
+        if(coopAccount!=null){
+            coopAccount.setFired(true);
+            coopAccountService.save(coopAccount);
+            return new JsonMessage(true,"","",coopAccount);
+        }else{
+            return  new JsonMessage(false,"没有这个商户账号");
+        }
+    }
+
 }

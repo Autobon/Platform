@@ -137,7 +137,7 @@ public class CoopController {
 
     @RequestMapping(value = "/coopCheckResult",method = RequestMethod.GET)
     public JsonMessage coopCheckResult(HttpServletRequest request) throws  Exception{
-        Map dataMap = new HashMap<>();
+        Map<String,Object> dataMap = new HashMap<String,Object>();
 
         Cooperator cooperator = (Cooperator)request.getAttribute("user");
         int coopId = cooperator.getId();

@@ -19,4 +19,12 @@ public class CoopAccountService {
     public List<CoopAccount> findCoopAccountByCooperatorId(int coopId) {
         return coopAccountRepository.findCoopAccountByCooperatorId(coopId);
     }
+
+    public CoopAccount getById(int coopAccountId) {
+        return coopAccountRepository.findOne(coopAccountId);
+    }
+
+    public void save(CoopAccount coopAccount) {
+        coopAccountRepository.save(coopAccount);
+    }
 }
