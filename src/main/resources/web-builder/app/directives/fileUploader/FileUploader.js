@@ -14,9 +14,10 @@ export default class FileUploader extends Injector {
         this.restrict     = 'EA';
         this.scope        = {
             name     : '@',
+            accept   : '@',
+            callback : '&',
             imageUrl : '=ngModel',
             uploadUrl: '@',
-            callback : '&',
         };
         this.link.$inject = ['scope', 'element', 'attrs', 'controller'];
     }

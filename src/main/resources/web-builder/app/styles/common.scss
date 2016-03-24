@@ -81,6 +81,11 @@ table.table-striped {
   border-bottom: 1px solid $color-border;
 }
 
+.page-header {
+  margin: 20px 0;
+  border-bottom: 1px solid $color-border;
+}
+
 .list-group > .list-group-item {
   background-color: transparent;
   border: 1px solid $color-border;
@@ -146,3 +151,7 @@ table.table-striped {
   visibility: hidden;
 }
 
+.modal-header {
+  padding: 5px 15px;
+  border-bottom: 3px solid $color-primary;
+}
