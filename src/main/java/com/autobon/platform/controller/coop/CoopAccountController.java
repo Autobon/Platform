@@ -6,6 +6,7 @@ import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
+import com.autobon.shared.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -177,8 +178,47 @@ public class CoopAccountController {
             coopAccountService.save(coopAccount);
             return new JsonMessage(true,"","",coopAccount);
         }else{
-            return  new JsonMessage(false,"没有这个商户账号");
+            return  new JsonMessage(false,"商户id不正确");
         }
     }
+
+
+    @RequestMapping(value = "/addAccount",method = RequestMethod.POST)
+    public JsonMessage addAccount(HttpServletRequest request,
+                                  @RequestParam("phone") String phone,
+                                  @RequestParam("name") String name,
+                                  @RequestParam("gender") boolean gender) throws  Exception{
+        Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        int coopId = cooperator.getId();
+        CoopAccount coopAccount = new CoopAccount();
+        coopAccount.setCooperatorId(coopId);
+        coopAccount.setPhone(phone);
+        coopAccount.setName(name);
+        coopAccount.setGender(gender);
+        //设置默认密码为123456
+        coopAccount.setPassword(CoopAccount.encryptPassword("123456"));
+        coopAccount.setCreateTime(new Date());
+        coopAccountService.save(coopAccount);
+        return new JsonMessage(true,"","",coopAccount);
+    }
+
+    @RequestMapping(value = "/changeAccountPassword",method = RequestMethod.POST)
+    public JsonMessage changeAccountPassword(@RequestParam("coopAccountId") int coopAccountId,
+                                            @RequestParam("oldPassword") String oldPassword,
+                                            @RequestParam("newPassword") String newPassword) {
+        if (newPassword.length() < 6) {
+            return new JsonMessage(false, "ILLEGAL_PARAM", "密码至少6位");
+        } else {
+            CoopAccount coopAccount =coopAccountService.getById(coopAccountId);
+
+            if (!coopAccount.getPassword().equals(coopAccount.encryptPassword(oldPassword))) {
+                return new JsonMessage(false, "ILLEGAL_PARAM", "原密码错误");
+            }
+            coopAccount.setPassword(Cooperator.encryptPassword(newPassword));
+            coopAccountService.save(coopAccount);
+        }
+        return new JsonMessage(true);
+    }
+
 
 }

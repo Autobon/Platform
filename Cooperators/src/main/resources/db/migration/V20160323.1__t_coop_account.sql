@@ -12,3 +12,5 @@ CREATE TABLE IF NOT EXISTS t_coop_account (
   create_time datetime DEFAULT NULL COMMENT '注册时间',
   PRIMARY KEY (id)
 )DEFAULT CHARSET=utf8 COMMENT='合作商户业务员表';
+
+insert  into `t_coop_account`(`id`,`cooperator_id`,`is_main`,`fired`,`phone`,`name`,`gender`,`password`,`last_login_time`,`last_login_ip`,`create_time`) values (1,1,0,0,'13072726003','Tom',1,'7c4a8d09ca3762af61e59520943dc26494f8941b','2015-03-05 11:11:11','192.168.1.1','2015-03-02 11:11:11');
