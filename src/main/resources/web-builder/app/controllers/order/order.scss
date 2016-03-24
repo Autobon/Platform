@@ -1,7 +1,6 @@
 @import "../../styles/_variables.scss";
 @import "../../styles/_mixins.scss";
 .page-title {
-  color: $color-text;
   font-size: 16px;
   height: 40px;
   line-height: 40px;
@@ -26,7 +25,7 @@
     margin-right: 15px;
     text-decoration: none;
     background-color: #e1dac6;
-    color: lighten($color-text, 20%);
+    color: $color-text;
     font-size: 14px;
     font-weight: bold;
 

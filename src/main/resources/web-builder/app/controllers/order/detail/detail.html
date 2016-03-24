@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <h3>订单编号: {{order.orderNum}}&nbsp;&nbsp;
+        <span class="btn btn-sm btn-default">{{Settings.orderTypes[order.orderType]}}</span>
+        <span class="btn btn-sm btn-success">{{Settings.orderStatus[order.status]}}</span>
+    </h3>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>预约时间: </b>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</div>
+        <div class="col-sm-4"><b>下单客户: </b>{{order.creatorName}}</div>
+        <div class="col-sm-4"><b>下单时间: </b>{{order.addTime | date: 'YYYY-MM-DD HH:mm'}}</div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>技师姓名: </b>{{order.mainTech.name}}</div>
+        <div class="col-sm-4"><b>技师电话: </b>{{order.mainTech.phone}}</div>
+        <div class="col-sm-4"><b>施工时间: </b>{{order.mainConstruct.signinTime | date: 'YYYY-MM-DD HH:mm'}}</div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>施工费用: </b>￥{{order.mainConstruct.payment}}</div>
+        <div class="col-sm-8"><b>施工项目: </b>{{order.mainConstruct.workItems}}</div>
+    </div>
+    <div>
+        <h4>合作伙伴:</h4>
+        <div class="row detail-row">
+            <div class="col-sm-4"><b>技师姓名: </b>{{order.secondTech.name}}</div>
+            <div class="col-sm-4"><b>技师电话: </b>{{order.secondTech.phone}}</div>
+            <div class="col-sm-4"><b>施工时间: </b>{{order.secondConstruct.signinTime | date: 'YYYY-MM-DD HH:mm'}}</div>
+        </div>
+        <div class="row detail-row">
+            <div class="col-sm-4"><b>施工费用: </b>￥{{order.secondConstruct.payment}}</div>
+            <div class="col-sm-8"><b>施工项目: </b>{{order.secondConstruct.workItems}}</div>
+        </div>
+    </div>
+    <div class="comment" ng-if="order.comment">
+        <div class="sub-header">
+            <h3>评论</h3>
+        </div>
+        <div>
+            <label>打分: &nbsp;&nbsp;</label>
+            <uib-rating ng-model="order.comment.star" max="5" read-only="true" aria-labelledby="default-rating"></uib-rating>
+        </div>
+        <ul class="list-group pull-left m-t-20">
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.arriveOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时到达</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.completeOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时完工</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.professional ? 'fa-check-square-o' : 'fa-square-o'"></i> 技术专业</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.dressNeatly ? 'fa-check-square-o' : 'fa-square-o'"></i> 着装整洁</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.carProtect ? 'fa-check-square-o' : 'fa-square-o'"></i> 车辆保护超级棒</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.goodAttitude ? 'fa-check-square-o' : 'fa-square-o'"></i> 态度好</li>
+        </ul>
+        <div class="pull-left m-20">
+            <label>建议:</label>
+            <p>{{order.comment.advice}}</p>
+        </div>
+    </div>
+</div>

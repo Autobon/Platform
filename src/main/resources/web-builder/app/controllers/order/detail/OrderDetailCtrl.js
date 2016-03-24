@@ -9,28 +9,26 @@ export default class OrderDetailCtrl extends Injector {
         super(...args);
         const {$scope, $stateParams, OrderService} = this.$injected;
         this.attachMethodsTo($scope);
-        this.orderId = $stateParams.orderId;
-        OrderService.getDetail(this.orderId).then(res => {
-            if (res.data.result) {
-                console.log(res.data);
+        OrderService.getDetail($stateParams.orderNum).then(res => {
+            if (res.data && res.data.result) {
                 const $parent = $scope.$parent;
                 const order = res.data.data;
-                $parent.currentOrder = $scope.order = order;
+                $scope.order = order;
 
                 if (order.mainConstruct && order.mainConstruct.workItems) {
                     if (!$parent.workItems || !$parent.workItems[order.orderType]) {
-                        console.log(1);
                         OrderService.getWorkItems($scope.order.orderType).then(res2 => {
-                            if (res2.data.result) {
+                            if (res2.data && res2.data.result) {
                                 console.log(res2.data);
                                 $parent.workItems = $parent.workItems || {};
                                 $parent.workItems[order.orderType] = res2.data.data;
-                                order.mainConstruct.workItems = this._assembleWorkItemsText($parent.workItems[order.orderType], order.mainConstruct.workItems);
+                                order.mainConstruct.workItems = this._assembleWorkItemsText(
+                                    $parent.workItems[order.orderType], order.mainConstruct.workItems);
                             }
                         });
                     } else {
-                        console.log('2');
-                        order.mainConstruct.workItems = this._assembleWorkItemsText($parent.workItems[order.orderType], order.mainConstruct.workItems);
+                        order.mainConstruct.workItems = this._assembleWorkItemsText(
+                            $parent.workItems[order.orderType], order.mainConstruct.workItems);
                     }
                 }
             }

@@ -19,7 +19,7 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
             })
     .value('Settings', {
         domain: 'http://localhost:12345',
-        orderTypes: {'1': '隔热层', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁"'},
+        orderTypes: {'1': '隔热层', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
         orderStatus: {
             'NEWLY_CREATED': '新建',
             'TAKEN_UP': '已接单',
@@ -31,7 +31,10 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
             'COMMENTED': '已评论',
             'CANCELED': '已取消',
         },
-    });
+    })
+    .run(['$rootScope', '$stateParams', function($rootScope, $state) {
+        $rootScope.$state = $state;
+    }]);
 
 config.forEach(c => {
     app.config(c);

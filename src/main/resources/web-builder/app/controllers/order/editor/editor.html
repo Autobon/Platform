@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">订单类型</label>
+            <div class="col-sm-10">
+                <select class="form-control width-auto" id="orderType" ng-model="order.orderType"
+                        ng-options="key as value for (key, value) in Settings.orderTypes">
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">预约时间</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control width-auto" ng-model="order.orderTime">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">联系电话</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control width-auto" ng-model="order.contactPhone">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">订单照片</label>
+            <div class="col-sm-10">
+                <input file-uploader type="file" class="form-control width-auto" ng-model="order.photo" name="file" callback="uploaded(data)" upload-url="{{uploadUrl}}">
+            </div>
+        </div>
+    </form>
+</div>

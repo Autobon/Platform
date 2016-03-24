@@ -26,9 +26,19 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.OrderCtrl,
         })
         .state('console.order.detail', {
-            url       : '/{orderId:\\d+}',
+            url       : '/{orderNum:\\d+[^/]*}',
             controller: 'OrderDetailCtrl',
             template  : templateCache.OrderDetailCtrl,
+        })
+        .state('console.order.edit', {
+            url       : '/edit/{orderNum:\\d+[^/]*}',
+            controller: 'OrderEditorCtrl',
+            template  : templateCache.OrderEditorCtrl,
+        })
+        .state('console.order.new', {
+            url       : '/new',
+            controller: 'OrderEditorCtrl',
+            template  : templateCache.OrderEditorCtrl,
         })
         .state('console.main', {
             url       : '/main',

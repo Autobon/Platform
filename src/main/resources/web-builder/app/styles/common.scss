@@ -19,7 +19,7 @@ html {
 
 table.table-striped {
   thead > tr > th {
-    border-bottom: 2px solid darken($color-bg, 10%);
+    border-bottom: 2px solid $color-border;
   }
   tbody > tr {
     &:hover {
@@ -29,7 +29,7 @@ table.table-striped {
       background-color: transparent;
     }
     > td {
-      border-bottom: 1px solid darken($color-bg, 10%);
+      border-bottom: 1px solid $color-border;
     }
   }
 }
@@ -68,7 +68,7 @@ table.table-striped {
 }
 
 .btn-default {
-  @include button-variant(#000, #FFF, #CCC);
+  @include button-variant($color-text, transparent, lighten($color-text, 5%));
 }
 
 .btn-primary {
@@ -78,10 +78,71 @@ table.table-striped {
 .sub-header {
   padding-bottom: 10px;
   margin: 20px 0;
-  border-bottom: 1px solid darken($color-bg, 10%);
+  border-bottom: 1px solid $color-border;
 }
 
 .list-group > .list-group-item {
   background-color: transparent;
-  border: 1px solid darken($color-bg, 10%);
+  border: 1px solid $color-border;
 }
+
+.side-nav {
+  width: 300px;
+  position: absolute;
+  ul.side-nav-list {
+    padding: 0;
+    list-style: none;
+    border-right: 1px solid $color-border;
+    li {
+      padding: 3px 3px 3px;
+      border-bottom: 1px solid $color-border;
+      &:first-child {
+        border-top: 1px solid $color-border;
+      }
+      &.active {
+        background-color: lighten($color-bg, 5%);
+      }
+      a {
+        text-decoration: none;
+        color: #000;
+      }
+    }
+  }
+}
+
+.detail-content {
+  margin-left: 300px;
+  .detail-row {
+    margin: 0;
+    line-height: 3em;
+    border-bottom: 1px solid $color-border;
+  }
+}
+
+
+// margin variants
+@each $size in 1 2 3 4 5 6 7 8 9 10 {
+  .m-#{$size*5} {
+    margin: $size*5px;
+  }
+
+  @each $side in (l, left) (r, right) (t, top) (b, bottom) {
+    .m-#{nth($side,1)}-#{$size*5} {
+      margin-#{nth($side,2)}: $size*5px;
+    }
+  }
+}
+
+.width-auto {
+  display: inline-block;
+  width: auto !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.invisible {
+  visibility: hidden;
+}
+

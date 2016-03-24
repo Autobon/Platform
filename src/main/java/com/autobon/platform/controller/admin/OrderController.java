@@ -7,6 +7,7 @@ import com.autobon.order.service.DetailedOrderService;
 import com.autobon.order.service.OrderService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -15,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -69,9 +72,9 @@ public class OrderController {
                         orderType, statusCode, page, pageSize)));
     }
 
-    @RequestMapping(value = "/{orderId:\\d+}", method = RequestMethod.GET)
-    public JsonMessage show(@PathVariable("orderId") int orderId) {
-        DetailedOrder order = detailedOrderService.get(orderId);
+    @RequestMapping(value = "/{orderNum:\\d+.*}", method = RequestMethod.GET)
+    public JsonMessage show(@PathVariable("orderNum") String orderNum) {
+        DetailedOrder order = detailedOrderService.getByOrderNum(orderNum);
         if (order != null) return new JsonMessage(true, "", "", order);
         else return new JsonMessage(false, "ILLEGAL_PARAM", "没有这个订单");
     }
@@ -112,6 +115,24 @@ public class OrderController {
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.info("订单: " + order.getOrderNum() + "的推送消息发送失败");
         return new JsonMessage(true, "", "", order);
+    }
+
+    @RequestMapping(value = "/photo", method = RequestMethod.POST)
+    public JsonMessage uploadPhoto(HttpServletRequest request,
+            @RequestParam("file") MultipartFile file) throws Exception {
+        if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
+
+        String path = "/uploads/order";
+        File dir = new File(request.getServletContext().getRealPath(path));
+        if (!dir.exists()) dir.mkdirs();
+
+        String originalName = file.getOriginalFilename();
+        String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase();
+        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                            + VerifyCode.generateVerifyCode(6) + extension;
+        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
+
+        return new JsonMessage(true, "", "", path + "/" + filename);
     }
 
 
