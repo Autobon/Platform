@@ -118,12 +118,14 @@
 
   .console-footer {
     display: table-row;
-    height: 20px;
+    height: 50px;
     width: 100%;
     line-height: 20px;
     text-align: center;
 
     .text-box {
+      margin-top: 30px;
+      height: 20px;
       font-size: 12px;
       display: inline-block;
       border-top-left-radius: 15px;

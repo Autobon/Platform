@@ -11,12 +11,6 @@ export default class OrderEditorCtrl extends Injector {
         $scope.order     = {};
         $scope.uploadUrl = OrderService.uploadPhotoUrl;
         this.attachMethodsTo($scope);
-        $scope.$watch('order.position', () => {
-            console.log(111, $scope.order.position);
-        });
-        $scope.$watch('order.photo', () => {
-            console.log(222, $scope.order.photo);
-        });
     }
 
     uploaded(data) {

@@ -67,7 +67,7 @@ glyphicon glyphicon-plus"></span></a>
         <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
                         items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getOrders()" max-size="5"
                         previous-text="上一页" next-text="下一页"
-                        ng-class="{'pagination-sm': $stateParams.orderNum}"></uib-pagination>
+                        ng-class="{'pagination-sm': !$state.is('console.order')}"></uib-pagination>
     </footer>
 </div>
 
