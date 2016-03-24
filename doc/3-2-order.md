@@ -400,4 +400,40 @@ GET /api/mobile/coop/technician/getTechnician?orderId=1
 }
 ```
 
+## 7.上传订单照片
+上传订单照片
+
+### URL及请求方法
+POST /api/mobile/coop/order/uploadPhoto
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| file | 上传的图片 | |
+
+### 返回数据
+
+#### a.请求成功
+
+```
+{
+    "result": true,
+    "error": "",
+    "message": "",
+    "date": "/uploads/order/photo/20160304165030100001.jpg"
+}
+```
+
+#### b.没有上传文件
+
+```
+{
+    "result": false,
+    "error": "NO_UPLOAD_FILE",
+    "message": "没有上传文件",
+    "date": null
+}
+```
+
 
