@@ -13,10 +13,11 @@ export default class LoginCtrl extends Injector {
     login() {
         const {$scope, $state, LoginService} = this.$injected;
         LoginService.login($scope.account, $scope.password).then((res) => {
-            if (!res.data.result) {
-                $scope.msg = res.data.message;
+            if (res.data) {
+                if (!res.data.result) $scope.msg = res.data.message;
+                else $state.go('console.home');
             } else {
-                $state.go('console.home');
+                $scope.msg = '访问网络失败';
             }
         });
     }

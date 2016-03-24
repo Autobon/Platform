@@ -1,32 +1,22 @@
 import {Injector} from 'ngES6';
-import $ from 'jquery';
 import './editor.scss';
 
 export default class OrderEditorCtrl extends Injector {
-    static $inject   = ['$scope', '$uibModal'];
+    static $inject   = ['$scope', '$uibModal', 'OrderService'];
     static $template = require('./editor.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope} = this.$injected;
+        const {$scope, OrderService} = this.$injected;
         $scope.order     = {};
-        $scope.uploadUrl = '/api/web/admin/order/photo';
+        $scope.uploadUrl = OrderService.uploadPhotoUrl;
         this.attachMethodsTo($scope);
-
-        $('body').append($('<script src="http://api.map.baidu.com/api?v=2.0&ak=FPzmlgz02SERkbPsRyGOiGfj&callback=initMap"></script>'));
-        window.initMap = () => {
-            let map = $scope.map = new window.BMap.Map('baiduMap');
-            map.centerAndZoom('北京', 12);
-            map.enableScrollWheelZoom(true);
-            map.addControl(new window.BMap.CityListControl({
-                anchor: window.BMAP_ANCHOR_TOP_LEFT,
-                offset: new window.BMap.Size(10, 20),
-            }));
-            map.addControl(new window.BMap.NavigationControl({
-                anchor: window.BMAP_ANCHOR_TOP_RIGHT,
-                type  : window.BMAP_NAVIGATION_CONTROL_ZOOM,
-            }));
-        };
+        $scope.$watch('order.position', () => {
+            console.log(111, $scope.order.position);
+        });
+        $scope.$watch('order.photo', () => {
+            console.log(222, $scope.order.photo);
+        });
     }
 
     uploaded(data) {

@@ -19,7 +19,7 @@ export default class FileUploader extends Injector {
             imageUrl : '=ngModel',
             uploadUrl: '@',
         };
-        this.link.$inject = ['scope', 'element', 'attrs', 'controller'];
+        this.link.$inject = ['scope', 'element'];
     }
 
     link(scope, element) {
