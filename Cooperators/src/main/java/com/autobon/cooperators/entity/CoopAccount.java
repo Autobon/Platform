@@ -36,6 +36,9 @@ public class CoopAccount implements UserDetails {
     private boolean fired;
 
     @Column
+    private String shortname; //企业简称
+
+    @Column
     private String phone;
 
     @Column
@@ -96,6 +99,14 @@ public class CoopAccount implements UserDetails {
 
     public void setFired(boolean fired) {
         this.fired = fired;
+    }
+
+    public String getShortname() {
+        return shortname;
+    }
+
+    public void setShortname(String shortname) {
+        this.shortname = shortname;
     }
 
     public String getPhone() {

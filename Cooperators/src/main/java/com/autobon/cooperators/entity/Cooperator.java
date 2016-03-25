@@ -17,8 +17,6 @@ public class Cooperator{
 
     @Column private String phone; // 账号
 
-    @Column private String shortname; //企业简称
-
     @Column private String fullname; //企业名称
 
     @Column private String businessLicense; //营业执照号
@@ -82,14 +80,6 @@ public class Cooperator{
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getShortname() {
-        return shortname;
-    }
-
-    public void setShortname(String shortname) {
-        this.shortname = shortname;
     }
 
     public String getFullname() {

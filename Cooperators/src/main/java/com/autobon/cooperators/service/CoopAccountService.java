@@ -27,4 +27,12 @@ public class CoopAccountService {
     public void save(CoopAccount coopAccount) {
         coopAccountRepository.save(coopAccount);
     }
+
+    public CoopAccount getByShortname(String shortname) {
+        return  coopAccountRepository.getByShortname(shortname);
+    }
+
+    public CoopAccount getByPhone(String phone) {
+        return coopAccountRepository.getByPhone(phone);
+    }
 }

@@ -17,4 +17,8 @@ import java.util.List;
 public interface CoopAccountRepository extends JpaRepository<CoopAccount, Integer> {
 
     List<CoopAccount> findCoopAccountByCooperatorId(int coopId);
+
+    CoopAccount getByShortname(String shortname);
+
+    CoopAccount getByPhone(String phone);
 }
