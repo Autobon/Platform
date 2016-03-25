@@ -141,6 +141,8 @@ public class OrderController {
         //int statuCode = cooperator.getStatusCode();
 
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        int coopId = coopAccount.getCooperatorId();
+        Cooperator cooperator = cooperatorService.get(coopId);
         int statuCode = coopAccount.getStatusCode();
 
         if(statuCode !=1){
@@ -160,6 +162,8 @@ public class OrderController {
                 LocalDateTime.from(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse(orderTime))
                         .atZone(ZoneId.systemDefault()).toInstant()));
         order.setOrderType(orderType);
+        order.setPositionLon(cooperator.getLongitude());
+        order.setPositionLat(cooperator.getLatitude());
         orderService.save(order);
 
         String msgTitle = "你收到新订单推送消息";

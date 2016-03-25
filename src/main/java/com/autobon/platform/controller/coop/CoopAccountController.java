@@ -107,6 +107,10 @@ public class CoopAccountController {
             msg.setResult(false);
             msg.setError("NO_SUCH_USER");
             msg.setMessage("手机号与企业简称不匹配");
+        } else if(coopAccount.isFired()){
+            msg.setResult(false);
+            msg.setError("USER_FIRED");
+            msg.setMessage("该员工已离职");
         } else {
             response.addCookie(new Cookie("autoken", CoopAccount.makeToken(coopAccount.getId())));
             coopAccount.setLastLoginTime(new Date());
@@ -178,6 +182,9 @@ public class CoopAccountController {
     @RequestMapping(value = "/saleFired",method = RequestMethod.POST)
     public JsonMessage saleFired(@RequestParam("coopAccountId") int coopAccountId) throws Exception{
         CoopAccount coopAccount = coopAccountService.getById(coopAccountId);
+        if(!coopAccount.isMain()){
+            return  new JsonMessage(false,"当前账户不是管理账号");
+        }
         if(coopAccount!=null){
             coopAccount.setFired(true);
             coopAccountService.save(coopAccount);
@@ -194,6 +201,9 @@ public class CoopAccountController {
                                   @RequestParam("name") String name,
                                   @RequestParam("gender") boolean gender) throws  Exception{
         CoopAccount coopAccountLogin = (CoopAccount) request.getAttribute("user");
+        if(!coopAccountLogin.isMain()){
+            return  new JsonMessage(false,"当前账户不是管理账号");
+        }
         int coopId = coopAccountLogin.getCooperatorId();
         //Cooperator cooperator = (Cooperator)request.getAttribute("user");
         //int coopId = cooperator.getId();

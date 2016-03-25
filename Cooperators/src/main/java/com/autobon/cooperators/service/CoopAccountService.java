@@ -35,4 +35,9 @@ public class CoopAccountService {
     public CoopAccount getByPhone(String phone) {
         return coopAccountRepository.getByPhone(phone);
     }
+
+    public CoopAccount getByCooperatorIdAndIsMain(int coopId, boolean b) {
+        return coopAccountRepository.getByCooperatorIdAndIsMain(coopId, b);
+    }
+
 }
