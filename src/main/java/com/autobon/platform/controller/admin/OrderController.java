@@ -86,7 +86,8 @@ public class OrderController {
             @RequestParam("positionLon") String positionLon,
             @RequestParam("positionLat") String positionLat,
             @RequestParam("contactPhone") String contactPhone,
-            @RequestParam(value = "photo", defaultValue = "") String photo,
+            @RequestParam("contact") String contact,
+            @RequestParam("photo") String photo,
             @RequestParam(value = "remark", required = false) String remark) throws Exception {
         Staff staff = (Staff) request.getAttribute("user");
         if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
@@ -95,7 +96,7 @@ public class OrderController {
         Order order = new Order();
         order.setCreatorType(2);
         order.setCreatorId(staff.getId());
-        order.setCreatorName(staff.getName());
+        order.setCreatorName(contact);
         order.setContactPhone(contactPhone);
         order.setPositionLon(positionLon);
         order.setPositionLat(positionLat);

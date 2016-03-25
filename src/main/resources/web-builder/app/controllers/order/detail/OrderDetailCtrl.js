@@ -9,6 +9,7 @@ export default class OrderDetailCtrl extends Injector {
         super(...args);
         const {$scope, $stateParams, OrderService} = this.$injected;
         this.attachMethodsTo($scope);
+
         OrderService.getDetail($stateParams.orderNum).then(res => {
             if (res.data && res.data.result) {
                 const $parent = $scope.$parent;

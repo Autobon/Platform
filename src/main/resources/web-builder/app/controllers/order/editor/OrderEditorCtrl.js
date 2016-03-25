@@ -2,15 +2,21 @@ import {Injector} from 'ngES6';
 import './editor.scss';
 
 export default class OrderEditorCtrl extends Injector {
-    static $inject   = ['$scope', '$uibModal', 'OrderService'];
+    static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'OrderService'];
     static $template = require('./editor.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, OrderService} = this.$injected;
-        $scope.order     = {};
-        $scope.uploadUrl = OrderService.uploadPhotoUrl;
+        const {$scope, $stateParams, OrderService} = this.$injected;
         this.attachMethodsTo($scope);
+
+        if ($stateParams.orderNum) {
+            $scope.order = OrderService.getDetail($stateParams.orderNum);
+        } else {
+            $scope.order = {};
+        }
+
+        $scope.uploadUrl = OrderService.uploadPhotoUrl;
     }
 
     uploaded(data) {
@@ -34,5 +40,22 @@ export default class OrderEditorCtrl extends Injector {
             });
         }
         return data.result ? data.data : '';
+    }
+
+    save() {
+        const {$scope, $state, OrderService} = this.$injected;
+        if ($scope.order.orderNum) {
+            console.log('update mode has not implemented');
+        } else {
+            $scope.order.positionLon = $scope.order.position.lng;
+            $scope.order.positionLat = $scope.order.position.lat;
+            OrderService.createOrder($scope.order).then(res => {
+                console.log(res);
+                if (res.data && res.data.result) {
+                    $state.go(`^.detail`, {orderNum: res.data.data.orderNum});
+                }
+            });
+        }
+        console.log('save action fired');
     }
 }

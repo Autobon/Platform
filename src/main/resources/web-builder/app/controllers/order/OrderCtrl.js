@@ -11,7 +11,7 @@ export default class OrderCtrl extends Injector {
         this.attachMethodsTo($scope);
         $scope.Settings   = Settings;
         $scope.filter     = {};
-        $scope.pagination = {page: 1, totalItems: 0, pageSize: 1};
+        $scope.pagination = {page: 1, totalItems: 0, pageSize: 20};
         this.getOrders();
     }
 

@@ -28,9 +28,11 @@ export default class Resize extends Injector {
         }
 
         if (ele[0].tagName === 'IMG' && !ele[0].complete) {
+            ele.css({'display': 'none'});
             ele.on('load', () => {
                 this.$injected.$timeout(() => {
                     this.setSize(ele[0], width, height);
+                    ele.css({'display': ''});
                 });
             });
         } else {

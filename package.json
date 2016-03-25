@@ -20,7 +20,8 @@
     "jquery": "^2.2.2",
     "bootstrap": "^3.3.6",
     "font-awesome": "",
-    "moment": ""
+    "moment": "",
+    "angular-bootstrap-datetimepicker": ""
   },
   "devDependencies": {
     "autoprefixer": "^6.3.1",

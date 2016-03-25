@@ -24,7 +24,6 @@ export default class FileUploader extends Injector {
 
     link(scope, element) {
         let file  = $(element).find('input:file');
-        let input = $(element).find('input[type="hidden"]');
 
         file.on('click', e => {
             e.stopPropagation();
@@ -48,7 +47,6 @@ export default class FileUploader extends Injector {
                     if (res.data) {
                         const url      = scope.callback({data: res.data});
                         scope.imageUrl = url;
-                        input.val(url);
                     } else {
                         console.log(res);
                     }

@@ -61,9 +61,20 @@ table.table-striped {
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba($color-primary,.6);
 }
 
-.form-validation .form-control.ng-dirty.ng-valid {
+.form-control.ng-dirty.ng-valid {
   &, &:focus {
     border-color: $color-primary;
+  }
+}
+
+.form-control.ng-dirty.ng-invalid {
+  &, &:focus {
+    border-color: #E00;
+  }
+
+  &:focus {
+    border-color: #E00;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(#E00,.6);
   }
 }
 
@@ -91,32 +102,28 @@ table.table-striped {
   border: 1px solid $color-border;
 }
 
-.side-nav {
-  width: 300px;
-  position: absolute;
-  ul.side-nav-list {
-    padding: 0;
-    list-style: none;
-    border-right: 1px solid $color-border;
-    li {
-      padding: 3px 3px 3px;
-      border-bottom: 1px solid $color-border;
-      &:first-child {
-        border-top: 1px solid $color-border;
-      }
-      &.active {
-        background-color: lighten($color-bg, 5%);
-      }
-      a {
-        text-decoration: none;
-        color: #000;
-      }
+ul.side-nav-list {
+  padding: 0;
+  list-style: none;
+  border-right: 1px solid $color-border;
+  li {
+    padding: 3px 3px 3px;
+    border-bottom: 1px solid $color-border;
+    &:first-child {
+      border-top: 1px solid $color-border;
+    }
+    &.active {
+      background-color: lighten($color-bg, 5%);
+    }
+    a {
+      text-decoration: none;
+      color: #000;
     }
   }
 }
 
 .detail-content {
-  margin-left: 300px;
+  display: table-cell;
   .detail-row {
     margin: 0;
     line-height: 3em;
@@ -136,6 +143,28 @@ table.table-striped {
       margin-#{nth($side,2)}: $size*5px;
     }
   }
+}
+
+
+// padding variants
+@each $size in 1 2 3 4 5 6 7 8 9 10 {
+  .p-#{$size*5} {
+    padding: $size*5px;
+  }
+
+  @each $side in (l, left) (r, right) (t, top) (b, bottom) {
+    .p-#{nth($side,1)}-#{$size*5} {
+      padding-#{nth($side,2)}: $size*5px;
+    }
+  }
+}
+
+.table-row {
+  display: table-row;
+}
+
+.table-cell {
+  display: table-cell;
 }
 
 .width-auto {
