@@ -1,16 +1,15 @@
 import {Injector} from 'ngES6';
 import $ from 'jquery';
 
-export default class GisPicker extends Injector {
+export default class GisPosition extends Injector {
 
     constructor(...args) {
         super(...args);
-        this.template     = '<div></div>';
-        this.replace      = true;
-        this.require      = 'ngModel';
-        this.restrict     = 'EA';
-        this.scope        = {
-            position: '=ngModel',
+        this.template = '<div></div>';
+        this.replace = true;
+        this.restrict = 'EA';
+        this.scope = {
+            position: '@',
         };
         this.link.$inject = ['scope', 'element', 'attrs'];
     }
@@ -22,13 +21,8 @@ export default class GisPicker extends Injector {
                 attrs.id = 'map' + Math.random().toString().substr(2);
                 $(element).attr('id', attrs.id);
             }
-            let map = scope.map = new window.BMap.Map(attrs.id);
-            map.centerAndZoom('北京', 12);
+            let map = new window.BMap.Map(attrs.id);
             map.enableScrollWheelZoom(true);
-            map.addControl(new window.BMap.CityListControl({
-                anchor: window.BMAP_ANCHOR_TOP_LEFT,
-                offset: new window.BMap.Size(60, 20),
-            }));
             map.addControl(new window.BMap.NavigationControl({
                 anchor: window.BMAP_ANCHOR_TOP_RIGHT,
                 type  : window.BMAP_NAVIGATION_CONTROL_ZOOM,
@@ -53,7 +47,7 @@ export default class GisPicker extends Injector {
                 div.text('返回');
                 div.on('click', () => {
                     if (scope.position) {
-                        _map.panTo(scope.position);
+                        _map.panTo(new window.BMap.Point(scope.position.lng, scope.position.lat));
                     }
                 });
                 _map.getContainer().appendChild(div[0]);
@@ -61,21 +55,17 @@ export default class GisPicker extends Injector {
             };
             map.addControl(new ShowCurrentCtrl());
 
-
-            map.addEventListener('click', e => {
-                if (scope.marker) map.removeOverlay(scope.marker);
-                scope.marker = new window.BMap.Marker(new window.BMap.Point(e.point.lng, e.point.lat));
-                scope.marker.enableDragging();
-                scope.marker.addEventListener('mouseup', () => {
-                    scope.$apply(() => {
-                        scope.position = scope.marker.getPosition();
-                    });
-                });
-                map.addOverlay(scope.marker);
-                scope.$apply(() => {
-                    scope.position = e.point;
-                });
-            });
+            if (typeof scope.position === 'string') {
+                scope.position = JSON.parse(scope.position);
+            }
+            if (!scope.position || !scope.position.lng) {
+                map.centerAndZoom('北京', 12);
+            } else {
+                const point = new window.BMap.Point(scope.position.lng, scope.position.lat);
+                const marker = new window.BMap.Marker(point);
+                map.centerAndZoom(point, 15);
+                map.addOverlay(marker);
+            }
         };
     }
 }

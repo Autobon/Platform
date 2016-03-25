@@ -13,14 +13,14 @@ export default class OrderDetailCtrl extends Injector {
         OrderService.getDetail($stateParams.orderNum).then(res => {
             if (res.data && res.data.result) {
                 const $parent = $scope.$parent;
-                const order = res.data.data;
+                let order = res.data.data;
                 $scope.order = order;
+                order.position = {lng: order.positionLon, lat: order.positionLat};
 
                 if (order.mainConstruct && order.mainConstruct.workItems) {
                     if (!$parent.workItems || !$parent.workItems[order.orderType]) {
                         OrderService.getWorkItems($scope.order.orderType).then(res2 => {
                             if (res2.data && res2.data.result) {
-                                console.log(res2.data);
                                 $parent.workItems = $parent.workItems || {};
                                 $parent.workItems[order.orderType] = res2.data.data;
                                 order.mainConstruct.workItems = this._assembleWorkItemsText(
@@ -37,7 +37,6 @@ export default class OrderDetailCtrl extends Injector {
     }
 
     _assembleWorkItemsText(dictionary, items) {
-        console.log(dictionary, items);
         let map = {};
         dictionary.forEach(d => map[d.id] = d.name);
         return items.split(',').map(i => map[i]).join(',');

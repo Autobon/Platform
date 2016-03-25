@@ -68,7 +68,7 @@ table.table-striped {
 }
 
 .form-control.ng-dirty.ng-invalid {
-  &, &:focus {
+  & {
     border-color: #E00;
   }
 
@@ -122,15 +122,11 @@ ul.side-nav-list {
   }
 }
 
-.detail-content {
-  display: table-cell;
-  .detail-row {
-    margin: 0;
-    line-height: 3em;
-    border-bottom: 1px solid $color-border;
-  }
+.detail-row {
+  margin: 0;
+  line-height: 3em;
+  border-bottom: 1px solid $color-border;
 }
-
 
 // margin variants
 @each $size in 1 2 3 4 5 6 7 8 9 10 {
@@ -159,14 +155,6 @@ ul.side-nav-list {
   }
 }
 
-.table-row {
-  display: table-row;
-}
-
-.table-cell {
-  display: table-cell;
-}
-
 .width-auto {
   display: inline-block;
   width: auto !important;
@@ -183,4 +171,9 @@ ul.side-nav-list {
 .modal-header {
   padding: 5px 15px;
   border-bottom: 3px solid $color-primary;
+}
+
+.img-thumbnail {
+  background-color: transparent;
+  border-color: $color-border;
 }
