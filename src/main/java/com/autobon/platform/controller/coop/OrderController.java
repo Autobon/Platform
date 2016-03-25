@@ -143,7 +143,7 @@ public class OrderController {
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         int coopId = coopAccount.getCooperatorId();
         Cooperator cooperator = cooperatorService.get(coopId);
-        int statuCode = coopAccount.getStatusCode();
+        int statuCode = cooperator.getStatusCode();
 
         if(statuCode !=1){
             return new JsonMessage(false, "ILLEGAL_PARAM", "商户未通过验证");

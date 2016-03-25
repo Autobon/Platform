@@ -61,6 +61,8 @@ public class Cooperator{
 
     @Column private Date createTime; //注册时间
 
+    @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败
+
 
     public  Cooperator(){
         this.createTime=new Date();
@@ -250,5 +252,11 @@ public class Cooperator{
         this.createTime = createTime;
     }
 
+    public int getStatusCode() {
+        return statusCode;
+    }
 
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
 }

@@ -73,7 +73,7 @@ public class CooperatorController {
                                  @RequestParam("verified") boolean verified,
                                 // @RequestParam(value = "statusCode") int statusCode,
                                  @RequestParam(value = "resultDesc",required = false) String resultDesc) throws IOException {
-        //Cooperator cooperator = cooperatorService.get(coopId);
+        Cooperator cooperator = cooperatorService.get(coopId);
         CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
 
         if (coopAccount != null) {
@@ -83,7 +83,7 @@ public class CooperatorController {
             Staff staff = (Staff) request.getAttribute("user");
             reviewCooper.setCheckedBy(staff.getName());
             if(verified){
-                coopAccount.setStatusCode(1);
+                cooperator.setStatusCode(1);
                 reviewCooper.setResult(true);
                 String title = "你已通过合作商户资格认证";
                 pushService.pushToSingle(coopAccount.getPushId(), title,
@@ -96,7 +96,7 @@ public class CooperatorController {
                 if(resultDesc!=null){
                     reviewCooper.setResultDesc(resultDesc);
                 }
-                coopAccount.setStatusCode(2);
+                cooperator.setStatusCode(2);
                 reviewCooper.setResult(false);
                 String title = "你的合作商户资格认证失败: " + resultDesc;
                 pushService.pushToSingle(coopAccount.getPushId(), title,
@@ -106,7 +106,7 @@ public class CooperatorController {
             }
             reviewCooperService.save(reviewCooper);
             coopAccountService.save(coopAccount);
-            //cooperatorService.save(cooperator);
+            cooperatorService.save(cooperator);
             return new JsonMessage(true,"","",reviewCooper);
         } else {
             return new JsonMessage(false, "ILLEGAL_PARAM", "这个合作商户没有设置主账户");

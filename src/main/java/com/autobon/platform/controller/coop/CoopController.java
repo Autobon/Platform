@@ -88,11 +88,10 @@ public class CoopController {
         cooperator.setAddress(address);
         cooperator.setContact(contact);
         cooperator.setContactPhone(contactPhone);
-       // cooperator.setStatusCode(0);
+        cooperator.setStatusCode(0);
         cooperatorService.save(cooperator);
 
         coopAccount.setCooperatorId(cooperator.getId());
-        coopAccount.setStatusCode(0);
         coopAccountService.save(coopAccount);
 
         return new JsonMessage(true, "", "", cooperator);
