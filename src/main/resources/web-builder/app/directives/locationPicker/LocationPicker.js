@@ -1,7 +1,7 @@
 import {Injector} from 'ngES6';
 import $ from 'jquery';
 
-export default class GisPicker extends Injector {
+export default class LocationPicker extends Injector {
 
     constructor(...args) {
         super(...args);

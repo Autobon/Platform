@@ -1,7 +1,7 @@
 import {Injector} from 'ngES6';
 import $ from 'jquery';
 
-export default class GisPosition extends Injector {
+export default class MapLocation extends Injector {
 
     constructor(...args) {
         super(...args);

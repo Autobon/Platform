@@ -1,4 +1,5 @@
 import {Injector} from 'ngES6';
+import moment from 'moment';
 import './editor.scss';
 
 export default class OrderEditorCtrl extends Injector {
@@ -42,6 +43,15 @@ export default class OrderEditorCtrl extends Injector {
         return data.result ? data.data : '';
     }
 
+    beforeRenderDatetimepicker($view, $dates) {
+        const now = moment();
+        for (let i = 0; i < $dates.length; i++) {
+            if ($dates[i].localDateValue() <= now.valueOf()) {
+                $dates[i].selectable = false;
+            }
+        }
+    }
+
     save() {
         const {$scope, $state, OrderService} = this.$injected;
         if ($scope.order.orderNum) {
@@ -56,6 +66,5 @@ export default class OrderEditorCtrl extends Injector {
                 }
             });
         }
-        console.log('save action fired');
     }
 }

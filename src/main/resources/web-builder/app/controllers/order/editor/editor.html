@@ -13,28 +13,32 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">预约时间</label>
             <div class="col-sm-10">
-                <div class="form-control width-auto" style="min-width: 200px; position: absolute;">{{order.orderTime | date: 'YYYY-MM-DD HH:mm'}}</div>
-                <datetimepicker ng-model="order.orderTime" required style="margin-left: 220px; width: auto;"
-                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm'}"></datetimepicker>
+                <div uib-dropdown is-open="false"><div href uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 400px;">{{order.orderTime | date: 'YYYY-MM-DD HH:mm'}}</div>
+                    <ul uib-dropdown-menu role="menu">
+                        <datetimepicker ng-model="order.orderTime" required
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm'}"
+                                        before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">联系人</label>
             <div class="col-sm-10">
-                <input type="text" required ng-model="order.contact" class="form-control width-auto">
+                <input type="text" required ng-model="order.contact" class="form-control" style="width: 400px;">
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">联系电话</label>
             <div class="col-sm-10">
-                <input type="text" required ng-pattern="/^[0-9]+$/" class="form-control width-auto" ng-model="order.contactPhone">
+                <input type="text" required ng-pattern="/^[0-9]+$/" class="form-control" style="width: 400px;" ng-model="order.contactPhone">
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">订单照片</label>
             <div class="col-sm-10">
-                <input file-uploader type="file" required style="min-width: 350px !important;" class="form-control width-auto" ng-model="order.photo" name="file" accept=".jpg,.png,.bmp" callback="uploaded(data)" upload-url="{{uploadUrl}}"><br>
-                <img ng-if="order.photo" image-view resize=",100px" class="img-thumbnail m-t-5" ng-src="{{order.photo}}" >
+                <input file-uploader type="file" required style="width: 400px !important;" class="form-control" ng-model="order.photo" name="file" accept=".jpg,.png,.bmp" callback="uploaded(data)" upload-url="{{uploadUrl}}">
+                <img ng-if="order.photo" image-modal resize=",100px" class="img-thumbnail m-t-5" ng-src="{{order.photo}}" >
             </div>
         </div>
         <div class="form-group">
@@ -48,7 +52,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-10 col-sm-offset-2">
-                <input type="text" required gis-picker ng-model="order.position" style="height: 400px">
+                <input type="text" required location-picker ng-model="order.position" style="height: 400px">
             </div>
         </div>
         <div class="form-group">
