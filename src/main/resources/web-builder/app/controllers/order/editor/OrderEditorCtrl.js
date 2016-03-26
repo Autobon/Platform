@@ -3,12 +3,12 @@ import moment from 'moment';
 import './editor.scss';
 
 export default class OrderEditorCtrl extends Injector {
-    static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'OrderService'];
+    static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'OrderService', 'Settings'];
     static $template = require('./editor.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, OrderService} = this.$injected;
+        const {$scope, $stateParams, OrderService, Settings} = this.$injected;
         this.attachMethodsTo($scope);
 
         if ($stateParams.orderNum) {
@@ -16,7 +16,7 @@ export default class OrderEditorCtrl extends Injector {
         } else {
             $scope.order = {};
         }
-
+        $scope.baiduMapKey = Settings.baiduMapKey;
         $scope.uploadUrl = OrderService.uploadPhotoUrl;
     }
 

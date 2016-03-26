@@ -2,6 +2,7 @@ import {Injector} from 'ngES6';
 import $ from 'jquery';
 
 export default class LocationPicker extends Injector {
+    static $inject = ['$timeout'];
 
     constructor(...args) {
         super(...args);
@@ -11,19 +12,50 @@ export default class LocationPicker extends Injector {
         this.restrict     = 'EA';
         this.scope        = {
             position: '=ngModel',
+            apiKey  : '@',
         };
-        this.link.$inject = ['scope', 'element', 'attrs'];
+        this.link.$inject = ['scope', 'element'];
     }
 
-    link(scope, element, attrs) {
-        $('body').append($('<script src="http://api.map.baidu.com/api?v=2.0&ak=FPzmlgz02SERkbPsRyGOiGfj&callback=initMap"></script>'));
-        window.initMap = () => {
-            if (!attrs.id) {
-                attrs.id = 'map' + Math.random().toString().substr(2);
-                $(element).attr('id', attrs.id);
+    link(scope, element) {
+        let mapId = element.attr('id');
+        if (!mapId) {
+            mapId = 'maplp' + Math.random().toString().substr(2);
+            element.attr('id', mapId);
+        }
+
+        if (scope.apiKey) {
+            const callback = 'mapcb' + Math.random().toString().substr(2);
+            $('body').append($(`<script src="http://api.map.baidu.com/api?v=2.0&ak=${scope.apiKey}&callback=${callback}"></script>`));
+            window[callback] = () => {
+                this._showMap(scope, mapId);
+                scope.$watch('position', () => {
+                    this._showMap(scope, mapId);
+                });
+            };
+        } else {
+            this.$injected.$timeout(() => {
+                scope.$watch('position', () => {
+                    this._showMap(scope, mapId);
+                });
+            });
+        }
+    }
+
+    _showMap(scope, mapId) {
+        if (scope.map) {
+            if (scope.marker) scope.map.removeOverlay(scope.marker);
+            const point = new window.BMap.Point(scope.position.lng, scope.position.lat);
+            scope.marker = new window.BMap.Marker(point);
+            scope.map.panTo(point);
+            scope.map.addOverlay(scope.marker);
+        } else {
+            let map = scope.map = new window.BMap.Map(mapId);
+            if (scope.position) {
+                map.centerAndZoom(new window.BMap.Point(scope.position.lng, scope.position.lat), 12);
+            } else {
+                map.centerAndZoom('北京', 12);
             }
-            let map = scope.map = new window.BMap.Map(attrs.id);
-            map.centerAndZoom('北京', 12);
             map.enableScrollWheelZoom(true);
             map.addControl(new window.BMap.CityListControl({
                 anchor: window.BMAP_ANCHOR_TOP_LEFT,
@@ -76,6 +108,6 @@ export default class LocationPicker extends Injector {
                     scope.position = e.point;
                 });
             });
-        };
+        }
     }
 }

@@ -27,21 +27,21 @@ export default class MapLocation extends Injector {
             const callback = 'mapcb' + Math.random().toString().substr(2);
             $('body').append($(`<script src="http://api.map.baidu.com/api?v=2.0&ak=${scope.apiKey}&callback=${callback}"></script>`));
             window[callback] = () => {
-                this._showPosition(scope, mapId);
+                this._showLocation(scope, mapId);
                 scope.$watch('position', () => {
-                    this._showPosition(scope, mapId);
+                    this._showLocation(scope, mapId);
                 });
             };
         } else {
             this.$injected.$timeout(() => {
                 scope.$watch('position', () => {
-                    this._showPosition(scope, mapId);
+                    this._showLocation(scope, mapId);
                 });
             });
         }
     }
 
-    _showPosition(scope, mapId) {
+    _showLocation(scope, mapId) {
         if (scope.map) {
             let position = scope.position;
             if (typeof position === 'string' && position !== '') position = JSON.parse(position);
