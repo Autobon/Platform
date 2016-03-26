@@ -16,25 +16,32 @@ export default class MapLocation extends Injector {
         this.link.$inject = ['scope', 'element', 'attrs'];
     }
 
-    link(scope, element, attrs) {
+    link(scope, element) {
+        let mapId = element.attr('id');
+        if (!mapId) {
+            mapId = 'map' + Math.random().toString().substr(2);
+            element.attr('id', mapId);
+        }
+
         if (scope.apiKey) {
             const callback = 'mapcb' + Math.random().toString().substr(2);
             $('body').append($(`<script src="http://api.map.baidu.com/api?v=2.0&ak=${scope.apiKey}&callback=${callback}"></script>`));
             window[callback] = () => {
+                this._showPosition(scope, mapId);
                 scope.$watch('position', () => {
-                    this._showPosition(scope, element, attrs);
+                    this._showPosition(scope, mapId);
                 });
             };
         } else {
             this.$injected.$timeout(() => {
                 scope.$watch('position', () => {
-                    this._showPosition(scope, element, attrs);
+                    this._showPosition(scope, mapId);
                 });
             });
         }
     }
 
-    _showPosition(scope, element, attrs) {
+    _showPosition(scope, mapId) {
         if (scope.map) {
             let position = scope.position;
             if (typeof position === 'string' && position !== '') position = JSON.parse(position);
@@ -44,11 +51,7 @@ export default class MapLocation extends Injector {
             scope.map.panTo(point);
             scope.map.addOverlay(scope.marker);
         } else {
-            if (!attrs.id) {
-                attrs.id = 'map' + Math.random().toString().substr(2);
-                $(element).attr('id', attrs.id);
-            }
-            let map = new window.BMap.Map(attrs.id);
+            let map = scope.map = new window.BMap.Map(mapId);
             map.enableScrollWheelZoom(true);
             map.addControl(new window.BMap.NavigationControl({
                 anchor: window.BMAP_ANCHOR_TOP_RIGHT,
@@ -89,10 +92,9 @@ export default class MapLocation extends Injector {
             } else {
                 const point  = new window.BMap.Point(position.lng, position.lat);
                 scope.marker = new window.BMap.Marker(point);
-                map.centerAndZoom(point, 15);
+                map.centerAndZoom(point, 12);
                 map.addOverlay(scope.marker);
             }
-            scope.map = map;
         }
     }
 
