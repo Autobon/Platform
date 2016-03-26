@@ -26,6 +26,7 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
             })
     .value('Settings', {
         domain: 'http://localhost:12345',
+        baiduMapKey: 'FPzmlgz02SERkbPsRyGOiGfj',
         orderTypes: {'1': '隔热层', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
         orderStatus: {
             'NEWLY_CREATED': '未接单',

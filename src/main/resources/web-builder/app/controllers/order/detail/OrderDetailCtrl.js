@@ -2,12 +2,13 @@ import {Injector} from 'ngES6';
 import './detail.scss';
 
 export default class OrderDetailCtrl extends Injector {
-    static $inject = ['$scope', '$state', '$stateParams', 'OrderService'];
+    static $inject = ['$scope', '$state', '$stateParams', 'OrderService', 'Settings'];
     static $template = require('./detail.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, OrderService} = this.$injected;
+        const {$scope, $stateParams, OrderService, Settings} = this.$injected;
+        $scope.baiduMapKey = Settings.baiduMapKey;
         this.attachMethodsTo($scope);
 
         OrderService.getDetail($stateParams.orderNum).then(res => {
