@@ -13,7 +13,6 @@ export default class LoaderIcon extends Injector {
         this.scope = {
             option: '@',
         };
-        this.link.$inject = ['scope', 'element'];
     }
 
     link(scope, element) {

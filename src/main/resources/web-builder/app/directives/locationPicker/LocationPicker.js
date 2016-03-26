@@ -14,7 +14,6 @@ export default class LocationPicker extends Injector {
             position: '=ngModel',
             apiKey  : '@',
         };
-        this.link.$inject = ['scope', 'element'];
     }
 
     link(scope, element) {

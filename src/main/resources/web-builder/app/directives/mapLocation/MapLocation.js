@@ -13,7 +13,6 @@ export default class MapLocation extends Injector {
             position: '@',
             apiKey  : '@',
         };
-        this.link.$inject = ['scope', 'element', 'attrs'];
     }
 
     link(scope, element) {

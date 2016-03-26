@@ -48,13 +48,12 @@ export const production = {
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
         ),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
-        // angular-ui is not ready for uglify
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compressor: {
-        //         screw_ie8: true,
-        //         warnings : false,
-        //     },
-        // }),
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                screw_ie8: true,
+                warnings : false,
+            },
+        }),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify('production'),
@@ -69,7 +68,7 @@ export const production = {
             process.stdout.write(CLEAR_LINE + Math.round(percentage * 100) + '% :' + message + MOVE_LEFT);
         }),
     ],
-    devtool : 'source-map',
+    // devtool : 'source-map',
 };
 
 export const development = {

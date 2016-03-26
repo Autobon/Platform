@@ -10,8 +10,6 @@ export default class Resize extends Injector {
         this.scope    = {
             resize: '@',
         };
-
-        this.link.$inject = ['scope', 'element'];
     }
 
     link(scope, element) {

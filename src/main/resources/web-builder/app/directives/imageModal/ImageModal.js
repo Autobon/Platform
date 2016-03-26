@@ -7,7 +7,6 @@ export default class ImageModal extends Injector {
     constructor(...args) {
         super(...args);
         this.restrict = 'A';
-        this.link.$inject = ['scope', 'element'];
     }
 
     link(scope, element) {
