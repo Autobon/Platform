@@ -44,11 +44,23 @@ export default class LocationPicker extends Injector {
 
     _showMap(scope, mapId) {
         if (scope.map) {
-            if (scope.marker) scope.map.removeOverlay(scope.marker);
+            const oldMarker = scope.marker;
             const point = new window.BMap.Point(scope.position.lng, scope.position.lat);
             scope.marker = new window.BMap.Marker(point);
+            scope.marker.enableDragging();
+            scope.marker.addEventListener('mouseup', () => {
+                scope.$apply(() => {
+                    scope.position = scope.marker.getPosition();
+                });
+            });
             scope.map.panTo(point);
             scope.map.addOverlay(scope.marker);
+
+            if (oldMarker) {
+                this.$injected.$timeout(() => { // 如果立即删除,浏览器会报异常
+                    scope.map.removeOverlay(oldMarker);
+                });
+            }
         } else {
             let map = scope.map = new window.BMap.Map(mapId);
             if (scope.position) {

@@ -44,8 +44,11 @@ export default class MapLocation extends Injector {
     _showLocation(scope, mapId) {
         if (scope.map) {
             let position = scope.position;
-            if (typeof position === 'string' && position !== '') position = JSON.parse(position);
             if (scope.marker) scope.map.removeOverlay(scope.marker);
+
+            if (position !== '') position = JSON.parse(position);
+            else return;
+
             const point = new window.BMap.Point(position.lng, position.lat);
             scope.marker = new window.BMap.Marker(point);
             scope.map.panTo(point);
@@ -76,9 +79,9 @@ export default class MapLocation extends Injector {
                 });
                 div.text('返回');
                 div.on('click', () => {
-                    if (scope.position) {
-                        _map.panTo(new window.BMap.Point(scope.position.lng, scope.position.lat));
-                    }
+                    let position = scope.position;
+                    if (typeof position === 'string' && position !== '') position = JSON.parse(position);
+                    if (position && position.lng) _map.panTo(new window.BMap.Point(position.lng, position.lat));
                 });
                 _map.getContainer().appendChild(div[0]);
                 return div[0];
@@ -86,7 +89,7 @@ export default class MapLocation extends Injector {
             map.addControl(new ShowCurrentCtrl());
 
             let position = scope.position;
-            if (typeof position === 'string' && position !== '') position = JSON.parse(position);
+            if (position !== '') position = JSON.parse(position);
             if (!position || !position.lng) {
                 map.centerAndZoom('北京', 12);
             } else {
