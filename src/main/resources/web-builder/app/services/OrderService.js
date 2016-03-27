@@ -27,4 +27,9 @@ export default class OrderService extends Injector {
         return $http.get(Settings.domain + '/api/pub/technician/workItems',
                 {params: {orderType: orderType}});
     }
+
+    addComment(comment) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/order/comment', comment);
+    }
 }

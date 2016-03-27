@@ -60,7 +60,6 @@ export default class OrderEditorCtrl extends Injector {
             $scope.order.positionLon = $scope.order.position.lng;
             $scope.order.positionLat = $scope.order.position.lat;
             OrderService.createOrder($scope.order).then(res => {
-                console.log(res);
                 if (res.data && res.data.result) {
                     $state.go(`^.detail`, {orderNum: res.data.data.orderNum});
                 }
