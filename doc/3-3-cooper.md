@@ -35,9 +35,8 @@ post("/api/mobile/coop/check")
     "message": "",
     "error": "",
     "data": {
-        "id": 1,
-        "phone": "13072705000",
-        "shortname": "first-coop",
+        "id": 2,
+        "phone": null,
         "fullname": "A汽车美容公司",
         "businessLicense": "3335555",
         "corporationName": "张三",
@@ -56,12 +55,10 @@ post("/api/mobile/coop/check")
         "address": "中山路3号",
         "contact": "李四",
         "contactPhone": "13025523002",
-        "statusCode": 0,
         "lastLoginTime": null,
         "lastLoginIp": null,
-        "createTime": 1457677133000,
-        "isMain": true,
-        "pushId": null
+        "createTime": 1459143508787,
+        "statusCode": 0
     }
 }
 ```
@@ -78,7 +75,7 @@ post("/api/mobile/coop/check")
 }
 ```
 
-#### b.手机号有误
+#### b.手机号格式错误
 
 ```
 {
@@ -178,7 +175,6 @@ get("/api/mobile/coop/getCoop")
     "data": {
         "id": 1,
         "phone": "13072705000",
-        "shortname": "first-coop",
         "fullname": null,
         "businessLicense": null,
         "corporationName": null,
@@ -197,14 +193,13 @@ get("/api/mobile/coop/getCoop")
         "address": null,
         "contact": null,
         "contactPhone": "13072705000",
-        "statusCode": 1,
         "lastLoginTime": null,
         "lastLoginIp": null,
         "createTime": 1457677133000,
-        "isMain": true,
-        "pushId": null
+        "statusCode": 1
     }
 }
+
 ```
 
 
@@ -213,6 +208,7 @@ get("/api/mobile/coop/getCoop")
 ### URL及请求方法
 get("/api/mobile/coop/coopCheckResult")
 
+商户审核信息可能有多条，取审核时间最新的一条数据。
 
 ### 返回数据
 
@@ -222,18 +218,10 @@ get("/api/mobile/coop/coopCheckResult")
     "message": "",
     "error": "",
     "data": {
-        "reviewCooper": {
-            "id": 1,
-            "cooperatorsId": 1,
-            "reviewTime": 1427685071000,
-            "checkedBy": "001",
-            "resultDesc": "不通过，照片不清楚",
-            "result": true
-        },
+        "reviewCooper": null,
         "cooperator": {
             "id": 1,
             "phone": "13072705000",
-            "shortname": "first-coop",
             "fullname": null,
             "businessLicense": null,
             "corporationName": null,
@@ -252,15 +240,14 @@ get("/api/mobile/coop/coopCheckResult")
             "address": null,
             "contact": null,
             "contactPhone": "13072705000",
-            "statusCode": 1,
             "lastLoginTime": null,
             "lastLoginIp": null,
             "createTime": 1457677133000,
-            "isMain": true,
-            "pushId": null
+            "statusCode": 1
         }
     }
 }
+
 ```
 
 

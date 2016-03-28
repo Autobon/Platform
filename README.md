@@ -12,6 +12,7 @@
 1. [帐户及登录](doc/3-1-account.md)
 2. [订单](doc/3-2-order.md)
 3. [合作商户](doc/3-3-cooper.md)
+4. [技师](doc/3-4-technician.md)
 
 
 # 后台端API
