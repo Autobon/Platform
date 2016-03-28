@@ -1,15 +1,6 @@
 package com.autobon.cooperators.entity;
 
-import com.autobon.shared.Crypto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -18,20 +9,13 @@ import java.util.Date;
 
 @Entity
 @Table(name = "t_cooperators")
-public class Cooperator implements UserDetails {
-    private static Logger log = LoggerFactory.getLogger(Cooperator.class);
-    private static String Token = "Autobon~!@#ABCD=";
+public class Cooperator{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column private int id;
 
     @Column private String phone; // 账号
-
-    @Column private String shortname; //企业简称
-
-    @JsonIgnore
-    @Column private String password; //密码
 
     @Column private String fullname; //企业名称
 
@@ -71,38 +55,17 @@ public class Cooperator implements UserDetails {
 
     @Column private String contactPhone; //联系人电话
 
-    @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败 3-账号禁用
-
     @Column private Date lastLoginTime; //上次登录时间
 
     @Column private String lastLoginIp; //上次登录IP
 
     @Column private Date createTime; //注册时间
 
-    @Column
-    private Boolean isMain; //是否主账户
+    @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败
 
-    @Column
-    private String pushId; // 个推客户端ID, 由手机端更新
 
     public  Cooperator(){
         this.createTime=new Date();
-    }
-
-    public static String makeToken(int id) {
-        return "cooperator:" + Crypto.encryptAesBase64(String.valueOf(id), Token);
-    }
-
-    public static int decodeToken(String token) {
-        String[] arr = token.split(":");
-        if (arr.length < 2 || !arr[0].equals("cooperator")) return 0;
-        else token = arr[1];
-        try {
-            return Integer.parseInt(Crypto.decryptAesBase64(token, Token));
-        } catch (Exception ex) {
-            log.info("无效token: " + token);
-        }
-        return 0;
     }
 
     public int getId() {
@@ -119,22 +82,6 @@ public class Cooperator implements UserDetails {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getShortname() {
-        return shortname;
-    }
-
-    public void setShortname(String shortname) {
-        this.shortname = shortname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFullname() {
@@ -281,14 +228,6 @@ public class Cooperator implements UserDetails {
         this.contactPhone = contactPhone;
     }
 
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
     public Date getLastLoginTime() {
         return lastLoginTime;
     }
@@ -313,66 +252,11 @@ public class Cooperator implements UserDetails {
         this.createTime = createTime;
     }
 
-    public Boolean getIsMain() {
-        return isMain;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setIsMain(Boolean isMain) {
-        this.isMain = isMain;
-    }
-
-    public String getPushId() {
-        return pushId;
-    }
-
-    public void setPushId(String pushId) {
-        this.pushId = pushId;
-    }
-
-    public static String encryptPassword(String password) {
-        return Crypto.encryptBySha1(password);
-    }
-
-    @JsonIgnore
-    @Override
-    public String getUsername() {
-        return phone;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isEnabled() {
-        return this.statusCode != 3;
-    }
-
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> list = new ArrayList<>();
-        list.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return "COOPERATOR";
-            }
-        });
-        return list;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 }

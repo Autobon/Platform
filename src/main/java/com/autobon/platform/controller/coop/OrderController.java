@@ -1,6 +1,8 @@
 package com.autobon.platform.controller.coop;
 
+import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
+import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
@@ -52,6 +54,8 @@ public class OrderController {
     @Autowired TechStatService techStatService;
     @Autowired
     DetailedOrderService detailedOrderService;
+    @Autowired
+    private CooperatorService cooperatorService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -136,8 +140,14 @@ public class OrderController {
                                 @RequestParam("orderTime") String orderTime,
                                 @RequestParam("orderType") int orderType) throws Exception {
 
-        Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        //Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        //int statuCode = cooperator.getStatusCode();
+
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        int coopId = coopAccount.getCooperatorId();
+        Cooperator cooperator = cooperatorService.get(coopId);
         int statuCode = cooperator.getStatusCode();
+
         if(statuCode !=1){
             return new JsonMessage(false, "ILLEGAL_PARAM", "商户未通过验证");
         }
@@ -147,14 +157,16 @@ public class OrderController {
 
         Order order = new Order();
         order.setCreatorType(1);
-        order.setCreatorId(cooperator.getId());
-        order.setCreatorName(cooperator.getFullname());
+        order.setCreatorId(coopAccount.getId());
+        order.setCreatorName(coopAccount.getName());
         order.setPhoto(photo);
         order.setRemark(remark);
         order.setOrderTime(Date.from(
                 LocalDateTime.from(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse(orderTime))
                         .atZone(ZoneId.systemDefault()).toInstant()));
         order.setOrderType(orderType);
+        order.setPositionLon(cooperator.getLongitude());
+        order.setPositionLat(cooperator.getLatitude());
         orderService.save(order);
 
         String msgTitle = "你收到新订单推送消息";
@@ -190,9 +202,10 @@ public class OrderController {
     public JsonMessage listUnfinished(HttpServletRequest request,
                                       @RequestParam(value = "page", defaultValue = "1") int page,
                                       @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        //Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                new JsonPage<>(detailedOrderService.findUnfinishedByCoopId(cooperator.getId(), page, pageSize)));
+                new JsonPage<>(detailedOrderService.findUnfinishedByCoopId(coopAccount.getId(), page, pageSize)));
 
     }
 
@@ -200,9 +213,10 @@ public class OrderController {
     public JsonMessage listFinished(HttpServletRequest request,
                                       @RequestParam(value = "page", defaultValue = "1") int page,
                                       @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        //Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                new JsonPage<>(detailedOrderService.findFinishedByCoopId(cooperator.getId(), page, pageSize)));
+                new JsonPage<>(detailedOrderService.findFinishedByCoopId(coopAccount.getId(), page, pageSize)));
 
     }
 
@@ -210,9 +224,10 @@ public class OrderController {
     public JsonMessage listUncomment(HttpServletRequest request,
                                       @RequestParam(value = "page", defaultValue = "1") int page,
                                       @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        //Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         return new JsonMessage(true, "", "",
-                new JsonPage<>(detailedOrderService.findUncommentByCoopId(cooperator.getId(), page, pageSize)));
+                new JsonPage<>(detailedOrderService.findUncommentByCoopId(coopAccount.getId(), page, pageSize)));
 
     }
 

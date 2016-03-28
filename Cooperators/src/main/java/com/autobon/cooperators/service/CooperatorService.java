@@ -20,9 +20,11 @@ public class CooperatorService {
         return cooperatorRepository.findOne(id);
     }
 
+    /*
     public Cooperator getByShortname(String shortname) {
         return  cooperatorRepository.getByShortname(shortname);
     }
+    */
 
     public Cooperator getByPhone(String phone) {
         return cooperatorRepository.getByPhone(phone);

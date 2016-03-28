@@ -1,9 +1,12 @@
 package com.autobon.platform.controller.coop;
 
+import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
+import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
+import com.autobon.shared.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -31,6 +35,8 @@ public class CoopAccountController {
     @Autowired
     private CooperatorService cooperatorService;
 
+    @Autowired
+    private CoopAccountService coopAccountService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -42,7 +48,7 @@ public class CoopAccountController {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
 
-        if(cooperatorService.getByShortname(shortname)!=null){
+        if(coopAccountService.getByShortname(shortname)!=null){
             msg.setError("OCCUPIED_ID");
             messages.add("企业简称已被注册");
         }
@@ -50,7 +56,7 @@ public class CoopAccountController {
         if (!Pattern.matches("^\\d{11}$", phone)) {
             msg.setError("ILLEGAL_PARAM");
             messages.add("手机号格式错误");
-        } else if (cooperatorService.getByPhone(phone) != null) {
+        } else if (coopAccountService.getByPhone(phone) != null) {
             msg.setError("OCCUPIED_ID");
             messages.add("手机号已被注册");
         }
@@ -69,12 +75,12 @@ public class CoopAccountController {
             msg.setResult(false);
             msg.setMessage(messages.stream().collect(Collectors.joining(",")));
         } else {
-            Cooperator cooperator = new Cooperator();
-            cooperator.setShortname(shortname);
-            cooperator.setPhone(phone);
-            cooperator.setPassword(cooperator.encryptPassword(password));
-            cooperatorService.save(cooperator);
-            msg.setData(cooperator);
+            CoopAccount coopAccount = new CoopAccount();
+            coopAccount.setShortname(shortname);
+            coopAccount.setPhone(phone);
+            coopAccount.setPassword(coopAccount.encryptPassword(password));
+            coopAccountService.save(coopAccount);
+            msg.setData(coopAccount);
         }
         return msg;
     }
@@ -87,26 +93,30 @@ public class CoopAccountController {
             @RequestParam("password") String password) {
 
         JsonMessage msg = new JsonMessage(true);
-        Cooperator cooperator = cooperatorService.getByPhone(phone);
+        CoopAccount coopAccount = coopAccountService.getByPhone(phone);
 
-        if (cooperator == null) {
+        if (coopAccount == null) {
             msg.setResult(false);
             msg.setError("NO_SUCH_USER");
             msg.setMessage("手机号未注册");
-        } else if (!cooperator.getPassword().equals(Cooperator.encryptPassword(password))) {
+        } else if (!coopAccount.getPassword().equals(CoopAccount.encryptPassword(password))) {
             msg.setResult(false);
             msg.setError("PASSWORD_MISMATCH");
             msg.setMessage("密码错误");
-        }else if(!cooperator.getShortname().equals(shortname)){
+        }else if(!coopAccount.getShortname().equals(shortname)){
             msg.setResult(false);
             msg.setError("NO_SUCH_USER");
             msg.setMessage("手机号与企业简称不匹配");
+        } else if(coopAccount.isFired()){
+            msg.setResult(false);
+            msg.setError("USER_FIRED");
+            msg.setMessage("该员工已离职");
         } else {
-            response.addCookie(new Cookie("autoken", Cooperator.makeToken(cooperator.getId())));
-            cooperator.setLastLoginTime(new Date());
-            cooperator.setLastLoginIp(request.getRemoteAddr());
-            cooperatorService.save(cooperator);
-            msg.setData(cooperator);
+            response.addCookie(new Cookie("autoken", CoopAccount.makeToken(coopAccount.getId())));
+            coopAccount.setLastLoginTime(new Date());
+            coopAccount.setLastLoginIp(request.getRemoteAddr());
+            coopAccountService.save(coopAccount);
+            msg.setData(coopAccount);
         }
         return msg;
     }
@@ -118,8 +128,8 @@ public class CoopAccountController {
             @RequestParam("verifySms") String verifySms) throws Exception {
 
         JsonMessage msg = new JsonMessage(true);
-        Cooperator cooperator = cooperatorService.getByPhone(phone);
-        if (cooperator == null) {
+        CoopAccount coopAccount = coopAccountService.getByPhone(phone);
+        if (coopAccount == null) {
             msg.setResult(false);
             msg.setError("NO_SUCH_USER");
             msg.setMessage("手机号未注册");
@@ -132,8 +142,8 @@ public class CoopAccountController {
             msg.setError("ILLEGAL_PARAM");
             msg.setMessage("密码至少6位");
         } else {
-            cooperator.setPassword(Cooperator.encryptPassword(password));
-            cooperatorService.save(cooperator);
+            coopAccount.setPassword(CoopAccount.encryptPassword(password));
+            coopAccountService.save(coopAccount);
         }
         return msg;
     }
@@ -146,14 +156,86 @@ public class CoopAccountController {
         if (newPassword.length() < 6) {
             return new JsonMessage(false, "ILLEGAL_PARAM", "密码至少6位");
         } else {
-            Cooperator cooperator = (Cooperator) request.getAttribute("user");
-            if (!cooperator.getPassword().equals(Cooperator.encryptPassword(oldPassword))) {
+            //Cooperator cooperator = (Cooperator) request.getAttribute("user");
+            CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+            if (!coopAccount.getPassword().equals(CoopAccount.encryptPassword(oldPassword))) {
                 return new JsonMessage(false, "ILLEGAL_PARAM", "原密码错误");
             }
-            cooperator.setPassword(Cooperator.encryptPassword(newPassword));
-            cooperatorService.save(cooperator);
+            coopAccount.setPassword(CoopAccount.encryptPassword(newPassword));
+            coopAccountService.save(coopAccount);
         }
         return new JsonMessage(true);
     }
+
+    @RequestMapping(value = "/getSaleList",method = RequestMethod.POST)
+    public JsonMessage getSaleList(HttpServletRequest request) throws Exception{
+        //Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        if(!coopAccount.isMain()){
+            return  new JsonMessage(false,"当前账户不是管理账号");
+        }
+        int coopId = coopAccount.getCooperatorId();
+        List<CoopAccount> coopAccountList = coopAccountService.findCoopAccountByCooperatorId(coopId);
+        return new JsonMessage(true,"","",coopAccountList);
+    }
+
+    @RequestMapping(value = "/saleFired",method = RequestMethod.POST)
+    public JsonMessage saleFired(@RequestParam("coopAccountId") int coopAccountId) throws Exception{
+        CoopAccount coopAccount = coopAccountService.getById(coopAccountId);
+        if(!coopAccount.isMain()){
+            return  new JsonMessage(false,"当前账户不是管理账号");
+        }
+        if(coopAccount!=null){
+            coopAccount.setFired(true);
+            coopAccountService.save(coopAccount);
+            return new JsonMessage(true,"","",coopAccount);
+        }else{
+            return  new JsonMessage(false,"商户id不正确");
+        }
+    }
+
+
+    @RequestMapping(value = "/addAccount",method = RequestMethod.POST)
+    public JsonMessage addAccount(HttpServletRequest request,
+                                  @RequestParam("phone") String phone,
+                                  @RequestParam("name") String name,
+                                  @RequestParam("gender") boolean gender) throws  Exception{
+        CoopAccount coopAccountLogin = (CoopAccount) request.getAttribute("user");
+        if(!coopAccountLogin.isMain()){
+            return  new JsonMessage(false,"当前账户不是管理账号");
+        }
+        int coopId = coopAccountLogin.getCooperatorId();
+        //Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        //int coopId = cooperator.getId();
+        CoopAccount coopAccount = new CoopAccount();
+        coopAccount.setCooperatorId(coopId);
+        coopAccount.setPhone(phone);
+        coopAccount.setName(name);
+        coopAccount.setGender(gender);
+        //设置默认密码为123456
+        coopAccount.setPassword(CoopAccount.encryptPassword("123456"));
+        coopAccount.setCreateTime(new Date());
+        coopAccountService.save(coopAccount);
+        return new JsonMessage(true,"","",coopAccount);
+    }
+
+    @RequestMapping(value = "/changeAccountPassword",method = RequestMethod.POST)
+    public JsonMessage changeAccountPassword(@RequestParam("coopAccountId") int coopAccountId,
+                                            @RequestParam("oldPassword") String oldPassword,
+                                            @RequestParam("newPassword") String newPassword) {
+        if (newPassword.length() < 6) {
+            return new JsonMessage(false, "ILLEGAL_PARAM", "密码至少6位");
+        } else {
+            CoopAccount coopAccount =coopAccountService.getById(coopAccountId);
+
+            if (!coopAccount.getPassword().equals(coopAccount.encryptPassword(oldPassword))) {
+                return new JsonMessage(false, "ILLEGAL_PARAM", "原密码错误");
+            }
+            coopAccount.setPassword(CoopAccount.encryptPassword(newPassword));
+            coopAccountService.save(coopAccount);
+        }
+        return new JsonMessage(true);
+    }
+
 
 }

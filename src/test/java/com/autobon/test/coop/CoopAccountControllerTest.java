@@ -90,7 +90,49 @@ public class CoopAccountControllerTest {
     public void changePassword() throws Exception {
         mockMvcS.perform(post("/api/mobile/coop/changePassword")
                 .param("oldPassword", "123456")
-                .param("newPassword", "221234")
+                .param("newPassword", "123456")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void getSaleList() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/getSaleList")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(print())
+                .andExpect(jsonPath("$.result", is(true)));
+
+    }
+
+    @Test
+    public void saleFired() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/saleFired")
+                .param("coopAccountId", "1")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(print())
+                .andExpect(jsonPath("$.result", is(true)));
+
+    }
+
+    @Test
+    public void addAccount() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/addAccount")
+                .param("phone", "13072735003")
+                .param("name", "Bush")
+                .param("gender", "false")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(print())
+                .andExpect(jsonPath("$.result", is(true)));
+
+    }
+
+    @Test
+    public void changeAccountPassword() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/changeAccountPassword")
+                .param("coopAccountId", "1")
+                .param("oldPassword", "123456")
+                .param("newPassword", "123456")
                 .cookie(new Cookie("autoken", token)))
                 .andDo(print())
                 .andExpect(jsonPath("$.result", is(true)));

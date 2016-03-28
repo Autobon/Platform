@@ -1,7 +1,9 @@
 package com.autobon.platform.controller.admin;
 
+import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.entity.ReviewCooper;
+import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.getui.PushService;
@@ -39,6 +41,9 @@ public class CooperatorController {
     private ReviewCooperService reviewCooperService;
 
     @Autowired
+    private CoopAccountService coopAccountService;
+
+    @Autowired
     @Qualifier
     ("PushServiceB")
     PushService pushService;
@@ -69,7 +74,9 @@ public class CooperatorController {
                                 // @RequestParam(value = "statusCode") int statusCode,
                                  @RequestParam(value = "resultDesc",required = false) String resultDesc) throws IOException {
         Cooperator cooperator = cooperatorService.get(coopId);
-        if (cooperator != null) {
+        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
+
+        if (coopAccount != null) {
             ReviewCooper reviewCooper = new ReviewCooper();
             reviewCooper.setCooperatorsId(coopId);
             reviewCooper.setReviewTime(new Date());
@@ -79,7 +86,7 @@ public class CooperatorController {
                 cooperator.setStatusCode(1);
                 reviewCooper.setResult(true);
                 String title = "你已通过合作商户资格认证";
-                pushService.pushToSingle(cooperator.getPushId(), title,
+                pushService.pushToSingle(coopAccount.getPushId(), title,
                         "{\"action\":\"VERIFICATION_SUCCEED\",\"title\":\"" + title + "\"}",
                         3*24*3600);
             }else{
@@ -92,16 +99,17 @@ public class CooperatorController {
                 cooperator.setStatusCode(2);
                 reviewCooper.setResult(false);
                 String title = "你的合作商户资格认证失败: " + resultDesc;
-                pushService.pushToSingle(cooperator.getPushId(), title,
+                pushService.pushToSingle(coopAccount.getPushId(), title,
                         "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
                         3*24*3600);
 
             }
             reviewCooperService.save(reviewCooper);
+            coopAccountService.save(coopAccount);
             cooperatorService.save(cooperator);
             return new JsonMessage(true,"","",reviewCooper);
         } else {
-            return new JsonMessage(false, "ILLEGAL_PARAM", "没有这个合作商户");
+            return new JsonMessage(false, "ILLEGAL_PARAM", "这个合作商户没有设置主账户");
         }
 
     }
@@ -140,9 +148,17 @@ public class CooperatorController {
         if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", corporationIdNo))
             return new JsonMessage(false, "ILLEGAL_PARAM", "身份证号码有误");
 
+/*
+        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
+        if(coopAccount == null){
+            return new JsonMessage(false,"商户没有设置主账号");
+        }
+        coopAccount.setShortname(shortname);
+        coopAccountService.save(coopAccount);*/
+
         Cooperator cooperator = cooperatorService.get(coopId);
         cooperator.setPhone(phone);
-        cooperator.setShortname(shortname);
+        //cooperator.setShortname(shortname);
         cooperator.setFullname(fullname);
         cooperator.setBusinessLicense(businessLicense);
         cooperator.setCorporationName(corporationName);
