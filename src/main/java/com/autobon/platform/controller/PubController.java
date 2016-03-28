@@ -74,7 +74,7 @@ public class PubController {
     public void getFile(HttpServletRequest request, HttpServletResponse response, OutputStream out) throws IOException {
         long now = new Date().getTime();
         long maxAge = 60*24*3600;
-        response.addHeader("Cache-Control", "max-age=" + maxAge);
+        response.setHeader("Cache-Control", "max-age=" + maxAge);
         response.setDateHeader("Last-Modified", now);
         response.setDateHeader("Expires", now + maxAge*1000);
         File file = new File(new File("..").getCanonicalPath() + request.getRequestURI());
