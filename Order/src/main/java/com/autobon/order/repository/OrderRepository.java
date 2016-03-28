@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 /**
  * Created by yuh on 2016/2/22.
  */
@@ -32,4 +34,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     Page<Order> find(String orderNum, String creatorName, String contactPhone,
                      Integer orderType, Integer statusCode, Pageable pageable);
 
+    @Query("select o from Order o where o.statusCode < 50 and o.orderTime <= ?1")
+    Page<Order> findExpired(Date before, Pageable pageable);
+
 }
+
