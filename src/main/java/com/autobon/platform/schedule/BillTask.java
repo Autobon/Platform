@@ -37,7 +37,7 @@ public class BillTask {
         Date from = Date.from(LocalDate.now().minusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         Date to = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         int totalPages = 0;
-        int pageNo = 0;
+        int pageNo = 1;
         long billCount = 0;
         do {
             Page<Technician> page = technicianService.findActivedFrom(from, pageNo++, 20);
