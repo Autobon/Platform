@@ -1,0 +1,111 @@
+<div class="container-fluid">
+    <h3>订单编号: {{order.orderNum}}&nbsp;&nbsp;
+        <span class="btn btn-sm btn-default">{{Settings.orderTypes[order.orderType]}}</span>
+        <span class="btn btn-sm btn-success">{{Settings.orderStatus[order.status]}}</span>
+    </h3>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>预约时间: </b><span>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>联系人: </b><span>{{order.creatorName}}&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-earphone">{{order.contactPhone}}</i></span></div>
+        <div class="col-sm-4"><b>下单时间: </b><span>{{order.addTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-12"><b>备注: </b><span>{{order.remark}}</span></div>
+    </div>
+    <div class="row m-t-10">
+        <div class="col-sm-4"><img image-modal ng-src="{{order.photo}}" class="img-thumbnail"></div>
+        <div class="col-sm-8">
+            <div class="form-control" style="cursor: not-allowed;">
+                <span>经度: {{order.position.lng}}, 纬度: {{order.position.lat}}</span>
+            </div>
+            <map-location api-key="{{baiduMapKey}}" style="height: 250px;" position="{{order.position}}"></map-location>
+        </div>
+    </div>
+    <div>
+        <h4>主负责人:</h4>
+        <div class="row detail-row">
+            <div class="col-sm-4"><b>技师姓名: </b><span>{{order.mainTech.name}}</span></div>
+            <div class="col-sm-4"><b>技师电话: </b><span>{{order.mainTech.phone}}</span></div>
+            <div class="col-sm-4"><b>签到时间: </b><span>{{order.mainConstruct.signinTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+        </div>
+        <div class="row detail-row">
+            <div class="col-sm-4"><b>施工费用: </b><span>￥{{order.mainConstruct.payment}}</span></div>
+            <div class="col-sm-8"><b>施工项目: </b><span>{{order.mainConstruct.workItems}}</span></div>
+        </div>
+        <div class="row m-t-20 clearfix">
+            <div style="width: 3%; float: left;"></div>
+            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.beforePhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
+            <div style="width: 3%; float: left;"></div>
+            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.afterPhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
+        </div>
+    </div>
+    <div ng-if="order.secondTech">
+        <h4>次负责人:</h4>
+        <div class="row detail-row">
+            <div class="col-sm-4"><b>技师姓名: </b><span>{{order.secondTech.name}}</span></div>
+            <div class="col-sm-4"><b>技师电话: </b><span>{{order.secondTech.phone}}</span></div>
+            <div class="col-sm-4"><b>签到时间: </b><span>{{order.secondConstruct.signinTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+        </div>
+        <div class="row detail-row">
+            <div class="col-sm-4"><b>施工费用: </b><span>￥{{order.secondConstruct.payment}}</span></div>
+            <div class="col-sm-8"><b>施工项目: </b><span>{{order.secondConstruct.workItems}}</span></div>
+        </div>
+        <div class="row m-t-20 clearfix">
+            <div style="width: 3%; float: left;"></div>
+            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.secondConstruct.beforePhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
+            <div style="width: 3%; float: left;"></div>
+            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.secondConstruct.afterPhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
+        </div>
+    </div>
+    <div class="comment" ng-if="order.comment.id">
+        <div class="sub-header">
+            <h3>评论</h3>
+        </div>
+        <div>
+            <label>打分: &nbsp;&nbsp;</label>
+            <uib-rating ng-model="order.comment.star" max="5" read-only="true" aria-labelledby="default-rating"></uib-rating>
+        </div>
+        <ul class="list-group pull-left m-t-20">
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.arriveOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时到达</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.completeOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时完工</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.professional ? 'fa-check-square-o' : 'fa-square-o'"></i> 技术专业</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.dressNeatly ? 'fa-check-square-o' : 'fa-square-o'"></i> 着装整洁</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.carProtect ? 'fa-check-square-o' : 'fa-square-o'"></i> 车辆保护超级棒</li>
+            <li class="list-group-item"><i class="fa" ng-class="order.comment.goodAttitude ? 'fa-check-square-o' : 'fa-square-o'"></i> 态度好</li>
+        </ul>
+        <div class="pull-left m-20">
+            <label>评论:</label>
+            <p>{{order.comment.advice}}</p>
+        </div>
+    </div>
+    <form class="form-horizontal" name="form" ng-if="order.creatorType == 2 && !order.comment.id">
+        <div class="sub-header"><h4>发表评论:</h4></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">星级</label>
+            <div class="col-sm-10">
+                <uib-rating ng-model="comment.star" required max="5" aria-labelledby="default-rating"></uib-rating>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">评价</label>
+            <div class="col-sm-10">
+                <label><input type="checkbox" ng-model="comment.arriveOnTime"> 准时到达</label><br>
+                <label><input type="checkbox" ng-model="comment.completeOnTime"> 准时完工</label><br>
+                <label><input type="checkbox" ng-model="comment.professional"> 技术专业</label><br>
+                <label><input type="checkbox" ng-model="comment.dressNeatly"> 着装整洁</label><br>
+                <label><input type="checkbox" ng-model="comment.carProtect"> 车辆保护超级棒</label><br>
+                <label><input type="checkbox" ng-model="comment.goodAttitude"> 态度好</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">评论</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" required ng-model="comment.advice"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+                <button class="btn btn-primary p-l-20 p-r-20" ng-disabled="form.$invalid" ng-click="saveComment()">提交</button><span class="m-l-20 text-danger">{{commentResult}}</span>
+            </div>
+        </div>
+    </form>
+</div>

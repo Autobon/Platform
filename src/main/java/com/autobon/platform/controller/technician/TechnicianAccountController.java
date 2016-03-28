@@ -12,8 +12,10 @@ import org.im4java.core.IMOperation;
 import org.im4java.process.Pipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -44,12 +46,6 @@ public class TechnicianAccountController {
     @Autowired MultipartResolver resolver;
     @Value("${com.autobon.env:PROD}") String env;
     @Value("${com.autobon.gm-path}") String gmPath;
-
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public JsonMessage handleUploadException(MaxUploadSizeExceededException ex) {
-        return new JsonMessage(false, "UPLOAD_SIZE_EXCEED", "上传文件单个不能超过2MB,一次总共不能超过10MB");
-    }
 
     /**
      * 获取用户信息
@@ -261,7 +257,7 @@ public class TechnicianAccountController {
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + (VerifyCode.generateRandomNumber(6)) + extension;
+                + VerifyCode.generateRandomNumber(6) + extension;
 
         if (!dir.exists()) dir.mkdirs();
         file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));

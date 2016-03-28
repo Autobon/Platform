@@ -16,6 +16,8 @@ import java.util.Date;
 @Repository
 public interface DetailedOrderRepository extends JpaRepository<DetailedOrder, Integer> {
 
+    DetailedOrder getByOrderNum(String orderNum);
+
     @Query("from DetailedOrder o where o.mainTech.id = ?1 and o.statusCode >= 60")
     Page<DetailedOrder> findFinishedByMainTechId(int techId, Pageable pageable);
 

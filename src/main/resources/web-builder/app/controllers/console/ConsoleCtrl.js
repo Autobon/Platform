@@ -2,11 +2,14 @@ import {Injector} from 'ngES6';
 import './console.scss';
 
 export default class ConsoleCtrl extends Injector {
-    static $inject = ['$scope'];
+    static $inject = ['$scope', '$state'];
     static $template = require('./console.html');
 
     constructor(...args) {
         super(...args);
-        this.attachMethodsTo(this.$injected.$scope);
+        const {$state} = this.$injected;
+        if ($state.is('console')) {
+            $state.go('console.home');
+        }
     }
 }
