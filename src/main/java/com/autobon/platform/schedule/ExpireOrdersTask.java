@@ -25,14 +25,14 @@ public class ExpireOrdersTask {
     OrderService orderService;
 
     @Async
-    @Scheduled(fixedRate = 3600 * 1000)
+    @Scheduled(fixedRate = 3600*1000, initialDelay = 300*1000)
     public void expireOrders() {
         log.info("订单超时清理任务开始");
         Date before = Date.from(LocalDateTime.now().minusHours(3).atZone(ZoneId.systemDefault()).toInstant());
         int totalPages = 0;
         int pageNo = 1;
         long orderCount = 0;
-        do{
+        do {
             Page<Order> page = orderService.findExpired(before, pageNo++, 20);
             totalPages = page.getTotalPages();
             orderCount = page.getTotalElements();
