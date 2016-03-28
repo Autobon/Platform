@@ -162,5 +162,106 @@ POST /api/mobile/coop/corporationIdPicA
 ```
 
 
+## 4. 获取商户信息
+获取商户信息
+### URL及请求方法
+get("/api/mobile/coop/getCoop")
+
+
+### 返回数据
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 1,
+        "phone": "13072705000",
+        "shortname": "first-coop",
+        "fullname": null,
+        "businessLicense": null,
+        "corporationName": null,
+        "corporationIdNo": null,
+        "bussinessLicensePic": null,
+        "corporationIdPicA": null,
+        "corporationIdPicB": null,
+        "longitude": null,
+        "latitude": null,
+        "invoiceHeader": null,
+        "taxIdNo": null,
+        "postcode": null,
+        "province": null,
+        "city": null,
+        "district": null,
+        "address": null,
+        "contact": null,
+        "contactPhone": "13072705000",
+        "statusCode": 1,
+        "lastLoginTime": null,
+        "lastLoginIp": null,
+        "createTime": 1457677133000,
+        "isMain": true,
+        "pushId": null
+    }
+}
+```
+
+
+## 5. 商户审核信息
+商户审核信息
+### URL及请求方法
+get("/api/mobile/coop/coopCheckResult")
+
+
+### 返回数据
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "reviewCooper": {
+            "id": 1,
+            "cooperatorsId": 1,
+            "reviewTime": 1427685071000,
+            "checkedBy": "001",
+            "resultDesc": "不通过，照片不清楚",
+            "result": true
+        },
+        "cooperator": {
+            "id": 1,
+            "phone": "13072705000",
+            "shortname": "first-coop",
+            "fullname": null,
+            "businessLicense": null,
+            "corporationName": null,
+            "corporationIdNo": null,
+            "bussinessLicensePic": null,
+            "corporationIdPicA": null,
+            "corporationIdPicB": null,
+            "longitude": null,
+            "latitude": null,
+            "invoiceHeader": null,
+            "taxIdNo": null,
+            "postcode": null,
+            "province": null,
+            "city": null,
+            "district": null,
+            "address": null,
+            "contact": null,
+            "contactPhone": "13072705000",
+            "statusCode": 1,
+            "lastLoginTime": null,
+            "lastLoginIp": null,
+            "createTime": 1457677133000,
+            "isMain": true,
+            "pushId": null
+        }
+    }
+}
+```
+
 
 

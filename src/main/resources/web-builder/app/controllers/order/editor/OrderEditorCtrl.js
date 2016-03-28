@@ -62,6 +62,9 @@ export default class OrderEditorCtrl extends Injector {
             OrderService.createOrder($scope.order).then(res => {
                 if (res.data && res.data.result) {
                     $state.go(`^.detail`, {orderNum: res.data.data.orderNum});
+                    if ($scope.$parent.pagination.page === 1) {
+                        $scope.$parent.orders.unshift(res.data.data);
+                    }
                 }
             });
         }

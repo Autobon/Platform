@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import javax.servlet.http.Cookie;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -39,6 +40,22 @@ public class CoopControllerTest extends MvcTest {
                 .param("address", "中山路3号")
                 .param("contact", "李四")
                 .param("contactPhone", "13025523002")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void getCoop() throws Exception {
+        mockMvcS.perform(get("/api/mobile/coop/getCoop")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void coopCheckResult() throws Exception {
+        mockMvcS.perform(get("/api/mobile/coop/coopCheckResult")
                 .cookie(new Cookie("autoken", token)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));

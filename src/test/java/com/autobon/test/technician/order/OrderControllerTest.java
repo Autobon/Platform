@@ -56,7 +56,7 @@ public class OrderControllerTest extends MvcTest {
         mockMvcS.perform(get("/api/mobile/technician/order/listSecond")
                 .cookie(new Cookie("autoken", token)))
             .andDo(print())
-            .andExpect(jsonPath("$.data.count", is(0)));
+            .andExpect(jsonPath("$.data.count", is(1)));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class OrderControllerTest extends MvcTest {
         mockMvcS.perform(get("/api/mobile/technician/order/listUnfinished")
                 .cookie(new Cookie("autoken", token)))
             .andDo(print())
-            .andExpect(jsonPath("$.data.count", is(3)));
+            .andExpect(jsonPath("$.data.count", is(2)));
     }
 
 

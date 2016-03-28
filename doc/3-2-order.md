@@ -31,6 +31,18 @@ POST /api/mobile/coop/order/comment
 {"result":true,"message":"comment","error":"","data":null}
 ````
 
+#### a.订单未完成或已评论
+
+```
+{
+    "result": false,
+    "message": "订单未完成或已评论",
+    "error": "",
+    "data": null
+}
+```
+
+
 ## 2.创建订单
 合作商户创建订单并推送
 
@@ -76,6 +88,16 @@ POST /api/mobile/coop/order/createOrder
 }
 
 ````
+#### a.商户未通过验证
+
+```
+{
+    "result": false,
+    "message": "商户未通过验证",
+    "error": "ILLEGAL_PARAM",
+    "data": null
+}
+```
 
 
 ## 3.商户端未完成订单列表
@@ -356,5 +378,62 @@ GET /api/mobile/coop/technician/getTechnician?orderId=1
 }
 
 ````
+
+#### a.订单id错误
+
+```
+{
+    "result": false,
+    "message": "没有此订单",
+    "error": "ILLEGAL_PARAM",
+    "data": null
+}
+```
+#### b.订单没有关联主技师
+
+```
+{
+    "result": false,
+    "message": "订单没有关联主技师",
+    "error": "ILLEGAL_PARAM",
+    "data": null
+}
+```
+
+## 7.上传订单照片
+上传订单照片
+
+### URL及请求方法
+POST /api/mobile/coop/order/uploadPhoto
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| file | 上传的图片 | |
+
+### 返回数据
+
+#### a.请求成功
+
+```
+{
+    "result": true,
+    "error": "",
+    "message": "",
+    "date": "/uploads/order/photo/20160304165030100001.jpg"
+}
+```
+
+#### b.没有上传文件
+
+```
+{
+    "result": false,
+    "error": "NO_UPLOAD_FILE",
+    "message": "没有上传文件",
+    "date": null
+}
+```
 
 

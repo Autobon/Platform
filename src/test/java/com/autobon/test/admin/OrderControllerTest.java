@@ -26,6 +26,8 @@ public class OrderControllerTest extends MvcTest {
                 .param("positionLon", "25.22342")
                 .param("positionLat", "36.45485")
                 .param("contactPhone", "18812345678")
+                .param("contact", "小李子")
+                .param("photo", "https://ss2.bdstatic.com/lfoZeXSm1A5BphGlnYG/skin/37.jpg?2")
                 .param("remark", "remark is here")
                 .cookie(new Cookie("autoken", token)))
             .andDo(MockMvcResultHandlers.print())

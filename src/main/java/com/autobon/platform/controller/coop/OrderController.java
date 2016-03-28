@@ -6,6 +6,7 @@ import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
 import com.autobon.order.service.DetailedOrderService;
 import com.autobon.shared.JsonPage;
+import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.order.service.CommentService;
 import com.autobon.order.service.OrderService;
@@ -21,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -67,6 +70,8 @@ public class OrderController {
 
         JsonMessage jsonMessage = new JsonMessage(true,"comment");
         Order order = orderService.get(orderId);
+        if(order.getStatus() == Order.Status.FINISHED){
+
         int mainTechId = order.getMainTechId();
         int secondTechId = order.getSecondTechId();
         if(mainTechId == 0){
@@ -85,6 +90,9 @@ public class OrderController {
         comment.setGoodAttitude(goodAttitude);
         comment.setAdvice(advice);
         commentService.save(comment);
+
+        order.setStatus(Order.Status.COMMENTED);
+        orderService.save(order);
 
         // 写入技师星级统计
         TechStat mainStat = techStatService.getByTechId(mainTechId);
@@ -115,6 +123,10 @@ public class OrderController {
         }*/
 
         return jsonMessage;
+
+        }else{
+            return new JsonMessage(false,"订单未完成或已评论");
+        }
     }
 
     @RequestMapping(value="/createOrder",method = RequestMethod.POST)
@@ -125,6 +137,11 @@ public class OrderController {
                                 @RequestParam("orderType") int orderType) throws Exception {
 
         Cooperator cooperator = (Cooperator) request.getAttribute("user");
+        int statuCode = cooperator.getStatusCode();
+        if(statuCode !=1){
+            return new JsonMessage(false, "ILLEGAL_PARAM", "商户未通过验证");
+        }
+
         if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
             return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
 
@@ -149,6 +166,24 @@ public class OrderController {
         if (!result) log.info("订单: " + order.getOrderNum() + "的推送消息发送失败");
         return new JsonMessage(true, "", "", order);
 
+    }
+
+    @RequestMapping(value = "/uploadPhoto",method = RequestMethod.POST)
+    public JsonMessage uploadPhoto(HttpServletRequest request,
+                                   @RequestParam("file") MultipartFile file) throws  Exception{
+        String path ="/uploads/order/photo";
+        if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
+        JsonMessage msg = new JsonMessage(true);
+        File dir = new File(request.getServletContext().getRealPath(path));
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                + (VerifyCode.generateRandomNumber(6)) + extension;
+
+        if (!dir.exists()) dir.mkdirs();
+        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
+        msg.setData(path + "/" + filename);
+        return msg;
     }
 
     @RequestMapping(value="/listUnfinished",method = RequestMethod.POST)
