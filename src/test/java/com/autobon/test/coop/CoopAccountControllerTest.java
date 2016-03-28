@@ -94,7 +94,6 @@ public class CoopAccountControllerTest {
                 .cookie(new Cookie("autoken", token)))
                 .andDo(print())
                 .andExpect(jsonPath("$.result", is(true)));
-
     }
 
     @Test
