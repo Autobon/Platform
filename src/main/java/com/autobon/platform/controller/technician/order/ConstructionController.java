@@ -113,7 +113,7 @@ public class ConstructionController {
         if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
         String path = "/uploads/order";
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File("../").getCanonicalPath() + path);
         if (!dir.exists()) dir.mkdirs();
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();

@@ -177,7 +177,7 @@ public class TechnicianAccountController {
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public JsonMessage uploadAvatarForm(HttpServletRequest request) throws Exception {
         String path = "/uploads/technician/avatar";
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File("../").getCanonicalPath() + path);
         if (!dir.exists()) dir.mkdirs();
         Technician technician = (Technician) request.getAttribute("user");
         String filename = technician.getId() + ".jpg";
@@ -253,7 +253,7 @@ public class TechnicianAccountController {
 
         JsonMessage msg = new JsonMessage(true);
         String path = "/uploads/technician/idPhoto";
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File("../").getCanonicalPath() + path);
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))

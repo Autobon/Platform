@@ -134,7 +134,7 @@ public class OrderController {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
         String path = "/uploads/order";
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File("../").getCanonicalPath() + path);
         if (!dir.exists()) dir.mkdirs();
 
         String originalName = file.getOriginalFilename();
@@ -151,7 +151,7 @@ public class OrderController {
         cmd.setInputProvider(new Pipe(in, null));
         IMOperation operation = new IMOperation();
         operation.addImage("-");
-        operation.resize(1200, 1200, ">");
+        operation.resize();
         operation.addImage(dir.getAbsolutePath() + File.separator + filename);
         cmd.run(operation);
 

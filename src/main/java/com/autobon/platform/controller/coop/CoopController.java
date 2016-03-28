@@ -93,7 +93,7 @@ public class CoopController {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
         JsonMessage msg = new JsonMessage(true);
 
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File("../").getCanonicalPath() + path);
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
@@ -114,7 +114,7 @@ public class CoopController {
         String path ="/uploads/coop/corporationIdPicA";
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
         JsonMessage msg = new JsonMessage(true);
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File("../").getCanonicalPath() + path);
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
