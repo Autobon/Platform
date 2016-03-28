@@ -193,7 +193,8 @@ public class CoopAccount implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return this.fired = false;
+        //return this.fired = false;
+        return true;
     }
 
     public void setPassword(String password) {
