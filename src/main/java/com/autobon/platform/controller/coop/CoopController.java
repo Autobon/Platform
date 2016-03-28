@@ -21,6 +21,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -167,11 +168,14 @@ public class CoopController {
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         Integer coopId = coopAccount.getCooperatorId();
         Cooperator cooperator = cooperatorService.get(coopId);
-        ReviewCooper reviewCooper = reviewCooperService.getByCooperatorsId(coopId);
+        List<ReviewCooper> reviewCooperList = reviewCooperService.getByCooperatorsId(coopId);
+        if(reviewCooperList.size()>0){
+            dataMap.put("reviewCooper",reviewCooperList.get(0));
+        }else{
+            dataMap.put("reviewCooper",null);
+        }
 
         dataMap.put("cooperator",cooperator);
-        dataMap.put("reviewCooper",reviewCooper);
-
         return new JsonMessage(true,"","",dataMap);
     }
 
