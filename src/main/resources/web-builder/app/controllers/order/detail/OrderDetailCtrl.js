@@ -7,8 +7,7 @@ export default class OrderDetailCtrl extends Injector {
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, OrderService, Settings} = this.$injected;
-        $scope.baiduMapKey = Settings.baiduMapKey;
+        const {$scope, $stateParams, OrderService} = this.$injected;
         $scope.comment     = {
             arriveOnTime  : true,
             completeOnTime: true,

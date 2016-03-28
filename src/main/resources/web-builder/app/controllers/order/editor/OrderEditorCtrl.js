@@ -8,7 +8,7 @@ export default class OrderEditorCtrl extends Injector {
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, OrderService, Settings} = this.$injected;
+        const {$scope, $stateParams, OrderService} = this.$injected;
         this.attachMethodsTo($scope);
 
         if ($stateParams.orderNum) {
@@ -16,7 +16,6 @@ export default class OrderEditorCtrl extends Injector {
         } else {
             $scope.order = {};
         }
-        $scope.baiduMapKey = Settings.baiduMapKey;
         $scope.uploadUrl = OrderService.uploadPhotoUrl;
     }
 
