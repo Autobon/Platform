@@ -132,7 +132,7 @@ public class CoopAccountControllerTest {
         mockMvcS.perform(post("/api/mobile/coop/changeAccountPassword")
                 .param("coopAccountId", "1")
                 .param("oldPassword", "123456")
-                .param("newPassword", "889988")
+                .param("newPassword", "123456")
                 .cookie(new Cookie("autoken", token)))
                 .andDo(print())
                 .andExpect(jsonPath("$.result", is(true)));
