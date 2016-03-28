@@ -13,16 +13,22 @@ import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.im4java.core.ConvertCmd;
+import org.im4java.core.IMOperation;
+import org.im4java.process.Pipe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -135,7 +141,19 @@ public class OrderController {
         String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
                             + VerifyCode.generateVerifyCode(6) + extension;
-        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
+
+        InputStream in;
+        if (file == null || file.isEmpty()) return new JsonMessage(false, "没有选择上传文件");
+        in = file.getInputStream();
+
+        ConvertCmd cmd = new ConvertCmd(true);
+        cmd.setSearchPath(gmPath);
+        cmd.setInputProvider(new Pipe(in, null));
+        IMOperation operation = new IMOperation();
+        operation.addImage("-");
+        operation.resize(1200, 1200, ">");
+        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+        cmd.run(operation);
 
         return new JsonMessage(true, "", "", path + "/" + filename);
     }

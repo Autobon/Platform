@@ -17,7 +17,7 @@ public class ReviewCooperService {
         reviewCooperRepository.save(reviewCooper);
     }
 
-    public ReviewCooper getByCooperatorsId(int coopId) {
-        return reviewCooperRepository.getByCooperatorsId(coopId);
+    public ReviewCooper getByCooperatorId(int coopId) {
+        return reviewCooperRepository.getByCooperatorId(coopId);
     }
 }

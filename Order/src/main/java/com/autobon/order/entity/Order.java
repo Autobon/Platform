@@ -52,7 +52,7 @@ public class Order {
 
     @Column private String photo;
 
-    @Column private Date orderTime;
+    @Column private Date orderTime; // 预约时间
 
     @Column private Date addTime; // 创建时间
 

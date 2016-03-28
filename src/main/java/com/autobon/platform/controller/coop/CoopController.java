@@ -141,7 +141,7 @@ public class CoopController {
 
         Cooperator cooperator = (Cooperator)request.getAttribute("user");
         int coopId = cooperator.getId();
-        ReviewCooper reviewCooper = reviewCooperService.getByCooperatorsId(coopId);
+        ReviewCooper reviewCooper = reviewCooperService.getByCooperatorId(coopId);
 
         dataMap.put("cooperator",cooperator);
         dataMap.put("reviewCooper",reviewCooper);
