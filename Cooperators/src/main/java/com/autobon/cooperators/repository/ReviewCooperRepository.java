@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface ReviewCooperRepository extends JpaRepository<ReviewCooper, Integer> {
 
-    List<ReviewCooper> findTop10ByCooperatorsIdOrderByReviewTimeDesc(int coopId);
+    List<ReviewCooper> findTop10ByCooperatorIdOrderByReviewTimeDesc(int coopId);
 }

@@ -22,9 +22,9 @@ public class GetuiTask {
     @Autowired @Qualifier("PushServiceB")
     private PushService pushServiceB;
 
-    // 每隔1小时连接个推服务器一次,否则可能出现sigerr错误
+    // 每隔5分钟连接个推服务器一次,否则可能出现sigerr错误
     @Async
-    @Scheduled(fixedRate = 3600*1000)
+    @Scheduled(fixedRate = 300*1000)
     public void connectGetui() {
         try {
             pushServiceA.connect();

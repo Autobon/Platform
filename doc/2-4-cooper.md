@@ -39,32 +39,17 @@ post("/api/web/admin/cooperator/coopList"）
 ## 2. 后台合作商户认证
 对合作商户进行资质审核
 ### URL及请求方法
-post("/api/web/admin/cooperator/checkCoop/coopId"
+post("/api/web/admin/cooperator/verify/{coopId}"
 
 ### 请求参数
 
 | 参数名称 | 是否必须 | 说明 | 举例 |
 | ------ | -------- | ---- | --- |
-| coopId | 是 | 审核商户的ID | 1 |
-| statusCode | 是 | 状态 0-未审核 1-审核成功 2-审核失败 3-账号禁用 | 2 |
-| resultDesc | 是 | 审核失败原因描述 | 照片不清楚 |
+| coopId | 是 | 审核商户的ID. URL占位符参数, 只需在URL中替换即可 | 1 |
+| verified | 是 | 是否认证通过, true或false | true |
+| remark | 否 | 审核失败原因描述, 认证失败时必填 | 照片不清楚 |
 
 ### 返回数据
-
-```
-{
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
-        "id": 1,
-        "cooperatorsId": 1,
-        "reviewTime": 1457943134584,
-        "checkedBy": "超级管理员",
-        "resultDesc": "照片不清楚"
-    }
-}
-```
 
 #### a.请求成功
 
@@ -77,12 +62,21 @@ post("/api/web/admin/cooperator/checkCoop/coopId"
 }
 ```
 
-#### b.照片不清楚
+#### b.请填写认证失败原因
 
 ```
 {"result": false,
-"message": "照片不清楚",
-"error": "ILLEGAL_PARAM",
+"message": "请填写认证失败原因",
+"error": "INSUFFICIENT_PARAM",
+"data": null}
+```
+
+#### c.没有这个商户
+
+```
+{"result": false,
+"message": "没有这个商户",
+"error": "NO_SUCH_COOPERATOR",
 "data": null}
 ```
 

@@ -17,7 +17,7 @@
             <div class="form-control" style="cursor: not-allowed;">
                 <span>经度: {{order.position.lng}}, 纬度: {{order.position.lat}}</span>
             </div>
-            <map-location api-key="{{baiduMapKey}}" style="height: 250px;" position="{{order.position}}"></map-location>
+            <map-location style="height: 250px;" position="{{order.position}}"></map-location>
         </div>
     </div>
     <div>
@@ -32,9 +32,9 @@
             <div class="col-sm-8"><b>施工项目: </b><span>{{order.mainConstruct.workItems}}</span></div>
         </div>
         <div class="row m-t-20 clearfix">
-            <div style="width: 3%; float: left;"></div>
+            <div style="width: 3%; height: 10px; float: left;"></div>
             <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.beforePhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
-            <div style="width: 3%; float: left;"></div>
+            <div style="width: 3%; height: 10px; float: left;"></div>
             <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.afterPhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
         </div>
     </div>
@@ -77,7 +77,7 @@
             <p>{{order.comment.advice}}</p>
         </div>
     </div>
-    <form class="form-horizontal" name="form" ng-if="order.creatorType == 2 && !order.comment.id">
+    <form class="form-horizontal" name="form" ng-if="order.creatorType == 2 && order.status == 'FINISHED' && !order.comment.id">
         <div class="sub-header"><h4>发表评论:</h4></div>
         <div class="form-group">
             <label class="col-sm-2 control-label">星级</label>

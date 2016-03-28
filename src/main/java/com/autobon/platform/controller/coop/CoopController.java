@@ -9,6 +9,7 @@ import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +43,8 @@ public class CoopController {
 
     @Autowired
     private ReviewCooperService reviewCooperService;
+
+    @Value("${com.autobon.uploadPath}") String uploadPath;
 
     @RequestMapping(value = "/check",method = RequestMethod.POST)
     public JsonMessage check(HttpServletRequest request,
@@ -106,7 +109,7 @@ public class CoopController {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
         JsonMessage msg = new JsonMessage(true);
 
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
@@ -131,7 +134,7 @@ public class CoopController {
         String path ="/uploads/coop/corporationIdPicA";
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
         JsonMessage msg = new JsonMessage(true);
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
@@ -168,7 +171,7 @@ public class CoopController {
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         Integer coopId = coopAccount.getCooperatorId();
         Cooperator cooperator = cooperatorService.get(coopId);
-        List<ReviewCooper> reviewCooperList = reviewCooperService.getByCooperatorsId(coopId);
+        List<ReviewCooper> reviewCooperList = reviewCooperService.getByCooperatorId(coopId);
         if(reviewCooperList.size()>0){
             dataMap.put("reviewCooper",reviewCooperList.get(0));
         }else{

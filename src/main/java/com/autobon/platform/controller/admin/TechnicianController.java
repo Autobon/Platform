@@ -25,8 +25,8 @@ public class TechnicianController {
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(@RequestParam(value = "query", defaultValue = "") String query,
-                              @RequestParam(value = "page",     defaultValue = "1" )  int page,
-                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+            @RequestParam(value = "page",     defaultValue = "1" )  int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         if ("".equals(query)) {
             return new JsonMessage(true, "", "",
                     new JsonPage<>(technicianService.findAll(page, pageSize)));
@@ -52,15 +52,15 @@ public class TechnicianController {
 
     @RequestMapping(value = "/{techId:\\d+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("techId") int techId,
-                              @RequestParam(value="phone",required = true) String phone,
-                              @RequestParam(value="name",required = true) String name,
-                              @RequestParam(value="gender",required = true) String gender,
-                              @RequestParam(value = "idNo",required = true) String idNo,
-                              @RequestParam(value = "idPhoto",required = true) String idPhoto,
-                              @RequestParam(value = "bank",required = true) String bank,
-                              @RequestParam(value = "bankAddress",required = true) String bankAddress,
-                              @RequestParam(value = "bankCardNo",required = true) String bankCardNo,
-                              @RequestParam(value = "skill",required = true) String skill) {
+            @RequestParam(value = "phone") String phone,
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "gender") String gender,
+            @RequestParam(value = "idNo") String idNo,
+            @RequestParam(value = "idPhoto") String idPhoto,
+            @RequestParam(value = "bank") String bank,
+            @RequestParam(value = "bankAddress") String bankAddress,
+            @RequestParam(value = "bankCardNo") String bankCardNo,
+            @RequestParam(value = "skill") String skill) {
 
         if (!Pattern.matches("^\\d{11}$", phone)) {
             return  new JsonMessage(false,"ILLEGAL_PARAM","手机号格式错误");
@@ -88,36 +88,33 @@ public class TechnicianController {
         return new JsonMessage(true,"","",technician);
     }
 
-
     @RequestMapping(value = "/verify/{techId:\\d+}", method = RequestMethod.POST)
     public JsonMessage verify(
             @PathVariable("techId") int techId,
             @RequestParam("verified") boolean verified,
             @RequestParam(value = "verifyMsg", defaultValue = "") String verifyMsg) throws IOException {
         Technician tech = technicianService.get(techId);
-        if (tech != null) {
-            if (verified) {
-                tech.setStatus(Technician.Status.VERIFIED);
-                String title = "你已通过技师资格认证";
-                pushService.pushToSingle(tech.getPushId(), title,
-                        "{\"action\":\"VERIFICATION_SUCCEED\",\"title\":\"" + title + "\"}",
-                        3*24*3600);
-            } else {
-                if (verifyMsg.equals("")) {
-                    return new JsonMessage(false, "INSUFFICIENT_PARAM", "请填写认证失败原因");
-                }
-                tech.setStatus(Technician.Status.REJECTED);
-                tech.setVerifyMsg(verifyMsg);
-                String title = "你的技师资格认证失败: " + verifyMsg;
-                pushService.pushToSingle(tech.getPushId(), title,
-                        "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
-                        3*24*3600);
-            }
-            tech.setVerifyAt(new Date());
-            technicianService.save(tech);
-            return new JsonMessage(true);
+        if (tech == null) return new JsonMessage(false, "ILLEGAL_PARAM", "没有这个技师");
+
+        if (verified) {
+            tech.setStatus(Technician.Status.VERIFIED);
+            String title = "你已通过技师资格认证";
+            pushService.pushToSingle(tech.getPushId(), title,
+                    "{\"action\":\"VERIFICATION_SUCCEED\",\"title\":\"" + title + "\"}",
+                    3*24*3600);
         } else {
-            return new JsonMessage(false, "ILLEGAL_PARAM", "没有这个技师");
+            if (verifyMsg.equals("")) {
+                return new JsonMessage(false, "INSUFFICIENT_PARAM", "请填写认证失败原因");
+            }
+            tech.setStatus(Technician.Status.REJECTED);
+            tech.setVerifyMsg(verifyMsg);
+            String title = "你的技师资格认证失败: " + verifyMsg;
+            pushService.pushToSingle(tech.getPushId(), title,
+                    "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
+                    3*24*3600);
         }
+        tech.setVerifyAt(new Date());
+        technicianService.save(tech);
+        return new JsonMessage(true);
     }
 }

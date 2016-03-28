@@ -19,7 +19,8 @@ public class ReviewCooperService {
         reviewCooperRepository.save(reviewCooper);
     }
 
-    public List<ReviewCooper> getByCooperatorsId(int coopId) {
-        return reviewCooperRepository.findTop10ByCooperatorsIdOrderByReviewTimeDesc(coopId);
+
+    public List<ReviewCooper> getByCooperatorId(int coopId) {
+        return reviewCooperRepository.findTop10ByCooperatorIdOrderByReviewTimeDesc(coopId);
     }
 }

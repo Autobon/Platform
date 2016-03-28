@@ -12,6 +12,7 @@ import com.autobon.shared.JsonMessage;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +41,7 @@ public class ConstructionController {
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
     @Autowired TechStatService techStatService;
+    @Value("${com.autobon.uploadPath}") String uploadPath;
 
     // 开始工作
     @RequestMapping(value = "/start", method = RequestMethod.POST)
@@ -113,7 +115,7 @@ public class ConstructionController {
         if (file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
         String path = "/uploads/order";
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         if (!dir.exists()) dir.mkdirs();
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();

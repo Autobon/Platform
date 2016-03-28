@@ -31,7 +31,7 @@ public class PubControllerTest extends MvcTest {
     }
 
     @Test
-    public void getWorkItems() throws Exception{
+    public void getWorkItems() throws Exception {
         this.mockMvc.perform(get("/api/pub/technician/workItems")
                 .param("orderType", "1"))
             .andExpect(status().isOk())

@@ -8,6 +8,7 @@ import com.autobon.shared.SmsSender;
 import com.autobon.shared.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,19 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Created by yuh on 2016/2/18.
  */
 @RestController
-@RequestMapping("/api/pub")
+@RequestMapping
 public class PubController {
 
     @Autowired WorkItemService workItemService;
@@ -38,7 +40,7 @@ public class PubController {
     @Value("${com.autobon.env:PROD}")
     private String env;
 
-    @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/pub/verifyCode", method = RequestMethod.GET)
     public void getVerifyCode(HttpServletRequest request, HttpServletResponse response, OutputStream out) throws IOException {
         Cookie[] cookies = request.getCookies();
         Cookie cookie = null;
@@ -56,7 +58,7 @@ public class PubController {
         VerifyCode.writeVerifyCodeImage(250, 40, out, code);
     }
 
-    @RequestMapping(value = "/verifySms", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/pub/verifySms", method = RequestMethod.GET)
     public JsonMessage getVerifySms(@RequestParam("phone") String phone) throws IOException {
         String code = VerifyCode.generateRandomNumber(6);
         if (env.equals("TEST")) {
@@ -68,7 +70,23 @@ public class PubController {
         return new JsonMessage(true);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/uploads/**", method = RequestMethod.GET)
+    public void getFile(HttpServletRequest request, HttpServletResponse response, OutputStream out) throws IOException {
+        long now = new Date().getTime();
+        long maxAge = 60*24*3600;
+        response.addHeader("Cache-Control", "max-age=" + maxAge);
+        response.setDateHeader("Last-Modified", now);
+        response.setDateHeader("Expires", now + maxAge*1000);
+        File file = new File(new File("..").getCanonicalPath() + request.getRequestURI());
+        if (file.exists()) {
+            response.setHeader("Content-Type", URLConnection.guessContentTypeFromName(file.getName()));
+            Files.copy(file.toPath(), out);
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/api/pub/logout", method = RequestMethod.GET)
     public JsonMessage logout(HttpServletResponse response) {
         SecurityContextHolder.clearContext();
         Cookie cookie = new Cookie("autoken", null);
@@ -77,12 +95,12 @@ public class PubController {
         return new JsonMessage(true);
     }
 
-    @RequestMapping(value = "/technician/skills", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/pub/technician/skills", method = RequestMethod.GET)
     public JsonMessage getSkills() {
         return getOrderTypes();
     }
 
-    @RequestMapping(value = "/orderTypes", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/pub/orderTypes", method = RequestMethod.GET)
     public JsonMessage getOrderTypes() {
         return new JsonMessage(true, "", "",
                 workItemService.getOrderTypes().stream().map(t -> {
@@ -93,7 +111,7 @@ public class PubController {
                 }).collect(Collectors.toList()));
     }
 
-    @RequestMapping(value="/technician/workItems", method = RequestMethod.GET)
+    @RequestMapping(value="/api/pub/technician/workItems", method = RequestMethod.GET)
     public JsonMessage getWorkItems(
             @RequestParam("orderType") int orderType,
             @RequestParam(value = "carSeat", defaultValue = "0")   int carSeat) {

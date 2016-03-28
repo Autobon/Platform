@@ -22,6 +22,7 @@ com.autobon:
     gm-path: /usr/bin # graphicsMagick工具路径
     env: TEST
     baiduKey: lhFpgbOkc15RHjiexfP2aDhg
+    uploadPath: ..
 
 # Tomcat
 server.port: 12345

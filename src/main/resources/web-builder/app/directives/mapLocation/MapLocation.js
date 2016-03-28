@@ -33,6 +33,7 @@ export default class MapLocation extends Injector {
             };
         } else {
             this.$injected.$timeout(() => {
+                this._showLocation(scope, mapId);
                 scope.$watch('position', () => {
                     this._showLocation(scope, mapId);
                 });
@@ -41,6 +42,7 @@ export default class MapLocation extends Injector {
     }
 
     _showLocation(scope, mapId) {
+        if (!scope.position) return;
         if (scope.map) {
             let position = scope.position;
             if (scope.marker) scope.map.removeOverlay(scope.marker);

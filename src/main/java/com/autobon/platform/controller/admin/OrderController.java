@@ -11,8 +11,10 @@ import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
-import com.autobon.staff.service.StaffService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.im4java.core.ConvertCmd;
+import org.im4java.core.IMOperation;
+import org.im4java.process.Pipe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -38,11 +41,12 @@ import java.util.regex.Pattern;
 public class OrderController {
     private static Logger log = LoggerFactory.getLogger(OrderController.class);
     @Value("${com.autobon.gm-path}") String gmPath;
+    @Value("${com.autobon.uploadPath}") String uploadPath;
     @Autowired OrderService orderService;
+    @Autowired CommentService commentService;
     @Autowired DetailedOrderService detailedOrderService;
     @Autowired @Qualifier("PushServiceA")
     PushService pushServiceA;
-    @Autowired CommentService commentService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -128,14 +132,26 @@ public class OrderController {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
         String path = "/uploads/order";
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         if (!dir.exists()) dir.mkdirs();
 
         String originalName = file.getOriginalFilename();
         String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
                             + VerifyCode.generateVerifyCode(6) + extension;
-        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
+
+        InputStream in;
+        if (file == null || file.isEmpty()) return new JsonMessage(false, "没有选择上传文件");
+        in = file.getInputStream();
+
+        ConvertCmd cmd = new ConvertCmd(true);
+        cmd.setSearchPath(gmPath);
+        cmd.setInputProvider(new Pipe(in, null));
+        IMOperation operation = new IMOperation();
+        operation.addImage("-");
+        operation.resize();
+        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+        cmd.run(operation);
 
         return new JsonMessage(true, "", "", path + "/" + filename);
     }

@@ -24,25 +24,28 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
             .provider('template', function() {
                 this.$get = () => {return templateCache;};
             })
-    .value('Settings', {
-        domain: 'http://localhost:12345',
-        baiduMapKey: 'FPzmlgz02SERkbPsRyGOiGfj',
-        orderTypes: {'1': '隔热层', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
-        orderStatus: {
-            'NEWLY_CREATED': '未接单',
-            'TAKEN_UP': '已接单',
-            'SEND_INVITATION': '已发送合作邀请',
-            'INVITATION_ACCEPTED': '邀请已接受',
-            'INVITATION_REJECTED': '邀请已拒绝',
-            'IN_PROGRESS': '施工中',
-            'FINISHED': '施工完成',
-            'COMMENTED': '已评论',
-            'CANCELED': '已取消',
-        },
-    })
-    .run(['$rootScope', '$state', function($rootScope, $state) {
-        $rootScope.$state = $state;
-    }]);
+            .service('Settings', ['$location', function($location) {
+                return {
+                    domain: $location.protocol() + '://' + $location.host() + ':' + $location.port(),
+                    baiduMapKey: 'FPzmlgz02SERkbPsRyGOiGfj',
+                    orderTypes: {'1': '隔热层', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
+                    orderStatus: {
+                        'NEWLY_CREATED': '未接单',
+                        'TAKEN_UP': '已接单',
+                        'SEND_INVITATION': '已发送合作邀请',
+                        'INVITATION_ACCEPTED': '邀请已接受',
+                        'INVITATION_REJECTED': '邀请已拒绝',
+                        'IN_PROGRESS': '施工中',
+                        'FINISHED': '施工完成',
+                        'COMMENTED': '已评论',
+                        'CANCELED': '已取消',
+                        'EXPIRED': '已超时',
+                    },
+                };
+            }])
+            .run(['$rootScope', '$state', function($rootScope, $state) {
+                $rootScope.$state = $state;
+            }]);
 
 config.forEach(c => {
     app.config(c);

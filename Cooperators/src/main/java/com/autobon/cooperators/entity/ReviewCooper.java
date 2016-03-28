@@ -12,23 +12,17 @@ public class ReviewCooper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
     private int id;
 
-    @Column
-    private int cooperatorsId;
+    @Column private int cooperatorId;
 
-    @Column
-    private Date reviewTime;
+    @Column private Date reviewTime;
 
-    @Column
-    private String checkedBy;
+    @Column private int reviewerId;
 
-    @Column
-    private String resultDesc;
+    @Column private String remark;
 
-    @Column
-    private Boolean result;
+    @Column private Boolean result;
 
     public int getId() {
         return id;
@@ -38,12 +32,12 @@ public class ReviewCooper {
         this.id = id;
     }
 
-    public int getCooperatorsId() {
-        return cooperatorsId;
+    public int getCooperatorId() {
+        return cooperatorId;
     }
 
-    public void setCooperatorsId(int cooperatorsId) {
-        this.cooperatorsId = cooperatorsId;
+    public void setCooperatorId(int cooperatorId) {
+        this.cooperatorId = cooperatorId;
     }
 
     public Date getReviewTime() {
@@ -54,20 +48,20 @@ public class ReviewCooper {
         this.reviewTime = reviewTime;
     }
 
-    public String getCheckedBy() {
-        return checkedBy;
+    public int getReviewerId() {
+        return reviewerId;
     }
 
-    public void setCheckedBy(String checkedBy) {
-        this.checkedBy = checkedBy;
+    public void setReviewerId(int reviewerId) {
+        this.reviewerId = reviewerId;
     }
 
-    public String getResultDesc() {
-        return resultDesc;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setResultDesc(String resultDesc) {
-        this.resultDesc = resultDesc;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public Boolean getResult() {
