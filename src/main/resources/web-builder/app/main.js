@@ -25,7 +25,7 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                 this.$get = () => {return templateCache;};
             })
     .value('Settings', {
-        domain: 'http://localhost:12345',
+        domain: 'http://hpecar.com:12345',
         baiduMapKey: 'FPzmlgz02SERkbPsRyGOiGfj',
         orderTypes: {'1': '隔热层', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
         orderStatus: {

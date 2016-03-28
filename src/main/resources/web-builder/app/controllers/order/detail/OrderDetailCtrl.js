@@ -27,19 +27,23 @@ export default class OrderDetailCtrl extends Injector {
                 order.position         = {lng: order.positionLon, lat: order.positionLat};
                 $scope.comment.orderId = order.id;
 
-                if (order.mainConstruct && order.mainConstruct.workItems) {
-                    if (!$parent.workItems || !$parent.workItems[order.orderType]) {
-                        OrderService.getWorkItems($scope.order.orderType).then(res2 => {
-                            if (res2.data && res2.data.result) {
-                                $parent.workItems                  = $parent.workItems || {};
-                                $parent.workItems[order.orderType] = res2.data.data;
-                                order.mainConstruct.workItems      = this._assembleWorkItemsText(
-                                    $parent.workItems[order.orderType], order.mainConstruct.workItems);
-                            }
-                        });
-                    } else {
-                        order.mainConstruct.workItems = this._assembleWorkItemsText(
-                            $parent.workItems[order.orderType], order.mainConstruct.workItems);
+                if (order.mainConstruct) {
+                    if (order.mainConstruct.workItems) {
+                        if (!$parent.workItems || !$parent.workItems[order.orderType]) {
+                            OrderService.getWorkItems($scope.order.orderType).then(res2 => {
+                                if (res2.data && res2.data.result) {
+                                    $parent.workItems                  = $parent.workItems || {};
+                                    $parent.workItems[order.orderType] = res2.data.data;
+                                    order.mainConstruct.workItems      = this._assembleWorkItemsText(
+                                        $parent.workItems[order.orderType], order.mainConstruct.workItems);
+                                }
+                            });
+                        } else {
+                            order.mainConstruct.workItems = this._assembleWorkItemsText(
+                                $parent.workItems[order.orderType], order.mainConstruct.workItems);
+                        }
+                    } else if (order.mainConstruct.workPercent) {
+                        order.mainConstruct.workItems = (order.mainConstruct.workPercent * 100).toFixed(0) + '%';
                     }
                 }
             }
