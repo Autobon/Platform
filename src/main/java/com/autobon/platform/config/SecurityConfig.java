@@ -16,8 +16,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.header.HeaderWriter;
+import org.springframework.security.web.header.writers.CacheControlHeadersWriter;
+import org.springframework.security.web.header.writers.DelegatingRequestMatcherHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  * Created by dave on 16/2/16.
@@ -40,12 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         TokenAuthenticationProcessingFilter filter = new TokenAuthenticationProcessingFilter(applicationContext,
-                new RegexRequestMatcher("^/api/(mobile|web)/.+", null),
-                new RegexRequestMatcher("^/api/(mobile|web)/[^/]+/(login|register|resetPassword).*", null));
+                new RegexRequestMatcher("/api/(mobile|web)/.+", null),
+                new RegexRequestMatcher("/api/(mobile|web)/[^/]+/(login|register|resetPassword).*", null));
         filter.setAuthenticationManager(authenticationManagerBean());
         http.addFilterBefore(filter, BasicAuthenticationFilter.class);
 
         http.authorizeRequests().antMatchers(
+                "/api/web/admin/login",
                 "/api/mobile/*/login",
                 "/api/mobile/*/register",
                 "/api/mobile/*/resetPassword").permitAll()
@@ -53,8 +58,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and().authorizeRequests().antMatchers("/api/web/**").hasAuthority("STAFF")
             .and().authorizeRequests().antMatchers("/api/mobile/coop/**").hasAuthority("COOPERATOR");
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().csrf().disable();
+        RequestMatcher apiRequestMatcher = new AntPathRequestMatcher("/api/**");
+        HeaderWriter headerWriter = new DelegatingRequestMatcherHeaderWriter(apiRequestMatcher,
+                                                new CacheControlHeadersWriter());
+        // 由于
+        // 1. springMVC对已有缓存控制设置的请求响应,无法再次更改缓存时间.
+        // 2. spring security对所有启用缓存控制的请求默认添加了no-cache设置,即缓存时间为0
+        // 所以这里默认禁用cache control,只对api请求启用,而spring security自动将启用缓存的请求的缓存时间更改为no-cache.
+        // 而静态文件没有启用缓存控制,spring security不会添加缓存设置.在webconfig中对静态资源添加的缓存控制设定就可以生效.
+        http.headers().cacheControl().disable().addHeaderWriter(headerWriter)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().csrf().disable();
     }
 
     @Override

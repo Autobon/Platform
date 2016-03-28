@@ -10,7 +10,6 @@ export default class Nice extends Injector {
         this.template = template;
         this.restrict = 'E';
         this.scope = {};
-        this.link.$inject = ['scope'];
         this.counter = 1;
     }
 

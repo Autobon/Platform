@@ -1,6 +1,6 @@
 import './main.less';
 import $ from 'jquery';
-import { Injector } from 'ngES6';
+import {Injector} from 'ngES6';
 
 export default class Main extends Injector {
     static $inject = ['$scope', 'LoginService'];

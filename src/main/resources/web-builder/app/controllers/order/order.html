@@ -1,0 +1,82 @@
+<div class="page-title">
+    <span class="glyphicon glyphicon-list-alt"></span>&nbsp;订单管理
+</div>
+<div class="row-search">
+    <form class="form-inline pull-left">
+        <div class="form-group">
+            <label for="orderNum">订单编号:</label>
+            <input type="text" class="form-control" id="orderNum" ng-model="filter.orderNum">
+        </div>
+        <div class="form-group">
+            <label for="orderCreator">下单人:</label>
+            <input type="text" class="form-control" id="orderCreator" ng-model="filter.orderCreator"
+                   placeholder="姓名或手机号">
+        </div>
+        <div class="form-group">
+            <label for="orderType">订单类型:</label>
+            <select class="form-control" id="orderType" ng-model="filter.orderType"
+                    ng-options="key as value for (key, value) in Settings.orderTypes">
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="orderStatus">订单状态:</label>
+            <select class="form-control" id="orderStatus" ng-model="filter.orderStatus"
+                    ng-options="key as value for (key, value) in Settings.orderStatus">
+            </select>
+        </div>
+        <button class="btn btn-primary" ng-click="getOrders()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+    </form>
+    <a ui-sref="console.order.new" class="pull-right btn-new-order">发布订单&nbsp;<span class="
+glyphicon glyphicon-plus"></span></a>
+</div>
+<br>
+<div class="clearfix">
+    <div ng-class="$state.is('console.order') ? 'col-sm-12' : 'col-sm-3'">
+        <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.order')">
+            <table class="table table-striped">
+                <thead><tr><th>序号</th><th>订单类型</th><th>预约时间</th><th>下单人</th><th>下单时间</th><th>订单状态</th><th>操作</th></tr></thead>
+                <tbody>
+                    <tr ng-repeat="order in orders">
+                        <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                        <td>{{Settings.orderTypes[order.orderType]}}</td>
+                        <td>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</td>
+                        <td>{{order.creatorName}}</td>
+                        <td>{{order.addTime | date : 'YYYY-MM-DD HH:mm'}}</td>
+                        <td>{{Settings.orderStatus[order.status]}}</td>
+                        <td><a ui-sref="console.order.detail({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                            <i class="fa fa-list"></i>&nbsp;详情</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <footer class="text-right">
+                <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getOrders()"
+                                previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+            </footer>
+        </div>
+
+        <div ng-if="!$state.is('console.order')">
+            <ul class="side-nav-list">
+                <li ng-repeat="order in orders" ui-sref-active="active">
+                    <a ui-sref="console.order.detail({orderNum: order.orderNum})">
+                        <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b> {{order.orderNum}}
+                        <span class="btn btn-default btn-xs">{{Settings.orderTypes[order.orderType]}}</span>
+                        <span class="btn btn-xs btn-success">{{Settings.orderStatus[order.status]}}</span><br>
+                        下单人: {{order.creatorName}}<br>预约时间: {{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}
+                    </a>
+                </li>
+            </ul>
+
+            <footer class="text-right">
+                <div>第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getOrders()"
+                                previous-text="←" next-text="→" max-size="3" class="pagination-sm"></uib-pagination>
+            </footer>
+        </div>
+    </div>
+    <div ui-view class="col-sm-9"></div>
+</div>

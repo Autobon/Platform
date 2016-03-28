@@ -23,7 +23,8 @@ public class Order {
         IN_PROGRESS(50), // 订单开始工作中
         FINISHED(60), // 订单已结束
         COMMENTED(70), // 订单已评论
-        CANCELED(200); // 订单已取消
+        CANCELED(200), // 订单已取消
+        EXPIRED(210); // 订单已超时
         private int statusCode;
 
         Status(int statusCode) {

@@ -6,9 +6,8 @@ export const production = {
     context : path.resolve(__dirname, '..'),
     entry   : {
         app   : [path.resolve(__dirname, '../app/main.js')],
-        vendor: ['angular', 'angular-route', 'angular-animate',
-                'angular-ui-router', 'angular-ui-bootstrap',
-                'jquery'],
+        vendor: ['angular', 'angular-animate', 'angular-ui-router',
+                'angular-ui-bootstrap', 'jquery'],
     },
     output  : {
         path      : path.resolve(__dirname, '../../static'),
@@ -30,8 +29,8 @@ export const production = {
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel'},
             {test: /\.json$/, loader: 'json'},
             {test: /\.html$/, exclude: /node_modules/, loader: 'html'},
-            {test: /\.(jpg|png|gif|woff|woff2)$/, loader: 'url?limit=50000'},
-            {test: /\.(svg|ttf|eot)$/, loader: 'file'}
+            {test: /\.(jpg|png|gif|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url?limit=50000'},
+            {test: /\.(svg|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file'}
         ],
     },
     resolve : {
@@ -49,7 +48,6 @@ export const production = {
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
         ),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
-        // angular-ui is not ready for uglify
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
                 screw_ie8: true,
@@ -70,7 +68,7 @@ export const production = {
             process.stdout.write(CLEAR_LINE + Math.round(percentage * 100) + '% :' + message + MOVE_LEFT);
         }),
     ],
-    devtool : 'source-map',
+    // devtool : 'source-map',
 };
 
 export const development = {
@@ -104,4 +102,5 @@ export const development = {
         }),
     ],
     watch  : true,
+    devtool : 'source-map',
 };

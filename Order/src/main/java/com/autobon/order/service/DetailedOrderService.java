@@ -21,6 +21,10 @@ public class DetailedOrderService {
         return repository.findOne(id);
     }
 
+    public DetailedOrder getByOrderNum(String orderNum) {
+        return repository.getByOrderNum(orderNum);
+    }
+
     public Page<DetailedOrder> findFinishedByMainTechId(int techId, int page, int pageSize) {
         return repository.findFinishedByMainTechId(techId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));

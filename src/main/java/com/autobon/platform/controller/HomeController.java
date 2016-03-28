@@ -14,7 +14,7 @@ public class HomeController {
      *
      * @return 返回HTML静态页面
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/console/**"}, method = RequestMethod.GET)
     public String index() {
         return "forward:/index.html";
     }

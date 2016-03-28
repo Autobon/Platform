@@ -38,6 +38,17 @@ export default function httpConfig($httpProvider) {
     $httpProvider.defaults.transformRequest = [(data) => {
         return typeof data === 'object' && String(data) !== '[object File]' ? transformParams(data) : data;
     }];
+
+    $httpProvider.interceptors.push(() => {
+        return {
+            responseError: function(res) {
+                if (res.status === 403) {
+                    window.location.href = '/';
+                }
+                return res;
+            },
+        };
+    });
 }
 
 httpConfig.$inject = ['$httpProvider'];

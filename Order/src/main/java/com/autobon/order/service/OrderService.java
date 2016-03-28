@@ -14,35 +14,35 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderService {
 
-    private OrderRepository orderRepository = null;
     @Autowired
-    public void setOrderRepository(OrderRepository orderRepository){ this.orderRepository = orderRepository; }
+    private OrderRepository repository;
 
     public Order get(int orderId) {
-        return orderRepository.findOne(orderId);
+        return repository.findOne(orderId);
     }
 
     public void save(Order order) {
-        orderRepository.save(order);
+        repository.save(order);
     }
 
     public Page<Order> findFinishedOrderByMainTechId(int techId, int page, int pageSize) {
-        return orderRepository.findFinishedOrderByMainTechId(techId, new PageRequest(page - 1, pageSize,
+        return repository.findFinishedOrderByMainTechId(techId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
 
     public Page<Order> findFinishedOrderBySecondTechId(int techId, int page, int pageSize) {
-        return orderRepository.findFinishedOrderBySecondTechId(techId, new PageRequest(page - 1, pageSize,
+        return repository.findFinishedOrderBySecondTechId(techId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
 
     public Page<Order> findUnfinishedOrderByTechId(int techId, int page, int pageSize) {
-        return orderRepository.findUnfinishedOrderByTechId(techId, new PageRequest(page - 1, pageSize,
+        return repository.findUnfinishedOrderByTechId(techId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
 
-    public Page<Order> findAll(int page, int pageSize) {
-        return orderRepository.findAll(new PageRequest(page - 1, pageSize,
-                new Sort(Sort.Direction.DESC, "id")));
+    public Page<Order> find(String orderNum, String creatorName, String contactPhone,
+                            Integer orderType, Integer statusCode, int page, int pageSize) {
+        return repository.find(orderNum, creatorName, contactPhone, orderType,
+                statusCode, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 }
