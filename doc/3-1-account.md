@@ -24,52 +24,41 @@ POST /api/mobile/coop/register
     "message": "",
     "error": "",
     "data": {
-        "id": 1,
-        "phone": "13072705335",
+        "id": 2,
+        "cooperatorId": 0,
+        "fired": false,
         "shortname": "tomcat",
-        "fullname": null,
-        "businessLicense": null,
-        "corporationName": null,
-        "corporationIdNo": null,
-        "bussinessLicensePic": null,
-        "corporationIdPicA": null,
-        "corporationIdPicB": null,
-        "longitude": null,
-        "latitude": null,
-        "invoiceHeader": null,
-        "taxIdNo": null,
-        "postcode": null,
-        "province": null,
-        "city": null,
-        "district": null,
-        "address": null,
-        "contact": null,
-        "contactPhone": null,
-        "statusCode": 0,
+        "phone": "13072705335",
+        "name": null,
+        "gender": false,
         "lastLoginTime": null,
         "lastLoginIp": null,
-        "createTime": 1457667862502
+        "createTime": null,
+        "pushId": null,
+        "main": false
     }
 }
 
 ```
 
-2.验证码错误
+2.企业简称已被注册
 
 ```
 {"result": false,
-"message": "验证码错误",
-"error": "ILLEGAL_PARAM",
+"message": "企业简称已被注册",
+"error": "OCCUPIED_ID",
 "data": null}
+
 ```
 
 3.手机号格式错误
 
 ```
 {"result": false,
-"message": "手机号格式错误,验证码错误",
+"message": "手机号格式错误",
 "error": "ILLEGAL_PARAM",
 "data": null}
+
 ```
 
 4.密码至少6位
@@ -79,7 +68,18 @@ POST /api/mobile/coop/register
 "message": "密码至少6位",
 "error": "ILLEGAL_PARAM",
 "data": null}
+
 ```
+5.验证码错误
+
+```
+{"result": false,
+"message": "验证码错误",
+"error": "ILLEGAL_PARAM",
+"data": null}
+
+```
+
 
 ## 2. 帐户登录
 ### URL及请求方法
@@ -101,41 +101,30 @@ POST /api/mobile/coop/login
     "message": "",
     "error": "",
     "data": {
-        "id": 1,
-        "phone": "13072705335",
+        "id": 2,
+        "cooperatorId": 0,
+        "fired": false,
         "shortname": "tomcat",
-        "fullname": null,
-        "businessLicense": null,
-        "corporationName": null,
-        "corporationIdNo": null,
-        "bussinessLicensePic": null,
-        "corporationIdPicA": null,
-        "corporationIdPicB": null,
-        "longitude": null,
-        "latitude": null,
-        "invoiceHeader": null,
-        "taxIdNo": null,
-        "postcode": null,
-        "province": null,
-        "city": null,
-        "district": null,
-        "address": null,
-        "contact": null,
-        "contactPhone": null,
-        "statusCode": 0,
-        "lastLoginTime": null,
+        "phone": "13072705335",
+        "name": null,
+        "gender": false,
+        "lastLoginTime": 1459136629744,
         "lastLoginIp": "127.0.0.1",
-        "createTime": 1457677133000
+        "createTime": null,
+        "pushId": null,
+        "main": false
     }
 }
+
 ```
-2.未注册手机
+2.手机号未注册
 
 ```
 {"result": false,
 "message": "手机号未注册",
 "error": "NO_SUCH_USER",
 "data": null}
+
 ```
 
 3.密码错误
@@ -145,6 +134,7 @@ POST /api/mobile/coop/login
 "message": "密码错误",
 "error": "PASSWORD_MISMATCH",
 "data": null}
+
 ```
 
 4.手机号与企业简称不匹配
@@ -154,8 +144,17 @@ POST /api/mobile/coop/login
 "message": "手机号与企业简称不匹配",
 "error": "NO_SUCH_USER",
 "data": null}
-```
 
+```
+5.该员工已离职
+
+```
+{"result": false,
+"message": "该员工已离职",
+"error": "USER_FIRED",
+"data": null}
+
+```
 ## 3. 找回密码
 通过手机号和短信验证码设定新密码.
 ### URL及请求方法
@@ -171,10 +170,13 @@ POST /api/mobile/coop/resetPassword
 1.请求成功
 
 ```
-{"result": true,
-"message": "",
-"error": null,
-"data": null}
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": null
+}
+
 ```
 2.验证码错误
 
@@ -221,10 +223,11 @@ POST /api/mobile/coop/changePassword
 ```
 {
     "result": true,
-    "message": null,
-    "error": null,
+    "message": "",
+    "error": "",
     "data": null
 }
+
 ```
 
 2.密码至少6位
@@ -234,4 +237,14 @@ POST /api/mobile/coop/changePassword
 "message": "密码至少6位",
 "error": "ILLEGAL_PARAM",
 "data": null}
+
+```
+2.原密码错误
+
+```
+{"result": false,
+"message": "原密码错误",
+"error": "ILLEGAL_PARAM",
+"data": null}
+
 ```
