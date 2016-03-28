@@ -1,7 +1,9 @@
 package com.autobon.platform.controller.coop;
 
+import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.entity.ReviewCooper;
+import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.shared.JsonMessage;
@@ -19,6 +21,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -30,6 +33,9 @@ import java.util.regex.Pattern;
 public class CoopController {
     @Autowired
     MultipartResolver resolver;
+
+    @Autowired
+    private CoopAccountService coopAccountService;
 
     @Autowired
     private CooperatorService cooperatorService;
@@ -62,7 +68,10 @@ public class CoopController {
         if (!Pattern.matches("^\\d{11}$", contactPhone)) {
             return  new JsonMessage(false,"ILLEGAL_PARAM","手机号格式错误");
         }
-        Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        //Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+
+        Cooperator cooperator = new Cooperator();
         cooperator.setFullname(fullname);
         cooperator.setBusinessLicense(businessLicense);
         cooperator.setCorporationName(corporationName);
@@ -82,6 +91,10 @@ public class CoopController {
         cooperator.setContactPhone(contactPhone);
         cooperator.setStatusCode(0);
         cooperatorService.save(cooperator);
+
+        coopAccount.setCooperatorId(cooperator.getId());
+        coopAccountService.save(coopAccount);
+
         return new JsonMessage(true, "", "", cooperator);
 
     }
@@ -101,10 +114,14 @@ public class CoopController {
 
         if (!dir.exists()) dir.mkdirs();
         file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-        Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        //Cooperator cooperator = (Cooperator)request.getAttribute("user");
+/*        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        int coopId = coopAccount.getCooperatorId();
+        Cooperator cooperator = cooperatorService.get(coopId);
         cooperator.setBussinessLicensePic(path + "/" + filename);
         cooperatorService.save(cooperator);
-        msg.setData(cooperator.getBussinessLicensePic());
+        msg.setData(cooperator.getBussinessLicensePic());*/
+        msg.setData(path + "/" + filename);
         return msg;
     }
 
@@ -122,30 +139,43 @@ public class CoopController {
 
         if (!dir.exists()) dir.mkdirs();
         file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-        Cooperator cooperator = (Cooperator)request.getAttribute("user");
+/*        Cooperator cooperator = (Cooperator)request.getAttribute("user");
         cooperator.setCorporationIdPicA(path + "/" + filename);
         cooperatorService.save(cooperator);
-        msg.setData(cooperator.getCorporationIdPicA());
+        msg.setData(cooperator.getCorporationIdPicA());*/
+        msg.setData(path + "/" + filename);
         return msg;
     }
 
     @RequestMapping(value = "/getCoop",method = RequestMethod.GET)
     public JsonMessage getCoop(HttpServletRequest request) throws  Exception{
-        Cooperator cooperator = (Cooperator)request.getAttribute("user");
-        return new JsonMessage(true,"","",cooperator);
+        //Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        Integer coopId = coopAccount.getCooperatorId();
+        if(coopId != null){
+            Cooperator cooperator = cooperatorService.get(coopId);
+            return new JsonMessage(true,"","",cooperator);
+        }
+        return new JsonMessage(false,"商户不存在或没有通过认证");
     }
 
     @RequestMapping(value = "/coopCheckResult",method = RequestMethod.GET)
     public JsonMessage coopCheckResult(HttpServletRequest request) throws  Exception{
-        Map dataMap = new HashMap<>();
+        Map<String,Object> dataMap = new HashMap<String,Object>();
 
-        Cooperator cooperator = (Cooperator)request.getAttribute("user");
-        int coopId = cooperator.getId();
-        ReviewCooper reviewCooper = reviewCooperService.getByCooperatorId(coopId);
+       // Cooperator cooperator = (Cooperator)request.getAttribute("user");
+        //int coopId = cooperator.getId();
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        Integer coopId = coopAccount.getCooperatorId();
+        Cooperator cooperator = cooperatorService.get(coopId);
+        List<ReviewCooper> reviewCooperList = reviewCooperService.getByCooperatorId(coopId);
+        if(reviewCooperList.size()>0){
+            dataMap.put("reviewCooper",reviewCooperList.get(0));
+        }else{
+            dataMap.put("reviewCooper",null);
+        }
 
         dataMap.put("cooperator",cooperator);
-        dataMap.put("reviewCooper",reviewCooper);
-
         return new JsonMessage(true,"","",dataMap);
     }
 

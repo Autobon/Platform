@@ -24,11 +24,16 @@ POST /api/mobile/coop/order/comment
 
 订单需要有指定主技师。
 
-
 ### 返回结果
 
 ````
-{"result":true,"message":"comment","error":"","data":null}
+{
+    "result": true,
+    "message": "comment",
+    "error": "",
+    "data": null
+}
+
 ````
 
 #### a.订单未完成或已评论
@@ -40,8 +45,19 @@ POST /api/mobile/coop/order/comment
     "error": "",
     "data": null
 }
-```
 
+```
+#### b.此订单未指定技师
+
+```
+{
+    "result": false,
+    "message": "此订单未指定技师",
+    "error": "",
+    "data": null
+}
+
+```
 
 ## 2.创建订单
 合作商户创建订单并推送
@@ -69,14 +85,15 @@ POST /api/mobile/coop/order/createOrder
     "error": "",
     "data": {
         "id": 3,
-        "orderNum": "16031715P9JVT3",
+        "orderNum": "16032813BCU8SL",
         "orderType": 1,
         "photo": "a/a.jpg",
         "orderTime": 1456804920000,
-        "addTime": 1458198285208,
+        "addTime": 1459144745063,
+        "finishTime": null,
         "creatorType": 1,
         "creatorId": 1,
-        "creatorName": null,
+        "creatorName": "Tom",
         "contactPhone": null,
         "positionLon": null,
         "positionLat": null,
@@ -97,14 +114,25 @@ POST /api/mobile/coop/order/createOrder
     "error": "ILLEGAL_PARAM",
     "data": null
 }
-```
 
+```
+#### b.订单时间格式不对
+
+```
+{
+    "result": false,
+    "message": "订单时间格式不对,正确格式: 2016-02-10 09:23",
+    "error": "ILLEGAL_PARAM",
+    "data": null
+}
+
+```
 
 ## 3.商户端未完成订单列表
 商户端未完成订单列表
 
 ### URL及请求方法
-POST /api/mobile/coop/order/listUnfinished
+POST /api/mobile/coop/order/listUnfinished  
 
 ### 请求参数
 
@@ -118,62 +146,85 @@ POST /api/mobile/coop/order/listUnfinished
 ### 返回结果
 
 ````
-   {
-       "result": true,
-       "message": "",
-       "error": "",
-       "data": {
-           "page": 1,
-           "totalElements": 1,
-           "totalPages": 1,
-           "pageSize": 20,
-           "count": 1,
-           "list": [
-               {
-                   "id": 1,
-                   "orderNum": "20160223134200014567",
-                   "orderType": 1,
-                   "photo": "",
-                   "orderTime": 1456293600000,
-                   "addTime": 1456196963000,
-                   "finishTime": null,
-                   "creatorType": 1,
-                   "creatorId": 1,
-                   "creatorName": null,
-                   "contactPhone": null,
-                   "positionLon": null,
-                   "positionLat": null,
-                   "remark": "bababala",
-                   "mainTech": {
-                       "id": 1,
-                       "phone": "18812345678",
-                       "name": "tom",
-                       "gender": null,
-                       "avatar": null,
-                       "idNo": "422302198608266313",
-                       "idPhoto": "/etc/a.jpg",
-                       "bank": "027",
-                       "bankAddress": "光谷",
-                       "bankCardNo": "88888888888",
-                       "verifyAt": null,
-                       "requestVerifyAt": null,
-                       "verifyMsg": null,
-                       "lastLoginAt": 1456195103000,
-                       "lastLoginIp": "127.0.0.1",
-                       "createAt": 1455724800000,
-                       "skill": "1",
-                       "pushId": null,
-                       "status": "NEWLY_CREATED"
-                   },
-                   "secondTech": null,
-                   "mainConstruct": null,
-                   "secondConstruct": null,
-                   "comment": null,
-                   "status": "TAKEN_UP"
-               }
-           ]
-       }
-   }
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "page": 1,
+        "totalElements": 2,
+        "totalPages": 1,
+        "pageSize": 20,
+        "count": 2,
+        "list": [
+            {
+                "id": 3,
+                "orderNum": "16032813BCU8SL",
+                "orderType": 1,
+                "photo": "a/a.jpg",
+                "orderTime": 1456804920000,
+                "addTime": 1459144745000,
+                "finishTime": null,
+                "creatorType": 1,
+                "creatorId": 1,
+                "creatorName": "Tom",
+                "contactPhone": null,
+                "positionLon": null,
+                "positionLat": null,
+                "remark": "remark is here",
+                "mainTech": null,
+                "secondTech": null,
+                "mainConstruct": null,
+                "secondConstruct": null,
+                "comment": null,
+                "status": "NEWLY_CREATED"
+            },
+            {
+                "id": 1,
+                "orderNum": "16022313fsd123",
+                "orderType": 1,
+                "photo": "",
+                "orderTime": 1456293600000,
+                "addTime": 1456196963000,
+                "finishTime": null,
+                "creatorType": 1,
+                "creatorId": 1,
+                "creatorName": "超级管理员",
+                "contactPhone": null,
+                "positionLon": null,
+                "positionLat": null,
+                "remark": "bababala",
+                "mainTech": {
+                    "id": 1,
+                    "phone": "18812345678",
+                    "name": "tom",
+                    "gender": null,
+                    "avatar": null,
+                    "idNo": "422302198608266313",
+                    "idPhoto": "/etc/a.jpg",
+                    "bank": "027",
+                    "bankAddress": "光谷",
+                    "bankCardNo": "88888888888",
+                    "verifyAt": null,
+                    "requestVerifyAt": null,
+                    "verifyMsg": null,
+                    "lastLoginAt": 1456195103000,
+                    "lastLoginIp": "127.0.0.1",
+                    "createAt": 1455724800000,
+                    "skill": "1",
+                    "pushId": null,
+                    "status": "NEWLY_CREATED"
+                },
+                "secondTech": null,
+                "mainConstruct": null,
+                "secondConstruct": null,
+                "comment": null,
+                "status": "TAKEN_UP"
+            }
+        ]
+    }
+}
+
 ````
 
 
@@ -201,54 +252,11 @@ POST /api/mobile/coop/order/listFinished
      "error": "",
      "data": {
          "page": 1,
-         "totalElements": 1,
-         "totalPages": 1,
+         "totalElements": 0,
+         "totalPages": 0,
          "pageSize": 20,
-         "count": 1,
-         "list": [
-             {
-                 "id": 2,
-                 "orderNum": "20160223135200016789",
-                 "orderType": 1,
-                 "photo": null,
-                 "orderTime": 1456293600000,
-                 "addTime": 1456196963000,
-                 "finishTime": null,
-                 "creatorType": 1,
-                 "creatorId": 1,
-                 "creatorName": null,
-                 "contactPhone": null,
-                 "positionLon": null,
-                 "positionLat": null,
-                 "remark": "somewords",
-                 "mainTech": null,
-                 "secondTech": {
-                     "id": 1,
-                     "phone": "18812345678",
-                     "name": "tom",
-                     "gender": null,
-                     "avatar": null,
-                     "idNo": "422302198608266313",
-                     "idPhoto": "/etc/a.jpg",
-                     "bank": "027",
-                     "bankAddress": "光谷",
-                     "bankCardNo": "88888888888",
-                     "verifyAt": null,
-                     "requestVerifyAt": null,
-                     "verifyMsg": null,
-                     "lastLoginAt": 1456195103000,
-                     "lastLoginIp": "127.0.0.1",
-                     "createAt": 1455724800000,
-                     "skill": "1",
-                     "pushId": null,
-                     "status": "NEWLY_CREATED"
-                 },
-                 "mainConstruct": null,
-                 "secondConstruct": null,
-                 "comment": null,
-                 "status": "FINISHED"
-             }
-         ]
+         "count": 0,
+         "list": []
      }
  }
 
@@ -278,54 +286,11 @@ POST /api/mobile/coop/order/listUncomment
     "error": "",
     "data": {
         "page": 1,
-        "totalElements": 1,
-        "totalPages": 1,
+        "totalElements": 0,
+        "totalPages": 0,
         "pageSize": 20,
-        "count": 1,
-        "list": [
-            {
-                "id": 2,
-                "orderNum": "20160223135200016789",
-                "orderType": 1,
-                "photo": null,
-                "orderTime": 1456293600000,
-                "addTime": 1456196963000,
-                "finishTime": null,
-                "creatorType": 1,
-                "creatorId": 1,
-                "creatorName": null,
-                "contactPhone": null,
-                "positionLon": null,
-                "positionLat": null,
-                "remark": "somewords",
-                "mainTech": null,
-                "secondTech": {
-                    "id": 1,
-                    "phone": "18812345678",
-                    "name": "tom",
-                    "gender": null,
-                    "avatar": null,
-                    "idNo": "422302198608266313",
-                    "idPhoto": "/etc/a.jpg",
-                    "bank": "027",
-                    "bankAddress": "光谷",
-                    "bankCardNo": "88888888888",
-                    "verifyAt": null,
-                    "requestVerifyAt": null,
-                    "verifyMsg": null,
-                    "lastLoginAt": 1456195103000,
-                    "lastLoginIp": "127.0.0.1",
-                    "createAt": 1455724800000,
-                    "skill": "1",
-                    "pushId": null,
-                    "status": "NEWLY_CREATED"
-                },
-                "mainConstruct": null,
-                "secondConstruct": null,
-                "comment": null,
-                "status": "FINISHED"
-            }
-        ]
+        "count": 0,
+        "list": []
     }
 }
 

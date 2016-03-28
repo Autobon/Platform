@@ -1,7 +1,9 @@
 package com.autobon.platform.controller.admin;
 
+import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.entity.ReviewCooper;
+import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.getui.PushService;
@@ -24,6 +26,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/web/admin/cooperator")
 public class CooperatorController {
     @Autowired CooperatorService cooperatorService;
+    @Autowired CoopAccountService coopAccountService;
     @Autowired ReviewCooperService reviewCooperService;
     @Autowired @Qualifier("PushServiceB")
     PushService pushService;
@@ -54,6 +57,7 @@ public class CooperatorController {
             @RequestParam("verified") boolean verified,
             @RequestParam(value = "remark", defaultValue = "") String remark) throws IOException {
         Cooperator coop = cooperatorService.get(coopId);
+        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
         Staff staff = (Staff) request.getAttribute("user");
 
         if (coop == null) {
@@ -68,7 +72,7 @@ public class CooperatorController {
             coop.setStatusCode(1);
             reviewCooper.setResult(true);
             String title = "你已通过合作商户资格认证";
-            pushService.pushToSingle(coop.getPushId(), title,
+            pushService.pushToSingle(coopAccount.getPushId(), title,
                     "{\"action\":\"VERIFICATION_SUCCEED\",\"title\":\"" + title + "\"}",
                     3 * 24 * 3600);
         } else {
@@ -79,7 +83,7 @@ public class CooperatorController {
             reviewCooper.setResult(false);
             coop.setStatusCode(2);
             String title = "你的合作商户资格认证失败: " + remark;
-            pushService.pushToSingle(coop.getPushId(), title,
+            pushService.pushToSingle(coopAccount.getPushId(), title,
                     "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
                     3 * 24 * 3600);
         }
@@ -122,9 +126,17 @@ public class CooperatorController {
         if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", corporationIdNo))
             return new JsonMessage(false, "ILLEGAL_PARAM", "身份证号码有误");
 
+/*
+        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
+        if(coopAccount == null){
+            return new JsonMessage(false,"商户没有设置主账号");
+        }
+        coopAccount.setShortname(shortname);
+        coopAccountService.save(coopAccount);*/
+
         Cooperator cooperator = cooperatorService.get(coopId);
         cooperator.setPhone(phone);
-        cooperator.setShortname(shortname);
+        //cooperator.setShortname(shortname);
         cooperator.setFullname(fullname);
         cooperator.setBusinessLicense(businessLicense);
         cooperator.setCorporationName(corporationName);

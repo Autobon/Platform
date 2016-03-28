@@ -5,6 +5,8 @@ import com.autobon.cooperators.repository.ReviewCooperRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by yuh on 2016/3/14.
  */
@@ -17,7 +19,8 @@ public class ReviewCooperService {
         reviewCooperRepository.save(reviewCooper);
     }
 
-    public ReviewCooper getByCooperatorId(int coopId) {
-        return reviewCooperRepository.getByCooperatorId(coopId);
+
+    public List<ReviewCooper> getByCooperatorId(int coopId) {
+        return reviewCooperRepository.findTop10ByCooperatorIdOrderByReviewTimeDesc(coopId);
     }
 }
