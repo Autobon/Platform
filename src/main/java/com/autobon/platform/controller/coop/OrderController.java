@@ -243,7 +243,7 @@ public class OrderController {
         int coopAccountId = coopAccount.getId();
         boolean isMain = coopAccount.isMain();
 
-        if(isMain == true){
+        if(isMain){
             Cooperator cooperator = cooperatorService.get(coopId);
             int orderNum = cooperator.getOrderNum();
             return new JsonMessage(true,"","",orderNum);

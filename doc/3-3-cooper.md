@@ -250,5 +250,29 @@ get("/api/mobile/coop/coopCheckResult")
 
 ```
 
+## 6. 合作商户的订单统计
+商户的订单统计
+### URL及请求方法
+post("/api/mobile/coop/order/orderCount")
 
+### 返回数据
+当前账户为管理员时，查询合作商户所有订单数目。
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": 2
+}
 
+```
+当前账户为业务员时，查询该业务员下订单数目。
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": 1
+}
+
+```
