@@ -81,7 +81,7 @@ public class CoopController {
         cooperator.setCorporationIdNo(corporationIdNo);
         cooperator.setBussinessLicensePic(bussinessLicensePic);
         cooperator.setCorporationIdPicA(corporationIdPicA);
-        cooperator.setLatitude(longitude);
+        cooperator.setLongitude(longitude);
         cooperator.setLatitude(latitude);
         cooperator.setInvoiceHeader(invoiceHeader);
         cooperator.setTaxIdNo(taxIdNo);
