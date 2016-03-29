@@ -63,6 +63,8 @@ public class Cooperator{
 
     @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败
 
+    @Column private int orderNum;//商户订单数
+
 
     public  Cooperator(){
         this.createTime=new Date();
@@ -258,5 +260,13 @@ public class Cooperator{
 
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
     }
 }

@@ -169,6 +169,11 @@ public class OrderController {
         order.setPositionLat(cooperator.getLatitude());
         orderService.save(order);
 
+        int orderNum = cooperator.getOrderNum();
+        orderNum+=1;
+        cooperator.setOrderNum(orderNum);
+        cooperatorService.save(cooperator);
+
         String msgTitle = "你收到新订单推送消息";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "NEW_ORDER");
@@ -228,6 +233,23 @@ public class OrderController {
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         return new JsonMessage(true, "", "",
                 new JsonPage<>(detailedOrderService.findUncommentByCoopId(coopAccount.getId(), page, pageSize)));
+
+    }
+
+    @RequestMapping(value="/orderCount",method = RequestMethod.POST)
+    public JsonMessage orderCount(HttpServletRequest request){
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        int coopId = coopAccount.getCooperatorId();
+        int coopAccountId = coopAccount.getId();
+        boolean isMain = coopAccount.isMain();
+
+        if(isMain){
+            Cooperator cooperator = cooperatorService.get(coopId);
+            int orderNum = cooperator.getOrderNum();
+            return new JsonMessage(true,"","",orderNum);
+        }else{
+            return new JsonMessage(true,"","",detailedOrderService.findCountByCreatorId(coopAccountId));
+        }
 
     }
 
