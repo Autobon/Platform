@@ -68,8 +68,8 @@ public class CoopAccountControllerTest {
     @Test
     public void login() throws Exception {
         mockMvcS.perform(post("/api/mobile/coop/login")
-                .param("shortname","tomcat")
-                .param("phone", "13072705335")
+                .param("shortname","Tom")
+                .param("phone", "13072726003")
                 .param("password", "123456"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));

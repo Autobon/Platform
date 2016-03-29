@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -116,7 +114,18 @@ public class CoopAccountController {
             coopAccount.setLastLoginTime(new Date());
             coopAccount.setLastLoginIp(request.getRemoteAddr());
             coopAccountService.save(coopAccount);
-            msg.setData(coopAccount);
+
+            Cooperator cooperator = null;
+            int cooperatorId = 0;
+            cooperatorId = coopAccount.getCooperatorId();
+            if(cooperatorId>0){
+                cooperator = cooperatorService.get(cooperatorId);
+            }
+
+            Map<String,Object> dataMap = new HashMap<String,Object>();
+            dataMap.put("coopAccount", coopAccount);
+            dataMap.put("cooperator", cooperator);
+            msg.setData(dataMap);
         }
         return msg;
     }
