@@ -103,6 +103,12 @@ public class OrderControllerTest {
     }
 
 
-
+    @Test
+    public void orderCount() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/order/orderCount")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
 
 }

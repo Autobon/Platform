@@ -23,8 +23,9 @@ CREATE TABLE `t_cooperators` (
   `last_login_ip` varchar(20) DEFAULT NULL COMMENT '上次登录IP',
   `create_time` datetime DEFAULT NULL COMMENT '注册时间',
   status_code int(1) DEFAULT NULL COMMENT '状态 0-未审核 1-审核成功 2-审核失败 ',
+  order_num int(10) DEFAULT 0 COMMENT '商户订单数',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_coop_phone` (`phone`)
 )DEFAULT CHARSET=utf8 COMMENT='合作商户表';
 
-insert into `t_cooperators` (`id`, `phone`, `fullname`, `business_license`, `corporation_name`, `corporation_id_no`, `bussiness_license_pic`, `corporation_id_pic_a`, `corporation_id_pic_b`, `longitude`, `latitude`, `invoice_header`, `tax_id_no`, `postcode`, `province`, `city`, `district`, `address`, `contact`, `contact_phone`, `last_login_time`, `last_login_ip`, `create_time`,status_code) values('1','13072705000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'13072705000',NULL,NULL,'2016-03-11 14:18:53','1');
+insert into `t_cooperators` (`id`, `phone`, `fullname`, `business_license`, `corporation_name`, `corporation_id_no`, `bussiness_license_pic`, `corporation_id_pic_a`, `corporation_id_pic_b`, `longitude`, `latitude`, `invoice_header`, `tax_id_no`, `postcode`, `province`, `city`, `district`, `address`, `contact`, `contact_phone`, `last_login_time`, `last_login_ip`, `create_time`,status_code,order_num) values('1','13072705000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'13072705000',NULL,NULL,'2016-03-11 14:18:53','1',2);
