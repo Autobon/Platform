@@ -5,8 +5,11 @@ import com.autobon.order.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * Created by yuh on 2016/2/22.
@@ -44,5 +47,9 @@ public class OrderService {
                             Integer orderType, Integer statusCode, int page, int pageSize) {
         return repository.find(orderNum, creatorName, contactPhone, orderType,
                 statusCode, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
+
+    public Page<Order> findExpired(Date before,  int page, int pageSize){
+        return repository.findExpired(before, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 }
