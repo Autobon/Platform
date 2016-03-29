@@ -15,7 +15,7 @@ public class TransmissionTemplate extends BaseTemplate {
     private String transmissionContent;
 
     protected List<GtReq.ActionChain> getActionChain() {
-        ArrayList chains = new ArrayList();
+        ArrayList<GtReq.ActionChain> chains = new ArrayList<>();
 
         chains.add(GtReq.ActionChain.newBuilder().setActionId(1)
                 .setType(GtReq.ActionChain.Type._goto).setNext(10030).build());

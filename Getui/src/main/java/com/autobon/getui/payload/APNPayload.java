@@ -123,7 +123,7 @@ public class APNPayload implements IPayload {
 
         @Override
         public Object getAlertMsg() {
-            HashMap<String, Object> alertMap = new HashMap();
+            HashMap<String, Object> alertMap = new HashMap<>();
             if(this.title != null && this.title.length() > 0) alertMap.put("title", this.title);
             if(this.body != null && this.body.length() > 0) alertMap.put("body", this.body);
             if(this.titleLocKey != null && this.titleLocKey.length() > 0) alertMap.put("title-loc-key", this.titleLocKey);
