@@ -51,11 +51,12 @@
         </div>
         <div ng-if="!$state.is('console.technician')">
             <ul class="side-nav-list">
-                <li ng-repeat="t in technicians" ui-sref-active="active">
+                <li ng-repeat="t in technicians" ui-sref-active="active" class="clearfix">
                     <a ui-sref="console.technician.detail({id: t.id})">
-                        <img ng-src="{{t.avatar}}" resize="60,60" class="img-thumbnail pull-left">
+                        <img ng-src="{{t.avatar}}" resize="40,40" class="img-thumbnail pull-left m-r-10">
                         <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
-                        {{t.name}} <i class="glyphicon glyphicon-earphone">{{t.phone}}</i><br>
+                        {{t.name}} <i class="glyphicon glyphicon-earphone m-l-10 small">{{t.phone}}</i>&nbsp;&nbsp;
+                        <small class="btn btn-success btn-xs">{{Settings.technicianStatus[t.status]}}</small><br>
                         <span ng-repeat="s in t.skill.split(',')" class="fa fa-tag">&nbsp;{{Settings.orderTypes[s]}}</span>
                     </a>
                 </li>

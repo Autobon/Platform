@@ -1,6 +1,11 @@
 <div class="container-fluid">
-    <div class="clearfix">
+    <div class="clearfix m-b-20">
         <img ng-src="{{technician.avatar}}" resize="90,90" image-modal class="img-thumbnail pull-left m-r-10">
+        <div class="pull-right text-right" ng-if="technician.status == 'IN_VERIFICATION'">
+            <button class="btn btn-primary" ng-click="verify(technician)">通过认证</button>
+            <button class="btn btn-danger" ng-disabled="willReject && !rejectMsg" ng-click="willReject = !willReject || reject(technician, rejectMsg)">拒绝认证</button><br>
+            <textarea class="form-control m-t-5" style="width: 200px;" ng-model="rejectMsg" ng-show="willReject"></textarea>
+        </div>
         <h3 style="display: inline-block; margin: 10px 0;">{{technician.name}}
             <small class="btn btn-success btn-xs">{{Settings.technicianStatus[technician.status]}}</small>&nbsp;&nbsp;
             <small><i class="glyphicon glyphicon-earphone"></i>{{technician.phone}}</small>
@@ -10,6 +15,26 @@
         <span class="m-r-10">{{technician.totalOrders || 0}}条订单</span>|<span class="m-l-10 m-r-10">{{technician.commentCount || 0}}条评论</span>|<span class="m-l-10">余额: ￥{{technician.balance || 0}}</span>
     </div>
     <div class="row detail-row">
-
+        <div class="col-sm-4"><b>开户银行: </b><span>{{technician.bank}}</span></div>
+        <div class="col-sm-4"><b>银行卡号: </b><span>{{technician.bankCardNo}}</span></div>
+        <div class="col-sm-4"><b>身份证号: </b><span>{{technician.idNo}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>注册时间: </b><span>{{technician.createAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>最后登录时间: </b><span>{{technician.lastLoginAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>最后登录IP: </b><span>{{technician.lastLoginIp}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>申请认证: </b><span>{{technician.requestVerifyAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>认证日期: </b><span>{{technician.verifyAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+    </div>
+    <div class="row detail-row" ng-if="technician.status == 'REJECTED'">
+        <div class="col-sm-12"><b>认证消息: </b><span>{{technician.verifyMsg}}</span></div>
+    </div>
+    <div class="row m-t-15 m-l-0">
+        <div class="col-sm-12">
+            <b class="pull-left">身份证照:&nbsp;</b>
+            <img ng-if="technician.idPhoto" image-modal resize="250," ng-src="{{technician.idPhoto}}" class="img-thumbnail">
+        </div>
     </div>
 </div>
