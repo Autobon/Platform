@@ -22,4 +22,10 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
 
     @Query("from Technician t where t.lastLoginAt > ?1")
     Page<Technician> findActivedFrom(Date date, Pageable pageable);
+
+    @Query("select t from Technician t " +
+            "where (?1 is null or t.phone = ?1) " +
+            "and (?2 is null or t.name = ?2) " +
+            "and (?3 is null or t.statusCode = ?3)")
+    Page<Technician> find(String phone, String name, Integer statusCode, Pageable pageable);
 }

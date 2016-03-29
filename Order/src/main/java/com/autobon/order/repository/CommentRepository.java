@@ -17,4 +17,6 @@ public interface CommentRepository extends JpaRepository<Comment,Integer>{
 
     @Query("select avg(c.star) from Comment c where c.techId = ?1 and c.createAt > ?2")
     float calcStarRateByTechId(int techId, Date fromDate);
+
+    int countByTechId(int techId);
 }

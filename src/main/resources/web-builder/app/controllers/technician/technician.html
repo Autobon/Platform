@@ -1,0 +1,73 @@
+<div class="page-title">
+    <i class="fa fa-odnoklassniki-square"></i>&nbsp;技师管理
+</div>
+<div class="row-search">
+    <form class="form-inline pull-left">
+        <div class="form-group">
+            <label for="orderNum">姓名:</label>
+            <input type="text" class="form-control" id="orderNum" ng-model="filter.name">
+        </div>
+        <div class="form-group">
+            <label for="orderCreator">手机号:</label>
+            <input type="text" class="form-control" id="orderCreator" ng-model="filter.phone">
+        </div>
+        <div class="form-group">
+            <label for="orderStatus">帐户状态:</label>
+            <select class="form-control" id="orderStatus" ng-model="filter.status"
+                    ng-options="key as value for (key, value) in Settings.technicianStatus">
+            </select>
+        </div>
+        <button class="btn btn-primary" ng-click="getTechnicians()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+    </form>
+</div>
+<br>
+<div class="clearfix">
+    <div ng-class="$state.is('console.technician') ? 'col-sm-12' : 'col-sm-3'">
+        <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.technician')">
+            <table class="table table-striped align-middle">
+                <thead><tr><th>序号</th><th>手机号</th><th>姓名</th><th>技能项</th><th>身份证号</th><th>认证日期</th><th>帐户状态</th><th>操作</th></tr></thead>
+                <tbody>
+                <tr ng-repeat="t in technicians">
+                    <td><b>{{$index+1+pagination.pageSize*(pagination.page-1)}}</b>. <img ng-src="{{t.avatar}}" resize="40,40" image-modal class="img-thumbnail"></td>
+                    <td>{{t.phone}}</td>
+                    <td>{{t.name}}</td>
+                    <td><span ng-repeat="s in t.skill.split(',')" >{{Settings.orderTypes[s]}}</span></td>
+                    <td>{{t.idNo}}</td>
+                    <td>{{t.verifyAt | date : 'YYYY-MM-DD HH:mm'}}</td>
+                    <td>{{Settings.technicianStatus[t.status]}}</td>
+                    <td><a ui-sref="console.technician.detail({id: t.id})" class="btn btn-xs btn-default">
+                        <i class="fa fa-list"></i>&nbsp;详情</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <footer class="text-right">
+                <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getTechnicians()"
+                                previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+            </footer>
+        </div>
+        <div ng-if="!$state.is('console.technician')">
+            <ul class="side-nav-list">
+                <li ng-repeat="t in technicians" ui-sref-active="active">
+                    <a ui-sref="console.technician.detail({id: t.id})">
+                        <img ng-src="{{t.avatar}}" resize="60,60" class="img-thumbnail pull-left">
+                        <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
+                        {{t.name}} <i class="glyphicon glyphicon-earphone">{{t.phone}}</i><br>
+                        <span ng-repeat="s in t.skill.split(',')" class="fa fa-tag">&nbsp;{{Settings.orderTypes[s]}}</span>
+                    </a>
+                </li>
+            </ul>
+
+            <footer class="text-right">
+                <div>第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getTechnicians()"
+                                previous-text="←" next-text="→" max-size="3" class="pagination-sm"></uib-pagination>
+            </footer>
+        </div>
+    </div>
+    <div ui-view class="col-sm-9"></div>
+</div>

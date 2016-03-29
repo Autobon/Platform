@@ -8,7 +8,7 @@ export default class OrderDetailCtrl extends Injector {
     constructor(...args) {
         super(...args);
         const {$scope, $stateParams, OrderService} = this.$injected;
-        $scope.comment     = {
+        $scope.comment = {
             arriveOnTime  : true,
             completeOnTime: true,
             professional  : true,
@@ -20,31 +20,12 @@ export default class OrderDetailCtrl extends Injector {
 
         OrderService.getDetail($stateParams.orderNum).then(res => {
             if (res.data && res.data.result) {
-                const $parent          = $scope.$parent;
-                let order              = res.data.data;
-                $scope.order           = order;
+                let order = $scope.order = res.data.data;
+
                 order.position         = {lng: order.positionLon, lat: order.positionLat};
                 $scope.comment.orderId = order.id;
-
-                if (order.mainConstruct) {
-                    if (order.mainConstruct.workItems) {
-                        if (!$parent.workItems || !$parent.workItems[order.orderType]) {
-                            OrderService.getWorkItems($scope.order.orderType).then(res2 => {
-                                if (res2.data && res2.data.result) {
-                                    $parent.workItems                  = $parent.workItems || {};
-                                    $parent.workItems[order.orderType] = res2.data.data;
-                                    order.mainConstruct.workItems      = this._assembleWorkItemsText(
-                                        $parent.workItems[order.orderType], order.mainConstruct.workItems);
-                                }
-                            });
-                        } else {
-                            order.mainConstruct.workItems = this._assembleWorkItemsText(
-                                $parent.workItems[order.orderType], order.mainConstruct.workItems);
-                        }
-                    } else if (order.mainConstruct.workPercent) {
-                        order.mainConstruct.workItems = (order.mainConstruct.workPercent * 100).toFixed(0) + '%';
-                    }
-                }
+                if (order.mainConstruct) this._setupWorkItemsText(order.mainConstruct, order.orderType);
+                if (order.secondConstruct) this._setupWorkItemsText(order.secondConstruct, order.orderType);
             }
         });
     }
@@ -67,5 +48,26 @@ export default class OrderDetailCtrl extends Injector {
         let map = {};
         dictionary.forEach(d => map[d.id] = d.name);
         return items.split(',').map(i => map[i]).join(',');
+    }
+
+    _setupWorkItemsText(construct, type) {
+        const {$scope, OrderService} = this.$injected;
+        const $parent = $scope.$parent;
+
+        if (construct.workItems) {
+            if (!$parent.workItems || !$parent.workItems[type]) {
+                OrderService.getWorkItems(type).then(res => {
+                    if (res.data && res.data.result) {
+                        $parent.workItems       = $parent.workItems || {};
+                        $parent.workItems[type] = res.data.data;
+                        construct.workItems     = this._assembleWorkItemsText($parent.workItems[type], construct.workItems);
+                    }
+                });
+            } else {
+                construct.workItems = this._assembleWorkItemsText($parent.workItems[type], construct.workItems);
+            }
+        } else if (construct.workPercent) {
+            construct.workItems = (construct.workPercent * 100).toFixed(0) + '%';
+        }
     }
 }

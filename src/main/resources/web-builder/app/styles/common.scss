@@ -181,3 +181,13 @@ ul.side-nav-list {
 .datetimepicker {
   width: 400px;
 }
+
+.table.align-middle {
+  thead, tbody, tfoot {
+    tr {
+      th, td {
+        vertical-align: middle;
+      }
+    }
+  }
+}
