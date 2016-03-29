@@ -1,8 +1,15 @@
 <div class="container-fluid">
-    <img ng-src="{{technician.avatar}}" resize="90,90" image-modal class="img-thumbnail pull-left m-r-10">
-    <h3 style="display: inline-block; margin: 10px 0;">{{technician.name}}&nbsp;&nbsp;<small><i class="glyphicon glyphicon-earphone"></i>{{technician.phone}}</small>
-    </h3>
-    <span class="m-l-10"><uib-rating ng-model="technician.starRate" read-only="true" max="5" aria-labelledby="default-rating"></uib-rating><b>{{technician.starRate}}</b>&nbsp;星</span><br>
-    <span ng-repeat="s in technician.skill.split(',')" class="fa fa-tag">&nbsp;{{Settings.orderTypes[s]}}</span><br>
-    <span class="m-r-10">{{technician.totalOrders || 0}}条订单</span>|<span class="m-l-10 m-r-10">{{technician.commentCount || 0}}条评论</span>|<span class="m-l-10">余额: ￥{{technician.balance || 0}}</span>
+    <div class="clearfix">
+        <img ng-src="{{technician.avatar}}" resize="90,90" image-modal class="img-thumbnail pull-left m-r-10">
+        <h3 style="display: inline-block; margin: 10px 0;">{{technician.name}}
+            <small class="btn btn-success btn-xs">{{Settings.technicianStatus[technician.status]}}</small>&nbsp;&nbsp;
+            <small><i class="glyphicon glyphicon-earphone"></i>{{technician.phone}}</small>
+        </h3>
+        <span class="m-l-10"><uib-rating ng-model="technician.starRate" read-only="true" max="5" aria-labelledby="default-rating"></uib-rating><b>{{technician.starRate}}</b>&nbsp;星</span><br>
+        <span ng-repeat="s in technician.skill.split(',')" class="fa fa-tag">&nbsp;{{Settings.orderTypes[s]}}</span><br>
+        <span class="m-r-10">{{technician.totalOrders || 0}}条订单</span>|<span class="m-l-10 m-r-10">{{technician.commentCount || 0}}条评论</span>|<span class="m-l-10">余额: ￥{{technician.balance || 0}}</span>
+    </div>
+    <div class="row detail-row">
+
+    </div>
 </div>

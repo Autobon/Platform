@@ -1,9 +1,7 @@
 package com.autobon.platform.security;
 
 import com.autobon.cooperators.entity.CoopAccount;
-import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.service.CoopAccountService;
-import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import com.autobon.technician.entity.Technician;

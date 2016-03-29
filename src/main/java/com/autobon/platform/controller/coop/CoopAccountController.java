@@ -6,7 +6,6 @@ import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
-import com.autobon.shared.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

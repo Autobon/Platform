@@ -2,11 +2,7 @@ package com.autobon.getui.test;
 
 import com.autobon.getui.Application;
 import com.autobon.getui.GtPush;
-import com.autobon.getui.message.Message;
-import com.autobon.getui.payload.APNPayload;
-import com.autobon.getui.template.TransmissionTemplate;
 import com.autobon.getui.utils.GtConfig;
-import com.autobon.getui.utils.Target;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by dave on 16/2/22.

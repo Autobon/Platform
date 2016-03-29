@@ -8,7 +8,6 @@ import com.autobon.shared.SmsSender;
 import com.autobon.shared.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +22,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,9 +32,12 @@ import java.util.stream.Collectors;
 @RequestMapping
 public class PubController {
 
-    @Autowired WorkItemService workItemService;
-    @Autowired SmsSender smsSender;
-    @Autowired RedisCache redisCache;
+    @Autowired
+    WorkItemService workItemService;
+    @Autowired
+    SmsSender smsSender;
+    @Autowired
+    RedisCache redisCache;
     @Value("${com.autobon.env:PROD}")
     private String env;
 
@@ -54,7 +55,7 @@ public class PubController {
         }
         String code = VerifyCode.generateVerifyCode(6);
         if (env.equals("TEST")) code = "123456";
-        redisCache.set("verifyCode:" + cookie.getValue(), code, 5*60);
+        redisCache.set("verifyCode:" + cookie.getValue(), code, 5 * 60);
         VerifyCode.writeVerifyCodeImage(250, 40, out, code);
     }
 
@@ -66,17 +67,17 @@ public class PubController {
         } else {
             smsSender.sendVerifyCode(phone, code);
         }
-        redisCache.set("verifySms:" + phone, code, 5*60);
+        redisCache.set("verifySms:" + phone, code, 5 * 60);
         return new JsonMessage(true);
     }
 
     @RequestMapping(value = "/uploads/**", method = RequestMethod.GET)
     public void getFile(HttpServletRequest request, HttpServletResponse response, OutputStream out) throws IOException {
         long now = new Date().getTime();
-        long maxAge = 60*24*3600;
+        long maxAge = 60 * 24 * 3600;
         response.setHeader("Cache-Control", "max-age=" + maxAge);
         response.setDateHeader("Last-Modified", now);
-        response.setDateHeader("Expires", now + maxAge*1000);
+        response.setDateHeader("Expires", now + maxAge * 1000);
         File file = new File(new File("..").getCanonicalPath() + request.getRequestURI());
         if (file.exists()) {
             response.setHeader("Content-Type", URLConnection.guessContentTypeFromName(file.getName()));
@@ -111,20 +112,20 @@ public class PubController {
                 }).collect(Collectors.toList()));
     }
 
-    @RequestMapping(value="/api/pub/technician/workItems", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/pub/technician/workItems", method = RequestMethod.GET)
     public JsonMessage getWorkItems(
             @RequestParam("orderType") int orderType,
-            @RequestParam(value = "carSeat", defaultValue = "0")   int carSeat) {
+            @RequestParam(value = "carSeat", defaultValue = "0") int carSeat) {
         List<WorkItem> list = null;
         if (carSeat == 0) list = workItemService.findByOrderType(orderType);
         else list = workItemService.findByOrderTypeAndCarSeat(orderType, carSeat);
         return new JsonMessage(true, "", "", list.stream().map(i -> {
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("id", i.getId());
-                    map.put("seat", i.getCarSeat());
-                    map.put("name", i.getWorkName());
-                    return map;
-                }).collect(Collectors.toList()));
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("id", i.getId());
+            map.put("seat", i.getCarSeat());
+            map.put("name", i.getWorkName());
+            return map;
+        }).collect(Collectors.toList()));
     }
 
 }

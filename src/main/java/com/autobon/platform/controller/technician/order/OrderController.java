@@ -1,11 +1,11 @@
 package com.autobon.platform.controller.technician.order;
 
 import com.autobon.order.entity.Order;
-import com.autobon.technician.entity.TechStat;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.*;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * Created by yuh on 2016/2/22.
