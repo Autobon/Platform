@@ -1,6 +1,7 @@
 package com.autobon.test.coop;
 
 import com.autobon.platform.Application;
+import com.autobon.test.MvcTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -79,9 +80,9 @@ public class CoopAccountControllerTest{
 
     @Test
     public void resetPassword() throws Exception {
-        mockMvc.perform(get("/api/pub/verifySms").param("phone", "13072705335"));
+        mockMvc.perform(get("/api/pub/verifySms").param("phone", "13072726003"));
         mockMvc.perform(post("/api/mobile/coop/resetPassword")
-                .param("phone", "13072705335")
+                .param("phone", "13072726003")
                 .param("password", "123456")
                 .param("verifySms", "123456"))
                 .andDo(print())
