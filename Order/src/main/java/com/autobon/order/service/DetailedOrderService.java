@@ -68,4 +68,8 @@ public class DetailedOrderService {
         return repository.findUncommentByCoopId(coopId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
+
+    public long findCountByCreatorId(int coopAccountId) {
+        return repository.countByCreatorIdAndCreatorType(coopAccountId, 1);
+    }
 }

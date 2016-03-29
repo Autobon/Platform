@@ -43,4 +43,6 @@ public interface DetailedOrderRepository extends JpaRepository<DetailedOrder, In
 
     @Query("from DetailedOrder o where o.creatorId = ?1  and o.statusCode = 60 and o.creatorType = 1")
     Page<DetailedOrder> findUncommentByCoopId(int coopId, Pageable pageable);
+
+    long countByCreatorIdAndCreatorType(int creatorId,int creatorType);
 }
