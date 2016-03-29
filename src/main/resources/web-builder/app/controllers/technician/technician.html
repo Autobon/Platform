@@ -56,7 +56,7 @@
                         <img ng-src="{{t.avatar}}" resize="60,60" class="img-thumbnail pull-left">
                         <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
                         {{t.name}} <i class="glyphicon glyphicon-earphone">{{t.phone}}</i><br>
-                        <span ng-repeat="s in t.skill.split(',')" >{{Settings.orderTypes[s]}}</span>
+                        <span ng-repeat="s in t.skill.split(',')" class="fa fa-tag">&nbsp;{{Settings.orderTypes[s]}}</span>
                     </a>
                 </li>
             </ul>

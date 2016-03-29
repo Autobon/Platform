@@ -87,6 +87,7 @@ public class TechnicianController {
         if (tech == null) return new JsonMessage(false, "ILLEGAL_PARAM", "没有这个技师");
 
         if (verified) {
+            tech.setVerifyMsg(null);
             tech.setStatus(Technician.Status.VERIFIED);
             String title = "你已通过技师资格认证";
             pushService.pushToSingle(tech.getPushId(), title,

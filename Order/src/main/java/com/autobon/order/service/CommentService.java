@@ -24,6 +24,10 @@ public class CommentService {
         return commentRepository.findOne(id);
     }
 
+    public int countByTechId(int techId) {
+        return commentRepository.countByTechId(techId);
+    }
+
     public Comment getByOrderIdAndTechId(int orderId, int techId) {
         return commentRepository.getByOrderIdAndTechId(orderId, techId);
     }

@@ -11,6 +11,8 @@ import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
+import com.autobon.technician.entity.TechStat;
+import com.autobon.technician.service.TechStatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -44,6 +47,7 @@ public class OrderController {
     @Value("${com.autobon.uploadPath}") String uploadPath;
     @Autowired OrderService orderService;
     @Autowired CommentService commentService;
+    @Autowired TechStatService techStatService;
     @Autowired DetailedOrderService detailedOrderService;
     @Autowired @Qualifier("PushServiceA")
     PushService pushServiceA;
@@ -194,6 +198,20 @@ public class OrderController {
         commentService.save(comment);
         order.setStatus(Order.Status.COMMENTED);
         orderService.save(order);
+
+        // 写入技师星级统计
+        TechStat techStat = techStatService.getByTechId(order.getMainTechId());
+        if (techStat == null) {
+            techStat = new TechStat();
+            techStat.setTechId(order.getMainTechId());
+        }
+        int commentCount = commentService.countByTechId(order.getMainTechId());
+        float starRate = commentService.calcStarRateByTechId(order.getMainTechId(),
+                Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+        if (commentCount < 300) starRate = ((300 - commentCount) * 3f + commentCount * starRate) / 300f;
+        techStat.setStarRate(starRate);
+        techStatService.save(techStat);
+
         return new JsonMessage(true, "", "", comment);
     }
 }

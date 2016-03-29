@@ -104,8 +104,11 @@ public class OrderController {
             mainStat = new TechStat();
             mainStat.setTechId(mainTechId);
         }
-        mainStat.setStarRate(commentService.calcStarRateByTechId(mainTechId,
-                Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+        int commentCount = commentService.countByTechId(mainTechId);
+        float starRate = commentService.calcStarRateByTechId(mainTechId,
+                Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+        if (commentCount < 300) starRate = ((300 - commentCount) * 3f + commentCount * starRate) / 300f;
+        mainStat.setStarRate(starRate);
         techStatService.save(mainStat);
 
         //根据原形只对主责任人进行评价
