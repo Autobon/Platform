@@ -1,6 +1,7 @@
 package com.autobon.test.coop;
 
 import com.autobon.platform.Application;
+import com.autobon.test.MvcTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.Cookie;
+import javax.transaction.Transactional;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,7 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class CoopAccountControllerTest {
+@Transactional
+public class CoopAccountControllerTest{
     @Value("${com.autobon.test.coopToken}")
     String token;
 
@@ -68,8 +71,8 @@ public class CoopAccountControllerTest {
     @Test
     public void login() throws Exception {
         mockMvcS.perform(post("/api/mobile/coop/login")
-                .param("shortname","tomcat")
-                .param("phone", "13072705335")
+                .param("shortname","Tom")
+                .param("phone", "13072726003")
                 .param("password", "123456"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
@@ -77,9 +80,9 @@ public class CoopAccountControllerTest {
 
     @Test
     public void resetPassword() throws Exception {
-        mockMvc.perform(get("/api/pub/verifySms").param("phone", "13072705335"));
+        mockMvc.perform(get("/api/pub/verifySms").param("phone", "13072726003"));
         mockMvc.perform(post("/api/mobile/coop/resetPassword")
-                .param("phone", "13072705335")
+                .param("phone", "13072726003")
                 .param("password", "123456")
                 .param("verifySms", "123456"))
                 .andDo(print())
