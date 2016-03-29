@@ -9,8 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.regex.Pattern;
 
 /**
  * Created by dave on 16/2/13.
@@ -55,27 +53,9 @@ public class TechnicianService {
                 new Sort(Sort.Direction.DESC, "lastLoginAt")));
     }
 
-    public HashMap<String, Object> Authenticate(String account, String password) {
-        Technician technician = null;
-        HashMap<String, Object> ret = new HashMap<>();
-        if (Pattern.matches("^\\d{11}$", account)) {
-            technician = repository.getByPhone(account);
-        }
-        ret.put("technician", technician);
-        if (technician == null) {
-            ret.put("accountValid", false);
-            ret.put("passwordValid", false);
-            ret.put("result", false);
-        } else if (!technician.getPassword().equals(Technician.encryptPassword(password))) {
-            ret.put("accountValid", true);
-            ret.put("passwordValid", false);
-            ret.put("result", false);
-        } else {
-            ret.put("accountValid", true);
-            ret.put("passwordValid", true);
-            ret.put("result", true);
-        }
-        return ret;
+    public Page<Technician> find(String phone, String name, Technician.Status status, int page, int pageSize) {
+        Integer statusCode = status == null ? null : status.getStatusCode();
+        return repository.find(phone, name, statusCode, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "lastLoginAt")));
     }
-
 }

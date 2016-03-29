@@ -1,6 +1,5 @@
 import {Injector} from 'ngES6';
 import moment from 'moment';
-import './editor.scss';
 
 export default class OrderEditorCtrl extends Injector {
     static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'OrderService', 'Settings'];

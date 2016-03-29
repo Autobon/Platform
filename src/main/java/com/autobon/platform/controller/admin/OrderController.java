@@ -149,7 +149,7 @@ public class OrderController {
         cmd.setInputProvider(new Pipe(in, null));
         IMOperation operation = new IMOperation();
         operation.addImage("-");
-        operation.resize();
+        operation.resize(1200, 1200, ">");
         operation.addImage(dir.getAbsolutePath() + File.separator + filename);
         cmd.run(operation);
 

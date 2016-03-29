@@ -1,8 +1,7 @@
 import {Injector} from 'ngES6';
-import './order.scss';
 
 export default class OrderCtrl extends Injector {
-    static $inject   = ['$scope', '$state', '$stateParams', 'Settings', 'OrderService'];
+    static $inject   = ['$scope', 'Settings', 'OrderService'];
     static $template = require('./order.html');
 
     constructor(...args) {
@@ -11,7 +10,7 @@ export default class OrderCtrl extends Injector {
         this.attachMethodsTo($scope);
         $scope.Settings   = Settings;
         $scope.filter     = {};
-        $scope.pagination = {page: 1, totalItems: 0, pageSize: 10};
+        $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
         this.getOrders();
     }
 
@@ -26,9 +25,9 @@ export default class OrderCtrl extends Injector {
     }
 
     reset() {
-        const $scope = this.$injected.$scope;
+        const {$scope} = this.$injected;
         $scope.filter = {};
-        $scope.pagination = {page: 1, totalItems: 0, pageSize: 10};
+        $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 
 }

@@ -4,13 +4,13 @@ import com.autobon.getui.PushService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -21,33 +21,23 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/web/admin/technician")
 public class TechnicianController {
     @Autowired TechnicianService technicianService;
+    @Autowired DetailedTechnicianService detailedTechnicianService;
     @Autowired @Qualifier("PushServiceA") PushService pushService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public JsonMessage search(@RequestParam(value = "query", defaultValue = "") String query,
-            @RequestParam(value = "page",     defaultValue = "1" )  int page,
+    public JsonMessage search(
+            @RequestParam(value = "phone", required = false) String phone,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "status", required = false) Technician.Status status,
+            @RequestParam(value = "page", defaultValue = "1" )  int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        if ("".equals(query)) {
-            return new JsonMessage(true, "", "",
-                    new JsonPage<>(technicianService.findAll(page, pageSize)));
-        } else if (Pattern.matches("^[0-9]+$", query)) {
-            Technician t = technicianService.getByPhone(query);
-            ArrayList<Technician> list = new ArrayList<>();
-            if (t != null) {
-                list.add(t);
-                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 1, 1, 1, list));
-            } else {
-                return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 0, 0, 0, list));
-            }
-        } else {
-            return new JsonMessage(true, "", "",
-                    new JsonPage<>(technicianService.findByName(query, page, pageSize)));
-        }
+        return new JsonMessage(true, "", "", new JsonPage<>(technicianService.find(
+                phone, name, status, page, pageSize)));
     }
 
     @RequestMapping(value = "/{techId:\\d+}", method = RequestMethod.GET)
     public JsonMessage show(@PathVariable("techId") int techId) {
-        return new JsonMessage(true, "", "", technicianService.get(techId));
+        return new JsonMessage(true, "", "", detailedTechnicianService.get(techId));
     }
 
     @RequestMapping(value = "/{techId:\\d+}", method = RequestMethod.POST)

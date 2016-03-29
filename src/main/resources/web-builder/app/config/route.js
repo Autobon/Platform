@@ -40,6 +40,16 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'OrderEditorCtrl',
             template  : templateCache.OrderEditorCtrl,
         })
+        .state('console.technician', {
+            url       : '/technician',
+            controller: 'TechnicianCtrl',
+            template  : templateCache.TechnicianCtrl,
+        })
+        .state('console.technician.detail', {
+            url       : '/{id:\\d+}',
+            controller: 'TechnicianDetailCtrl',
+            template  : templateCache.TechnicianDetailCtrl,
+        })
         .state('console.main', {
             url       : '/main',
             controller: 'Main',

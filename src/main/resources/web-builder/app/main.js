@@ -32,7 +32,7 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                     orderStatus: {
                         'NEWLY_CREATED': '未接单',
                         'TAKEN_UP': '已接单',
-                        'SEND_INVITATION': '已发送合作邀请',
+                        'SEND_INVITATION': '邀请合作',
                         'INVITATION_ACCEPTED': '邀请已接受',
                         'INVITATION_REJECTED': '邀请已拒绝',
                         'IN_PROGRESS': '施工中',
@@ -40,6 +40,13 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                         'COMMENTED': '已评论',
                         'CANCELED': '已取消',
                         'EXPIRED': '已超时',
+                    },
+                    technicianStatus: {
+                        'NEWLY_CREATED': '新注册',
+                        'IN_VERIFICATION': '申请认证',
+                        'VERIFIED': '认证通过',
+                        'REJECTED': '认证失败',
+                        'BANNED': '帐户禁用',
                     },
                 };
             }])
