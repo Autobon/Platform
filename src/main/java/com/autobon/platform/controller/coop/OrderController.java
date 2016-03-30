@@ -6,15 +6,14 @@ import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
+import com.autobon.order.service.CommentService;
 import com.autobon.order.service.DetailedOrderService;
+import com.autobon.order.service.OrderService;
+import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.TechStat;
-import com.autobon.order.service.CommentService;
-import com.autobon.order.service.OrderService;
 import com.autobon.technician.service.TechStatService;
-import com.autobon.shared.JsonMessage;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +106,7 @@ public class OrderController {
         int commentCount = commentService.countByTechId(mainTechId);
         float starRate = commentService.calcStarRateByTechId(mainTechId,
                 Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-        if (commentCount < 300) starRate = ((300 - commentCount) * 3f + commentCount * starRate) / 300f;
+        if (commentCount < 100) starRate = ((100 - commentCount) * 3f + commentCount * starRate) / 100f;
         mainStat.setStarRate(starRate);
         techStatService.save(mainStat);
 

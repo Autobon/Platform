@@ -12,13 +12,13 @@ public class AppConditions {
     public static final String PHONE_TYPE = "phoneType";
     public static final String REGION = "region";
     public static final String TAG = "tag";
-    private List<Map<String, Object>> condition = new ArrayList();
+    private List<Map<String, Object>> condition = new ArrayList<>();
 
     public AppConditions() {
     }
 
     public AppConditions addCondition(String key, List<String> values, int optType) {
-        HashMap item = new HashMap();
+        HashMap<String, Object> item = new HashMap<>();
         item.put("key", key);
         item.put("values", values);
         item.put("optType", Integer.valueOf(optType));

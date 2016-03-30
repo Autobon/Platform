@@ -43,7 +43,7 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                     },
                     technicianStatus: {
                         'NEWLY_CREATED': '新注册',
-                        'IN_VERIFICATION': '申请认证',
+                        'IN_VERIFICATION': '认证中',
                         'VERIFIED': '认证通过',
                         'REJECTED': '认证失败',
                         'BANNED': '帐户禁用',

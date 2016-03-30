@@ -77,6 +77,7 @@ public class GtHttp {
         }
         connection.disconnect();
         if (acceptGZip) response = GZip.decompress(response);
+        @SuppressWarnings("unchecked")
         Map<String, Object> ret = mapper.readValue(response, Map.class);
         LOG.info(ret.toString());
         return ret;

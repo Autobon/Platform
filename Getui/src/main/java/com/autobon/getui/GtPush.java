@@ -59,7 +59,7 @@ public class GtPush {
             List phoneTypeList = null;
             List provinceList = null;
             List tagList = null;
-            ArrayList customTags = new ArrayList();
+            ArrayList<HashMap> customTags = new ArrayList<>();
             List<Map<String, Object>> conditions = appMessage.getConditions().get();
             for (Map<String, Object> c : conditions) {
                 if (AppConditions.PHONE_TYPE.equals(c.get("key"))) {

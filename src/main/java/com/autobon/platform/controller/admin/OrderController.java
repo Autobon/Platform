@@ -208,7 +208,7 @@ public class OrderController {
         int commentCount = commentService.countByTechId(order.getMainTechId());
         float starRate = commentService.calcStarRateByTechId(order.getMainTechId(),
                 Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-        if (commentCount < 300) starRate = ((300 - commentCount) * 3f + commentCount * starRate) / 300f;
+        if (commentCount < 100) starRate = ((100 - commentCount) * 3f + commentCount * starRate) / 100f;
         techStat.setStarRate(starRate);
         techStatService.save(techStat);
 
