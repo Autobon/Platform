@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import javax.servlet.http.Cookie;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -20,10 +21,9 @@ public class CooperatorControllerTest extends MvcTest {
     private String token;
 
     @Test
-    public void coopList() throws Exception {
-        mockMvcS.perform(post("/api/web/admin/cooperator/coopList")
+    public void search() throws Exception {
+        mockMvcS.perform(get("/api/web/admin/cooperator")
                 .param("fullname", "tom")
-                .param("businessLicense", "0001")
                 .param("statusCode", "1")
                 .param("page", "1")
                 .param("pageSize", "10")
