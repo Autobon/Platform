@@ -14,25 +14,29 @@ import java.util.List;
 @Service
 public class SysStatService {
     @Autowired
-    private SysStatRepository sysStatRepository;
+    private SysStatRepository repository;
+
+    public SysStat save(SysStat stat) {
+        return repository.save(stat);
+    }
 
      //统计某日
     public SysStat getOfDay(Date day){
-        return sysStatRepository.getOfDay(day);
+        return repository.getOfDay(day);
     }
 
     //统计某月
     public SysStat getOfMonth(Date month){
-        return sysStatRepository.getOfMonth(month);
+        return repository.getOfMonth(month);
     }
 
     //统计某个日期段内
     public List<SysStat> findBetweenOfDay(Date start,Date end){
-        return sysStatRepository.findBetweenOfDay(start,end);
+        return repository.findBetweenOfDay(start,end);
     }
 
     //统计某个月份段内
     public List<SysStat> findBetweenOfMonth(Date start,Date end){
-        return sysStatRepository.findBetweenOfMonth(start,end);
+        return repository.findBetweenOfMonth(start,end);
     }
 }

@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,14 +48,12 @@ public class OrderController {
 
     @Autowired @Qualifier("PushServiceA")
     PushService pushServiceA;
-
     @Autowired OrderService orderService;
     @Autowired CommentService commentService;
     @Autowired TechStatService techStatService;
-    @Autowired
-    DetailedOrderService detailedOrderService;
-    @Autowired
-    private CooperatorService cooperatorService;
+    @Autowired DetailedOrderService detailedOrderService;
+    @Autowired CooperatorService cooperatorService;
+    @Autowired ApplicationEventPublisher publisher;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -183,6 +182,8 @@ public class OrderController {
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.info("订单: " + order.getOrderNum() + "的推送消息发送失败");
+
+        publisher.publishEvent(order);
         return new JsonMessage(true, "", "", order);
 
     }

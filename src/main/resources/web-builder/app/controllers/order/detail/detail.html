@@ -23,7 +23,7 @@
     <div>
         <h4>主负责人:</h4>
         <div class="row detail-row">
-            <div class="col-sm-4"><b>技师姓名: </b><span>{{order.mainTech.name}}</span></div>
+            <div class="col-sm-4"><b>技师姓名: </b><a ui-sref="console.technician.detail({id: order.mainTech.id})">{{order.mainTech.name}}</a></div>
             <div class="col-sm-4"><b>技师电话: </b><span>{{order.mainTech.phone}}</span></div>
             <div class="col-sm-4"><b>签到时间: </b><span>{{order.mainConstruct.signinTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
         </div>
@@ -41,7 +41,7 @@
     <div ng-if="order.secondTech">
         <h4>次负责人:</h4>
         <div class="row detail-row">
-            <div class="col-sm-4"><b>技师姓名: </b><span>{{order.secondTech.name}}</span></div>
+            <div class="col-sm-4"><b>技师姓名: </b><a ui-sref="console.technician.detail({id: order.secondTech.id})">{{order.secondTech.name}}</a></div>
             <div class="col-sm-4"><b>技师电话: </b><span>{{order.secondTech.phone}}</span></div>
             <div class="col-sm-4"><b>签到时间: </b><span>{{order.secondConstruct.signinTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
         </div>
