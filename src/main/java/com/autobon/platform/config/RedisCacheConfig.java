@@ -1,7 +1,6 @@
 package com.autobon.platform.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.JedisPool;
@@ -11,7 +10,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * Created by dave on 16/2/17.
  */
 @Configuration
-public class RedisCacheConfig extends CachingConfigurerSupport {
+public class RedisCacheConfig {
     @Value("${spring.redis.host}")
     private String redisHost;
     @Value("${spring.redis.port}")
