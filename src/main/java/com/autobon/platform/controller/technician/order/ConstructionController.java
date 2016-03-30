@@ -55,7 +55,7 @@ public class ConstructionController {
         } else if (o.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ORDER_CANCELED", "订单已取消");
         } else if (o.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
-            return new JsonMessage(false, "ORDER_ENDED", "订单已施工完成");
+            return new JsonMessage(false, "ORDER_ENDED", "订单已结束");
         } else if (o.getSecondTechId() == t.getId() && o.getStatus() == Order.Status.SEND_INVITATION) {
             return new JsonMessage(false, "NOT_ACCEPTED_INVITATION", "你还没有接受邀请");
         } else if (o.getMainTechId() == t.getId() && o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
@@ -94,7 +94,7 @@ public class ConstructionController {
         } else if (order.getStatus() == Order.Status.CANCELED) {
             return new JsonMessage(false, "ORDER_CANCELED", "订单已取消");
         } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始工作或已结束工作");
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "订单还未开始或已结束");
         } else if (cons == null) {
             return new JsonMessage(false, "NO_CONSTRUCTION", "系统没有你的施工单, 请先点选\"开始工作\"");
         } else if (cons.getSigninTime() != null) {

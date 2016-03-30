@@ -22,4 +22,10 @@ public interface CooperatorRepository extends JpaRepository<Cooperator, Integer>
             "and (?2 is null or c.businessLicense = ?2) " +
             "and (?3 is null or c.statusCode = ?3) " )
     Page<Cooperator> findCoop(String fullname, String businessLicense, Integer statusCode, Pageable p);
+
+    @Query("select c from Cooperator c " +
+            "where (?1 is null or c.fullname = ?1) " +
+            "and (?2 is null or c.corporationName = ?2) " +
+            "and (?3 is null or c.statusCode = ?3)")
+    Page<Cooperator> find(String fullname, String corporationName, Integer statusCode, Pageable p);
 }

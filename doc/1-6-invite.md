@@ -32,7 +32,7 @@ POST /api/mobile/technician/order/1/invite/2
 
 ```
 {"result": false,
-"message": "订单已进入工作模式",
+"message": "订单已开始或结束",
 "error": "ORDER_STARTED",
 "data": null}
 ```

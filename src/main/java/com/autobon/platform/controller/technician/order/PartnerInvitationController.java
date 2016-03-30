@@ -57,7 +57,7 @@ public class PartnerInvitationController {
         Order order = orderService.get(orderId);
 
         if (order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ) {
-            return new JsonMessage(false, "ORDER_STARTED", "订单已进入工作模式");
+            return new JsonMessage(false, "ORDER_STARTED", "订单已开始或结束");
         } else if (order.getStatus() == Order.Status.INVITATION_ACCEPTED) {
             return new JsonMessage(false, "INVITATION_ACCEPTED", "订单已有人接受合作邀请");
         } else if (order.getMainTechId() == partner.getId()) {

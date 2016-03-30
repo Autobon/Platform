@@ -8,6 +8,7 @@ import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.getui.PushService;
 import com.autobon.shared.JsonMessage;
+import com.autobon.shared.JsonPage;
 import com.autobon.staff.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,24 +32,22 @@ public class CooperatorController {
     @Autowired @Qualifier("PushServiceB")
     PushService pushService;
 
-    @RequestMapping(value = "/coopList", method = RequestMethod.POST)
-    public JsonMessage coopList(@RequestParam(value = "fullname", required = false) String fullname,
-                                @RequestParam(value = "businessLicense", required = false) String businessLicense,
-                                @RequestParam(value = "statusCode", required = false) Integer statusCode,
-                                @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
-
-        Page<Cooperator> coopList = cooperatorService.findCoop(fullname, businessLicense, statusCode, page, pageSize);
-        return new JsonMessage(true, "", "", coopList);
+    @RequestMapping(method = RequestMethod.GET)
+    public JsonMessage search(
+            @RequestParam(value = "fullname", required = false) String fullname,
+            @RequestParam(value = "corporationName", required = false) String corporationName,
+            @RequestParam(value = "statusCode", required = false) Integer statusCode,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+        return new JsonMessage(true, "", "", new JsonPage<>(cooperatorService.find(
+                fullname, corporationName, statusCode, page, pageSize)));
     }
-
 
     @RequestMapping(value = "/getCoop", method = RequestMethod.GET)
     public JsonMessage getCoop(@RequestParam(value = "coopId") int coopId) {
         Cooperator cooperator = cooperatorService.get(coopId);
         return new JsonMessage(true, "", "", cooperator);
     }
-
 
     // 认证商户
     @RequestMapping(value = "/verify/{coopId:\\d+}", method = RequestMethod.POST)
