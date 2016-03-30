@@ -1,7 +1,6 @@
 package com.autobon.test.coop;
 
 import com.autobon.platform.Application;
-import com.autobon.test.MvcTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

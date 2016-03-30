@@ -3,7 +3,6 @@ package com.autobon.test.admin;
 import com.autobon.order.entity.Construction;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.test.MvcTest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
