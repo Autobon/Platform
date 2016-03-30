@@ -24,4 +24,5 @@ public interface CoopAccountRepository extends JpaRepository<CoopAccount, Intege
 
     CoopAccount getByCooperatorIdAndIsMain(int coopId, boolean b);
 
+    CoopAccount getByPushId(String pushId);
 }
