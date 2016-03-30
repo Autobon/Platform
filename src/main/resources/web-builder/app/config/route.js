@@ -1,9 +1,8 @@
 export default function routeConfig($locationProvider, $urlRouterProvider, $stateProvider, templateProvider) {
-    $locationProvider.html5Mode(true);
     const templateCache = templateProvider.$get();
 
+    $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/');
-
     $stateProvider
         .state('home', {
             url       : '/',
@@ -49,6 +48,16 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             url       : '/{id:\\d+}',
             controller: 'TechnicianDetailCtrl',
             template  : templateCache.TechnicianDetailCtrl,
+        })
+        .state('console.cooperator', {
+            url       : '/cooperator',
+            controller: 'CooperatorCtrl',
+            template  : templateCache.CooperatorCtrl,
+        })
+        .state('console.cooperator.detail', {
+            url       : '/{id:\\d+}',
+            controller: 'CooperatorDetailCtrl',
+            template  : templateCache.CooperatorDetailCtrl,
         })
         .state('console.main', {
             url       : '/main',

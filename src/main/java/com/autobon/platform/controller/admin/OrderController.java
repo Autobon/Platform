@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,6 +50,7 @@ public class OrderController {
     @Autowired CommentService commentService;
     @Autowired TechStatService techStatService;
     @Autowired DetailedOrderService detailedOrderService;
+    @Autowired ApplicationEventPublisher publisher;
     @Autowired @Qualifier("PushServiceA")
     PushService pushServiceA;
 
@@ -127,6 +129,8 @@ public class OrderController {
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.info("订单: " + order.getOrderNum() + "的推送消息发送失败");
+
+        publisher.publishEvent(order);
         return new JsonMessage(true, "", "", order);
     }
 

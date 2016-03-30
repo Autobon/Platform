@@ -59,11 +59,11 @@ data字段是一个施工单对象
 "data": null}
 ```
 
-#### d.订单已施工完成
+#### d.订单已结束
 
 ```
 {"result": false,
-"message": "订单已施工完成",
+"message": "订单已结束",
 "error": "ORDER_ENDED",
 "data": null}
 ```
@@ -139,11 +139,11 @@ data字段是一个施工单对象
 "data": null}
 ```
 
-#### d.订单还未开始工作或已结束工作
+#### d.订单还未开始或已结束
 
 ```
 {"result": false,
-"message": "订单还未开始工作或已结束工作",
+"message": "订单还未开始或已结束",
 "error": "ILLEGAL_OPERATION",
 "data": null}
 ```

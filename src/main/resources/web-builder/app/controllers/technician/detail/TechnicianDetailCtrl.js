@@ -19,25 +19,15 @@ export default class TechnicianDetailCtrl extends Injector {
         });
     }
 
-    verify(technician) {
-        const {TechnicianService} = this.$injected;
-        TechnicianService.verify(technician.id, true).then(res => {
-            if (res.data && res.data.result) {
-                technician.status = 'VERIFIED';
-                technician.verifyAt = new Date();
-            }
-        });
-    }
-
-    reject(technician, msg) {
+    verify(verified, msg) {
         const {$scope, TechnicianService} = this.$injected;
-        TechnicianService.verify(technician.id, false, msg).then(res => {
+        TechnicianService.verify($scope.technician.id, verified, msg).then(res => {
             if (res.data && res.data.result) {
-                const verifyObj = {status: 'REJECTED', verifyAt: new Date(), verifyMsg: msg};
-                angular.extend(technician, verifyObj);
+                const verifyObj = {status: verified ? 'VERIFIED' : 'REJECTED', verifyAt: new Date(), verifyMsg: msg};
+                angular.extend($scope.technician, verifyObj);
 
                 let technicians = $scope.$parent.technicians;
-                let pTech = technicians.find(t => {return t.id === technician.id;});
+                let pTech = technicians.find(t => {return t.id === $scope.technician.id;});
                 if (pTech) angular.extend(pTech, verifyObj);
             }
         });
