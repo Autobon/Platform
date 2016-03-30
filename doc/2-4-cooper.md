@@ -91,7 +91,6 @@ post("/api/web/admin/cooperator/verify/{coopId}"
 | 参数名称 | 是否必须 | 说明 | 举例 |
 | ------ | -------- | ---- | --- |
 | coopId | 是 | 合作商户id| 1 |
-| phone | 是 | 手机号码 | 13085856332 |
 | shortname | 是 | 企业简称 | A公司 |
 | fullname | 是 | 企业名称 | A汽车美容公司 |
 | businessLicense | 是 | 营业执照号 | 3335555 |
@@ -120,7 +119,6 @@ post("/api/web/admin/cooperator/verify/{coopId}"
     "error": "",
     "data": {
         "id": 1,
-        "phone": "13085856332",
         "shortname": "A公司",
         "fullname": "A汽车美容公司",
         "businessLicense": "3335555",
