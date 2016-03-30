@@ -15,8 +15,6 @@ public class Cooperator{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column private int id;
 
-    @Column private String phone; // 账号
-
     @Column private String fullname; //企业名称
 
     @Column private String businessLicense; //营业执照号
@@ -55,10 +53,6 @@ public class Cooperator{
 
     @Column private String contactPhone; //联系人电话
 
-    @Column private Date lastLoginTime; //上次登录时间
-
-    @Column private String lastLoginIp; //上次登录IP
-
     @Column private Date createTime; //注册时间
 
     @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败
@@ -76,14 +70,6 @@ public class Cooperator{
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getFullname() {
@@ -228,22 +214,6 @@ public class Cooperator{
 
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
-    }
-
-    public Date getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(Date lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
-    }
-
-    public String getLastLoginIp() {
-        return lastLoginIp;
-    }
-
-    public void setLastLoginIp(String lastLoginIp) {
-        this.lastLoginIp = lastLoginIp;
     }
 
     public Date getCreateTime() {

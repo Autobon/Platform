@@ -20,10 +20,6 @@ public class CooperatorService {
         return cooperatorRepository.findOne(id);
     }
 
-    public Cooperator getByPhone(String phone) {
-        return cooperatorRepository.getByPhone(phone);
-    }
-
     public void save(Cooperator cooperator) {
         cooperatorRepository.save(cooperator);
     }

@@ -13,10 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CooperatorRepository extends JpaRepository<Cooperator, Integer> {
 
-    //Cooperator getByShortname(String shortname);
-
-    Cooperator getByPhone(String Phone);
-
     @Query("select c from Cooperator c " +
             "where (?1 is null or c.fullname =?1) " +
             "and (?2 is null or c.businessLicense = ?2) " +

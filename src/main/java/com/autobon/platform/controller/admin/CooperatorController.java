@@ -93,7 +93,6 @@ public class CooperatorController {
 
     @RequestMapping(value = "/update/{coopId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("coopId") int coopId,
-                              @RequestParam(value = "phone", required = true) String phone,
                               @RequestParam(value = "shortname", required = true) String shortname,
                               @RequestParam(value = "fullname", required = true) String fullname,
                               @RequestParam(value = "businessLicense", required = true) String businessLicense,
@@ -114,12 +113,6 @@ public class CooperatorController {
                               @RequestParam(value = "contact", required = true) String contact,
                               @RequestParam(value = "contactPhone", required = true) String contactPhone) {
 
-        if (!Pattern.matches("^\\d{11}$", phone)) {
-            return new JsonMessage(false, "ILLEGAL_PARAM", "手机号格式错误");
-        } else if (cooperatorService.getByPhone(phone) != null) {
-            return new JsonMessage(false, "OCCUPIED_ID", "手机号已被注册");
-        }
-
         corporationIdNo = corporationIdNo.toUpperCase();
         if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", corporationIdNo))
             return new JsonMessage(false, "ILLEGAL_PARAM", "身份证号码有误");
@@ -133,8 +126,6 @@ public class CooperatorController {
         coopAccountService.save(coopAccount);*/
 
         Cooperator cooperator = cooperatorService.get(coopId);
-        cooperator.setPhone(phone);
-        //cooperator.setShortname(shortname);
         cooperator.setFullname(fullname);
         cooperator.setBusinessLicense(businessLicense);
         cooperator.setCorporationName(corporationName);

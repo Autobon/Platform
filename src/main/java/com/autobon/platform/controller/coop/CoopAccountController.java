@@ -245,5 +245,27 @@ public class CoopAccountController {
         return new JsonMessage(true);
     }
 
+    /**
+     * 更新用户的个推ID
+     * @param pushId
+     * @return
+     */
+    @RequestMapping(value = "/pushId", method = RequestMethod.POST)
+    public JsonMessage savePushId(HttpServletRequest request,
+                                  @RequestParam("pushId") String pushId) {
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        CoopAccount oCoopAccount = coopAccountService.getByPushId(pushId);
 
+        if (oCoopAccount != null) {
+            if (coopAccount.getId() == oCoopAccount.getId()) return new JsonMessage(true);
+            else {
+                oCoopAccount.setPushId(null);
+                coopAccountService.save(oCoopAccount);
+            }
+        }
+
+        coopAccount.setPushId(pushId);
+        coopAccountService.save(coopAccount);
+        return new JsonMessage(true);
+    }
 }
