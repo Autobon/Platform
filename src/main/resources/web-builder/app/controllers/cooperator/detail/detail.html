@@ -6,13 +6,11 @@
             <button class="btn btn-danger" ng-disabled="willReject && !rejectMsg" ng-click="willReject = !willReject || verify(technician, false, rejectMsg)">拒绝认证</button><br>
             <textarea class="form-control m-t-5" style="width: 200px;" ng-model="rejectMsg" ng-show="willReject"></textarea>
         </div>
-        <h3 style="display: inline-block; margin: 10px 0;">{{technician.name}}
-            <small class="btn btn-success btn-xs">{{Settings.technicianStatus[technician.status]}}</small>&nbsp;&nbsp;
-            <small><i class="glyphicon glyphicon-earphone"></i>{{technician.phone}}</small>
+        <h3 style="display: inline-block; margin: 10px 0;">{{cooperator.fullname}}
+            <small class="btn btn-success btn-xs">{{['未审核','审核通过','审核失败'][cooperator.statusCode]}}</small>&nbsp;&nbsp;
+            <small><i class="glyphicon glyphicon-earphone"></i>{{cooperator.contactPhone}}</small>
         </h3>
-        <span class="m-l-10"><uib-rating ng-model="technician.starRate" read-only="true" max="5" aria-labelledby="default-rating"></uib-rating><b>{{technician.starRate.toFixed(2)}}</b>&nbsp;星</span><br>
-        <span ng-repeat="s in technician.skill.split(',')" class="fa fa-tag">&nbsp;{{Settings.orderTypes[s]}}</span><br>
-        <span class="m-r-10">{{technician.totalOrders || 0}}条订单</span>|<span class="m-l-10 m-r-10">{{technician.commentCount || 0}}条评论</span>|<span class="m-l-10">余额: ￥{{technician.balance || 0}}</span>
+        <span>{{cooperator.corporationName}}</span>
     </div>
     <div class="row detail-row">
         <div class="col-sm-4"><b>开户银行: </b><span>{{technician.bank}}</span></div>

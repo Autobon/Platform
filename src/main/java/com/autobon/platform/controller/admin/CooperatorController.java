@@ -43,10 +43,9 @@ public class CooperatorController {
                 fullname, corporationName, statusCode, page, pageSize)));
     }
 
-    @RequestMapping(value = "/getCoop", method = RequestMethod.GET)
-    public JsonMessage getCoop(@RequestParam(value = "coopId") int coopId) {
-        Cooperator cooperator = cooperatorService.get(coopId);
-        return new JsonMessage(true, "", "", cooperator);
+    @RequestMapping(value = "/{coopId:\\d+}", method = RequestMethod.GET)
+    public JsonMessage getCoop(@PathVariable(value = "coopId") int coopId) {
+        return new JsonMessage(true, "", "", cooperatorService.get(coopId));
     }
 
     // 认证商户
