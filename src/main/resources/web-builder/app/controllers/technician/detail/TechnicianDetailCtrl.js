@@ -20,11 +20,15 @@ export default class TechnicianDetailCtrl extends Injector {
     }
 
     verify(technician) {
-        const {TechnicianService} = this.$injected;
+        const {$scope, TechnicianService} = this.$injected;
         TechnicianService.verify(technician.id, true).then(res => {
             if (res.data && res.data.result) {
-                technician.status = 'VERIFIED';
-                technician.verifyAt = new Date();
+                const verifyObj = {status: 'VERIFIED', verifyAt: new Date()};
+                angular.extend(technician, verifyObj);
+
+                let technicians = $scope.$parent.technicians;
+                let pTech = technicians.find(t => {return t.id === technician.id;});
+                if (pTech) angular.extend(pTech, verifyObj);
             }
         });
     }
