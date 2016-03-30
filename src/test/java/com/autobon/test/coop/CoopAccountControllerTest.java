@@ -142,4 +142,15 @@ public class CoopAccountControllerTest{
 
     }
 
+    @Test
+    public void pushId() throws Exception {
+        mockMvcS.perform(post("/api/mobile/coop/pushId")
+                .param("pushId", "9a05f0154913d57ef537fdf51ffc14bd")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(print())
+                .andExpect(jsonPath("$.result", is(true)));
+
+    }
+
+
 }

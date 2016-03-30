@@ -277,3 +277,12 @@ POST /api/mobile/coop/changePassword
 "data": null}
 
 ```
+
+## 5. 更新个推ID
+### URL及请求方法
+POST /api/mobile/coop/pushId
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| pushId | 个推ID | 9a05f0154913d57ef537fdf51ffc14bd |

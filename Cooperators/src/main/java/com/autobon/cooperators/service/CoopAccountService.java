@@ -40,4 +40,7 @@ public class CoopAccountService {
         return coopAccountRepository.getByCooperatorIdAndIsMain(coopId, b);
     }
 
+    public CoopAccount getByPushId(String pushId) {
+        return coopAccountRepository.getByPushId(pushId);
+    }
 }
