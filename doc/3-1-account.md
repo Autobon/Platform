@@ -101,6 +101,14 @@ POST /api/mobile/coop/login
     "message": "",
     "error": "",
     "data": {
+        "reviewCooper": {
+            "id": 1,
+            "cooperatorId": 1,
+            "reviewTime": 1459404430000,
+            "reviewerId": 1,
+            "remark": "照片不清晰",
+            "result": true
+        },
         "coopAccount": {
             "id": 1,
             "cooperatorId": 1,
@@ -109,15 +117,14 @@ POST /api/mobile/coop/login
             "phone": "13072726003",
             "name": "Tom",
             "gender": true,
-            "lastLoginTime": 1459246719671,
+            "lastLoginTime": 1459404499031,
             "lastLoginIp": "127.0.0.1",
             "createTime": 1425265871000,
             "pushId": null,
-            "main": false
+            "main": true
         },
         "cooperator": {
             "id": 1,
-            "phone": "13072705000",
             "fullname": null,
             "businessLicense": null,
             "corporationName": null,
@@ -136,10 +143,8 @@ POST /api/mobile/coop/login
             "address": null,
             "contact": null,
             "contactPhone": "13072705000",
-            "lastLoginTime": null,
-            "lastLoginIp": null,
             "createTime": 1457677133000,
-            "statusCode": 1,
+            "statusCode": 2,
             "orderNum": 2
         }
     }
