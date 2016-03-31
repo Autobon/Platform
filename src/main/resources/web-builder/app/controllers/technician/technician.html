@@ -32,7 +32,7 @@
                     <td><b>{{$index+1+pagination.pageSize*(pagination.page-1)}}</b>. <img ng-src="{{t.avatar}}" resize="40,40" image-modal class="img-thumbnail"></td>
                     <td>{{t.phone}}</td>
                     <td>{{t.name}}</td>
-                    <td><span ng-repeat="s in t.skill.split(',')" >{{Settings.orderTypes[s]}}</span></td>
+                    <td><span ng-repeat="s in t.skill.split(',')" class="fa fa-tag m-l-5">{{Settings.orderTypes[s]}}</span></td>
                     <td>{{t.idNo}}</td>
                     <td>{{t.verifyAt | date : 'YYYY-MM-DD HH:mm'}}</td>
                     <td>{{Settings.technicianStatus[t.status]}}</td>
@@ -57,7 +57,7 @@
                         <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
                         {{t.name}} <i class="glyphicon glyphicon-earphone m-l-10 small">{{t.phone}}</i>&nbsp;&nbsp;
                         <small class="btn btn-success btn-xs">{{Settings.technicianStatus[t.status]}}</small><br>
-                        <span ng-repeat="s in t.skill.split(',')" class="fa fa-tag">&nbsp;{{Settings.orderTypes[s]}}</span>
+                        <span ng-repeat="s in t.skill.split(',')" class="fa fa-tag m-l-5">&nbsp;{{Settings.orderTypes[s]}}</span>
                     </a>
                 </li>
             </ul>
