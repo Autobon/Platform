@@ -17,9 +17,9 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
     @Query("select b from Bill b " +
             "where (?1 is null or b.billMonth = ?1) " +
-            "and (?2 is null or b.payed = ?2) " +
+            "and (?2 is null or b.paid = ?2) " +
             "and (?3 is null or b.techId = ?3)")
-    Page<Bill> find(Date month, Boolean payed, Integer techId, Pageable pageable);
+    Page<Bill> find(Date month, Boolean paid, Integer techId, Pageable pageable);
 
     Page<Bill> findByTechId(int techId, Pageable pageable);
 

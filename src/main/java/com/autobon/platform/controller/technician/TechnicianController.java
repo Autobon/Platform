@@ -36,7 +36,7 @@ public class TechnicianController {
     public JsonMessage search(@RequestParam("query") String query,
             @RequestParam(value = "page",     defaultValue = "1" )  int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        if (Pattern.matches("^[0-9]+$", query)) {
+        if (Pattern.matches("\\d{11}", query)) {
             DetailedTechnician t = technicianService.getByPhone(query);
             ArrayList<DetailedTechnician> list = new ArrayList<>();
             if (t != null) {

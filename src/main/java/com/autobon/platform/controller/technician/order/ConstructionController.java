@@ -251,17 +251,31 @@ public class ConstructionController {
             order.setStatus(Order.Status.FINISHED);
             order.setFinishTime(new Date());
             orderService.save(order);
+
+            // 更新余额及未支付订单数
+            TechStat stat = techStatService.getByTechId(tech.getId());
+            if (stat == null) {
+                stat = new TechStat();
+                stat.setTechId(tech.getId());
+            }
+            stat.setUnpaidOrders(stat.getUnpaidOrders() + 1);
+            stat.setBalance(stat.getBalance() + cons.getPayment());
+            techStatService.save(stat);
+
+            // 更新主技师余额及未支付订单数
+            if (order.getMainTechId() != tech.getId()) {
+                TechStat mainStat = techStatService.getByTechId(order.getMainTechId());
+                if (mainStat == null) {
+                    mainStat = new TechStat();
+                    mainStat.setTechId(order.getMainTechId());
+                }
+                mainStat.setUnpaidOrders(mainStat.getUnpaidOrders() + 1);
+                mainStat.setBalance(mainStat.getBalance() + constructionService.getByTechIdAndOrderId(
+                        order.getMainTechId(), order.getId()).getPayment());
+                techStatService.save(mainStat);
+            }
         }
 
-        // 更新余额及未支付订单数
-        TechStat stat = techStatService.getByTechId(tech.getId());
-        if (stat == null) {
-            stat = new TechStat();
-            stat.setTechId(tech.getId());
-        }
-        stat.setUnpaidOrders(stat.getUnpaidOrders() + 1);
-        stat.setBalance(stat.getBalance() + cons.getPayment());
-        techStatService.save(stat);
         return msg;
     }
 }

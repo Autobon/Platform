@@ -4,7 +4,7 @@ CREATE TABLE `t_bill` (
   `bill_month` datetime DEFAULT NULL,
   `count` int(11) DEFAULT NULL,
   `sum` float(8,2) DEFAULT NULL,
-  `payed` tinyint(1) DEFAULT '0' COMMENT '是否已支付',
+  `paid` tinyint(1) DEFAULT '0' COMMENT '是否已支付',
   `pay_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),

@@ -35,8 +35,8 @@ public class BillService {
                 new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "sum"));
     }
 
-    public Page<Bill> find(Date month, Boolean payed, Integer techId, int page, int pageSize) {
-        return repository.find(month, payed, techId,
+    public Page<Bill> find(Date month, Boolean paid, Integer techId, int page, int pageSize) {
+        return repository.find(month, paid, techId,
                 new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "sum"));
     }
 }

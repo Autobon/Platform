@@ -22,7 +22,7 @@ public class Bill {
 
     @Column private float sum;
 
-    @Column private boolean payed;
+    @Column private boolean paid;
 
     @Column private Date payAt;
 
@@ -73,12 +73,12 @@ public class Bill {
         this.sum = sum;
     }
 
-    public boolean isPayed() {
-        return payed;
+    public boolean isPaid() {
+        return paid;
     }
 
-    public void setPayed(boolean payed) {
-        this.payed = payed;
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     public Date getPayAt() {
