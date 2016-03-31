@@ -71,36 +71,76 @@ public class CoopController {
         if (!Pattern.matches("^\\d{11}$", contactPhone)) {
             return  new JsonMessage(false,"ILLEGAL_PARAM","手机号格式错误");
         }
-        //Cooperator cooperator = (Cooperator)request.getAttribute("user");
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        int coopId = coopAccount.getCooperatorId();
 
-        Cooperator cooperator = new Cooperator();
-        cooperator.setFullname(fullname);
-        cooperator.setBusinessLicense(businessLicense);
-        cooperator.setCorporationName(corporationName);
-        cooperator.setCorporationIdNo(corporationIdNo);
-        cooperator.setBussinessLicensePic(bussinessLicensePic);
-        cooperator.setCorporationIdPicA(corporationIdPicA);
-        cooperator.setLongitude(longitude);
-        cooperator.setLatitude(latitude);
-        cooperator.setInvoiceHeader(invoiceHeader);
-        cooperator.setTaxIdNo(taxIdNo);
-        cooperator.setPostcode(postcode);
-        cooperator.setProvince(province);
-        cooperator.setCity(city);
-        cooperator.setDistrict(district);
-        cooperator.setAddress(address);
-        cooperator.setContact(contact);
-        cooperator.setContactPhone(contactPhone);
-        cooperator.setStatusCode(0);
-        cooperatorService.save(cooperator);
+        //没有认证，继续认证
+        if(coopId == 0){
+            Cooperator cooperator = new Cooperator();
+            cooperator.setFullname(fullname);
+            cooperator.setBusinessLicense(businessLicense);
+            cooperator.setCorporationName(corporationName);
+            cooperator.setCorporationIdNo(corporationIdNo);
+            cooperator.setBussinessLicensePic(bussinessLicensePic);
+            cooperator.setCorporationIdPicA(corporationIdPicA);
+            cooperator.setLongitude(longitude);
+            cooperator.setLatitude(latitude);
+            cooperator.setInvoiceHeader(invoiceHeader);
+            cooperator.setTaxIdNo(taxIdNo);
+            cooperator.setPostcode(postcode);
+            cooperator.setProvince(province);
+            cooperator.setCity(city);
+            cooperator.setDistrict(district);
+            cooperator.setAddress(address);
+            cooperator.setContact(contact);
+            cooperator.setContactPhone(contactPhone);
+            cooperator.setStatusCode(0);
+            cooperatorService.save(cooperator);
 
-        coopAccount.setCooperatorId(cooperator.getId());
-        coopAccountService.save(coopAccount);
-
-        return new JsonMessage(true, "", "", cooperator);
+            coopAccount.setCooperatorId(cooperator.getId());
+            coopAccount.setIsMain(true);
+            coopAccountService.save(coopAccount);
+            return new JsonMessage(true, "", "", cooperator);
+        }else {
+            //是否认证成功，成功则止。认证失败，再认证
+            Cooperator cooperator = cooperatorService.get(coopId);
+            if (cooperator == null) {
+                return new JsonMessage(false, "没有此关联商户");
+            } else {
+                int statusCode = cooperator.getStatusCode();
+                if (statusCode == 2) {
+                    cooperator.setFullname(fullname);
+                    cooperator.setBusinessLicense(businessLicense);
+                    cooperator.setCorporationName(corporationName);
+                    cooperator.setCorporationIdNo(corporationIdNo);
+                    cooperator.setBussinessLicensePic(bussinessLicensePic);
+                    cooperator.setCorporationIdPicA(corporationIdPicA);
+                    cooperator.setLongitude(longitude);
+                    cooperator.setLatitude(latitude);
+                    cooperator.setInvoiceHeader(invoiceHeader);
+                    cooperator.setTaxIdNo(taxIdNo);
+                    cooperator.setPostcode(postcode);
+                    cooperator.setProvince(province);
+                    cooperator.setCity(city);
+                    cooperator.setDistrict(district);
+                    cooperator.setAddress(address);
+                    cooperator.setContact(contact);
+                    cooperator.setContactPhone(contactPhone);
+                    cooperator.setStatusCode(0);
+                    cooperatorService.save(cooperator);
+                    return new JsonMessage(true, "", "", cooperator);
+                } else if (statusCode == 1) {
+                    return new JsonMessage(true, "你已经认证成功");
+                } else if (statusCode == 0) {
+                    return new JsonMessage(true, "等待审核");
+                } else {
+                    return new JsonMessage(false, "商户状态码不正确");
+                }
+            }
+        }
 
     }
+
 
     @RequestMapping(value = "/bussinessLicensePic",method = RequestMethod.POST)
     public JsonMessage uploadBussinessLicensePic(HttpServletRequest request,
