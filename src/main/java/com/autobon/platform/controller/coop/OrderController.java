@@ -159,7 +159,7 @@ public class OrderController {
         Order order = new Order();
         order.setCreatorType(1);
         order.setCreatorId(coopAccount.getId());
-        order.setCreatorName(coopAccount.getName());
+        order.setCreatorName(coopAccount.getShortname());
         order.setPhoto(photo);
         order.setRemark(remark);
         order.setOrderTime(Date.from(
@@ -168,6 +168,7 @@ public class OrderController {
         order.setOrderType(orderType);
         order.setPositionLon(cooperator.getLongitude());
         order.setPositionLat(cooperator.getLatitude());
+        order.setContactPhone(coopAccount.getPhone());
         orderService.save(order);
 
         int orderNum = cooperator.getOrderNum();
