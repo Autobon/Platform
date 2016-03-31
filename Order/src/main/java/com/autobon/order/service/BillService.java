@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -40,6 +41,7 @@ public class BillService {
                 new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "sum"));
     }
 
+    @Transactional
     public int clear() {
         return repository.clear();
     }

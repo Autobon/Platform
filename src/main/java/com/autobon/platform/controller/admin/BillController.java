@@ -8,7 +8,6 @@ import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -42,13 +41,14 @@ public class BillController {
             return new JsonMessage(false, "ILLEGAL_PARAM", "月份参数格式错误.正确格式如:2016-01");
         }
 
-        Date month = new SimpleDateFormat("yyyy-MM").parse(sMonth);
+        Date month = null;
         Integer techId = null;
+        if (sMonth != null) month = new SimpleDateFormat("yyyy-MM").parse(sMonth);
         if (phone != null) {
             Technician tech = technicianService.getByPhone(phone);
             if (tech != null) techId = tech.getId();
         }
-        return new JsonMessage(true, "", "", billService.find(month, paid, techId, page, pageSize));
+        return new JsonMessage(true, "", "", new JsonPage<>(billService.find(month, paid, techId, page, pageSize)));
     }
 
     @RequestMapping(value = "/{billId:\\d+}/order", method = RequestMethod.GET)
@@ -88,7 +88,7 @@ public class BillController {
         int pageNo = 1;
         long billCount = 0;
         do {
-            Page<Technician> page = technicianService.findActivedFrom(from, pageNo++, 20);
+            Page<Technician> page = technicianService.findAll(pageNo++, 20);
             totalPages = page.getTotalPages();
             billCount = page.getTotalElements();
             // 创建月度帐单,查询起止日期间内的施工单

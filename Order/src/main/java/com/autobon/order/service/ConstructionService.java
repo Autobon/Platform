@@ -4,6 +4,7 @@ import com.autobon.order.entity.Construction;
 import com.autobon.order.repository.ConstructionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -34,11 +35,13 @@ public class ConstructionService {
     }
 
     // 对指定时期内完成的工单清算出账
+    @Transactional
     public int settlePayment(int techId, Date from, Date to) {
         return repository.settlePayment(techId, from, to);
     }
 
     // 对指定时期内完成的工单完成结算
+    @Transactional
     public int batchPayoff(int techId, Date from, Date to) {
         return repository.batchPayoff(techId, from, to);
     }

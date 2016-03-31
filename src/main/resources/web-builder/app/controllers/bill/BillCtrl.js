@@ -29,4 +29,14 @@ export default class BillCtrl extends Injector {
         $scope.filter     = {};
         $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
+
+    generate() {
+        const {BillService} = this.$injected;
+        BillService.generate();
+    }
+
+    clear() {
+        const {BillService} = this.$injected;
+        BillService.clear();
+    }
 }

@@ -25,11 +25,15 @@
                 <input type="radio" name="paid" ng-model="filter.paid" value="false"> 未支付
             </label>
         </div>
-        <button class="btn btn-primary" ng-click="getCooperators()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button class="btn btn-primary" ng-click="getOrders()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
         <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
 </div>
 <br>
+<div class="text-right">
+    <span class="btn btn-primary" ng-click="generate()">生成账单</span>
+    <span class="btn btn-default m-l-10 m-r-10" ng-click="clear()">清空帐单</span>
+</div>
 <div class="clearfix">
     <div ng-class="$state.is('console.bill') ? 'col-sm-12' : 'col-sm-3'">
         <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.bill')">
