@@ -207,7 +207,7 @@ public class TechnicianAccountController {
         cmd.setInputProvider(new Pipe(in, null));
         IMOperation operation = new IMOperation();
         operation.addImage("-");
-        operation.gravity("center").thumbnail(200, 200, "^").extent(200, 200);
+        operation.gravity("center").thumbnail(500, 500, "^").extent(200, 200);
         operation.addImage(dir.getAbsolutePath() + File.separator + filename);
         cmd.run(operation);
         in.close();
