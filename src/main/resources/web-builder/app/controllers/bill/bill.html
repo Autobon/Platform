@@ -1,5 +1,5 @@
 <div class="page-title">
-    <i class="fa fa-university"></i>&nbsp;账务管理
+    <i class="fa fa-cny"></i>&nbsp;账务管理
 </div>
 <div class="row-search">
     <form class="form-inline pull-left">
@@ -7,7 +7,8 @@
             <label>帐单月份:</label>
             <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{filter.month | date: 'YYYY-MM'}}</div>
                 <ul uib-dropdown-menu role="menu">
-                    <datetimepicker ng-model="filter.month" data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm'}"
+                    <datetimepicker ng-model="filter.month"
+                                    data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'month', startView: 'month'}"
                                     before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
                 </ul>
             </div>
