@@ -1,5 +1,8 @@
 package com.autobon.platform.controller.technician.order;
 
+import com.autobon.cooperators.entity.CoopAccount;
+import com.autobon.cooperators.service.CoopAccountService;
+import com.autobon.getui.PushService;
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.WorkItem;
@@ -11,7 +14,10 @@ import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +47,10 @@ public class ConstructionController {
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
     @Autowired TechStatService techStatService;
+    @Autowired CoopAccountService coopAccountService;
     @Value("${com.autobon.uploadPath}") String uploadPath;
+    @Autowired @Qualifier("PushServiceB")
+    PushService pushServiceB;
 
     // 开始工作
     @RequestMapping(value = "/start", method = RequestMethod.POST)
@@ -159,7 +168,7 @@ public class ConstructionController {
             @RequestParam("afterPhotos") String afterPhotos,
             @RequestParam(value = "carSeat", defaultValue = "0")  int carSeat,
             @RequestParam(value = "workItems", defaultValue = "") String workItems,
-            @RequestParam(value = "percent", defaultValue = "0") float percent) {
+            @RequestParam(value = "percent", defaultValue = "0") float percent) throws IOException {
 
         if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+){2,5}$", afterPhotos)) {
             return new JsonMessage(false, "AFTER_PHOTOS_PATTERN_MISMATCH",
@@ -251,6 +260,12 @@ public class ConstructionController {
             order.setStatus(Order.Status.FINISHED);
             order.setFinishTime(new Date());
             orderService.save(order);
+
+            // 向商户推送订单完成消息
+            if (order.getCreatorType() == 1) {
+                CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
+                pushServiceB.pushToSingle(coopAccount.getPushId(), "订单: " + order.getOrderNum() + "已完成", new ObjectMapper().writeValueAsString(order), 24*3600);
+            }
 
             // 更新余额及未支付订单数
             TechStat stat = techStatService.getByTechId(tech.getId());

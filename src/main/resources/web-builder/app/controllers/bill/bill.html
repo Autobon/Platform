@@ -1,0 +1,31 @@
+<div class="page-title">
+    <i class="fa fa-university"></i>&nbsp;账务管理
+</div>
+<div class="row-search">
+    <form class="form-inline pull-left">
+        <div class="form-group">
+            <label>帐单月份:</label>
+            <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{filter.month | date: 'YYYY-MM'}}</div>
+                <ul uib-dropdown-menu role="menu">
+                    <datetimepicker ng-model="filter.month" data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm'}"
+                                    before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="orderCreator">技师手机:</label>
+            <input type="text" class="form-control" id="orderCreator" ng-model="filter.phone">
+        </div>
+        <div class="form-group m-l-10 m-r-10">
+            <label class="radio-inline">
+                <input type="radio" name="paid" ng-model="filter.paid" value="true"> 已支付
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="paid" ng-model="filter.paid" value="false"> 未支付
+            </label>
+        </div>
+        <button class="btn btn-primary" ng-click="getCooperators()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+    </form>
+</div>
+<br>

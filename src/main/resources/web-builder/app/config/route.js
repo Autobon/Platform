@@ -59,6 +59,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'CooperatorDetailCtrl',
             template  : templateCache.CooperatorDetailCtrl,
         })
+        .state('console.bill', {
+            url       : '/bill',
+            controller: 'BillCtrl',
+            template  : templateCache.BillCtrl,
+        })
         .state('console.main', {
             url       : '/main',
             controller: 'Main',

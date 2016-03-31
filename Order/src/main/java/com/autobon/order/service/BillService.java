@@ -39,4 +39,8 @@ public class BillService {
         return repository.find(month, paid, techId,
                 new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "sum"));
     }
+
+    public int clear() {
+        return repository.clear();
+    }
 }
