@@ -15,6 +15,6 @@ export default class CooperatorService extends Injector {
 
     verify(id, verified, verifyMsg) {
         const {$http, Settings} = this.$injected;
-        return $http.post(Settings.domain + '/api/web/admin/cooperator/verify/' + id, {verified: verified, verifyMsg: verifyMsg});
+        return $http.post(Settings.domain + '/api/web/admin/cooperator/verify/' + id, {verified: verified, remark: verifyMsg});
     }
 }

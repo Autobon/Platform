@@ -1,8 +1,8 @@
 package com.autobon.test.technician;
 
-import com.autobon.test.MvcTest;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
+import com.autobon.test.MvcTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

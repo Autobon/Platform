@@ -1,38 +1,55 @@
 <div class="container-fluid">
     <div class="clearfix m-b-20">
-        <div class="pull-right text-right" ng-if="cooperator.status == 1">
-            <button class="btn btn-primary" ng-click="verify(cooperator, true)" ng-if="!willReject">通过认证</button>
+        <div class="pull-right text-right" ng-if="cooperator.statusCode == 0">
+            <button class="btn btn-primary" ng-click="verify(true)" ng-if="!willReject">通过认证</button>
             <button class="btn btn-default" ng-click="willReject = !willReject" ng-show="willReject">取消操作</button>
-            <button class="btn btn-danger" ng-disabled="willReject && !rejectMsg" ng-click="willReject = !willReject || verify(technician, false, rejectMsg)">拒绝认证</button><br>
+            <button class="btn btn-danger" ng-disabled="willReject && !rejectMsg" ng-click="willReject = !willReject || verify(false, rejectMsg)">拒绝认证</button><br>
             <textarea class="form-control m-t-5" style="width: 200px;" ng-model="rejectMsg" ng-show="willReject"></textarea>
         </div>
         <h3 style="display: inline-block; margin: 10px 0;">{{cooperator.fullname}}
-            <small class="btn btn-success btn-xs">{{['未审核','审核通过','审核失败'][cooperator.statusCode]}}</small>&nbsp;&nbsp;
+            <small class="btn btn-success btn-xs">{{['未审核','审核通过','认证失败'][cooperator.statusCode]}}</small>&nbsp;&nbsp;
             <small><i class="glyphicon glyphicon-earphone"></i>{{cooperator.contactPhone}}</small>
         </h3>
-        <span>{{cooperator.corporationName}}</span>
+        <span>{{cooperator.contact}}</span>
+        <span class="m-l-30"><b>{{cooperator.orderNum}}</b>&nbsp;<span class="text-muted">条订单</span></span>
     </div>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>开户银行: </b><span>{{technician.bank}}</span></div>
-        <div class="col-sm-4"><b>银行卡号: </b><span>{{technician.bankCardNo}}</span></div>
-        <div class="col-sm-4"><b>身份证号: </b><span>{{technician.idNo}}</span></div>
+        <div class="col-sm-4"><b>企业名称: </b><span>{{cooperator.fullname}}</span></div>
+        <div class="col-sm-4"><b>营业执照号: </b><span>{{cooperator.businessLicense}}</span></div>
+        <div class="col-sm-4"><b>联系人: </b><span>{{cooperator.contact}}</span>
+            <small class="m-l-5"><i class="glyphicon glyphicon-earphone"></i>{{cooperator.contactPhone}}</small>
+        </div>
     </div>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>注册时间: </b><span>{{technician.createAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>最后登录时间: </b><span>{{technician.lastLoginAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>最后登录IP: </b><span>{{technician.lastLoginIp}}</span></div>
+        <div class="col-sm-4"><b>法人姓名: </b><span>{{cooperator.corporationName}}</span></div>
+        <div class="col-sm-4"><b>法人身份证号: </b><span>{{cooperator.corporationIdNo}}</span></div>
     </div>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>申请认证: </b><span>{{technician.requestVerifyAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>认证日期: </b><span>{{technician.verifyAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>发票抬头: </b><span>{{cooperator.invoiceHeader}}</span></div>
+        <div class="col-sm-4"><b>纳税识别号: </b><span>{{cooperator.taxIdNo}}</span></div>
     </div>
-    <div class="row detail-row" ng-if="technician.status == 'REJECTED'">
-        <div class="col-sm-12"><b>认证消息: </b><span>{{technician.verifyMsg}}</span></div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>邮政编码: </b><span>{{cooperator.postcode}}</span></div>
+        <div class="col-sm-8"><b>邮寄地址: </b>
+            <span>{{cooperator.province}}</span>
+            <span class="m-l-5 m-r-5">-</span>
+            <span class="m-r-5">{{cooperator.city}}</span>
+            <span class="m-r-5">-</span>
+            <span>{{cooperator.district}}</span>
+            <span class="m-l-10">{{cooperator.address}}</span>
+        </div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-6"><b>营业执照副本照片: </b><br>
+            <img ng-if="cooperator.bussinessLicensePic" image-modal ng-src="{{cooperator.bussinessLicensePic}}" class="img-thumbnail">
+        </div>
+        <div class="col-sm-6"><b>法人身份证正面照: </b><br>
+            <img ng-if="cooperator.corporationIdPicA" image-modal ng-src="{{cooperator.corporationIdPicA}}" class="img-thumbnail">
+        </div>
     </div>
     <div class="row m-t-15 m-l-0">
-        <div class="col-sm-12">
-            <b class="pull-left">身份证照:&nbsp;</b>
-            <img ng-if="technician.idPhoto" image-modal resize="250," ng-src="{{technician.idPhoto}}" class="img-thumbnail">
+        <div class="col-sm-12"><b>地图定位: </b><br>
+            <map-location style="height: 300px; border-radius: 4px; border: 1px solid #cabe9c;" position="{{cooperator.position}}"></map-location>
         </div>
     </div>
 </div>
