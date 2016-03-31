@@ -30,3 +30,31 @@
     </form>
 </div>
 <br>
+<div class="clearfix">
+    <div ng-class="$state.is('console.bill') ? 'col-sm-12' : 'col-sm-3'">
+        <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.bill')">
+            <table class="table table-striped">
+                <thead><tr><th>序号</th><th>月份</th><th>技师</th><th>开户行</th><th>银行卡号</th><th>金额</th><th>状态</th><th>操作</th></tr></thead>
+                <tbody>
+                    <tr ng-repeat="b in bills">
+                        <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                        <td>{{b.billMonth | date : 'YYYY-MM'}}</td>
+                        <td>{{b.technician.name}}</td>
+                        <td>{{b.technician.bank}}</td>
+                        <td>{{b.technician.bankCardNo}}</td>
+                        <td>{{b.sum}}</td>
+                        <td>{{b.paid ? '已支付' : '未支付'}}</td>
+                        <td><a href class="btn btn-xs btn-default">
+                            <i class="fa fa-list"></i>&nbsp;详情</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <footer class="text-right">
+                <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getBills()"
+                                previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+            </footer>
+        </div>
+    </div>
+</div>

@@ -46,6 +46,7 @@ public class BillTask {
             // 创建月度帐单,查询起止日期间内的施工单
             for (Technician t : page.getContent()) {
                 float pay = constructionService.sumPayment(t.getId(), from, to);
+                if (pay == 0) continue;
                 Bill bill = new Bill(t.getId(), from);
                 bill.setSum(pay);
                 bill.setCount(constructionService.settlePayment(t.getId(), from, to));

@@ -8,6 +8,7 @@ import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +33,9 @@ public class BillController {
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
-            @RequestParam("month") String sMonth,
-            @RequestParam("paid") Boolean paid,
-            @RequestParam("phone") String phone,
+            @RequestParam(value = "month", required = false) String sMonth,
+            @RequestParam(value = "paid", required = false) Boolean paid,
+            @RequestParam(value = "phone", required = false) String phone,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws ParseException {
         if (sMonth != null && Pattern.matches("\\d{4}-\\d{2}", sMonth)) {
