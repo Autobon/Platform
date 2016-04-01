@@ -16,8 +16,7 @@ import static com.autobon.order.entity.Order.Status;
 @Entity
 @Table(name = "v_order")
 public class DetailedOrder {
-    @Id
-    private int id;
+    @Id private int id;
 
     @Column private String orderNum;
 
@@ -32,7 +31,7 @@ public class DetailedOrder {
     @Column private Date finishTime; // 施工完成时间
 
     @JsonIgnore
-    @Column(name="status")
+    @Column(name = "status")
     private int statusCode;
 
     @Column private int creatorType; // 下单人类型(1-合作商户 2-后台 3-用户)

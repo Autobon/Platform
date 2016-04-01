@@ -29,17 +29,21 @@ public class CertificateController {
             @RequestParam("idNo") String idNo,
             @RequestParam("skills") String skills,
             @RequestParam("bank") String bank,
+            @RequestParam("idPhoto") String idPhoto,
             @RequestParam("bankCardNo") String bankCardNo) {
         idNo = idNo.toUpperCase();
-        if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", idNo))
-            return new JsonMessage(false, "ILLEGAL_PARAM", "身份证号码有误");
-        if (!Pattern.matches("^\\d+(,\\d+)*$", skills))
-            return new JsonMessage(false, "ILLEGAL_PARAM", "参数skills格式错误, 请填写技能编号并用分号分隔");
+        if (!Pattern.matches("(\\d{15})|(\\d{17}[0-9X])", idNo))
+            return new JsonMessage(false, "ILLEGAL_IDNO", "身份证号码有误");
+        if (!Pattern.matches("\\d+(,\\d+)*", skills))
+            return new JsonMessage(false, "ILLEGAL_SKILLS", "参数skills格式错误, 请填写技能编号并用分号分隔");
+        if (Pattern.matches("\\d.*", name))
+            return new JsonMessage(false, "ILLEGAL_NAME", "姓名不能以数字开头");
 
         Technician technician = (Technician) request.getAttribute("user");
         technician.setName(name);
 
         technician.setIdNo(idNo);
+        technician.setIdPhoto(idPhoto);
         technician.setSkill(skills);
         technician.setBank(bank);
         technician.setBankCardNo(bankCardNo);

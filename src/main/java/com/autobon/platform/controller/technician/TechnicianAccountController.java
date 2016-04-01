@@ -207,7 +207,7 @@ public class TechnicianAccountController {
         cmd.setInputProvider(new Pipe(in, null));
         IMOperation operation = new IMOperation();
         operation.addImage("-");
-        operation.gravity("center").thumbnail(200, 200, "^").extent(200, 200);
+        operation.gravity("center").thumbnail(500, 500, "^").extent(200, 200);
         operation.addImage(dir.getAbsolutePath() + File.separator + filename);
         cmd.run(operation);
         in.close();
@@ -252,7 +252,6 @@ public class TechnicianAccountController {
         @RequestParam("file") MultipartFile file) throws Exception {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
-        JsonMessage msg = new JsonMessage(true);
         String path = "/uploads/technician/idPhoto";
         File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         String originalFilename = file.getOriginalFilename();
@@ -262,10 +261,6 @@ public class TechnicianAccountController {
 
         if (!dir.exists()) dir.mkdirs();
         file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-        Technician technician = (Technician) request.getAttribute("user");
-        technician.setIdPhoto(path + "/" + filename);
-        technicianService.save(technician);
-        msg.setData(technician.getIdPhoto());
-        return msg;
+        return new JsonMessage(true, "", "", path + "/" + filename);
     }
 }

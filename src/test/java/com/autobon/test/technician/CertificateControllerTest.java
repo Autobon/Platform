@@ -56,6 +56,7 @@ public class CertificateControllerTest {
         mockMvcS.perform(post("/api/mobile/technician/certificate")
                 .param("name", "tom")
                 .param("idNo","422302198608266313")
+                .param("idPhoto", "/a.jpg")
                 .param("skills", "1,2")
                 .param("bank","工商银行")
                 .param("bankCardNo","88888888888")

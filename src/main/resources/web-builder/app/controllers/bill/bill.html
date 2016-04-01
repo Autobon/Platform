@@ -1,0 +1,94 @@
+<div class="page-title">
+    <i class="fa fa-cny"></i>&nbsp;账务管理
+</div>
+<div class="row-search">
+    <form class="form-inline pull-left">
+        <div class="form-group">
+            <label>帐单月份:</label>
+            <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{filter.month | date: 'YYYY-MM'}}</div>
+                <ul uib-dropdown-menu role="menu">
+                    <datetimepicker ng-model="filter.month"
+                                    data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'month', startView: 'month'}"
+                                    before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="orderCreator">技师手机:</label>
+            <input type="text" class="form-control" id="orderCreator" ng-model="filter.phone">
+        </div>
+        <div class="form-group m-l-10 m-r-10">
+            <label class="radio-inline">
+                <input type="radio" name="paid" ng-model="filter.paid" value="true"> 已支付
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="paid" ng-model="filter.paid" value="false"> 未支付
+            </label>
+        </div>
+        <button class="btn btn-primary" ng-click="getBills()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+    </form>
+</div>
+<br>
+<div class="clearfix">
+    <div style="position: absolute; right: 0; z-index: 100;">
+        <span class="btn btn-primary" ng-click="generate()" tooltip-placement="bottom" uib-tooltip="仅限测试,交付时请告知开发人员删除"
+              tooltip-append-to-body="true">生成账单</span>
+        <span class="btn btn-default m-l-10 m-r-10" ng-click="clear()" tooltip-placement="bottom" uib-tooltip="仅限测试,交付时请告知开发人员删除"
+              tooltip-append-to-body="true">清空帐单</span>
+    </div>
+    <div ng-class="$state.is('console.bill') ? 'col-sm-12' : 'col-sm-3'">
+        <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.bill')">
+            <table class="table table-striped">
+                <thead><tr><th>序号</th><th>月份</th><th>技师</th><th>开户行</th><th>银行卡号</th><th>金额</th><th>状态</th><th>操作</th></tr></thead>
+                <tbody>
+                    <tr ng-repeat="b in bills">
+                        <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                        <td>{{b.billMonth | date : 'YYYY-MM'}}</td>
+                        <td>{{b.technician.name}}</td>
+                        <td>{{b.technician.bank}}</td>
+                        <td>{{b.technician.bankCardNo}}</td>
+                        <td>{{b.sum}}</td>
+                        <td>{{b.paid ? '已支付' : '未支付'}}</td>
+                        <td>
+                            <span ng-if="!b.paid" ng-click="payoff(b)" class="btn btn-xs btn-success m-r-5"><i class="fa fa-rmb"></i>&nbsp;提交支付</span>
+                            <a ui-sref=".order({id: b.id})" class="btn btn-xs btn-default"><i class="fa fa-list"></i>&nbsp;明细</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <footer class="text-right">
+                <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getBills()"
+                                previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+            </footer>
+        </div>
+        <div ng-if="!$state.is('console.bill')">
+            <div class="clearfix">
+                <div class="pull-right btn-inverse m-b-5" ng-click="$state.go('^')"
+                     style="width: 24px; height: 16px; line-height: 16px; border-radius: 16px; text-align: center; cursor: pointer;">
+                    <i class="fa fa-arrows-h"></i></div>
+            </div>
+            <ul class="side-nav-list">
+                <li ng-repeat="b in bills" ui-sref-active="active">
+                    <a ui-sref=".order({id: b.id})">
+                        <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
+                        {{b.billMonth | date : 'YYYY-MM'}}
+                        <span class="m-l-5">{{b.technician.name}}</span>
+                        <span class="btn btn-xs btn-success m-l-5">{{b.paid ? '已支付' : '未支付'}}</span><br>
+                        ￥{{b.sum}}<span class="btn btn-xs btn-default m-l-5">{{b.technician.bank}}</span>
+                    </a>
+                </li>
+            </ul>
+
+            <footer class="text-right">
+                <div>第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getBills()"
+                                previous-text="←" next-text="→" max-size="3" class="pagination-sm"></uib-pagination>
+            </footer>
+        </div>
+    </div>
+    <div ui-view class="col-sm-9"></div>
+</div>

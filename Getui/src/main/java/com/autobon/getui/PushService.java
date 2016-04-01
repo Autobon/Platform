@@ -83,9 +83,9 @@ public class PushService {
 
     /**
      * 向配置的APP的所有用户发送推送消息
-     * @param notice
-     * @param json
-     * @param expireInSeconds
+     * @param notice 通知栏显示文字
+     * @param json 透传给应用的json数据
+     * @param expireInSeconds 在指定秒数过期. 个推支持最多72小时, 当小于等于0时,只有用户在线时才能收到推送消息
      * @return
      * @throws IOException
      */

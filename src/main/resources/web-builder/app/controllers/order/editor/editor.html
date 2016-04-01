@@ -13,7 +13,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">预约时间</label>
             <div class="col-sm-10">
-                <div uib-dropdown is-open="false"><div href uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 400px;">{{order.orderTime | date: 'YYYY-MM-DD HH:mm'}}</div>
+                <div uib-dropdown is-open="false"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 400px;">{{order.orderTime | date: 'YYYY-MM-DD HH:mm'}}</div>
                     <ul uib-dropdown-menu role="menu">
                         <datetimepicker ng-model="order.orderTime" required
                                         data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm'}"

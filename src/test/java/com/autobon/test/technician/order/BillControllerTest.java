@@ -44,6 +44,7 @@ public class BillControllerTest extends MvcTest {
         order.setMainTechId(tech.getId());
         order.setOrderType(4);
         order.setStatus(Order.Status.FINISHED);
+        order.setFinishTime(new SimpleDateFormat("yyyy-MM-dd").parse("2015-6-3"));
         orderService.save(order);
 
         Construction cons = new Construction();

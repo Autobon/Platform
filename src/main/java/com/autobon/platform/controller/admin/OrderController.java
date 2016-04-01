@@ -67,7 +67,7 @@ public class OrderController {
         Integer statusCode = null;
 
         if (orderCreator != null) {
-            if (Pattern.matches("[\\d\\-]+", orderCreator)) {
+            if (Pattern.matches("\\d{11}", orderCreator)) {
                 contactPhone = orderCreator;
             } else {
                 creatorName = orderCreator;
