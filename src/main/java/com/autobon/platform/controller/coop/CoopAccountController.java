@@ -2,8 +2,10 @@ package com.autobon.platform.controller.coop;
 
 import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
+import com.autobon.cooperators.entity.ReviewCooper;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
+import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class CoopAccountController {
 
     @Autowired
     private CoopAccountService coopAccountService;
+
+    @Autowired
+    private ReviewCooperService reviewCooperService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -115,15 +120,21 @@ public class CoopAccountController {
             coopAccountService.save(coopAccount);
 
             Cooperator cooperator = null;
+            ReviewCooper reviewCooper = null;
             int cooperatorId = 0;
             cooperatorId = coopAccount.getCooperatorId();
             if(cooperatorId>0){
                 cooperator = cooperatorService.get(cooperatorId);
+                List<ReviewCooper> reviewCooperList = reviewCooperService.getByCooperatorId(cooperatorId);
+                if(reviewCooperList.size()>0){
+                    reviewCooper = reviewCooperList.get(0);
+                }
             }
 
             Map<String,Object> dataMap = new HashMap<String,Object>();
             dataMap.put("coopAccount", coopAccount);
             dataMap.put("cooperator", cooperator);
+            dataMap.put("reviewCooper", reviewCooper);
             msg.setData(dataMap);
         }
         return msg;

@@ -35,8 +35,7 @@ post("/api/mobile/coop/check")
     "message": "",
     "error": "",
     "data": {
-        "id": 2,
-        "phone": null,
+        "id": 1,
         "fullname": "A汽车美容公司",
         "businessLicense": "3335555",
         "corporationName": "张三",
@@ -44,7 +43,7 @@ post("/api/mobile/coop/check")
         "bussinessLicensePic": "a/a.jpg",
         "corporationIdPicA": "a/b.jpg",
         "corporationIdPicB": null,
-        "longitude": null,
+        "longitude": "120.34",
         "latitude": "35.55",
         "invoiceHeader": "武汉市A科技公司",
         "taxIdNo": "362362236",
@@ -55,12 +54,12 @@ post("/api/mobile/coop/check")
         "address": "中山路3号",
         "contact": "李四",
         "contactPhone": "13025523002",
-        "lastLoginTime": null,
-        "lastLoginIp": null,
-        "createTime": 1459143508787,
-        "statusCode": 0
+        "createTime": 1457677133000,
+        "statusCode": 0,
+        "orderNum": 2
     }
 }
+
 ```
 
 
@@ -73,6 +72,7 @@ post("/api/mobile/coop/check")
     "error": "ILLEGAL_PARAM",
     "data": null
 }
+
 ```
 
 #### b.手机号格式错误
@@ -84,6 +84,54 @@ post("/api/mobile/coop/check")
     "error": "ILLEGAL_PARAM",
     "data": null
 }
+
+```
+
+#### c.没有此关联商户
+
+```
+{
+    "result": false,
+    "message": "没有此关联商户",
+    "error": "",
+    "data": null
+}
+
+```
+
+#### d.你已经认证成功
+
+```
+{
+    "result": true,
+    "message": "你已经认证成功",
+    "error": "",
+    "data": null
+}
+
+```
+
+#### e.等待审核
+
+```
+{
+    "result": false,
+    "message": "等待审核",
+    "error": "",
+    "data": null
+}
+
+```
+#### f.商户状态码不正确
+
+```
+{
+    "result": false,
+    "message": "商户状态码不正确",
+    "error": "",
+    "data": null
+}
+
 ```
 
 ## 2.上传营业执照副本照片
