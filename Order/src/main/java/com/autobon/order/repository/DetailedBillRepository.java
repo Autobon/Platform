@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Repository
 public interface DetailedBillRepository extends JpaRepository<DetailedBill, Integer> {
-    @Query("select b from Bill b " +
+    @Query("select b from DetailedBill b " +
             "where (?1 is null or b.billMonth = ?1) " +
             "and (?2 is null or b.paid = ?2) " +
             "and (?3 is null or b.technician.id = ?3)")

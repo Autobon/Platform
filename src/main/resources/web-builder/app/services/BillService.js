@@ -11,7 +11,7 @@ export default class BillService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/bill', {params: {...params, page: page, pageSize: pageSize}});
     }
-    
+
     getDetail(id) {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/bill/' + id);

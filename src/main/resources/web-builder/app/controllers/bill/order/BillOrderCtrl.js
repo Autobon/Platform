@@ -6,7 +6,7 @@ export default class BillOrderCtrl extends Injector {
 
     constructor(...args) {
         super(...args);
-        const {$scope, BillService} = this.$injected;
+        const {$scope, $stateParams, BillService} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.pagination = {page: 1, pageSize: 20, totalItems: 0};
 
