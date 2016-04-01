@@ -32,4 +32,24 @@ export default class OrderService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/order/comment', comment);
     }
+
+    async assembleWorkItemsText(workItems, orderType) {
+        if (!this.workItems || !this.workItems[orderType]) {
+            let res = await this.getWorkItems(orderType);
+            if (res.data && res.data.result) {
+                this.workItems = this.workItems || {};
+                this.workItems[orderType] = res.data.data;
+                return this._assembleWorkItemsText(this.workItems[orderType], workItems);
+            }
+        } else {
+            return this._assembleWorkItemsText(this.workItems[orderType], workItems);
+        }
+    }
+
+    _assembleWorkItemsText(dictionary, items) {
+        let map = {};
+        dictionary.forEach(d => map[d.id] = d.name);
+        return items.split(',').map(i => map[i]).join(',');
+    }
+
 }
