@@ -1,9 +1,11 @@
 package com.autobon.platform.controller.admin;
 
 import com.autobon.order.entity.Bill;
+import com.autobon.order.entity.Order;
 import com.autobon.order.service.BillService;
 import com.autobon.order.service.ConstructionService;
-import com.autobon.order.service.DetailedOrderService;
+import com.autobon.order.service.DetailedBillService;
+import com.autobon.order.service.OrderService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
@@ -26,9 +28,10 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/web/admin/bill")
 public class BillController {
     @Autowired BillService billService;
-    @Autowired DetailedOrderService orderService;
+    @Autowired OrderService orderService;
     @Autowired TechnicianService technicianService;
     @Autowired ConstructionService constructionService;
+    @Autowired DetailedBillService detailedBillService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -48,7 +51,12 @@ public class BillController {
             Technician tech = technicianService.getByPhone(phone);
             if (tech != null) techId = tech.getId();
         }
-        return new JsonMessage(true, "", "", new JsonPage<>(billService.find(month, paid, techId, page, pageSize)));
+        return new JsonMessage(true, "", "", new JsonPage<>(detailedBillService.find(month, paid, techId, page, pageSize)));
+    }
+
+    @RequestMapping(value = "/{billId:\\d+}", method = RequestMethod.GET)
+    public JsonMessage show(@PathVariable("billId") int billId) {
+        return new JsonMessage(true, "", "", detailedBillService.get(billId));
     }
 
     @RequestMapping(value = "/{billId:\\d+}/order", method = RequestMethod.GET)
@@ -64,7 +72,7 @@ public class BillController {
                 bill.getTechId(), start, end, page, pageSize)));
     }
 
-    @RequestMapping(value = "/{billId:\\d+}/pay", method = RequestMethod.POST)
+    @RequestMapping(value = "/{billId:\\d+}/payoff", method = RequestMethod.POST)
     public JsonMessage setPaid(@PathVariable("billId") int billId) {
         Bill bill = billService.get(billId);
         if (bill.isPaid()) return new JsonMessage(false, "ALREADY_PAID_BILL", "订单已支付");
@@ -72,9 +80,18 @@ public class BillController {
         Date start = bill.getBillMonth();
         Date end = Date.from(start.toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate().plusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-        constructionService.batchPayoff(bill.getTechId(), start, end);
-        bill.setPaid(true);
-        billService.save(bill);
+
+        Page<Order> p1 = orderService.findBetweenByTechId(bill.getTechId(), start, end, 1, 1);
+        if (p1.getTotalElements() > 0) {
+            int id1, id2;
+            Page<Order> p2 = orderService.findBetweenByTechId(bill.getTechId(), start, end, p1.getTotalPages(), 1);
+            id1 = p1.getContent().get(0).getId();
+            id2 = p2.getContent().get(0).getId();
+            constructionService.batchPayoff(bill.getTechId(), id1, id2);
+            bill.setPaid(true);
+            billService.save(bill);
+        }
+
         return new JsonMessage(true);
     }
 
@@ -84,20 +101,27 @@ public class BillController {
     public JsonMessage generate() {
         Date from = Date.from(LocalDate.now().minusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         Date to = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-        int totalPages = 0;
-        int pageNo = 1;
-        long billCount = 0;
+        int totalPages, pageNo = 1, billCount = 0;
+
         do {
-            Page<Technician> page = technicianService.findAll(pageNo++, 20);
+            Page<Technician> page = technicianService.findActivedFrom(from, pageNo++, 20);
             totalPages = page.getTotalPages();
-            billCount = page.getTotalElements();
-            // 创建月度帐单,查询起止日期间内的施工单
             for (Technician t : page.getContent()) {
-                float pay = constructionService.sumPayment(t.getId(), from, to);
-                Bill bill = new Bill(t.getId(), from);
-                bill.setSum(pay);
-                bill.setCount(constructionService.settlePayment(t.getId(), from, to));
-                billService.save(bill);
+                Page<Order> p1 = orderService.findBetweenByTechId(t.getId(), from, to, 1, 1);
+                if (p1.getTotalElements() > 0) {
+                    int id1, id2;
+                    Page<Order> p2 = orderService.findBetweenByTechId(t.getId(), from, to, p1.getTotalPages(), 1);
+                    id1 = p1.getContent().get(0).getId();
+                    id2 = p2.getContent().get(0).getId();
+
+                    float pay = constructionService.sumPayment(t.getId(), id1, id2);
+                    if (pay == 0) continue;
+                    Bill bill = new Bill(t.getId(), from);
+                    bill.setSum(pay);
+                    bill.setCount(constructionService.settlePayment(t.getId(), id1, id2));
+                    billService.save(bill);
+                    billCount++;
+                }
             }
         } while (pageNo < totalPages);
         return new JsonMessage(true, "", "" + billCount);

@@ -64,6 +64,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'BillCtrl',
             template  : templateCache.BillCtrl,
         })
+        .state('console.bill.order', {
+            url       : '/{id:\\d+}/order',
+            controller: 'BillOrderCtrl',
+            template  : templateCache.BillOrderCtrl,
+        })
         .state('console.main', {
             url       : '/main',
             controller: 'Main',

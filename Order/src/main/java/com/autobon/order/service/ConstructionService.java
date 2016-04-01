@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-
 /**
  * Created by yuh on 2016/2/29.
  */
@@ -29,23 +27,21 @@ public class ConstructionService {
         return repository.getByTechIdAndOrderId(techId, orderId);
     }
 
-    // 对指定时期内完成的工单进行金额汇总
-    public float sumPayment(int techId, Date from, Date to) {
-        return repository.sumPayment(techId, from, to);
+    // 对指定技师在指定订单序号范围内完成的工单进行金额汇总
+    public float sumPayment(int techId, int fromOrderId, int toOrderId) {
+        return repository.sumPayment(techId, fromOrderId, toOrderId);
     }
 
-    // 对指定时期内完成的工单清算出账
+    // 对指定技师在指定订单序号范围内完成的工单清算出账
     @Transactional
-    public int settlePayment(int techId, Date from, Date to) {
-        return repository.settlePayment(techId, from, to);
+    public int settlePayment(int techId, int fromOrderId, int toOrderId) {
+        return repository.settlePayment(techId, fromOrderId, toOrderId);
     }
 
-    // 对指定时期内完成的工单完成结算
+    // 对指定技师在指定订单序号范围内完成的工单完成结算
     @Transactional
-    public int batchPayoff(int techId, Date from, Date to) {
-        return repository.batchPayoff(techId, from, to);
+    public int batchPayoff(int techId, int fromOrderId, int toOrderId) {
+        return repository.batchPayoff(techId, fromOrderId, toOrderId);
     }
-
-    //修改施工单
 
 }

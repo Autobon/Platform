@@ -25,7 +25,7 @@
                 <input type="radio" name="paid" ng-model="filter.paid" value="false"> 未支付
             </label>
         </div>
-        <button class="btn btn-primary" ng-click="getOrders()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button class="btn btn-primary" ng-click="getBills()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
         <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
 </div>
@@ -48,8 +48,10 @@
                         <td>{{b.technician.bankCardNo}}</td>
                         <td>{{b.sum}}</td>
                         <td>{{b.paid ? '已支付' : '未支付'}}</td>
-                        <td><a href class="btn btn-xs btn-default">
-                            <i class="fa fa-list"></i>&nbsp;详情</a></td>
+                        <td>
+                            <span ng-if="!b.paid" ng-click="payoff(b)" class="btn btn-xs btn-success m-r-5"><i class="fa fa-rmb"></i>&nbsp;提交支付</span>
+                            <a href class="btn btn-xs btn-default"><i class="fa fa-list"></i>&nbsp;详情</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -60,5 +62,6 @@
                                 previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
             </footer>
         </div>
+        <div ui-view class="col-sm-9"></div>
     </div>
 </div>

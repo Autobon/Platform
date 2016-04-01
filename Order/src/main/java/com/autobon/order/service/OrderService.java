@@ -52,7 +52,7 @@ public class OrderService {
         return repository.findExpired(before, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 
-    Page<Order> findBetweenByTechId(int techId, Date start, Date end, int page, int pageSize) {
+    public Page<Order> findBetweenByTechId(int techId, Date start, Date end, int page, int pageSize) {
         return repository.findBetweenByTechId(techId, start, end, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 }

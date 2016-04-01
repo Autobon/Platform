@@ -24,6 +24,15 @@ export default class BillCtrl extends Injector {
         });
     }
 
+    payoff(bill) {
+        const {BillService} = this.$injected;
+        BillService.payoff(bill.id).then(res => {
+            if (res.data && res.data.result) {
+                bill.paid = true;
+            }
+        });
+    }
+
     reset() {
         const {$scope} = this.$injected;
         $scope.filter     = {};

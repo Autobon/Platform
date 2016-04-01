@@ -12,3 +12,5 @@ CREATE TABLE `t_bill` (
   KEY `indx_bill_tech_id` (`tech_id`),
   KEY `indx_bill_bill_month` (`bill_month`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE VIEW `v_bill` AS select * from t_bill;

@@ -252,7 +252,6 @@ public class TechnicianAccountController {
         @RequestParam("file") MultipartFile file) throws Exception {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
-        JsonMessage msg = new JsonMessage(true);
         String path = "/uploads/technician/idPhoto";
         File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         String originalFilename = file.getOriginalFilename();
@@ -262,10 +261,6 @@ public class TechnicianAccountController {
 
         if (!dir.exists()) dir.mkdirs();
         file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
-        Technician technician = (Technician) request.getAttribute("user");
-        technician.setIdPhoto(path + "/" + filename);
-        technicianService.save(technician);
-        msg.setData(technician.getIdPhoto());
-        return msg;
+        return new JsonMessage(true, "", "", path + "/" + filename);
     }
 }
