@@ -2,10 +2,7 @@ package com.autobon.platform.controller.admin;
 
 import com.autobon.order.entity.Bill;
 import com.autobon.order.entity.Order;
-import com.autobon.order.service.BillService;
-import com.autobon.order.service.ConstructionService;
-import com.autobon.order.service.DetailedBillService;
-import com.autobon.order.service.OrderService;
+import com.autobon.order.service.*;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
@@ -32,6 +29,7 @@ public class BillController {
     @Autowired TechnicianService technicianService;
     @Autowired ConstructionService constructionService;
     @Autowired DetailedBillService detailedBillService;
+    @Autowired DetailedOrderService detailedOrderService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -68,7 +66,7 @@ public class BillController {
         Date start = bill.getBillMonth();
         Date end = Date.from(start.toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate().plusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-        return new JsonMessage(true, "", "", new JsonPage<>(orderService.findBetweenByTechId(
+        return new JsonMessage(true, "", "", new JsonPage<>(detailedOrderService.findBetweenByTechId(
                 bill.getTechId(), start, end, page, pageSize)));
     }
 
@@ -99,12 +97,12 @@ public class BillController {
     // 立即生成本月帐单
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
     public JsonMessage generate() {
-        Date from = Date.from(LocalDate.now().minusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-        Date to = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date from = Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date to = Date.from(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         int totalPages, pageNo = 1, billCount = 0;
 
         do {
-            Page<Technician> page = technicianService.findActivedFrom(from, pageNo++, 20);
+            Page<Technician> page = technicianService.findAll(pageNo++, 20);
             totalPages = page.getTotalPages();
             for (Technician t : page.getContent()) {
                 Page<Order> p1 = orderService.findBetweenByTechId(t.getId(), from, to, 1, 1);

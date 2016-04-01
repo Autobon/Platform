@@ -1,13 +1,14 @@
 import {Injector} from 'ngES6';
 
 export default class BillOrderCtrl extends Injector {
-    static $inject = ['$scope', '$stateParams', 'BillService'];
+    static $inject = ['$scope', '$stateParams', 'BillService', 'Settings'];
     static $template = require('./order.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, BillService} = this.$injected;
+        const {$scope, $stateParams, BillService, Settings} = this.$injected;
         this.attachMethodsTo($scope);
+        $scope.Settings = Settings;
         $scope.pagination = {page: 1, pageSize: 20, totalItems: 0};
 
         BillService.getDetail($stateParams.id).then(res => {

@@ -15,7 +15,7 @@ public interface ConstructionRepository extends JpaRepository<Construction, Inte
     Construction getByTechIdAndOrderId(int techId, int orderId);
 
     // 对指定技师在指定订单序号范围内完成的工单进行金额汇总
-    @Query("select count(payment) as bill from Construction c where c.techId = ?1 " +
+    @Query("select sum(payment) as bill from Construction c where c.techId = ?1 " +
             "and c.orderId between ?2 and ?3")
     float sumPayment(int techId, int fromOrderId, int toOrderId);
 

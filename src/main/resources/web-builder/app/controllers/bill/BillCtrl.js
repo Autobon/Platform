@@ -39,13 +39,15 @@ export default class BillCtrl extends Injector {
         $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 
-    generate() {
+    async generate() {
         const {BillService} = this.$injected;
-        BillService.generate();
+        await BillService.generate();
+        this.getBills();
     }
 
-    clear() {
+    async clear() {
         const {BillService} = this.$injected;
-        BillService.clear();
+        await BillService.clear();
+        this.getBills();
     }
 }

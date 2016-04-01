@@ -24,4 +24,4 @@ CREATE TABLE `t_order` (
 CREATE VIEW `v_order` AS select * from t_order;
 
 INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`creator_type`,`creator_id`, `creator_name`, `remark`,`main_tech_id`,`second_tech_id`) VALUES (1,'16022313fsd123',1,'','2016-02-24 14:00:00','2016-02-23 11:09:23',10,1,1, '超级管理员', 'bababala',1,2);
-INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`creator_type`,`creator_id`,`remark`,`main_tech_id`,`second_tech_id`) VALUES (2,'16022313abc123',2,NULL,'2016-02-24 14:00:00','2016-02-23 11:09:23',60,1,2,'somewords',2,1);
+INSERT INTO `t_order` (`id`,`order_num`,`order_type`,`photo`,`order_time`,`add_time`,`status`,`creator_type`,`creator_id`,`remark`,`main_tech_id`,`second_tech_id`, `finish_time`) VALUES (2,'16022313abc123',2,NULL,'2016-02-24 14:00:00','2016-02-23 11:09:23',60,1,2,'somewords',2,1,'2016-4-1 12:00:00');

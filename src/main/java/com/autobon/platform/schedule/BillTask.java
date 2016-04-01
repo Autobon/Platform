@@ -38,8 +38,9 @@ public class BillTask {
     public void calculateBills() {
         log.info("月账清算任务开始");
 
-        Date from = Date.from(LocalDate.now().minusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-        Date to = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date to = Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date from = Date.from(to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                    .minusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         int totalPages, pageNo = 1, billCount = 0;
 
         do {

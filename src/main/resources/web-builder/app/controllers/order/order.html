@@ -58,6 +58,11 @@
         </div>
 
         <div ng-if="!$state.is('console.order')">
+            <div class="clearfix">
+                <div class="pull-right btn-inverse m-b-5" ng-click="$state.go('^')"
+                     style="width: 24px; height: 16px; line-height: 16px; border-radius: 16px; text-align: center; cursor: pointer;">
+                <i class="fa fa-arrows-h"></i></div>
+            </div>
             <ul class="side-nav-list">
                 <li ng-repeat="order in orders" ui-sref-active="active">
                     <a ui-sref="console.order.detail({orderNum: order.orderNum})">

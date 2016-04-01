@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <h3>{{bill.billMonth | date : 'YYYY年MM月'}} - <i class="fa fa-rmb">{{bill.sum}}</i>
+        <small class="btn btn-success btn-xs m-l-10">{{bill.paid ? '已支付' : '未支付'}}</small>
+        <small class="m-l-15">
+            <a ui-sref="console.technician.detail({id: bill.technician.id})">{{bill.technician.name}}</a>
+            <i class="fa fa-phone m-l-10">{{bill.technician.phone}}</i>
+        </small>
+    </h3>
+    <div class="table-responsive m-l-20 m-r-20">
+        <table class="table table-striped">
+            <thead><tr><th>序号</th><th>订单编号</th><th>订单类型</th><th>下单客户</th><th>施工内容</th><th>完成时间</th><th>金额</th></tr></thead>
+            <tbody>
+                <tr ng-repeat="o in orders">
+                    <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                    <td>{{o.orderNum}}</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
