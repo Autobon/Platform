@@ -17,7 +17,8 @@ export default class CooperatorCtrl extends Injector {
 
     getCooperators() {
         const {$scope, CooperatorService} = this.$injected;
-        CooperatorService.search($scope.filter, $scope.pagination.page, $scope.pagination.pageSize).then(res => {
+        const {page, pageSize} = $scope.pagination;
+        CooperatorService.search($scope.filter, page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.cooperators = res.data.data.list;
                 $scope.pagination.totalItems = res.data.data.totalElements;

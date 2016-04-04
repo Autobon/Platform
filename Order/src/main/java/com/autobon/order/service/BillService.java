@@ -7,8 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by dave on 16/3/11.
@@ -30,13 +29,8 @@ public class BillService {
                 new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 
-    public Page<Bill> findByBillMonth(Date billMonth, int page, int pageSize) {
-        return repository.findByBillMonth(billMonth,
-                new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "sum"));
-    }
-
-    public Page<Bill> findAll(int page, int pageSize) {
-        return repository.findAll(
-                new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "sum"));
+    @Transactional
+    public int clear() {
+        return repository.clear();
     }
 }

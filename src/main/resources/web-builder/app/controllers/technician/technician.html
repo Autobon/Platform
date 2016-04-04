@@ -4,16 +4,16 @@
 <div class="row-search">
     <form class="form-inline pull-left">
         <div class="form-group">
-            <label for="orderNum">姓名:</label>
-            <input type="text" class="form-control" id="orderNum" ng-model="filter.name">
+            <label for="name">姓名:</label>
+            <input type="text" class="form-control" id="name" ng-model="filter.name">
         </div>
         <div class="form-group">
-            <label for="orderCreator">手机号:</label>
-            <input type="text" class="form-control" id="orderCreator" ng-model="filter.phone">
+            <label for="phone">手机号:</label>
+            <input type="text" class="form-control" id="phone" ng-model="filter.phone">
         </div>
         <div class="form-group">
-            <label for="orderStatus">帐户状态:</label>
-            <select class="form-control" id="orderStatus" ng-model="filter.status"
+            <label for="status">帐户状态:</label>
+            <select class="form-control" id="status" ng-model="filter.status"
                     ng-options="key as value for (key, value) in Settings.technicianStatus">
             </select>
         </div>
@@ -32,7 +32,7 @@
                     <td><b>{{$index+1+pagination.pageSize*(pagination.page-1)}}</b>. <img ng-src="{{t.avatar}}" resize="40,40" image-modal class="img-thumbnail"></td>
                     <td>{{t.phone}}</td>
                     <td>{{t.name}}</td>
-                    <td><span ng-repeat="s in t.skill.split(',')" >{{Settings.orderTypes[s]}}</span></td>
+                    <td><span ng-repeat="s in t.skill.split(',')" class="fa fa-tag m-l-5">{{Settings.orderTypes[s]}}</span></td>
                     <td>{{t.idNo}}</td>
                     <td>{{t.verifyAt | date : 'YYYY-MM-DD HH:mm'}}</td>
                     <td>{{Settings.technicianStatus[t.status]}}</td>
@@ -50,6 +50,11 @@
             </footer>
         </div>
         <div ng-if="!$state.is('console.technician')">
+            <div class="clearfix">
+                <div class="pull-right btn-inverse m-b-5" ng-click="$state.go('^')"
+                     style="width: 24px; height: 16px; line-height: 16px; border-radius: 16px; text-align: center; cursor: pointer;">
+                    <i class="fa fa-arrows-h"></i></div>
+            </div>
             <ul class="side-nav-list">
                 <li ng-repeat="t in technicians" ui-sref-active="active" class="clearfix">
                     <a ui-sref="console.technician.detail({id: t.id})">
@@ -57,7 +62,7 @@
                         <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
                         {{t.name}} <i class="glyphicon glyphicon-earphone m-l-10 small">{{t.phone}}</i>&nbsp;&nbsp;
                         <small class="btn btn-success btn-xs">{{Settings.technicianStatus[t.status]}}</small><br>
-                        <span ng-repeat="s in t.skill.split(',')" class="fa fa-tag">&nbsp;{{Settings.orderTypes[s]}}</span>
+                        <span ng-repeat="s in t.skill.split(',')" class="fa fa-tag m-l-5">&nbsp;{{Settings.orderTypes[s]}}</span>
                     </a>
                 </li>
             </ul>

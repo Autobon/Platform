@@ -16,7 +16,8 @@ export default class TechnicianCtrl extends Injector {
 
     getTechnicians() {
         const {$scope, TechnicianService} = this.$injected;
-        TechnicianService.search($scope.filter, $scope.pagination.page, $scope.pagination.pageSize).then(res => {
+        const {page, pageSize} = $scope.pagination;
+        TechnicianService.search($scope.filter, page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.technicians = res.data.data.list;
                 $scope.pagination.totalItems = res.data.data.totalElements;

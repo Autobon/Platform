@@ -18,3 +18,6 @@ CREATE TABLE `t_construction` (
   KEY `order_id` (`order_id`),
   KEY `tech_id` (`tech_id`)
 ) DEFAULT CHARSET=utf8 COMMENT='施工表';
+
+insert into t_construction (id, order_id, tech_id, signin_time, end_time, payment, work_items) values (
+1, 2, 1, '2016-4-1 10:00:00', '2016-4-1 11:00:00', 236, '25,26,27,28');

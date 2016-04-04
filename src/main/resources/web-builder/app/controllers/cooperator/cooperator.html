@@ -4,12 +4,12 @@
 <div class="row-search">
     <form class="form-inline pull-left">
         <div class="form-group">
-            <label for="orderNum">企业名称:</label>
-            <input type="text" class="form-control" id="orderNum" ng-model="filter.fullname">
+            <label for="fullname">企业名称:</label>
+            <input type="text" class="form-control" id="fullname" ng-model="filter.fullname">
         </div>
         <div class="form-group">
-            <label for="orderCreator">法人姓名:</label>
-            <input type="text" class="form-control" id="orderCreator" ng-model="filter.corporationName">
+            <label for="corporationName">法人姓名:</label>
+            <input type="text" class="form-control" id="corporationName" ng-model="filter.corporationName">
         </div>
         <div class="form-group">
             <label for="orderStatus">认证状态:</label>
@@ -53,6 +53,11 @@
             </footer>
         </div>
         <div ng-if="!$state.is('console.cooperator')">
+            <div class="clearfix">
+                <div class="pull-right btn-inverse m-b-5" ng-click="$state.go('^')"
+                     style="width: 24px; height: 16px; line-height: 16px; border-radius: 16px; text-align: center; cursor: pointer;">
+                    <i class="fa fa-arrows-h"></i></div>
+            </div>
             <ul class="side-nav-list">
                 <li ng-repeat="c in cooperators" ui-sref-active="active">
                     <a ui-sref="console.cooperator.detail({id: c.id})">

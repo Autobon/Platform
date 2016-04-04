@@ -86,6 +86,10 @@ table.table-striped {
   @include button-variant(#FFF, $color-primary, #CCC);
 }
 
+.btn-inverse {
+  @include button-variant($color-text, darken($color-bg, 10%), $color-border);
+}
+
 .sub-header {
   padding-bottom: 10px;
   margin: 20px 0;
@@ -190,4 +194,10 @@ ul.side-nav-list {
       }
     }
   }
+}
+
+
+// baidu map
+.anchorBL{
+  display: none;
 }

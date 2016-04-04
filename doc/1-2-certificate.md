@@ -13,7 +13,7 @@ POST /api/mobile/technician/certificate
 | idNo | 身份证号 | 422302198608266313 |
 | skills| 技能项数组, 用逗号分隔 | 1,2 |
 | idPhoto| 身份证照 | /a/a.jpg |
-| bank| 银行字典 | 027 |
+| bank| 银行名称 | 工商银行 |
 | bankCardNo| 银行卡号 | 88888888888 |
 
 

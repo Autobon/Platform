@@ -37,5 +37,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     @Query("select o from Order o where o.statusCode < 50 and o.orderTime <= ?1")
     Page<Order> findExpired(Date before, Pageable pageable);
 
+    @Query("from Order o where (o.mainTechId = ?1 or o.secondTechId = ?1) and o.finishTime >= ?2 and o.finishTime < ?3")
+    Page<Order> findBetweenByTechId(int techId, Date start, Date end, Pageable pageable);
+
 }
 

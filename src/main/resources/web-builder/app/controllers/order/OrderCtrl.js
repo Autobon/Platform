@@ -16,7 +16,8 @@ export default class OrderCtrl extends Injector {
 
     getOrders() {
         const {$scope, OrderService} = this.$injected;
-        OrderService.search($scope.filter, $scope.pagination.page, $scope.pagination.pageSize).then(res => {
+        const {page, pageSize} = $scope.pagination;
+        OrderService.search($scope.filter, page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.orders = res.data.data.list;
                 $scope.pagination.totalItems = res.data.data.totalElements;

@@ -52,6 +52,4 @@ public class BillController {
                             tech.getId(), from, bill.getBillMonth(), page, pageSize)));
         }
     }
-
-
 }

@@ -1,20 +1,17 @@
 package com.autobon.order.entity;
 
+import com.autobon.technician.entity.Technician;
+
 import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 技师每月完成施工订单结算帐单
- * Created by dave on 16/3/11.
+ * Created by dave on 16/4/1.
  */
 @Entity
-@Table(name = "t_bill")
-public class Bill {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @Column private int techId;
+@Table(name = "v_bill")
+public class DetailedBill {
+    @Id private int id;
 
     @Column private Date billMonth; // 月帐所属的年,月
 
@@ -26,12 +23,9 @@ public class Bill {
 
     @Column private Date payAt;
 
-    public Bill() {}
-
-    public Bill(int techId, Date yearMonth) {
-        this.techId = techId;
-        this.billMonth = yearMonth;
-    }
+    @ManyToOne
+    @JoinColumn(name = "tech_id")
+    private Technician technician;
 
     public int getId() {
         return id;
@@ -39,14 +33,6 @@ public class Bill {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getTechId() {
-        return techId;
-    }
-
-    public void setTechId(int techId) {
-        this.techId = techId;
     }
 
     public Date getBillMonth() {
@@ -87,5 +73,13 @@ public class Bill {
 
     public void setPayAt(Date payAt) {
         this.payAt = payAt;
+    }
+
+    public Technician getTechnician() {
+        return technician;
+    }
+
+    public void setTechnician(Technician technician) {
+        this.technician = technician;
     }
 }
