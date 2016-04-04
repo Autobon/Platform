@@ -119,8 +119,8 @@ public class MessageController {
      * @param id 通知ID
      * @return
      */
-    @RequestMapping(method = RequestMethod.DELETE)
-    public JsonMessage deleteMessage(@RequestParam("id") int id){
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    public JsonMessage deleteMessage(@PathVariable("id") Integer id){
         Message msg = messageService.getById(id);
         if(msg != null) {
             if(msg.getStatus() == 0) {
@@ -133,6 +133,17 @@ public class MessageController {
         else{
             return new JsonMessage(false, "", "没有找到对应的通知记录", null);
         }
+    }
+
+    /**
+     * 查找一条通知
+     * @param id 通知ID
+     * @return
+     */
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public JsonMessage getMessage(@PathVariable("id") Integer id){
+        Message msg = messageService.getById(id);
+        return new JsonMessage(true, "", "", msg);
     }
 
 }

@@ -30,6 +30,14 @@ public class MessageControllerTest  extends MvcTest{
     }
 
     @Test
+    public void getMessage() throws Exception {
+        mockMvcS.perform(get("/api/web/admin/message/1")
+                .cookie(new Cookie("autoken", adminToken)))
+                .andDo(print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
     public void saveMessage() throws Exception {
         mockMvcS.perform(post("/api/web/admin/message")
                 .param("title", "四月贴膜季")
