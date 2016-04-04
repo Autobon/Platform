@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -37,8 +36,8 @@ public class MessageController {
 
     /**
      * 查找分页通知
-     * @param page
-     * @param pageSize
+     * @param page 页数
+     * @param pageSize 记录数
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
@@ -51,7 +50,10 @@ public class MessageController {
     /**
      * 添加一条通知
      * @param title
+     * @param content
+     * @param sendTo
      * @return
+     * @throws Exception
      */
     @RequestMapping(method = RequestMethod.POST)
     public JsonMessage saveMessage(
@@ -73,12 +75,12 @@ public class MessageController {
 
     /**
      * 修改或者发布通知
-     * @param id
-     * @param title
-     * @param content
-     * @param sendTo
-     * @param status
-     * @return
+     * @param id 通知ID
+     * @param title 标题
+     * @param content 内容
+     * @param sendTo 发送给 1技师 2合作商户
+     * @param status 通知状态 0未发布 1已发布
+     * @return  JsonMessage
      */
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
     public JsonMessage updateMessage(
@@ -114,7 +116,7 @@ public class MessageController {
 
     /**
      * 删除通知
-     * @param id
+     * @param id 通知ID
      * @return
      */
     @RequestMapping(method = RequestMethod.DELETE)
