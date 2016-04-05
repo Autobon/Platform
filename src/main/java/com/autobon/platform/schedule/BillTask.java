@@ -3,7 +3,6 @@ package com.autobon.platform.schedule;
 import com.autobon.order.entity.Bill;
 import com.autobon.order.service.BillService;
 import com.autobon.order.service.ConstructionService;
-import com.autobon.order.service.DetailedConstructService;
 import com.autobon.order.service.OrderService;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
@@ -31,7 +30,6 @@ public class BillTask {
     @Autowired ConstructionService constructionService;
     @Autowired BillService billService;
     @Autowired OrderService orderService;
-    @Autowired DetailedConstructService detailedConstructService;
 
     // 每月1号凌晨2点执行月度帐单结算
     @Async
@@ -48,11 +46,11 @@ public class BillTask {
             Page<Technician> page = technicianService.findActivedFrom(from, pageNo++, 20);
             totalPages = page.getTotalPages();
             for (Technician t : page.getContent()) {
-                Float pay = detailedConstructService.sumPayment(t.getId(), from, to);
+                Float pay = constructionService.sumPayment(t.getId(), from, to);
                 if (pay == null) continue;
                 Bill bill = new Bill(t.getId(), from);
                 bill.setSum(pay);
-                bill.setCount(detailedConstructService.settlePayment(t.getId(), from, to));
+                bill.setCount(constructionService.settlePayment(t.getId(), from, to));
                 billService.save(bill);
                 billCount++;
             }

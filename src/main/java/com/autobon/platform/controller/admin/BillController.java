@@ -29,7 +29,6 @@ public class BillController {
     @Autowired ConstructionService constructionService;
     @Autowired DetailedBillService detailedBillService;
     @Autowired DetailedOrderService detailedOrderService;
-    @Autowired DetailedConstructService detailedConstructService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -79,7 +78,7 @@ public class BillController {
         Date end = Date.from(start.toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate().plusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
-        detailedConstructService.batchPayoff(bill.getTechId(), start, end);
+        constructionService.batchPayoff(bill.getTechId(), start, end);
         bill.setPaid(true);
         billService.save(bill);
 
@@ -98,11 +97,11 @@ public class BillController {
             Page<Technician> page = technicianService.findAll(pageNo++, 20);
             totalPages = page.getTotalPages();
             for (Technician t : page.getContent()) {
-                Float pay = detailedConstructService.sumPayment(t.getId(), from, to);
+                Float pay = constructionService.sumPayment(t.getId(), from, to);
                 if (pay == null) continue;
                 Bill bill = new Bill(t.getId(), from);
                 bill.setSum(pay);
-                bill.setCount(detailedConstructService.settlePayment(t.getId(), from, to));
+                bill.setCount(constructionService.settlePayment(t.getId(), from, to));
                 billService.save(bill);
                 billCount++;
             }
