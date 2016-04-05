@@ -1,4 +1,5 @@
 import {Injector} from 'ngES6';
+import $ from 'jquery';
 
 export default class MapView extends Injector {
     static $inject = [];

@@ -29,7 +29,7 @@ export default class BillOrderCtrl extends Injector {
             let orders = res.data.data.list;
             orders.forEach(o => {
                 o.construct = $scope.bill.technician.id === o.mainTech.id ? o.mainConstruct : o.secondConstruct;
-                OrderService.assembleWorkItemsText(o.construct.workItems, o.orderType).then(d => {
+                OrderService.assembleWorkItemsText(o.construct.workItems, o.construct.workPercent, o.orderType).then(d => {
                     $scope.$apply(() => {
                         o.construct.workItems = d;
                     });
