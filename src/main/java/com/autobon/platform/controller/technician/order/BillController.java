@@ -44,12 +44,12 @@ public class BillController {
         if (bill == null || bill.getTechId() != tech.getId()) {
             return new JsonMessage(false, "ILLEGAL_BILL_ID", "你没有这个帐单");
         } else {
-            Date from = Date.from(bill.getBillMonth().toInstant()
+            Date to = Date.from(bill.getBillMonth().toInstant()
                     .atZone(ZoneId.systemDefault()).toLocalDateTime()
-                    .minusMonths(1).atZone(ZoneId.systemDefault()).toInstant());
+                    .plusMonths(1).atZone(ZoneId.systemDefault()).toInstant());
             return new JsonMessage(true, "", "",
                     new JsonPage<>(detailedOrderService.findBetweenByTechId(
-                            tech.getId(), from, bill.getBillMonth(), page, pageSize)));
+                            tech.getId(), bill.getBillMonth(), to, page, pageSize)));
         }
     }
 }
