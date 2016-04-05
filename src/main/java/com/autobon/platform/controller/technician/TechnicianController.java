@@ -53,8 +53,13 @@ public class TechnicianController {
 
     @RequestMapping(value="/mobile/technician/reportLocation", method = RequestMethod.POST)
     public JsonMessage reportLocation(HttpServletRequest request,
-            @RequestParam("positionLon") String positionLon,
-            @RequestParam("positionLat") String positionLat){
+            @RequestParam("lng") String positionLon,
+            @RequestParam("lat") String positionLat,
+            @RequestParam("province") String province,
+            @RequestParam("city") String city,
+            @RequestParam(value = "district", required = false) String district,
+            @RequestParam(value = "street", required = false) String street,
+            @RequestParam(value = "streetNumber", required = false) String streetNumber) {
         Technician tech = (Technician) request.getAttribute("user");
 
         //查询最近的位置信息
@@ -69,11 +74,15 @@ public class TechnicianController {
         Location location = new Location();
         location.setTechId(tech.getId());
         location.setCreateAt(new Date());
-        location.setPositionLat(positionLat);
-        location.setPositionLon(positionLon);
+        location.setLat(positionLat);
+        location.setLng(positionLon);
+        location.setProvince(province);
+        location.setCity(city);
+        location.setDistrict(district);
+        location.setStreet(street);
+        location.setStreetNumber(streetNumber);
         locationService.save(location);
         return new JsonMessage(true);
     }
-
 
 }

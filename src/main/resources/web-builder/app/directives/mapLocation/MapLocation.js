@@ -92,7 +92,9 @@ export default class MapLocation extends Injector {
             let position = scope.position;
             if (position !== '') position = JSON.parse(position);
             if (!position || !position.lng) {
-                map.centerAndZoom('北京', 12);
+                new window.BMap.LocalCity().get(result => {
+                    map.centerAndZoom(result.name, 12);
+                });
             } else {
                 const point  = new window.BMap.Point(position.lng, position.lat);
                 scope.marker = new window.BMap.Marker(point);
