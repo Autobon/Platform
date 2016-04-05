@@ -7,10 +7,6 @@ com.autobon:
     test.adminToken: staff:ssEoVBwJ3rSYnidORQUvhQ==
     test.coopToken: cooperator:pHpP/b+PYAbZ3bcSs7dqsQ==
     gm-path: /usr/bin # graphicsMagick工具路径
-    mail.host: smtp.qq.com
-    mail.username: 339445148@qq.com
-    mail.password: uccifmfaickgcagj
-    mail.port: 587
 
 
 # Tomcat
