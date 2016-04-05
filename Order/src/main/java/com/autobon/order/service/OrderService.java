@@ -48,8 +48,8 @@ public class OrderService {
                 statusCode, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 
-    public Page<Order> findExpired(Date before,  int page, int pageSize){
-        return repository.findExpired(before, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
+    public Page<Order> findExpired(Date signInBefore, Date finishBefore,  int page, int pageSize){
+        return repository.findExpired(signInBefore, finishBefore, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 
     public Page<Order> findBetweenByTechId(int techId, Date start, Date end, int page, int pageSize) {
