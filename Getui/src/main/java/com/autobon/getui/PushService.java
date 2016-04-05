@@ -112,6 +112,7 @@ public class PushService {
         //ios
         APNPayload payload = new APNPayload();
         payload.setAlertMsg(new APNPayload.SimpleAlertMsg(notice));
+        payload.addCustomMsg("json", json);
         //payload.setBadge(1);
         template.setAPNInfo(payload);
 
