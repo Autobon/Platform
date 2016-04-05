@@ -16,9 +16,19 @@ public class Location {
 
     @Column private Date createAt;
 
-    @Column private String positionLon;
+    @Column private String lng; // 经度, 东经
 
-    @Column private String positionLat;
+    @Column private String lat; // 纬度, 北纬
+
+    @Column private String province;
+
+    @Column private String city;
+
+    @Column private String district;
+
+    @Column private String street;
+
+    @Column private String streetNumber;
 
     @Column private int techId;
 
@@ -38,20 +48,60 @@ public class Location {
         this.createAt = createAt;
     }
 
-    public String getPositionLon() {
-        return positionLon;
+    public String getLng() {
+        return lng;
     }
 
-    public void setPositionLon(String positionLon) {
-        this.positionLon = positionLon;
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
-    public String getPositionLat() {
-        return positionLat;
+    public String getLat() {
+        return lat;
     }
 
-    public void setPositionLat(String positionLat) {
-        this.positionLat = positionLat;
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
     }
 
     public int getTechId() {
