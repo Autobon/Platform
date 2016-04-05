@@ -454,9 +454,9 @@ POST /api/mobile/technician/reportLocation
 | lat | 是 | 实时位置维度 | 34.4 |
 | province | 是 | 省,百度定位省字段 | 湖北省 |
 | city | 是 | 市,百度定位市字段 | 武汉市 |
-| district | 是 | 区县,百度定位区县字段 | 洪山区 |
-| street | 是 | 街道,百度定位街道字段 | 软件园中路 |
-| streetNumber | 是 | 街道编号,百度定位街道编号字段 | 25号 |
+| district | 否 | 区县,百度定位区县字段 | 洪山区 |
+| street | 否 | 街道,百度定位街道字段 | 软件园中路 |
+| streetNumber | 否 | 街道编号,百度定位街道编号字段 | 25号 |
 
 
 ### 返回数据
