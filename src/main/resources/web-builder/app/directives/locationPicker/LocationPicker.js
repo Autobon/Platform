@@ -65,7 +65,9 @@ export default class LocationPicker extends Injector {
             if (scope.position) {
                 map.centerAndZoom(new window.BMap.Point(scope.position.lng, scope.position.lat), 12);
             } else {
-                map.centerAndZoom('北京', 12);
+                new window.BMap.LocalCity().get(result => {
+                    map.centerAndZoom(result.name, 12);
+                });
             }
             map.enableScrollWheelZoom(true);
             map.addControl(new window.BMap.CityListControl({
