@@ -45,6 +45,7 @@ export default class MapView extends Injector {
     }
 
     _showPositions(scope, mapId) {
+        
 
     }
 }
