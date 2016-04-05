@@ -30,6 +30,9 @@ public class SmsSender {
     @Value("${com.autobon.sms.appSecret}")
     private String appSecret;
 
+    @Value("${com.autobon.sms.templateId}")
+    private String templateId;
+
     @Value("${com.autobon.sms.signature}")
     private String signature;
 
@@ -48,7 +51,7 @@ public class SmsSender {
         map.put("sms_type", "normal");
         map.put("sms_free_sign_name", signature);
         map.put("sms_param", "{\"code\":\"" + code + "\", \"product\":\"车邻邦\"}");
-        map.put("sms_template_code", "SMS_6160009");
+        map.put("sms_template_code", templateId);
         map.put("rec_num", sim);
         map.put("sign", computeSignature(map, appSecret));
         byte[] content = buildQueryString(map, "UTF-8").getBytes();
