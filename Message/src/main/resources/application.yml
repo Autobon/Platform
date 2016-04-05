@@ -1,0 +1,41 @@
+com.autobon:
+    sms.gateway: http://114.215.172.92/message/messageSend # SMS Gateway
+    env: TEST
+    skill: 汽车贴膜,美容清洁,隐形车衣,车身改色
+    baiduKey: lhFpgbOkc15RHjiexfP2aDhg
+    test.token: technician:HM6GlQ4/4AXxoe2ZfZVM2Q==
+    test.adminToken: staff:ssEoVBwJ3rSYnidORQUvhQ==
+    test.coopToken: cooperator:pHpP/b+PYAbZ3bcSs7dqsQ==
+    gm-path: /usr/bin # graphicsMagick工具路径
+
+
+# Tomcat
+server.port: 51234
+
+# Logging level (TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF)
+logging:
+    level:
+        org.hibernate: WARN
+        org.springframework: WARN
+    file: Autobon.log
+
+# spring
+spring:
+    profiles.active: dev
+    freemarker.cache: true
+    resources.cache-period: 7200
+    datasource:
+        url: jdbc:mysql://127.0.0.1:3306/autobon?characterEncoding=utf8&useSSL=false
+        username: root
+        password: 123456
+    jpa:
+        show-sql: true
+        hibernate:
+            # Hibernate DDL  auto: create, create-drop, update, validate
+            ddl-auto: validate
+            naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+            properties:
+                hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+    redis:
+        host: 127.0.0.1
+        port: 6379
