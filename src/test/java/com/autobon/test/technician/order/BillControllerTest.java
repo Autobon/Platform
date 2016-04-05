@@ -55,7 +55,7 @@ public class BillControllerTest extends MvcTest {
         cons.setPayment(520f);
         constructionService.save(cons);
 
-        bill = new Bill(tech.getId(), new SimpleDateFormat("yyyy-MM-dd").parse("2015-7-1"));
+        bill = new Bill(tech.getId(), new SimpleDateFormat("yyyy-MM-dd").parse("2015-6-1"));
         bill.setCount(1);
         bill.setSum(520f);
         billService.save(bill);
