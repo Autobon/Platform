@@ -49,6 +49,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'TechnicianDetailCtrl',
             template  : templateCache.TechnicianDetailCtrl,
         })
+        .state('console.technician.map', {
+            url       : '/map',
+            controller: 'TechnicianMapCtrl',
+            template  : templateCache.TechnicianMapCtrl,
+        })
         .state('console.cooperator', {
             url       : '/cooperator',
             controller: 'CooperatorCtrl',

@@ -48,7 +48,7 @@
                         <td>{{b.technician.name}}</td>
                         <td>{{b.technician.bank}}</td>
                         <td>{{b.technician.bankCardNo}}</td>
-                        <td>{{b.sum}}</td>
+                        <td>￥{{b.sum}}</td>
                         <td>{{b.paid ? '已支付' : '未支付'}}</td>
                         <td>
                             <span ng-if="!b.paid" ng-click="payoff(b)" class="btn btn-xs btn-success m-r-5"><i class="fa fa-rmb"></i>&nbsp;提交支付</span>

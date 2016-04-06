@@ -4,10 +4,13 @@ import com.autobon.order.entity.Bill;
 import com.autobon.order.service.*;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -26,6 +29,7 @@ public class BillController {
     @Autowired BillService billService;
     @Autowired OrderService orderService;
     @Autowired TechnicianService technicianService;
+    @Autowired TechStatService techStatService;
     @Autowired ConstructionService constructionService;
     @Autowired DetailedBillService detailedBillService;
     @Autowired DetailedOrderService detailedOrderService;
@@ -69,6 +73,7 @@ public class BillController {
                 bill.getTechId(), start, end, page, pageSize)));
     }
 
+    @Transactional
     @RequestMapping(value = "/{billId:\\d+}/payoff", method = RequestMethod.POST)
     public JsonMessage setPaid(@PathVariable("billId") int billId) {
         Bill bill = billService.get(billId);
@@ -81,6 +86,11 @@ public class BillController {
         constructionService.batchPayoff(bill.getTechId(), start, end);
         bill.setPaid(true);
         billService.save(bill);
+
+        TechStat techStat = techStatService.getByTechId(bill.getTechId());
+        techStat.setBalance(techStat.getBalance() - bill.getSum());
+        techStat.setUnpaidOrders(techStat.getUnpaidOrders() - bill.getCount());
+        techStatService.save(techStat);
 
         return new JsonMessage(true);
     }
