@@ -291,3 +291,204 @@ POST /api/mobile/coop/pushId
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
 | pushId | 个推ID | 9a05f0154913d57ef537fdf51ffc14bd |
+
+
+## 6.根据主账户查询这个账户下有账户集合
+### URL及请求方法
+POST /api/mobile/coop/getSaleList
+
+### 返回数据
+1.请求成功
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": [
+        {
+            "id": 1,
+            "cooperatorId": 1,
+            "fired": false,
+            "shortname": "Tom",
+            "phone": "13072726003",
+            "name": "Tom",
+            "gender": true,
+            "lastLoginTime": 1425525071000,
+            "lastLoginIp": "192.168.1.1",
+            "createTime": 1425265871000,
+            "pushId": null,
+            "main": true
+        }
+    ]
+}
+
+```
+
+2.该账户不是管理账号
+
+```
+{
+    "result": false,
+    "message": "当前账户不是管理账号",
+    "error": "",
+    "data": null
+}
+
+```
+
+## 7.离职员工信息修改
+### URL及请求方法
+POST /api/mobile/coop/saleFired
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| coopAccountId | 合作商户id | 1 |
+
+### 返回数据
+1.请求成功
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 1,
+        "cooperatorId": 1,
+        "fired": true,
+        "shortname": "Tom",
+        "phone": "13072726003",
+        "name": "Tom",
+        "gender": true,
+        "lastLoginTime": 1425525071000,
+        "lastLoginIp": "192.168.1.1",
+        "createTime": 1425265871000,
+        "pushId": null,
+        "main": true
+    }
+}
+
+```
+
+2.当前账户不是管理账号
+
+```
+{
+    "result": false,
+    "message": "当前账户不是管理账号",
+    "error": "",
+    "data": null
+}
+
+```
+3.商户id不正确
+
+```
+{
+    "result": false,
+    "message": "商户id不正确",
+    "error": "",
+    "data": null
+}}
+
+```
+
+## 8.管理账户添加账户
+### URL及请求方法
+POST /api/mobile/coop/addAccount
+默认密码123456
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| phone | 手机号 | 13072735003 |
+| name | 姓名 | Bush |
+| gender | 性别 | false |
+
+### 返回数据
+1.请求成功
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "id": 2,
+        "cooperatorId": 1,
+        "fired": false,
+        "shortname": null,
+        "phone": "13072735003",
+        "name": "Bush",
+        "gender": false,
+        "lastLoginTime": null,
+        "lastLoginIp": null,
+        "createTime": 1460012722503,
+        "pushId": null,
+        "main": false
+    }
+}
+
+```
+
+2.当前账户不是管理账号
+
+```
+{
+    "result": false,
+    "message": "当前账户不是管理账号",
+    "error": "",
+    "data": null
+}
+
+```
+
+## 9.修改账户密码
+### URL及请求方法
+POST /api/mobile/coop/changeAccountPassword
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| coopAccountId | 合作商户id | 1 |
+| oldPassword | 老密码 | 123456 |
+| newPassword | 修改后的密码 | 123456 |
+
+### 返回数据
+1.请求成功
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": null
+}
+
+```
+
+2.密码至少6位
+
+```
+{
+    "result": false,
+    "message": "密码至少6位",
+    "error": "",
+    "data": null
+}
+
+```
+
+3.原密码错误
+
+```
+{
+    "result": false,
+    "message": "原密码错误",
+    "error": "",
+    "data": null
+}
+
+```
