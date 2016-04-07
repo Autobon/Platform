@@ -392,6 +392,16 @@ POST /api/mobile/coop/saleFired
     "error": "",
     "data": null
 }}
+```
+4.该账户不是你的下属账户
+
+```
+{
+    "result": false,
+    "message": "该账户不是你的下属账户",
+    "error": "",
+    "data": null
+}}
 
 ```
 
@@ -439,6 +449,17 @@ POST /api/mobile/coop/addAccount
 {
     "result": false,
     "message": "当前账户不是管理账号",
+    "error": "",
+    "data": null
+}
+
+```
+3.手机号已存在
+
+```
+{
+    "result": false,
+    "message": "手机号已存在",
     "error": "",
     "data": null
 }
