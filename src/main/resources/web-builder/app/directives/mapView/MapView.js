@@ -1,9 +1,10 @@
 import {Injector} from 'ngES6';
 import angular from 'angular';
 import $ from 'jquery';
+import './map.scss';
 
 export default class MapView extends Injector {
-    static $inject = ['$timeout'];
+    static $inject        = ['$timeout'];
     static MapViewOverlay = class extends window.BMap.Overlay {
         constructor(object, onmouseover, onclick) {
             super();
@@ -16,31 +17,16 @@ export default class MapView extends Injector {
 
         initialize(map) {
             this.map = map;
-            let div  = this.div = $(`<div><span>${this.label}</span><div class="arrow"></div></div>`);
-            div.css({
-                position: 'absolute',
-                border: '1px solid #BC3B3A',
-                color: '#FFF',
-                padding: '2px',
-                'line-height': '18px',
-                'white-space': 'nowrap',
-                'font-size': '14px',
-                'background-color': '#EE5D5B',
-            });
-            $('.arrow', div).css({
-                background: 'url(http://map.baidu.com/fwmap/upload/r/map/fwmap/static/house/images/label.png) no-repeat',
-                position: 'absolute',
-                width: '11px',
-                height: '10px',
-                top: '22px',
-                left: '10px',
-                overflow: 'hidden',
-            });
-            if (this.onmouseover) {
-                div.mouseover(this.onmouseover);
+            let div  = this.div = $(`<div class="mv-marker"><span>${this.label}</span><div class="arrow"></div></div>`);
+            if (this.onmouseover()) {
+                div.mouseover(e => {
+                    this.onclick()(this.data, e);
+                });
             }
-            if (this.onclick) {
-                div.click(this.onclick);
+            if (this.onclick()) {
+                div.click(e => {
+                    this.onclick()(this.data, e);
+                });
             }
             map.getPanes().markerPane.appendChild(div[0]);
             return div[0];
@@ -69,11 +55,11 @@ export default class MapView extends Injector {
         this.replace  = true;
         this.restrict = 'EA';
         this.scope    = {
-            center     : '@',
-            apiKey     : '@',
-            items      : '=',
-            onClick    : '&',
-            onMouseover: '&',
+            center       : '@',
+            apiKey       : '@',
+            items        : '=',
+            itemClick    : '&',
+            itemMouseover: '&',
         };
     }
 
@@ -117,7 +103,7 @@ export default class MapView extends Injector {
             scope.markerClusterer.clearMarkers();
             scope.markers = [];
             scope.items.forEach(i => {
-                scope.markers.push(new MapView.MapViewOverlay(i, scope.onClick, scope.onMouseover));
+                scope.markers.push(new MapView.MapViewOverlay(i, scope.itemMouseover, scope.itemClick));
             });
             scope.markerClusterer = new window.BMapLib.MarkerClusterer(scope.map, {markers: scope.markers});
         } else {
@@ -145,7 +131,7 @@ export default class MapView extends Injector {
 
             scope.markers = [];
             scope.items.forEach(i => {
-                scope.markers.push(new MapView.MapViewOverlay(i, scope.onClick, scope.onMouseover));
+                scope.markers.push(new MapView.MapViewOverlay(i, scope.itemMouseover, scope.itemClick));
             });
             scope.markerClusterer = new window.BMapLib.MarkerClusterer(map, {markers: scope.markers});
         }

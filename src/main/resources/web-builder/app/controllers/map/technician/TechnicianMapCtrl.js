@@ -1,7 +1,8 @@
 import {Injector} from 'ngES6';
+import $ from 'jquery';
 
 export default class TechnicianMapCtrl extends Injector {
-    static $inject = ['$scope', 'Settings', 'TechnicianService'];
+    static $inject = ['$scope', 'Settings', 'TechnicianService', '$uibPopover'];
     static $template = require('./map.html');
 
     constructor(...args) {
@@ -22,5 +23,18 @@ export default class TechnicianMapCtrl extends Injector {
             {lng: 121.554976, lat: 31.251124, label: '上海2'},
             {lng: 121.457240, lat: 31.203694, label: '上海3'},
         ];
+    }
+
+    onItemClick(d, e) {
+        console.log(d.label, e);
+    }
+
+    onItemHover(d, e) {
+        const {$uibPopover} = this.$injected;
+        $uibPopover($(e), {
+            title: 'title',
+            content: 'content',
+            show: true,
+        });
     }
 }
