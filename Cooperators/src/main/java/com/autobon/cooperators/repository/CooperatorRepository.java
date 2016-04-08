@@ -24,4 +24,7 @@ public interface CooperatorRepository extends JpaRepository<Cooperator, Integer>
             "and (?2 is null or c.corporationName = ?2) " +
             "and (?3 is null or c.statusCode = ?3)")
     Page<Cooperator> find(String fullname, String corporationName, Integer statusCode, Pageable p);
+
+    @Query("from Cooperator c where (?1 is null or c.province = ?1) and (?2 is null or c.city = ?2)")
+    Page<Cooperator> findByLocation(String province, String city, Pageable pageable);
 }

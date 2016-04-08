@@ -13,19 +13,22 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CooperatorService {
-    @Autowired
-    private CooperatorRepository cooperatorRepository;
+    @Autowired CooperatorRepository repository;
 
     public Cooperator get(int id){
-        return cooperatorRepository.findOne(id);
+        return repository.findOne(id);
     }
 
     public void save(Cooperator cooperator) {
-        cooperatorRepository.save(cooperator);
+        repository.save(cooperator);
     }
 
     public Page<Cooperator> find(String fullname, String corporationName, Integer statusCode, int page, int pageSize) {
-        return cooperatorRepository.find(fullname, corporationName, statusCode,
+        return repository.find(fullname, corporationName, statusCode,
                 new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
+
+    public Page<Cooperator> findByLocation(String province, String city, int page, int pageSize) {
+        return repository.findByLocation(province, city, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 }

@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS t_location (
   street_number varchar(20) DEFAULT NULL COMMENT '街道号',
   tech_id int(11) DEFAULT NULL COMMENT '技师id',
   PRIMARY KEY (id),
+  key `tech_id` (`tech_id`),
   KEY `province` (`province`),
   KEY `city` (`city`),
   KEY `prov_city` (`province`, `city`),
