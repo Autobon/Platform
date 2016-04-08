@@ -14,29 +14,22 @@ export default class MapView extends Injector {
         }
 
         initialize(map) {
-            const $injector = angular.injector(['ng']);
-            const $compile  = $injector.get('$compile');
-            this.map        = map;
-            let div         = this.div = $($compile(`<div class="mv-marker" ng-click="onClick($event)" ng-mouseenter="onMouseenter($event)"
-                                                            ng-mouseleave="onMouseleave($event)">
-                                                        <span>${this.scope.data.label}</span>
-                                                        <div class="arrow"></div>
-                                                    </div>`)(this.scope));
-            if (this.scope.itemMouseenter) {
-                this.scope.onMouseenter = e => {
-                    this.scope.itemMouseenter(this.scope, e);
-                };
-            }
-            if (this.scope.itemMouseout) {
-                this.scope.onMouseleave = e => {
-                    this.scope.itemMouseleave(this.scope, e);
-                };
-            }
-            if (this.scope.itemClick) {
-                this.scope.onClick = e => {
-                    this.scope.itemClick(this.scope, e);
-                };
-            }
+            const $injector    = angular.injector(['ng']);
+            const $compile     = $injector.get('$compile');
+            const $interpolate = $injector.get('$interpolate');
+            this.map           = map;
+            let template       = this.scope.template || `<div class="mv-marker">
+                                                            <span>★</span>
+                                                            <div class="arrow"></div>
+                                                        </div>`;
+            let div            = this.div = $($compile($interpolate(template)(this.scope))(this.scope));
+            div.click(e => {
+                this.scope.$emit('map.marker.click', e);
+            }).mouseenter(e => {
+                this.scope.$emit('map.marker.mouseenter', e);
+            }).mouseleave(e => {
+                this.scope.$emit('map.marker.mouseleave', e);
+            });
             map.getPanes().markerPane.appendChild(div[0]);
             return div[0];
         }
@@ -64,20 +57,15 @@ export default class MapView extends Injector {
         this.replace  = true;
         this.restrict = 'EA';
         this.scope    = {
-            center        : '@',
-            apiKey        : '@',
-            items         : '=',
-            itemClick     : '&',
-            itemMouseenter: '&',
-            itemMouseleave: '&',
+            center      : '@',
+            apiKey      : '@',
+            items       : '=',
+            itemTemplate: '@',
         };
     }
 
     link(scope, element) {
-        scope.itemClick      = scope.itemClick();
-        scope.itemMouseenter = scope.itemMouseenter();
-        scope.itemMouseleave = scope.itemMouseleave();
-        let mapId            = element.attr('id');
+        let mapId = element.attr('id');
         if (!mapId) {
             mapId = 'map' + Math.random().toString().substr(2);
             element.attr('id', mapId);
@@ -114,11 +102,7 @@ export default class MapView extends Injector {
         if (!scope.items || !scope.items.length) return;
         if (scope.map) {
             scope.markerClusterer.clearMarkers();
-            scope.markers = [];
-            scope.items.forEach(i => {
-                scope.markers.push(new MapView.MapViewOverlay(i, scope.itemMouseover, scope.itemClick));
-            });
-            scope.markerClusterer = new window.BMapLib.MarkerClusterer(scope.map, {markers: scope.markers});
+            this._addMarkers(scope);
         } else {
             let map = scope.map = new window.BMap.Map(mapId);
             map.enableScrollWheelZoom(true);
@@ -141,14 +125,19 @@ export default class MapView extends Injector {
                     resolve();
                 });
             });
-
-            scope.markers = [];
-            scope.items.forEach(i => {
-                let _scope  = scope.$new();
-                _scope.data = i;
-                scope.markers.push(new MapView.MapViewOverlay(_scope));
-            });
-            scope.markerClusterer = new window.BMapLib.MarkerClusterer(map, {markers: scope.markers});
+            // map.centerAndZoom(new window.BMap.Point(114.37306, 30.556143), 5);
+            this._addMarkers(scope);
         }
+    }
+
+    _addMarkers(scope) {
+        scope.markers = [];
+        scope.items.forEach(i => {
+            let _scope      = scope.$new();
+            _scope.data     = i;
+            _scope.template = scope.itemTemplate;
+            scope.markers.push(new MapView.MapViewOverlay(_scope));
+            scope.markerClusterer = new window.BMapLib.MarkerClusterer(scope.map, {markers: scope.markers});
+        });
     }
 }
