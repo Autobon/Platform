@@ -1,5 +1,5 @@
 import {Injector} from 'ngES6';
-import angular from 'angular';
+import moment from 'moment';
 import $ from 'jquery';
 
 export default class TechnicianMapCtrl extends Injector {
@@ -8,26 +8,22 @@ export default class TechnicianMapCtrl extends Injector {
 
     constructor(...args) {
         super(...args);
-        const {$scope} = this.$injected;
+        const {$scope, TechnicianService, Settings} = this.$injected;
         this.attachMethodsTo($scope);
-        $scope.items = [
-            {lng: 114.211221, lat: 30.650637, label: '武汉1'},
-            {lng: 114.292284, lat: 30.645665, label: '武汉2'},
-            {lng: 114.326491, lat: 30.636717, label: '武汉3'},
-            {lng: 114.350638, lat: 30.608375, label: '武汉4'},
-            {lng: 114.350925, lat: 30.601909, label: '武汉5'},
-            {lng: 114.340433, lat: 30.592335, label: '武汉6'},
-            {lng: 116.381359, lat: 39.940228, label: '北京1'},
-            {lng: 116.438850, lat: 39.959698, label: '北京2'},
-            {lng: 116.459547, lat: 39.921196, label: '北京3'},
-            {lng: 121.464139, lat: 31.285694, label: '上海1'},
-            {lng: 121.554976, lat: 31.251124, label: '上海2'},
-            {lng: 121.457240, lat: 31.203694, label: '上海3'},
-        ];
+        $scope.Settings = Settings;
+        TechnicianService.mapLocations().then(res => {
+            if (res.data && res.data.result) {
+                let items = res.data.data.list;
+                items.forEach(i => {
+                    i.label = i.technician.name;
+                });
+                $scope.items = items;
+            }
+        });
     }
 
     onItemClick(scope, evt) {
-        const {$compile, $timeout} = this.$injected;
+        const {$compile, $timeout, $sce} = this.$injected;
         let element = $(evt.target);
         if (!element.hasClass('mv-marker')) {
             $timeout(() => {
@@ -37,12 +33,27 @@ export default class TechnicianMapCtrl extends Injector {
         }
         if (element.data('has-popover')) return;
 
-        element.attr('uib-popover', scope.data.label);
+        scope.getHtml = () => {
+            return scope.popoverHtml;
+        };
+
+        scope.popoverHtml = $sce.trustAsHtml(`
+            <div class="clearfix">
+                <img src="${scope.data.technician.avatar}" class="img-thumbnail pull-left m-r-10 m-b-10" style="width: 60px; height: 60px;">
+                <h3>${scope.data.label}<small class="btn btn-success btn-xs m-l-5">${this.$injected.Settings.technicianStatus[scope.data.technician.status]}</small></h3>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">电话: ${scope.data.technician.phone}</li>
+                <li class="list-group-item">上报时间: ${moment(scope.data.createAt).format('YYYY-MM-DD HH:mm')}</li>
+                <li class="list-group-item">定位: ${scope.data.city + scope.data.district + scope.data.street + scope.data.streetNumber}</li>
+            </ul>`);
+        element.attr('uib-popover-html', 'popoverHtml');
+        // element.attr('uib-popover', 'test');
         element.attr('popover-append-to-body', true);
         element.attr('popover-trigger', 'outsideClick');
         element.attr('popover-placement', 'right');
         element.attr('popover-is-open', true);
-        $compile(element)(angular.element(element).scope());
+        $compile(element)(scope);
         element.data('has-popover', true);
     }
 }

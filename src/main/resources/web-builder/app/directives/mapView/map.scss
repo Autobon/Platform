@@ -29,3 +29,7 @@ $color-marker: #EE5D5B;
     overflow: hidden;
   }
 }
+
+[uib-popover-html-popup].popover {
+  display: block !important;
+}

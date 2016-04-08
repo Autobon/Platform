@@ -123,7 +123,7 @@ public class TechnicianController {
         return new JsonMessage(true, "", "", new JsonPage<>(techLocationService.findByDistinctTech(province, city, page, pageSize)));
     }
 
-    @RequestMapping(value = "/track/{techId:\\d+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/maptrack/{techId:\\d+}", method = RequestMethod.GET)
     public JsonMessage getTechnicianTrack(@PathVariable("techId") int techId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
