@@ -33,10 +33,6 @@ export default class TechnicianMapCtrl extends Injector {
         }
         if (element.data('has-popover')) return;
 
-        scope.getHtml = () => {
-            return scope.popoverHtml;
-        };
-
         scope.popoverHtml = $sce.trustAsHtml(`
             <div class="clearfix">
                 <img src="${scope.data.technician.avatar}" class="img-thumbnail pull-left m-r-10 m-b-10" style="width: 60px; height: 60px;">
@@ -44,11 +40,10 @@ export default class TechnicianMapCtrl extends Injector {
             </div>
             <ul class="list-group">
                 <li class="list-group-item">电话: ${scope.data.technician.phone}</li>
-                <li class="list-group-item">上报时间: ${moment(scope.data.createAt).format('YYYY-MM-DD HH:mm')}</li>
+                <li class="list-group-item">定位时间: ${moment(scope.data.createAt).format('YYYY-MM-DD HH:mm')}</li>
                 <li class="list-group-item">定位: ${scope.data.city + scope.data.district + scope.data.street + scope.data.streetNumber}</li>
             </ul>`);
         element.attr('uib-popover-html', 'popoverHtml');
-        // element.attr('uib-popover', 'test');
         element.attr('popover-append-to-body', true);
         element.attr('popover-trigger', 'outsideClick');
         element.attr('popover-placement', 'right');

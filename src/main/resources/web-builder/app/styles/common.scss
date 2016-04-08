@@ -196,6 +196,9 @@ ul.side-nav-list {
   }
 }
 
+[uib-popover-html-popup].popover {
+  display: block !important;
+}
 
 // baidu map
 .anchorBL{
