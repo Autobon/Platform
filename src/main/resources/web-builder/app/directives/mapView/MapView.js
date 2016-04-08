@@ -36,9 +36,20 @@ export default class MapView extends Injector {
 
         draw() {
             let pixel = this.map.pointToOverlayPixel(this.point);
+            let itemOffset, scope = this.scope;
+
+            if (!scope.offsetX || !scope.offsetY) {
+                if (itemOffset = scope.itemOffset()) {
+                    [scope.offsetX, scope.offsetY] = itemOffset(this.div);
+                } else {
+                    scope.offsetX = -10;
+                    scope.offsetY = -(this.div.height() + 10);
+                }
+            }
+
             this.div.css({
-                left: pixel.x - 10,
-                top : pixel.y - 30,
+                left: pixel.x + scope.offsetX,
+                top : pixel.y + scope.offsetY,
             });
         }
 
@@ -61,6 +72,7 @@ export default class MapView extends Injector {
             apiKey      : '@',
             items       : '=',
             itemTemplate: '@',
+            itemOffset  : '&',
         };
     }
 
