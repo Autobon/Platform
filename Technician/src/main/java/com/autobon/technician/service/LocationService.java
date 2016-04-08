@@ -1,7 +1,7 @@
-package com.autobon.order.service;
+package com.autobon.technician.service;
 
-import com.autobon.order.entity.Location;
-import com.autobon.order.repository.LocationRepository;
+import com.autobon.technician.entity.Location;
+import com.autobon.technician.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

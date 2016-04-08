@@ -1,8 +1,8 @@
 package com.autobon.platform.controller.technician;
 
 
-import com.autobon.order.entity.Location;
-import com.autobon.order.service.LocationService;
+import com.autobon.technician.entity.Location;
+import com.autobon.technician.service.LocationService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.DetailedTechnician;

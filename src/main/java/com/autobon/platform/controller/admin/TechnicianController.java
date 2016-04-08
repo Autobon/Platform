@@ -108,4 +108,10 @@ public class TechnicianController {
         technicianService.save(tech);
         return new JsonMessage(true);
     }
+
+    @RequestMapping(value = "/location", method = RequestMethod.GET)
+    public JsonMessage getTechnicianLocations(@RequestParam(value = "count", defaultValue = "500") int count) {
+
+        return new JsonMessage(true);
+    }
 }
