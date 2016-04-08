@@ -248,6 +248,7 @@ public class CoopAccountController {
         //设置默认密码为123456
         coopAccount.setPassword(CoopAccount.encryptPassword("123456"));
         coopAccount.setCreateTime(new Date());
+        coopAccount.setShortname(coopAccountLogin.getShortname());
         coopAccountService.save(coopAccount);
         return new JsonMessage(true,"","",coopAccount);
     }
