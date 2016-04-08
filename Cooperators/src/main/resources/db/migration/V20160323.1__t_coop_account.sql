@@ -13,8 +13,7 @@ CREATE TABLE IF NOT EXISTS t_coop_account (
   create_time datetime DEFAULT NULL COMMENT '注册时间',
   push_id VARCHAR(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (id),
-  KEY coop_push_id (push_id),
-  UNIQUE KEY uniq_coop_shortname (shortname)
+  KEY coop_push_id (push_id)
 )DEFAULT CHARSET=utf8 COMMENT='合作商户账户表';
 
 insert  into `t_coop_account`(`id`,`cooperator_id`,`is_main`,`fired`,`phone`,`name`,`gender`,`password`,`last_login_time`,`last_login_ip`,`create_time`,push_id,shortname) values (1,1,1,0,'13072726003','Tom',1,'7c4a8d09ca3762af61e59520943dc26494f8941b','2015-03-05 11:11:11','192.168.1.1','2015-03-02 11:11:11',NULL,'Tom');
