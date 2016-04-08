@@ -1,8 +1,9 @@
 import {Injector} from 'ngES6';
+import angular from 'angular';
 import $ from 'jquery';
 
 export default class TechnicianMapCtrl extends Injector {
-    static $inject = ['$scope', 'Settings', 'TechnicianService', '$uibPopover'];
+    static $inject = ['$scope', 'Settings', 'TechnicianService', '$compile', '$timeout', '$sce'];
     static $template = require('./map.html');
 
     constructor(...args) {
@@ -25,16 +26,23 @@ export default class TechnicianMapCtrl extends Injector {
         ];
     }
 
-    onItemClick(d, e) {
-        console.log(d.label, e);
-    }
+    onItemClick(scope, evt) {
+        const {$compile, $timeout} = this.$injected;
+        let element = $(evt.target);
+        if (!element.hasClass('mv-marker')) {
+            $timeout(() => {
+                element.closest('.mv-marker').click();
+            });
+            return;
+        }
+        if (element.data('has-popover')) return;
 
-    onItemHover(d, e) {
-        const {$uibPopover} = this.$injected;
-        $uibPopover($(e), {
-            title: 'title',
-            content: 'content',
-            show: true,
-        });
+        element.attr('uib-popover', scope.data.label);
+        element.attr('popover-append-to-body', true);
+        element.attr('popover-trigger', 'outsideClick');
+        element.attr('popover-placement', 'right');
+        element.attr('popover-is-open', true);
+        $compile(element)(angular.element(element).scope());
+        element.data('has-popover', true);
     }
 }

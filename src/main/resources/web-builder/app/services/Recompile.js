@@ -15,6 +15,7 @@ export default class Recompile extends Injector {
         Object.keys(attr).forEach(k => {
             _element.attr(k, attr[k]);
         });
-        _element.replaceWith($compile(_element[0].outerHTML)(angular.element(element).scope()));
+        $compile(_element)(angular.element(element).scope());
+        // _element.replaceWith($compile(_element[0].outerHTML)(angular.element(element).scope()));
     }
 }
