@@ -188,7 +188,6 @@ public class CoopAccountController {
 
     @RequestMapping(value = "/getSaleList",method = RequestMethod.POST)
     public JsonMessage getSaleList(HttpServletRequest request) throws Exception{
-        //Cooperator cooperator = (Cooperator)request.getAttribute("user");
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         if(!coopAccount.isMain()){
             return  new JsonMessage(false,"当前账户不是管理账号");
@@ -199,17 +198,26 @@ public class CoopAccountController {
     }
 
     @RequestMapping(value = "/saleFired",method = RequestMethod.POST)
-    public JsonMessage saleFired(@RequestParam("coopAccountId") int coopAccountId) throws Exception{
-        CoopAccount coopAccount = coopAccountService.getById(coopAccountId);
+    public JsonMessage saleFired(@RequestParam("coopAccountId") int coopAccountId,HttpServletRequest request) throws Exception{
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        CoopAccount coopAccountFired = coopAccountService.getById(coopAccountId);
+
         if(!coopAccount.isMain()){
             return  new JsonMessage(false,"当前账户不是管理账号");
         }
-        if(coopAccount!=null){
-            coopAccount.setFired(true);
-            coopAccountService.save(coopAccount);
-            return new JsonMessage(true,"","",coopAccount);
+        if(coopAccountFired!=null){
+
+            int mainId = coopAccount.getId();
+            int coopId = coopAccountFired.getCooperatorId();
+            if(mainId != coopId){
+                return new JsonMessage(false,"该账户不是你的下属账户");
+            }
+
+            coopAccountFired.setFired(true);
+            coopAccountService.save(coopAccountFired);
+            return new JsonMessage(true,"","",coopAccountFired);
         }else{
-            return  new JsonMessage(false,"商户id不正确");
+            return  new JsonMessage(false,"商户账户id不正确");
         }
     }
 
@@ -223,6 +231,12 @@ public class CoopAccountController {
         if(!coopAccountLogin.isMain()){
             return  new JsonMessage(false,"当前账户不是管理账号");
         }
+
+        CoopAccount coopAccountP = coopAccountService.getByPhone(phone);
+        if (coopAccountP != null) {
+            return  new JsonMessage(false,"手机号已存在");
+        }
+
         int coopId = coopAccountLogin.getCooperatorId();
         //Cooperator cooperator = (Cooperator)request.getAttribute("user");
         //int coopId = cooperator.getId();
@@ -234,6 +248,7 @@ public class CoopAccountController {
         //设置默认密码为123456
         coopAccount.setPassword(CoopAccount.encryptPassword("123456"));
         coopAccount.setCreateTime(new Date());
+        coopAccount.setShortname(coopAccountLogin.getShortname());
         coopAccountService.save(coopAccount);
         return new JsonMessage(true,"","",coopAccount);
     }
