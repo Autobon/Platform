@@ -66,6 +66,8 @@ public class Order {
 
     @Column private int creatorId;
 
+    @Column private int coopId;
+
     @Column private String creatorName;
 
     @Column private String contactPhone;
@@ -169,6 +171,14 @@ public class Order {
 
     public void setCreatorId(int creatorId) {
         this.creatorId = creatorId;
+    }
+
+    public int getCoopId() {
+        return coopId;
+    }
+
+    public void setCoopId(int coopId) {
+        this.coopId = coopId;
     }
 
     public String getCreatorName() {

@@ -159,6 +159,7 @@ public class OrderController {
         Order order = new Order();
         order.setCreatorType(1);
         order.setCreatorId(coopAccount.getId());
+        order.setCoopId(coopId);
         order.setCreatorName(coopAccount.getShortname());
         order.setPhoto(photo);
         order.setRemark(remark);
@@ -211,33 +212,45 @@ public class OrderController {
     public JsonMessage listUnfinished(HttpServletRequest request,
                                       @RequestParam(value = "page", defaultValue = "1") int page,
                                       @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        //Cooperator cooperator = (Cooperator) request.getAttribute("user");
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
-        return new JsonMessage(true, "", "",
-                new JsonPage<>(detailedOrderService.findUnfinishedByCoopId(coopAccount.getId(), page, pageSize)));
-
+        Boolean isMain = coopAccount.isMain();
+        if(isMain){
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(detailedOrderService.findUnfinishedByCooperatorId(coopAccount.getCooperatorId(), page, pageSize)));
+        }else {
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(detailedOrderService.findUnfinishedByCoopId(coopAccount.getId(), page, pageSize)));
+        }
     }
 
     @RequestMapping(value="/listFinished",method = RequestMethod.POST)
     public JsonMessage listFinished(HttpServletRequest request,
                                       @RequestParam(value = "page", defaultValue = "1") int page,
                                       @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        //Cooperator cooperator = (Cooperator) request.getAttribute("user");
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
-        return new JsonMessage(true, "", "",
-                new JsonPage<>(detailedOrderService.findFinishedByCoopId(coopAccount.getId(), page, pageSize)));
-
+        Boolean isMain = coopAccount.isMain();
+        if(isMain){
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(detailedOrderService.findFinishedByCooperatorId(coopAccount.getCooperatorId(), page, pageSize)));
+        }else {
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(detailedOrderService.findFinishedByCoopId(coopAccount.getId(), page, pageSize)));
+        }
     }
 
     @RequestMapping(value="/listUncomment",method = RequestMethod.POST)
     public JsonMessage listUncomment(HttpServletRequest request,
                                       @RequestParam(value = "page", defaultValue = "1") int page,
                                       @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        //Cooperator cooperator = (Cooperator) request.getAttribute("user");
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
-        return new JsonMessage(true, "", "",
-                new JsonPage<>(detailedOrderService.findUncommentByCoopId(coopAccount.getId(), page, pageSize)));
-
+        Boolean isMain = coopAccount.isMain();
+        if(isMain){
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(detailedOrderService.findUncommentByCooperatorId(coopAccount.getCooperatorId(), page, pageSize)));
+        }else {
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(detailedOrderService.findUncommentByCoopId(coopAccount.getId(), page, pageSize)));
+        }
     }
 
     @RequestMapping(value="/orderCount",method = RequestMethod.POST)
