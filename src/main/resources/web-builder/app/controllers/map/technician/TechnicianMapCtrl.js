@@ -13,91 +13,11 @@ export default class TechnicianMapCtrl extends Injector {
         this.attachMethodsTo($scope);
         $scope.Settings     = Settings;
 
-        let items           = {
-            "result" : true,
-            "message": "",
-            "error"  : "",
-            "data"   : {
-                "page"         : 1,
-                "totalElements": 2,
-                "totalPages"   : 1,
-                "pageSize"     : 300,
-                "count"        : 2,
-                "list"         : [{
-                    "id"          : 2,
-                    "createAt"    : 1459958400000,
-                    "lng"         : "114.287685",
-                    "lat"         : "30.639203",
-                    "province"    : "湖北省",
-                    "city"        : "武汉市",
-                    "district"    : "江岸区",
-                    "street"      : "软件园中路",
-                    "streetNumber": "188号",
-                    "technician"  : {
-                        "id"             : 2,
-                        "phone"          : "18812345670",
-                        "name"           : "tom2",
-                        "gender"         : null,
-                        "avatar"         : "http://bbs.ruideppt.com/data/attachment/forum/201104/11/12091175gjmmzmi992nk8y.jpg",
-                        "idNo"           : "422302198608266313",
-                        "idPhoto"        : "/etc/a.jpg",
-                        "bank"           : "工商银行",
-                        "bankAddress"    : "光谷",
-                        "bankCardNo"     : "88888888888",
-                        "verifyAt"       : null,
-                        "requestVerifyAt": null,
-                        "verifyMsg"      : null,
-                        "lastLoginAt"    : 1456195103000,
-                        "lastLoginIp"    : "127.0.0.1",
-                        "createAt"       : 1455724800000,
-                        "skill"          : "1",
-                        "pushId"         : null,
-                        "status"         : "NEWLY_CREATED"
-                    }
-                }, {
-                    "id"          : 1,
-                    "createAt"    : 1460044800000,
-                    "lng"         : "114.37306",
-                    "lat"         : "30.556143",
-                    "province"    : "湖北省",
-                    "city"        : "武汉市",
-                    "district"    : "洪山区",
-                    "street"      : null,
-                    "streetNumber": null,
-                    "technician"  : {
-                        "id"             : 1,
-                        "phone"          : "18812345678",
-                        "name"           : "tom",
-                        "gender"         : null,
-                        "avatar"         : "\nhttp://bbs.ruideppt.com/data/attachment/forum/201104/11/12091175gjmmzmi992nk8y.jpg",
-                        "idNo"           : "422302198608266313",
-                        "idPhoto"        : "/etc/a.jpg",
-                        "bank"           : "工商银行",
-                        "bankAddress"    : "光谷",
-                        "bankCardNo"     : "88888888888",
-                        "verifyAt"       : null,
-                        "requestVerifyAt": null,
-                        "verifyMsg"      : null,
-                        "lastLoginAt"    : 1456195103000,
-                        "lastLoginIp"    : "127.0.0.1",
-                        "createAt"       : 1455724800000,
-                        "skill"          : "1",
-                        "pushId"         : null,
-                        "status"         : "NEWLY_CREATED"
-                    }
-                }]
+        TechnicianService.mapLocations().then(res => {
+            if (res.data && res.data.result) {
+                $scope.items = res.data.data.list;
             }
-        }.data.list;
-        $scope.items = items;
-        // TechnicianService.mapLocations().then(res => {
-        //     if (res.data && res.data.result) {
-        //         let items = res.data.data.list;
-        //         items.forEach(i => {
-        //             i.label = i.technician.name;
-        //         });
-        //         $scope.items = items;
-        //     }
-        // });
+        });
         $scope.itemTemplate = $sce.trustAsHtml(`<div class="mv-marker" style="text-align: center;">
                                                     <img src="{{data.technician.avatar}}" style="width: 50px; height: 50px; border: 1px solid rgba(0,0,0,.2); border-radius: 10px;"><br>
                                                     <span>{{data.technician.name}}</span>

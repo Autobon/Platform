@@ -96,7 +96,7 @@ public class CooperatorController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "300") int pageSize) {
         if (pageSize > 500) pageSize = 500;
-        return new JsonMessage(true, "", "", cooperatorService.findByLocation(province, city, page, pageSize));
+        return new JsonMessage(true, "", "", new JsonPage<>(cooperatorService.findByLocation(province, city, page, pageSize)));
     }
 
     @RequestMapping(value = "/update/{coopId:[\\d]+}", method = RequestMethod.POST)

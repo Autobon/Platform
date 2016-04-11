@@ -14,7 +14,7 @@ export default class Main extends Injector {
     }
 
     onclick(e) {
-        const {$scope, LoginService, Recompile} = this.$injected;
+        const {$scope, LoginService} = this.$injected;
 
         $(e.target).text('hello [' + [$scope.counter++, this.counter++] + ']');
         LoginService.login('18827075338', '123456').success(data => {

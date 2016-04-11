@@ -39,7 +39,8 @@ export default class MapView extends Injector {
             let itemOffset, scope = this.scope;
 
             if (!scope.offsetX || !scope.offsetY) {
-                if (itemOffset = scope.itemOffset()) {
+                itemOffset = scope.itemOffset();
+                if (itemOffset) {
                     [scope.offsetX, scope.offsetY] = itemOffset(this.div);
                 } else {
                     scope.offsetX = -10;

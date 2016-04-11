@@ -17,4 +17,9 @@ export default class CooperatorService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/cooperator/verify/' + id, {verified: verified, remark: verifyMsg});
     }
+
+    mapLocations(province, city, page, pageSize) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/cooperator/mapview', {params: {province: province, city: city, page: page, pageSize: pageSize}});
+    }
 }

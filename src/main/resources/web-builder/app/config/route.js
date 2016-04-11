@@ -70,7 +70,7 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.BillOrderCtrl,
         })
         .state('console.map', {
-            url: '/map',
+            url     : '/map',
             abstract: true,
             template: '<div ui-view style="display: table-cell;"></div>',
         })
@@ -78,6 +78,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             url       : '/technician',
             controller: 'TechnicianMapCtrl',
             template  : templateCache.TechnicianMapCtrl,
+        })
+        .state('console.map.cooperator', {
+            url       : '/cooperator',
+            controller: 'CooperatorMapCtrl',
+            template  : templateCache.CooperatorMapCtrl,
         })
         .state('console.main', {
             url       : '/main',

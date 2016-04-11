@@ -24,4 +24,4 @@ CREATE TABLE `t_cooperators` (
   PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8 COMMENT='合作商户表';
 
-insert into `t_cooperators` (`id`, `fullname`, `business_license`, `corporation_name`, `corporation_id_no`, `bussiness_license_pic`, `corporation_id_pic_a`, `corporation_id_pic_b`, `longitude`, `latitude`, `invoice_header`, `tax_id_no`, `postcode`, `province`, `city`, `district`, `address`, `contact`, `contact_phone`, `create_time`,status_code,order_num) values('1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'13072705000','2016-03-11 14:18:53','1',2);
+insert into `t_cooperators` (`id`, `fullname`, `business_license`, `corporation_name`, `corporation_id_no`, `bussiness_license_pic`, `corporation_id_pic_a`, `corporation_id_pic_b`, `longitude`, `latitude`, `invoice_header`, `tax_id_no`, `postcode`, `province`, `city`, `district`, `address`, `contact`, `contact_phone`, `create_time`,status_code,order_num) values('1','非常历害的公司',NULL,'王大拿',NULL,NULL,NULL,NULL,'114.287685','30.639203',NULL,NULL,NULL,'湖北省','武汉市','洪山区','软件园中路','王大拿','13072705000','2016-03-11 14:18:53','1',2);
