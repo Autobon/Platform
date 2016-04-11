@@ -5,13 +5,13 @@
     <form class="form-inline pull-left">
         <div class="form-group">
             <label>接收人:</label>
-            <label class="raio-inline"><input type="radio" name="sendTo" ng-model="filter.sendTo" value="1"> 所有技师</label>
-            <label class="raio-inline"><input type="radio" name="sendTo" ng-model="filter.sendTo" value="2"> 所有商户</label>
+            <label class="radio-inline"><input type="radio" name="sendTo" ng-model="filter.sendTo" value="1"> 所有技师</label>
+            <label class="radio-inline"><input type="radio" name="sendTo" ng-model="filter.sendTo" value="2"> 所有商户</label>
         </div>
         <div class="form-group m-l-20 m-r-20">
             <label>发送状态:</label>
-            <label class="raio-inline"><input type="radio" name="status" ng-model="filter.status" value="0"> 未发送</label>
-            <label class="raio-inline"><input type="radio" name="status" ng-model="filter.status" value="1"> 已发送</label>
+            <label class="radio-inline"><input type="radio" name="status" ng-model="filter.status" value="0"> 未发送</label>
+            <label class="radio-inline"><input type="radio" name="status" ng-model="filter.status" value="1"> 已发送</label>
         </div>
         <button class="btn btn-primary" ng-click="getMessages()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
         <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
@@ -32,8 +32,8 @@
                 <td>{{m.title}}</td>
                 <td>{{['未发送', '已发送'][m.status]}}</td>
                 <td>
-                    <span ng-if="!b.paid" ng-click="payoff(b)" class="btn btn-xs btn-success m-r-5"><i class="fa fa-rmb"></i>&nbsp;提交支付</span>
-                    <a href ng-click="onEdit(m)"><i class="fa fa-list"></i>&nbsp;明细</a>
+                    <span ng-if="m.status == 0" ng-click="publish(m)" class="btn btn-xs btn-success m-r-5"><i class="glyphicon glyphicon-share-alt"></i>&nbsp;立即发布</span>
+                    <a class="btn btn-default btn-xs" href ng-click="onEdit(m)"><i class="fa fa-list"></i>&nbsp;详细</a>
                 </td>
             </tr>
             </tbody>

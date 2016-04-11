@@ -1,21 +1,27 @@
-<div class="container-fluid m-l-40 m-r-40">
-    <div class="page-header"><h3>添加通知消息</h3></div>
+<div class="modal-header">
+    <button type="button" class="close" ng-click="modal.close()">&times;</button>
+    <h3 class="modal-title">添加通知消息</h3>
+</div>
+<div class="modal-body">
     <form class="form-horizontal" name="form">
         <div class="form-group">
             <label class="col-sm-2 control-label">发送给:</label>
-            <label class="raio-inline"><input type="radio" name="sendTo" ng-model="message.sendTo" value="1"> 所有技师</label>
-            <label class="raio-inline"><input type="radio" name="sendTo" ng-model="message.sendTo" value="2"> 所有商户</label>
+            <div class="col-sm-10">
+                <label class="radio-inline"><input type="radio" name="sendTo" required ng-model="message.sendTo" value="1" ng-disabled="message.status"> 所有技师</label>
+                <label class="radio-inline"><input type="radio" name="sendTo" required ng-model="message.sendTo" value="2" ng-disabled="message.status"> 所有商户</label>
+            </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">标题:</label>
-            <div class="col-sm-10"><input type="text" required ng-model="message.title" class="form-control"></div>
+            <div class="col-sm-10"><input type="text" required ng-model="message.title" class="form-control" ng-disabled="message.status"></div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">内容:</label>
-            <div class="col-sm-10"><textarea class="form-control" ng-model="message.content"></textarea></div>
+            <div class="col-sm-10"><textarea class="form-control" rows="5" required ng-model="message.content" ng-disabled="message.status"></textarea></div>
         </div>
+        <hr>
         <div class="form-group">
-            <div class="col-sm-10 col-sm-offset-2"><input type="button" class="btn btn-primary p-l-20 p-r-20" ng-disabled="form.$invalid" ng-click="save()" value="提 交"></div>
-        </div>
+        <div class="col-sm-10 col-sm-offset-2"><input type="button" class="btn btn-primary p-l-20 p-r-20" ng-disabled="message.status || form.$invalid" ng-click="save()" value="提 交"></div>
+    </div>
     </form>
 </div>

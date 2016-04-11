@@ -175,6 +175,17 @@ ul.side-nav-list {
 .modal-header {
   padding: 5px 15px;
   border-bottom: 3px solid $color-primary;
+  .modal-title {
+    font-size: 20px;
+    line-height: 40px;
+  }
+  .close {
+    line-height: 40px;
+    font-size: 40px;
+    font-weight: normal;
+    color: #D00;
+    opacity: 1;
+  }
 }
 
 .img-thumbnail {

@@ -55,14 +55,13 @@ export default class MessageCtrl extends Injector {
 
     onEdit(message) {
         const {$scope} = this.$injected;
-        $scope.message = message;
+        $scope.message = angular.copy(message);
         this.openModal();
     }
 
     openModal() {
         const {$scope, $uibModal} = this.$injected;
         $scope.modal = $uibModal.open({
-            size      : 'lg',
             scope     : $scope,
             template  : MessageEditorCtrl.$template,
             controller: MessageEditorCtrl,

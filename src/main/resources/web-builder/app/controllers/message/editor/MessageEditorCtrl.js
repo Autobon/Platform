@@ -1,23 +1,13 @@
 import {Injector} from 'ngES6';
 
 export default class MessageEditorCtrl extends Injector {
-    static $inject = ['$scope', 'MessageService', '$stateParams'];
+    static $inject = ['$scope', 'MessageService'];
     static $template = require('./editor.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, MessageService} = this.$injected;
+        const {$scope} = this.$injected;
         this.attachMethodsTo($scope);
-
-        if ($stateParams.id) {
-            MessageService.getDetail($stateParams.id).then(res => {
-                if (res.data && res.data.result) {
-                    $scope.message = res.data.data;
-                }
-            });
-        } else {
-            $scope.message = {};
-        }
     }
 
     save() {
