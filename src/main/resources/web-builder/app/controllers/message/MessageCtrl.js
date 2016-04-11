@@ -37,6 +37,7 @@ export default class MessageCtrl extends Injector {
         this.$injected.MessageService.publish(message.id).then(res => {
             if (res.data && res.data.result) {
                 message.status = 1;
+                message.publishTime = new Date();
             }
         });
     }
