@@ -48,7 +48,7 @@ public class MessageController {
         Message message = new Message();
         message.setTitle(title);
         message.setContent(content);
-        message.setSendto(sendTo);
+        message.setSendTo(sendTo);
         Message msg = messageService.save(message);
         return new JsonMessage(true, "", "添加成功", msg);
     }
@@ -65,7 +65,7 @@ public class MessageController {
 
         message.setTitle(title);
         message.setContent(content);
-        message.setSendto(sendTo);
+        message.setSendTo(sendTo);
         messageService.save(message);
         return new JsonMessage(true);
     }
@@ -85,7 +85,7 @@ public class MessageController {
             map.put("message", msg);
             map.put("title", msg.getTitle());
             boolean pushResult;
-            if (msg.getSendto() == 1) {
+            if (msg.getSendTo() == 1) {
                 pushResult = pushServiceA.pushToApp(msg.getTitle(), new ObjectMapper().writeValueAsString(map), 72 * 3600);
             } else {
                 pushResult = pushServiceB.pushToApp(msg.getTitle(), new ObjectMapper().writeValueAsString(map), 72 * 3600);

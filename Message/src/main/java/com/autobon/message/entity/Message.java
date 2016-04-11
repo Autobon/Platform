@@ -17,7 +17,7 @@ public class Message {
 
     @Column private String content; // 月帐所属的年,月
 
-    @Column private int sendto; //发送目标: 1 技师端, 2 合作商户
+    @Column private int sendTo; //发送目标: 1 技师端, 2 合作商户
 
     @Column private Date createTime;
 
@@ -62,12 +62,12 @@ public class Message {
         this.content = content;
     }
 
-    public int getSendto() {
-        return sendto;
+    public int getSendTo() {
+        return sendTo;
     }
 
-    public void setSendto(int sendto) {
-        this.sendto = sendto;
+    public void setSendTo(int sendTo) {
+        this.sendTo = sendTo;
     }
 
     public Date getCreateTime() {

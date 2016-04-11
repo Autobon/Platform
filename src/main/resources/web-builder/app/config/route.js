@@ -84,6 +84,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'CooperatorMapCtrl',
             template  : templateCache.CooperatorMapCtrl,
         })
+        .state('console.message', {
+            url       : '/message',
+            controller: 'MessageCtrl',
+            template  : templateCache.MessageCtrl,
+        })
         .state('console.main', {
             url       : '/main',
             controller: 'Main',

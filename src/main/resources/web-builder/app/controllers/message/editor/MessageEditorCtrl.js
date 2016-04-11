@@ -1,5 +1,4 @@
 import {Injector} from 'ngES6';
-import angular from 'angular';
 
 export default class MessageEditorCtrl extends Injector {
     static $inject = ['$scope', 'MessageService', '$stateParams'];
@@ -8,6 +7,7 @@ export default class MessageEditorCtrl extends Injector {
     constructor(...args) {
         super(...args);
         const {$scope, $stateParams, MessageService} = this.$injected;
+        this.attachMethodsTo($scope);
 
         if ($stateParams.id) {
             MessageService.getDetail($stateParams.id).then(res => {
