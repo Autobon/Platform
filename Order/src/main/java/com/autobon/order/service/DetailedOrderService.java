@@ -69,4 +69,19 @@ public class DetailedOrderService {
     public long findCountByCreatorId(int coopAccountId) {
         return repository.countByCreatorIdAndCreatorType(coopAccountId, 1);
     }
+
+    public Page<DetailedOrder> findUnfinishedByCooperatorId(int cooperatorId, int page, int pageSize) {
+        return repository.findUnfinishedByCooperatorId(cooperatorId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public Page<DetailedOrder> findFinishedByCooperatorId(int cooperatorId, int page, int pageSize) {
+        return repository.findFinishedByCooperatorId(cooperatorId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public Page<DetailedOrder> findUncommentByCooperatorId(int cooperatorId, int page, int pageSize) {
+        return repository.findUncommentByCooperatorId(cooperatorId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
 }
