@@ -216,10 +216,10 @@ public class OrderController {
         Boolean isMain = coopAccount.isMain();
         if(isMain){
             return new JsonMessage(true, "", "",
-                    new JsonPage<>(detailedOrderService.findUnfinishedByCooperatorId(coopAccount.getCooperatorId(), page, pageSize)));
+                    new JsonPage<>(detailedOrderService.findUnfinishedByCoopId(coopAccount.getCooperatorId(), page, pageSize)));
         }else {
             return new JsonMessage(true, "", "",
-                    new JsonPage<>(detailedOrderService.findUnfinishedByCoopId(coopAccount.getId(), page, pageSize)));
+                    new JsonPage<>(detailedOrderService.findUnfinishedByCoopAccountId(coopAccount.getId(), page, pageSize)));
         }
     }
 
@@ -231,10 +231,10 @@ public class OrderController {
         Boolean isMain = coopAccount.isMain();
         if(isMain){
             return new JsonMessage(true, "", "",
-                    new JsonPage<>(detailedOrderService.findFinishedByCooperatorId(coopAccount.getCooperatorId(), page, pageSize)));
+                    new JsonPage<>(detailedOrderService.findFinishedByCoopId(coopAccount.getCooperatorId(), page, pageSize)));
         }else {
             return new JsonMessage(true, "", "",
-                    new JsonPage<>(detailedOrderService.findFinishedByCoopId(coopAccount.getId(), page, pageSize)));
+                    new JsonPage<>(detailedOrderService.findFinishedByCoopAccountId(coopAccount.getId(), page, pageSize)));
         }
     }
 
@@ -246,10 +246,10 @@ public class OrderController {
         Boolean isMain = coopAccount.isMain();
         if(isMain){
             return new JsonMessage(true, "", "",
-                    new JsonPage<>(detailedOrderService.findUncommentByCooperatorId(coopAccount.getCooperatorId(), page, pageSize)));
+                    new JsonPage<>(detailedOrderService.findUncommentByCoopId(coopAccount.getCooperatorId(), page, pageSize)));
         }else {
             return new JsonMessage(true, "", "",
-                    new JsonPage<>(detailedOrderService.findUncommentByCoopId(coopAccount.getId(), page, pageSize)));
+                    new JsonPage<>(detailedOrderService.findUncommentByCoopAccountId(coopAccount.getId(), page, pageSize)));
         }
     }
 

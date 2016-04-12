@@ -31,23 +31,23 @@ public interface DetailedOrderRepository extends JpaRepository<DetailedOrder, In
     Page<DetailedOrder> findBetweenByTechId(int techId, Date start, Date end, Pageable pageable);
 
     @Query("from DetailedOrder o where o.creatorId = ?1  and o.statusCode < 60 and o.creatorType = 1")
-    Page<DetailedOrder> findUnfinishedByCoopId(int coopId, Pageable pageable);
+    Page<DetailedOrder> findUnfinishedByCoopAccountId(int creatorId, Pageable pageable);
 
     @Query("from DetailedOrder o where o.creatorId = ?1  and o.statusCode >= 60 and o.creatorType = 1")
-    Page<DetailedOrder> findFinishedByCoopId(int coopId, Pageable pageable);
+    Page<DetailedOrder> findFinishedByCoopAccountId(int creatorId, Pageable pageable);
 
 
     @Query("from DetailedOrder o where o.creatorId = ?1  and o.statusCode = 60 and o.creatorType = 1")
-    Page<DetailedOrder> findUncommentByCoopId(int coopId, Pageable pageable);
+    Page<DetailedOrder> findUncommentByCoopAccountId(int creatorId, Pageable pageable);
 
     long countByCreatorIdAndCreatorType(int creatorId,int creatorType);
 
     @Query("from DetailedOrder o where o.coopId = ?1  and o.statusCode < 60 and o.creatorType = 1")
-    Page<DetailedOrder> findUnfinishedByCooperatorId(int cooperatorId, Pageable pageable);
+    Page<DetailedOrder> findUnfinishedByCoopId(int coopId, Pageable pageable);
 
     @Query("from DetailedOrder o where o.coopId = ?1  and o.statusCode >= 60 and o.creatorType = 1")
-    Page<DetailedOrder> findFinishedByCooperatorId(int cooperatorId, Pageable pageable);
+    Page<DetailedOrder> findFinishedByCoopId(int coopId, Pageable pageable);
 
     @Query("from DetailedOrder o where o.coopId = ?1  and o.statusCode = 60 and o.creatorType = 1")
-    Page<DetailedOrder> findUncommentByCooperatorId(int cooperatorId, Pageable pageable);
+    Page<DetailedOrder> findUncommentByCoopId(int coopId, Pageable pageable);
 }

@@ -51,6 +51,25 @@ public class DetailedOrderService {
                 new Sort(Sort.Direction.DESC, "id")));
     }
 
+    public Page<DetailedOrder> findUnfinishedByCoopAccountId(int creatorId, int page, int pageSize) {
+        return repository.findUnfinishedByCoopAccountId(creatorId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public Page<DetailedOrder> findFinishedByCoopAccountId(int creatorId, int page, int pageSize) {
+        return repository.findFinishedByCoopAccountId(creatorId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public Page<DetailedOrder> findUncommentByCoopAccountId(int creatorId, int page, int pageSize) {
+        return repository.findUncommentByCoopAccountId(creatorId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public long findCountByCreatorId(int coopAccountId) {
+        return repository.countByCreatorIdAndCreatorType(coopAccountId, 1);
+    }
+
     public Page<DetailedOrder> findUnfinishedByCoopId(int coopId, int page, int pageSize) {
         return repository.findUnfinishedByCoopId(coopId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
@@ -63,25 +82,6 @@ public class DetailedOrderService {
 
     public Page<DetailedOrder> findUncommentByCoopId(int coopId, int page, int pageSize) {
         return repository.findUncommentByCoopId(coopId, new PageRequest(page - 1, pageSize,
-                new Sort(Sort.Direction.DESC, "id")));
-    }
-
-    public long findCountByCreatorId(int coopAccountId) {
-        return repository.countByCreatorIdAndCreatorType(coopAccountId, 1);
-    }
-
-    public Page<DetailedOrder> findUnfinishedByCooperatorId(int cooperatorId, int page, int pageSize) {
-        return repository.findUnfinishedByCooperatorId(cooperatorId, new PageRequest(page - 1, pageSize,
-                new Sort(Sort.Direction.DESC, "id")));
-    }
-
-    public Page<DetailedOrder> findFinishedByCooperatorId(int cooperatorId, int page, int pageSize) {
-        return repository.findFinishedByCooperatorId(cooperatorId, new PageRequest(page - 1, pageSize,
-                new Sort(Sort.Direction.DESC, "id")));
-    }
-
-    public Page<DetailedOrder> findUncommentByCooperatorId(int cooperatorId, int page, int pageSize) {
-        return repository.findUncommentByCooperatorId(cooperatorId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
     }
 }

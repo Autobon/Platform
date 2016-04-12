@@ -7,12 +7,14 @@
 6. [邀请合作人](doc/1-6-invite.md)
 7. [推送消息](doc/1-7-push.md)
 8. [帐单](doc/1-8-bill.md)
+9. [通知消息](doc/1-9-message.md)
 
 # 合作商户端
 1. [帐户及登录](doc/3-1-account.md)
 2. [订单](doc/3-2-order.md)
 3. [合作商户](doc/3-3-cooper.md)
 4. [技师](doc/3-4-technician.md)
+5. [通知消息](doc/3-5-message.md)
 
 
 # 后台端API
