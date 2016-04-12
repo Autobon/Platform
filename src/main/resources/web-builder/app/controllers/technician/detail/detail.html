@@ -33,9 +33,13 @@
         <div class="col-sm-12"><b>认证消息: </b><span>{{technician.verifyMsg}}</span></div>
     </div>
     <div class="row m-t-15 m-l-0">
-        <div class="col-sm-12">
-            <b class="pull-left">身份证照:&nbsp;</b>
-            <img ng-if="technician.idPhoto" image-modal resize="250," ng-src="{{technician.idPhoto}}" class="img-thumbnail">
+        <div class="col-sm-4">
+            <b>身份证照:</b><br>
+            <img ng-if="technician.idPhoto" image-modal ng-src="{{technician.idPhoto}}" class="img-thumbnail">
+        </div>
+        <div class="col-sm-8">
+            <b>位置记录:</b><br>
+            <map-track style="height: 300px; border-radius: 4px; border: 1px solid #cabe9c;"></map-track>
         </div>
     </div>
 </div>

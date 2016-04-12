@@ -78,29 +78,28 @@ export default class MapView extends Injector {
     }
 
     link(scope, element) {
+        window.scope = scope;
         let mapId = element.attr('id');
         if (!mapId) {
             mapId = 'map' + Math.random().toString().substr(2);
             element.attr('id', mapId);
         }
-        scope.items = [];
 
         if (scope.apiKey) {
             const callback = 'mapcb' + Math.random().toString().substr(2);
             $('body').append($(`<script src="http://api.map.baidu.com/api?v=2.0&ak=${scope.apiKey}&callback=${callback}"></script>`));
             window[callback] = () => {
-                this._showItems(scope, mapId);
+                this._showMap(scope, mapId);
             };
         } else {
             this.$injected.$timeout(() => {
-                this._showItems(scope, mapId);
+                this._showMap(scope, mapId);
             });
         }
     }
 
-    async _showItems(scope, mapId) {
-        let items = [];
-        angular.copy(scope.items, items);
+    async _showMap(scope, mapId) {
+        let items = angular.copy(scope.items, items);
 
         let map = scope.map = new window.BMap.Map(mapId);
         map.enableScrollWheelZoom(true);
@@ -137,7 +136,7 @@ export default class MapView extends Injector {
 
     _addMarkers(scope) {
         scope.markers = [];
-        scope.items.forEach(i => {
+        scope.items && scope.items.forEach(i => {
             let _scope      = scope.$new();
             _scope.data     = i;
             _scope.template = scope.itemTemplate;
