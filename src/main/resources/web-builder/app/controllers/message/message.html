@@ -1,0 +1,48 @@
+<div class="page-title">
+    <i class="fa fa-comments-o"></i>&nbsp;消息管理
+</div>
+<div class="row-search">
+    <form class="form-inline pull-left">
+        <div class="form-group">
+            <label>接收人:</label>
+            <label class="radio-inline"><input type="radio" name="sendTo" ng-model="filter.sendTo" value="1"> 所有技师</label>
+            <label class="radio-inline"><input type="radio" name="sendTo" ng-model="filter.sendTo" value="2"> 所有商户</label>
+        </div>
+        <div class="form-group m-l-20 m-r-20">
+            <label>发送状态:</label>
+            <label class="radio-inline"><input type="radio" name="status" ng-model="filter.status" value="0"> 未发送</label>
+            <label class="radio-inline"><input type="radio" name="status" ng-model="filter.status" value="1"> 已发送</label>
+        </div>
+        <button class="btn btn-primary" ng-click="getMessages()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+    </form>
+    <a href class="pull-right btn-new" ng-click="onAdd()">新建消息&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+</div>
+<br>
+<div class="clearfix">
+    <div class="table-responsive m-l-20 m-r-20">
+        <table class="table table-striped">
+            <thead><tr><th>序号</th><th>接收人</th><th>创建时间</th><th>发送时间</th><th>标题</th><th>发送状态</th><th>操作</th></tr></thead>
+            <tbody>
+            <tr ng-repeat="m in messages">
+                <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                <td>{{['所有技师', '所有商户'][m.sendTo - 1]}}</td>
+                <td>{{m.createTime | date : 'YYYY-MM-DD HH:mm'}}</td>
+                <td>{{m.publishTime | date : 'YYYY-MM-DD HH:mm'}}</td>
+                <td>{{m.title}}</td>
+                <td>{{['未发送', '已发送'][m.status]}}</td>
+                <td>
+                    <span ng-if="m.status == 0" ng-click="publish(m)" class="btn btn-xs btn-success m-r-5"><i class="glyphicon glyphicon-share-alt"></i>&nbsp;立即发布</span>
+                    <a class="btn btn-default btn-xs" href ng-click="onEdit(m)"><i class="fa fa-list"></i>&nbsp;详细</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <footer class="text-right">
+            <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+            <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                            items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getBills()"
+                            previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+        </footer>
+    </div>
+</div>

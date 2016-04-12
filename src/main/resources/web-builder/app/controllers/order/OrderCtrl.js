@@ -30,5 +30,4 @@ export default class OrderCtrl extends Injector {
         $scope.filter = {};
         $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
-
 }

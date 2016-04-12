@@ -17,11 +17,18 @@ public class Message {
 
     @Column private String content; // 月帐所属的年,月
 
-    @Column private int sendto;
+    @Column private int sendTo; //发送目标: 1 技师端, 2 合作商户
 
-    @Column private Date updateTime;
+    @Column private Date createTime;
 
-    @Column private int status;
+    @Column private Date publishTime;
+
+    @Column private int status; // 发布状态: 1-已发布, 0-未发布
+
+    public Message() {
+        this.createTime = new Date();
+        this.status = 0;
+    }
 
     public int getStatus() {
         return status;
@@ -55,19 +62,27 @@ public class Message {
         this.content = content;
     }
 
-    public int getSendto() {
-        return sendto;
+    public int getSendTo() {
+        return sendTo;
     }
 
-    public void setSendto(int sendto) {
-        this.sendto = sendto;
+    public void setSendTo(int sendTo) {
+        this.sendTo = sendTo;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getPublishTime() {
+        return publishTime;
+    }
+
+    public void setPublishTime(Date publishTime) {
+        this.publishTime = publishTime;
     }
 }

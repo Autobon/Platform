@@ -7,7 +7,7 @@
             <textarea class="form-control m-t-5" style="width: 200px;" ng-model="rejectMsg" ng-show="willReject"></textarea>
         </div>
         <h3 style="display: inline-block; margin: 10px 0;">{{cooperator.fullname}}
-            <small class="btn btn-success btn-xs">{{['未审核','审核通过','认证失败'][cooperator.statusCode]}}</small>&nbsp;&nbsp;
+            <small class="btn btn-success btn-xs">{{['未认证','认证通过','认证失败'][cooperator.statusCode]}}</small>&nbsp;&nbsp;
             <small><i class="glyphicon glyphicon-earphone"></i>{{cooperator.contactPhone}}</small>
         </h3>
         <span>{{cooperator.contact}}</span>

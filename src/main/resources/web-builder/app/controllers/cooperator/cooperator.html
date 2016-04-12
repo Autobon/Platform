@@ -14,7 +14,7 @@
         <div class="form-group">
             <label for="orderStatus">认证状态:</label>
             <select class="form-control" id="orderStatus" ng-model="filter.statusCode">
-                <option value="0">未审核</option>
+                <option value="0">未认证</option>
                 <option value="1">认证通过</option>
                 <option value="2">认证失败</option>
             </select>
@@ -37,7 +37,7 @@
                     <td>{{c.contactPhone}}</td>
                     <td>{{c.city}}</td>
                     <td>{{c.orderNum}}</td>
-                    <td>{{['未审核','认证通过','认证失败'][c.statusCode]}}</td>
+                    <td>{{['未认证','认证通过','认证失败'][c.statusCode]}}</td>
                     <td>{{c.createTime | date : 'YYYY-MM-DD HH:mm'}}</td>
                     <td><a ui-sref="console.cooperator.detail({id: c.id})" class="btn btn-xs btn-default">
                         <i class="fa fa-list"></i>&nbsp;详情</a>
@@ -63,7 +63,7 @@
                     <a ui-sref="console.cooperator.detail({id: c.id})">
                         <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
                         <span>{{c.fullname}}</span>
-                        <small class="btn btn-success btn-xs m-l-5">{{['未审核','审核成功','审核失败'][c.statusCode]}}</small><br>
+                        <small class="btn btn-success btn-xs m-l-5">{{['未认证','认证通过','认证失败'][c.statusCode]}}</small><br>
                         <span>{{c.corporationName}}</span><i class="glyphicon glyphicon-earphone m-l-10 small">{{c.contactPhone}}</i>
                     </a>
                 </li>

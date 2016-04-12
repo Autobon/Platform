@@ -1,0 +1,31 @@
+@import '../../styles/_variables.scss';
+$color-marker: #EE5D5B;
+.mv-marker {
+  position: absolute;
+  border: 1px solid #BC3B3A;
+  color: #FFF;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 18px;
+  white-space: nowrap;
+  background-color: $color-marker;
+
+  &:hover {
+    background-color: #6BADCA;
+    border-color: #286090;
+    .arrow {
+      background-position: 0px -20px;
+    }
+  }
+
+  .arrow {
+    background: url(./label.png) 0px 0px no-repeat;
+    position: absolute;
+    width: 11px;
+    height: 10px;
+    bottom: -10px;
+    left: 10px;
+    overflow: hidden;
+  }
+}

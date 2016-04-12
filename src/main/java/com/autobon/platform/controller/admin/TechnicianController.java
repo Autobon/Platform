@@ -5,6 +5,8 @@ import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.DetailedTechnicianService;
+import com.autobon.technician.service.LocationService;
+import com.autobon.technician.service.TechLocationService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +24,8 @@ import java.util.regex.Pattern;
 public class TechnicianController {
     @Autowired TechnicianService technicianService;
     @Autowired DetailedTechnicianService detailedTechnicianService;
+    @Autowired TechLocationService techLocationService;
+    @Autowired LocationService locationService;
     @Autowired @Qualifier("PushServiceA") PushService pushService;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -107,5 +111,22 @@ public class TechnicianController {
         tech.setVerifyAt(new Date());
         technicianService.save(tech);
         return new JsonMessage(true);
+    }
+
+    @RequestMapping(value = "/mapview", method = RequestMethod.GET)
+    public JsonMessage getTechnicianLocations(
+            @RequestParam(value = "province", required = false) String province,
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "300") int pageSize) {
+        if (pageSize > 500) pageSize = 500;
+        return new JsonMessage(true, "", "", new JsonPage<>(techLocationService.findByDistinctTech(province, city, page, pageSize)));
+    }
+
+    @RequestMapping(value = "/maptrack/{techId:\\d+}", method = RequestMethod.GET)
+    public JsonMessage getTechnicianTrack(@PathVariable("techId") int techId,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        return new JsonMessage(true, "", "", new JsonPage<>(locationService.findByTechId(techId, page, pageSize)));
     }
 }

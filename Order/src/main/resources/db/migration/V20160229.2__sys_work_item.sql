@@ -38,7 +38,7 @@ INSERT INTO `sys_work_item` VALUES ('27', '2', '隐形车衣', '5', '左后翼�
 INSERT INTO `sys_work_item` VALUES ('28', '2', '隐形车衣', '5', '右后翼子板', '100');
 INSERT INTO `sys_work_item` VALUES ('29', '2', '隐形车衣', '5', '左底边', '100');
 INSERT INTO `sys_work_item` VALUES ('30', '2', '隐形车衣', '5', '右底边', '100');
-INSERT INTO `sys_work_item` VALUES ('31', '2', '隐形车衣', '5', '后背箱盖', '100');
+INSERT INTO `sys_work_item` VALUES ('31', '2', '隐形车衣', '5', '后备箱盖', '100');
 INSERT INTO `sys_work_item` VALUES ('32', '2', '隐形车衣', '5', '后保险杠', '100');
 INSERT INTO `sys_work_item` VALUES ('33', '2', '隐形车衣', '5', '车顶', '100');
 INSERT INTO `sys_work_item` VALUES ('34', '2', '隐形车衣', '5', '左后视镜', '100');
@@ -57,7 +57,7 @@ INSERT INTO `sys_work_item` VALUES ('46', '2', '隐形车衣', '7', '左后翼�
 INSERT INTO `sys_work_item` VALUES ('47', '2', '隐形车衣', '7', '右后翼子板', '100');
 INSERT INTO `sys_work_item` VALUES ('48', '2', '隐形车衣', '7', '左底边', '100');
 INSERT INTO `sys_work_item` VALUES ('49', '2', '隐形车衣', '7', '右底边', '100');
-INSERT INTO `sys_work_item` VALUES ('50', '2', '隐形车衣', '7', '后背箱盖', '100');
+INSERT INTO `sys_work_item` VALUES ('50', '2', '隐形车衣', '7', '后备箱盖', '100');
 INSERT INTO `sys_work_item` VALUES ('51', '2', '隐形车衣', '7', '后保险杠', '100');
 INSERT INTO `sys_work_item` VALUES ('52', '2', '隐形车衣', '7', '车顶', '100');
 INSERT INTO `sys_work_item` VALUES ('53', '2', '隐形车衣', '7', '左后视镜', '100');
@@ -74,7 +74,7 @@ INSERT INTO `sys_work_item` VALUES ('63', '3', '车身改色', '5', '左后翼�
 INSERT INTO `sys_work_item` VALUES ('64', '3', '车身改色', '5', '右后翼子板', '100');
 INSERT INTO `sys_work_item` VALUES ('65', '3', '车身改色', '5', '左底边', '100');
 INSERT INTO `sys_work_item` VALUES ('66', '3', '车身改色', '5', '右底边', '100');
-INSERT INTO `sys_work_item` VALUES ('67', '3', '车身改色', '5', '后背箱盖', '100');
+INSERT INTO `sys_work_item` VALUES ('67', '3', '车身改色', '5', '后备箱盖', '100');
 INSERT INTO `sys_work_item` VALUES ('68', '3', '车身改色', '5', '后保险杠', '100');
 INSERT INTO `sys_work_item` VALUES ('69', '3', '车身改色', '5', '车顶', '100');
 INSERT INTO `sys_work_item` VALUES ('70', '3', '车身改色', '5', '左后视镜', '100');
@@ -93,7 +93,7 @@ INSERT INTO `sys_work_item` VALUES ('82', '3', '车身改色', '7', '左后翼�
 INSERT INTO `sys_work_item` VALUES ('83', '3', '车身改色', '7', '右后翼子板', '100');
 INSERT INTO `sys_work_item` VALUES ('84', '3', '车身改色', '7', '左底边', '100');
 INSERT INTO `sys_work_item` VALUES ('85', '3', '车身改色', '7', '右底边', '100');
-INSERT INTO `sys_work_item` VALUES ('86', '3', '车身改色', '7', '后背箱盖', '100');
+INSERT INTO `sys_work_item` VALUES ('86', '3', '车身改色', '7', '后备箱盖', '100');
 INSERT INTO `sys_work_item` VALUES ('87', '3', '车身改色', '7', '后保险杠', '100');
 INSERT INTO `sys_work_item` VALUES ('88', '3', '车身改色', '7', '车顶', '100');
 INSERT INTO `sys_work_item` VALUES ('89', '3', '车身改色', '7', '左后视镜', '100');

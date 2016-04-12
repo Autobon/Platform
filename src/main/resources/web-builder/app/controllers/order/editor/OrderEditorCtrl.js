@@ -11,7 +11,11 @@ export default class OrderEditorCtrl extends Injector {
         this.attachMethodsTo($scope);
 
         if ($stateParams.orderNum) {
-            $scope.order = OrderService.getDetail($stateParams.orderNum);
+            OrderService.getDetail($stateParams.orderNum).then(res => {
+                if (res.data && res.data.result) {
+                    $scope.order = res.data.data;
+                }
+            });
         } else {
             $scope.order = {};
         }
@@ -31,7 +35,7 @@ export default class OrderEditorCtrl extends Injector {
                         <h3 class="modal-title">提示消息</h3>
                     </div>
                     <div class="modal-body">
-                        <b>{{ message }}</b>
+                        <b>{{message}}</b>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="button" ng-click="$close()">确定</button>
@@ -57,11 +61,16 @@ export default class OrderEditorCtrl extends Injector {
         } else {
             $scope.order.positionLon = $scope.order.position.lng;
             $scope.order.positionLat = $scope.order.position.lat;
-            OrderService.createOrder($scope.order).then(res => {
-                if (res.data && res.data.result) {
-                    $state.go(`^.detail`, {orderNum: res.data.data.orderNum});
-                    if ($scope.$parent.pagination.page === 1) {
-                        $scope.$parent.orders.unshift(res.data.data);
+            OrderService.add($scope.order).then(res => {
+                if (res.data) {
+                    if (res.data.result) {
+                        $state.go(`^.detail`, {orderNum: res.data.data.orderNum});
+                        if ($scope.$parent.pagination.page === 1) {
+                            $scope.$parent.orders.unshift(res.data.data);
+                        }
+                    } else {
+                        console.log(res.data.message);
+                        $scope.error = res.data.message;
                     }
                 }
             });

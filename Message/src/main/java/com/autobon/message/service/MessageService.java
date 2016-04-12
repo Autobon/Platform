@@ -19,36 +19,46 @@ public class MessageService {
 
     /**
      * 根据ID查找单个通知
+     *
      * @param id
      * @return
      */
-    public Message getById(int id){return repository.findOne(id);}
+    public Message getById(int id) {
+        return repository.findOne(id);
+    }
 
     /**
      * 保存一条通知
+     *
      * @param msg
      * @return
      */
-    public Message saveMsg(Message msg){return  repository.save(msg);}
+    public Message save(Message msg) {
+        return repository.save(msg);
+    }
 
 
     /**
      * 删除一条通知
+     *
      * @param id
      * @return
      */
-    public void deleteMsg(int id){ repository.delete(id);}
+    public void delete(int id) {
+        repository.delete(id);
+    }
 
 
     /**
      * 分页查找通知
+     *
      * @param page
      * @param pageSize
      * @return
      */
-    public Page<Message> findAll(int page, int pageSize) {
-        return repository.findAll(
-                new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "updateTime"));
+    public Page<Message> find(Integer sendTo, Integer status, int page, int pageSize) {
+        return repository.find(sendTo, status,
+                new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
 
 }

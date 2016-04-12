@@ -89,40 +89,40 @@ public class CooperatorController {
         return new JsonMessage(true);
     }
 
+    @RequestMapping(value = "/mapview", method = RequestMethod.GET)
+    public JsonMessage getCooperatorLocations(
+            @RequestParam(value = "province", required = false) String province,
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "300") int pageSize) {
+        if (pageSize > 500) pageSize = 500;
+        return new JsonMessage(true, "", "", new JsonPage<>(cooperatorService.findByLocation(province, city, page, pageSize)));
+    }
 
     @RequestMapping(value = "/update/{coopId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("coopId") int coopId,
-                              @RequestParam(value = "shortname", required = true) String shortname,
-                              @RequestParam(value = "fullname", required = true) String fullname,
-                              @RequestParam(value = "businessLicense", required = true) String businessLicense,
-                              @RequestParam(value = "corporationName", required = true) String corporationName,
-                              @RequestParam(value = "corporationIdNo", required = true) String corporationIdNo,
-                              @RequestParam(value = "bussinessLicensePic", required = true) String bussinessLicensePic,
-                              @RequestParam(value = "corporationIdPicA", required = true) String corporationIdPicA,
-                              @RequestParam(value = "corporationIdPicB", required = true) String corporationIdPicB,
-                              @RequestParam(value = "longitude", required = true) String longitude,
-                              @RequestParam(value = "latitude", required = true) String latitude,
-                              @RequestParam(value = "invoiceHeader", required = true) String invoiceHeader,
-                              @RequestParam(value = "taxIdNo", required = true) String taxIdNo,
-                              @RequestParam(value = "postcode", required = true) String postcode,
-                              @RequestParam(value = "province", required = true) String province,
-                              @RequestParam(value = "city", required = true) String city,
-                              @RequestParam(value = "district", required = true) String district,
-                              @RequestParam(value = "address", required = true) String address,
-                              @RequestParam(value = "contact", required = true) String contact,
-                              @RequestParam(value = "contactPhone", required = true) String contactPhone) {
+            @RequestParam(value = "fullname") String fullname,
+            @RequestParam(value = "businessLicense") String businessLicense,
+            @RequestParam(value = "corporationName") String corporationName,
+            @RequestParam(value = "corporationIdNo") String corporationIdNo,
+            @RequestParam(value = "bussinessLicensePic") String bussinessLicensePic,
+            @RequestParam(value = "corporationIdPicA") String corporationIdPicA,
+            @RequestParam(value = "corporationIdPicB") String corporationIdPicB,
+            @RequestParam(value = "longitude") String longitude,
+            @RequestParam(value = "latitude") String latitude,
+            @RequestParam(value = "invoiceHeader") String invoiceHeader,
+            @RequestParam(value = "taxIdNo") String taxIdNo,
+            @RequestParam(value = "postcode") String postcode,
+            @RequestParam(value = "province") String province,
+            @RequestParam(value = "city") String city,
+            @RequestParam(value = "district") String district,
+            @RequestParam(value = "address") String address,
+            @RequestParam(value = "contact") String contact,
+            @RequestParam(value = "contactPhone") String contactPhone) {
 
         corporationIdNo = corporationIdNo.toUpperCase();
         if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", corporationIdNo))
             return new JsonMessage(false, "ILLEGAL_PARAM", "身份证号码有误");
-
-/*
-        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
-        if(coopAccount == null){
-            return new JsonMessage(false,"商户没有设置主账号");
-        }
-        coopAccount.setShortname(shortname);
-        coopAccountService.save(coopAccount);*/
 
         Cooperator cooperator = cooperatorService.get(coopId);
         cooperator.setFullname(fullname);

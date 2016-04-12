@@ -1,13 +1,13 @@
 package com.autobon.platform.controller.technician;
 
 
-import com.autobon.order.entity.Location;
-import com.autobon.order.service.LocationService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.DetailedTechnician;
+import com.autobon.technician.entity.Location;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.DetailedTechnicianService;
+import com.autobon.technician.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;

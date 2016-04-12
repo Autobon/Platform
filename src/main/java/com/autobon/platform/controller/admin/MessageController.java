@@ -13,137 +13,105 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 
 /**
  * Created by liz on 2016/4/3.
  */
-@RestController
+@RestController("adminMessageController")
 @RequestMapping("/api/web/admin/message")
 public class MessageController {
     private static Logger log = LoggerFactory.getLogger(MessageController.class);
-    @Autowired
-    MessageService messageService;
-    @Autowired
-    ApplicationEventPublisher publisher;
-    @Autowired
-    @Qualifier("PushServiceA")
-    PushService pushServiceA;
-    @Autowired
-    @Qualifier("PushServiceB")
-    PushService pushServiceB;
+    @Autowired MessageService messageService;
+    @Autowired ApplicationEventPublisher publisher;
+    @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
+    @Autowired @Qualifier("PushServiceB") PushService pushServiceB;
 
-    /**
-     * 查找分页通知
-     * @param page 页数
-     * @param pageSize 记录数
-     * @return
-     */
     @RequestMapping(method = RequestMethod.GET)
-    public JsonMessage getMessages(@RequestParam(value = "page", defaultValue = "1") int page,
-                                   @RequestParam(value = "pageSize", defaultValue = "20") int pageSize){
-        JsonPage msgs =  new JsonPage<>(messageService.findAll(page,pageSize));
-        return new JsonMessage(true,"","",msgs);
+    public JsonMessage getMessages(
+            @RequestParam(value = "sendTo", required = false) Integer sendTo,
+            @RequestParam(value = "status", required = false) Integer status,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        return new JsonMessage(true, "", "", new JsonPage<>(messageService.find(sendTo, status, page, pageSize)));
     }
 
-    /**
-     * 添加一条通知
-     * @param title
-     * @param content
-     * @param sendTo
-     * @return
-     * @throws Exception
-     */
     @RequestMapping(method = RequestMethod.POST)
     public JsonMessage saveMessage(
             @RequestParam("title") String title,
             @RequestParam("content") String content,
-            @RequestParam("sendTo") Integer sendTo) throws Exception{
+            @RequestParam("sendTo") Integer sendTo) {
+        if (sendTo != 1 && sendTo != 2) return new JsonMessage(false, "ILLEGAL_PARAM_VALUE", "sendTo取值只能为1或2");
+
         Message message = new Message();
-        if(title.equals("")) return new JsonMessage(false,"","通知标题不能为空",null);
         message.setTitle(title);
-        if(content.equals("")) return new JsonMessage(false,"","通知内容不能为空",null);
         message.setContent(content);
-        if(sendTo == 0) return new JsonMessage(false,"","通知发送人不能为空",null);
-        message.setSendto(sendTo);
-        message.setUpdateTime(new Date());
-        message.setStatus(0);
-        Message msg = messageService.saveMsg(message);
-        return new JsonMessage(true,"","添加成功",msg);
+        message.setSendTo(sendTo);
+        Message msg = messageService.save(message);
+        return new JsonMessage(true, "", "添加成功", msg);
     }
 
-    /**
-     * 修改或者发布通知
-     * @param id 通知ID
-     * @param title 标题
-     * @param content 内容
-     * @param sendTo 发送给 1技师 2合作商户
-     * @param status 通知状态 0未发布 1已发布
-     * @return  JsonMessage
-     */
-    @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id:\\d+}", method = RequestMethod.POST)
     public JsonMessage updateMessage(
-            @PathVariable("id") Integer id,
+            @PathVariable("id") int id,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
-            @RequestParam("sendTo") Integer sendTo,
-            @RequestParam("status") Integer status) throws Exception{
+            @RequestParam("sendTo") int sendTo) {
+        if (sendTo != 1 && sendTo != 2) return new JsonMessage(false, "ILLEGAL_PARAM_VALUE", "sendTo取值只能为1或2");
         Message message = messageService.getById(id);
-        if(!title.equals(""))message.setTitle(title);
-        if(!content.equals(""))message.setContent(content);
-        if(sendTo != 0)message.setSendto(sendTo);
-        message.setUpdateTime(new Date());
-        message.setStatus(status);
-        messageService.saveMsg(message);
-        if(status == 1){//发布
+        if (message == null) return new JsonMessage(false, "NO_SUCH_RECORD", "没有这条记录");
+
+        message.setTitle(title);
+        message.setContent(content);
+        message.setSendTo(sendTo);
+        messageService.save(message);
+        return new JsonMessage(true);
+    }
+
+    @RequestMapping(value = "/publish/{id:\\d+}", method = RequestMethod.POST)
+    public JsonMessage publishMessage(@PathVariable("id") int id) throws IOException {
+        Message msg = messageService.getById(id);
+        if (msg.getStatus() == 1) {
+            return new JsonMessage(false, "ALREADY_PUBLISHED", "通知消息已发布");
+        } else {
+            msg.setPublishTime(new Date());
+            msg.setStatus(1);
+            messageService.save(msg);
+
             HashMap<String, Object> map = new HashMap<>();
             map.put("action", "NEW_MESSAGE");
-            map.put("order", message);
-            map.put("title", title);
-            boolean result;
-            if(sendTo == 1){//发送给技师端
-                 result = pushServiceA.pushToApp(title, new ObjectMapper().writeValueAsString(map), 0);
-            }else{//发送给合作商户端
-                 result = pushServiceB.pushToApp(title, new ObjectMapper().writeValueAsString(map), 0);
+            map.put("message", msg);
+            map.put("title", msg.getTitle());
+            boolean pushResult;
+            if (msg.getSendTo() == 1) {
+                pushResult = pushServiceA.pushToApp(msg.getTitle(), new ObjectMapper().writeValueAsString(map), 72 * 3600);
+            } else {
+                pushResult = pushServiceB.pushToApp(msg.getTitle(), new ObjectMapper().writeValueAsString(map), 72 * 3600);
             }
-            if (!result) log.info("通知: " + message.getId() + "的推送消息发送失败");
-            publisher.publishEvent(message);
+            if (!pushResult) log.error("通知【id=" + msg.getId() + "】推送失败");
+            return new JsonMessage(true);
         }
-        return new JsonMessage(true,"","修改成功",message);
     }
 
-
-    /**
-     * 删除通知
-     * @param id 通知ID
-     * @return
-     */
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public JsonMessage deleteMessage(@PathVariable("id") Integer id){
+    @RequestMapping(value = "/{id:\\d+}", method = RequestMethod.DELETE)
+    public JsonMessage deleteMessage(@PathVariable("id") Integer id) {
         Message msg = messageService.getById(id);
-        if(msg != null) {
-            if(msg.getStatus() == 0) {
-                messageService.deleteMsg(id);
-                return new JsonMessage(true, "", "删除成功", null);
-            }else{
-                return new JsonMessage(false, "", "已发布的通知不能删除", null);
+        if (msg != null) {
+            if (msg.getStatus() == 0) {
+                messageService.delete(id);
+                return new JsonMessage(true);
+            } else {
+                return new JsonMessage(false, "CANNOT_DELETE", "已发布的通知不能删除");
             }
-        }
-        else{
-            return new JsonMessage(false, "", "没有找到对应的通知记录", null);
+        } else {
+            return new JsonMessage(false, "NO_SUCH_RECORD", "没有此条记录");
         }
     }
 
-    /**
-     * 查找一条通知
-     * @param id 通知ID
-     * @return
-     */
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public JsonMessage getMessage(@PathVariable("id") Integer id){
-        Message msg = messageService.getById(id);
-        return new JsonMessage(true, "", "", msg);
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public JsonMessage getMessage(@PathVariable("id") Integer id) {
+        return new JsonMessage(true, "", "", messageService.getById(id));
     }
-
 }

@@ -2,7 +2,10 @@ package com.autobon.technician.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -11,9 +14,7 @@ import java.util.Date;
 @Entity
 @Table(name = "v_technician")
 public class DetailedTechnician {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @Id private int id;
 
     @Column private String phone; // 手机号
 
