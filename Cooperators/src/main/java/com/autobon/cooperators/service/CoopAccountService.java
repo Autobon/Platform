@@ -17,7 +17,7 @@ public class CoopAccountService {
     private CoopAccountRepository coopAccountRepository;
 
     public List<CoopAccount> findCoopAccountByCooperatorId(int coopId) {
-        return coopAccountRepository.findCoopAccountByCooperatorId(coopId);
+        return coopAccountRepository.findCoopAccountByCooperatorIdOrderByFiredAsc(coopId);
     }
 
     public CoopAccount getById(int coopAccountId) {
