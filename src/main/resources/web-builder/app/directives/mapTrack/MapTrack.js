@@ -18,7 +18,8 @@ export default class MapTrack extends Injector {
 
     link(scope, element) {
         scope.points = [{lng: 114.402524, lat: 30.559999}, {lng: 114.413304, lat: 30.543951}, {lng: 114.424514, lat: 30.525164}];
-        let mapId = element.attr('id');
+        window.scope = scope;
+        let mapId    = element.attr('id');
         if (!mapId) {
             mapId = 'map' + Math.random().toString().substr(2);
             element.attr('id', mapId);
@@ -39,7 +40,7 @@ export default class MapTrack extends Injector {
 
     async _showMap(scope, mapId) {
         let points = angular.copy(scope.points);
-        let map = scope.map = new window.BMap.Map(mapId);
+        let map    = scope.map = new window.BMap.Map(mapId);
         map.enableScrollWheelZoom(true);
         map.addControl(new window.BMap.NavigationControl({
             anchor: window.BMAP_ANCHOR_TOP_RIGHT,
@@ -73,6 +74,25 @@ export default class MapTrack extends Injector {
 
     _addPoints(scope) {
         scope.map.clearOverlays();
-        scope.points && scope.map.addOverlay(new window.Polyline(scope.points));
+        if (scope.points && scope.points.length) {
+            let points = [], lng = 0, lat = 0;
+            scope.points.forEach(p => {
+                lng += p.lng;
+                lat += p.lat;
+                points.push(new window.BMap.Point(p.lng, p.lat));
+            });
+            scope.map.centerAndZoom(new window.BMap.Point(lng / points.length, lat / points.length), 11);
+            points.forEach(p => {
+                let icon = new window.BMap.Icon(require('./map-marker.png'), new window.BMap.Size(32, 32));
+                icon.anchor = new window.BMap.Size(16, 32);
+                scope.map.addOverlay(new window.BMap.Marker(p, {icon: icon}));
+            });
+            scope.map.addOverlay(new window.BMap.Polyline(points, {
+                strokeColor  : '#336D1C',
+                strokeOpacity: 0.8,
+                strokeWeight : 3,
+                strokeStyle  : 'dashed',
+            }));
+        }
     }
 }

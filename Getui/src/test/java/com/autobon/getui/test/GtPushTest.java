@@ -2,6 +2,7 @@ package com.autobon.getui.test;
 
 import com.autobon.getui.Application;
 import com.autobon.getui.GtPush;
+import com.autobon.getui.PushService;
 import com.autobon.getui.utils.GtConfig;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,6 +29,11 @@ public class GtPushTest {
     @Test
     public void connect() throws Exception {
         Assert.assertTrue(GtPush.connect(gtConfig));
+    }
+
+    @Test
+    public void pushToApp() throws Exception {
+        Assert.assertTrue(new PushService(gtConfig).pushToApp("this is title", "this is json", 0));
     }
 
         /*

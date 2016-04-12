@@ -111,8 +111,11 @@ public class PushService {
 
         //ios
         APNPayload payload = new APNPayload();
-        payload.setAlertMsg(new APNPayload.SimpleAlertMsg(notice));
-        payload.addCustomMsg("json", json);
+        APNPayload.DictionaryAlertMsg msg = new APNPayload.DictionaryAlertMsg();
+        msg.setTitle(notice);
+        msg.setBody(notice);
+        msg.setPayload(json);
+        payload.setAlertMsg(msg);
         //payload.setBadge(1);
         template.setAPNInfo(payload);
 
@@ -121,9 +124,9 @@ public class PushService {
             AppMessage appmsg = new AppMessage();
             appmsg.setAppIdList(Arrays.asList(config.getAppId()));
             AppConditions cdt = new AppConditions();
-            cdt.addCondition(AppConditions.PHONE_TYPE, new ArrayList<String>());
-            cdt.addCondition(AppConditions.REGION, new ArrayList<String>());
-            cdt.addCondition(AppConditions.TAG, new ArrayList<String>());
+            cdt.addCondition(AppConditions.PHONE_TYPE, new ArrayList<>());
+            cdt.addCondition(AppConditions.REGION, new ArrayList<>());
+            cdt.addCondition(AppConditions.TAG, new ArrayList<>());
             appmsg.setConditions(cdt);
             message = appmsg;
         } else {
