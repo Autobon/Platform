@@ -244,3 +244,21 @@
     }
 }
 ```
+
+## 4. 通知消息
+
+```
+{
+    "action": "NEW_MESSAGE",
+    "message": {
+        "id": 3,
+        "title": "这是通知消息标题",
+        "content": "这是通知消息正文",
+        "sendTo": 1,
+        "createTime": 1460371749000,
+        "publishTime": 1460375231000,
+        "status": 1
+    },
+    "title": "这是通知消息标题"
+}
+```
