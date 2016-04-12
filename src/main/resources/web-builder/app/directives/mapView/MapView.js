@@ -35,7 +35,7 @@ export default class MapView extends Injector {
         }
 
         draw() {
-            let pixel = this.map.pointToOverlayPixel(this.point);
+            let pixel             = this.map.pointToOverlayPixel(this.point);
             let itemOffset, scope = this.scope;
 
             if (!scope.offsetX || !scope.offsetY) {
@@ -83,64 +83,56 @@ export default class MapView extends Injector {
             mapId = 'map' + Math.random().toString().substr(2);
             element.attr('id', mapId);
         }
+        scope.items = [];
 
         if (scope.apiKey) {
             const callback = 'mapcb' + Math.random().toString().substr(2);
             $('body').append($(`<script src="http://api.map.baidu.com/api?v=2.0&ak=${scope.apiKey}&callback=${callback}"></script>`));
             window[callback] = () => {
-                let items = [];
-                angular.copy(scope.items, items);
                 this._showItems(scope, mapId);
-                scope.$watch('items', (newVal) => {
-                    if (!angular.equals(items, newVal)) {
-                        this._showItems(scope, mapId);
-                    }
-                });
             };
         } else {
             this.$injected.$timeout(() => {
-                let items = [];
-                angular.copy(scope.items, items);
                 this._showItems(scope, mapId);
-                scope.$watch('items', (newVal) => {
-                    if (!angular.equals(items, newVal)) {
-                        this._showItems(scope, mapId);
-                    }
-                });
             });
         }
     }
 
     async _showItems(scope, mapId) {
-        if (!scope.items || !scope.items.length) return;
-        if (scope.map) {
-            scope.markerClusterer.clearMarkers();
-            this._addMarkers(scope);
-        } else {
-            let map = scope.map = new window.BMap.Map(mapId);
-            map.enableScrollWheelZoom(true);
-            map.addControl(new window.BMap.NavigationControl({
-                anchor: window.BMAP_ANCHOR_TOP_RIGHT,
-                type  : window.BMAP_NAVIGATION_CONTROL_ZOOM,
-            }));
+        let items = [];
+        angular.copy(scope.items, items);
 
-            if (!scope.center) {
-                await new Promise(resolve => {
-                    new window.BMap.LocalCity().get(result => {
-                        scope.center = result.name;
-                        resolve();
-                    });
-                });
-            }
+        let map = scope.map = new window.BMap.Map(mapId);
+        map.enableScrollWheelZoom(true);
+        map.addControl(new window.BMap.NavigationControl({
+            anchor: window.BMAP_ANCHOR_TOP_RIGHT,
+            type  : window.BMAP_NAVIGATION_CONTROL_ZOOM,
+        }));
+
+        if (!scope.center) {
             await new Promise(resolve => {
-                new window.BMap.Geocoder().getPoint(scope.center, point => {
-                    map.centerAndZoom(point, 5);
+                new window.BMap.LocalCity().get(result => {
+                    scope.center = result.name;
                     resolve();
                 });
             });
-            // map.centerAndZoom(new window.BMap.Point(114.37306, 30.556143), 5);
+        }
+        await new Promise(resolve => {
+            new window.BMap.Geocoder().getPoint(scope.center, point => {
+                map.centerAndZoom(point, 5);
+                resolve();
+            });
+        });
+        if (scope.items && scope.items.length) {
             this._addMarkers(scope);
         }
+
+        scope.$watch('items', (newVal) => {
+            if (!angular.equals(items, newVal)) {
+                scope.markerClusterer.clearMarkers();
+                this._addMarkers(scope);
+            }
+        });
     }
 
     _addMarkers(scope) {
