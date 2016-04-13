@@ -2,7 +2,7 @@ import {Injector} from 'ngES6';
 import $ from 'jquery';
 
 export default class LocationPicker extends Injector {
-    static $inject = ['$timeout'];
+    static $inject = ['$timeout', 'MapService'];
 
     constructor(...args) {
         super(...args);
@@ -39,9 +39,17 @@ export default class LocationPicker extends Injector {
                 });
             });
         }
+
+        scope.$on('map.action.back', (e, map) => {
+            e.stopPropagation();
+            let position = scope.position;
+            if (typeof position === 'string' && position !== '') position = JSON.parse(position);
+            if (position && position.lng) map.panTo(new window.BMap.Point(position.lng, position.lat));
+        });
     }
 
     _showMap(scope, mapId) {
+        const {MapService} = this.$injected;
         if (scope.map) {
             const oldMarker = scope.marker;
             const point = new window.BMap.Point(scope.position.lng, scope.position.lat);
@@ -78,34 +86,7 @@ export default class LocationPicker extends Injector {
                 anchor: window.BMAP_ANCHOR_TOP_RIGHT,
                 type  : window.BMAP_NAVIGATION_CONTROL_ZOOM,
             }));
-
-            let ShowCurrentCtrl = function() {
-                this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
-                this.defaultOffset = new window.BMap.Size(10, 20);
-            };
-
-            ShowCurrentCtrl.prototype            = new window.BMap.Control();
-            ShowCurrentCtrl.prototype.initialize = _map => {
-                let div = $('<div>').css({
-                    background   : '#FFF',
-                    color        : '#000',
-                    cursor       : 'pointer',
-                    padding      : '0 10px',
-                    border       : '1px solid #CCC',
-                    'font-size'  : '12px',
-                    'line-height': '22px',
-                });
-                div.text('返回');
-                div.on('click', () => {
-                    if (scope.position) {
-                        _map.panTo(scope.position);
-                    }
-                });
-                _map.getContainer().appendChild(div[0]);
-                return div[0];
-            };
-            map.addControl(new ShowCurrentCtrl());
-
+            map.addControl(new MapService.BackButtonCtrl());
 
             map.addEventListener('click', e => {
                 if (scope.marker) map.removeOverlay(scope.marker);

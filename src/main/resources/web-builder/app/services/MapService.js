@@ -6,7 +6,34 @@ import './map-style.css';
 export default class MapService extends Injector {
     static $inject = [];
 
-    static FullScreenOverlay = class extends window.BMap.Overlay {
+    BackButtonCtrl = class extends window.BMap.Control {
+        constructor() {
+            super();
+            this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
+            this.defaultOffset = new window.BMap.Size(10, 20);
+        }
+
+        initialize(map) {
+            this.map = map;
+            let div = $('<div>返回</div>').css({
+                background   : '#FFF',
+                color        : '#000',
+                cursor       : 'pointer',
+                padding      : '0 10px',
+                border       : '1px solid #CCC',
+                'font-size'  : '12px',
+                'line-height': '22px',
+            });
+            div.on('click', () => {
+                console.log(angular.element(div).scope());
+                angular.element(div).scope().$emit('map.action.back', map);
+            });
+            map.getContainer().appendChild(div[0]);
+            return div[0];
+        }
+    };
+    
+    FullScreenOverlay = class extends window.BMap.Control {
 
     };
 
