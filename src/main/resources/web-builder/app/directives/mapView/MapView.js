@@ -4,64 +4,7 @@ import $ from 'jquery';
 import './map.scss';
 
 export default class MapView extends Injector {
-    static $inject        = ['$timeout', '$compile'];
-    static MapViewOverlay = class extends window.BMap.Overlay {
-        constructor(scope) {
-            super();
-            scope.data = scope.data || {};
-            this.scope = scope;
-            this.point = new window.BMap.Point(scope.data.lng, scope.data.lat);
-        }
-
-        initialize(map) {
-            const $injector    = angular.injector(['ng']);
-            const $compile     = $injector.get('$compile');
-            const $interpolate = $injector.get('$interpolate');
-            this.map           = map;
-            let template       = this.scope.template || `<div class="mv-marker">
-                                                            <span>★</span>
-                                                            <div class="arrow"></div>
-                                                        </div>`;
-            let div            = this.div = $($compile($interpolate(template)(this.scope))(this.scope));
-            div.click(e => {
-                this.scope.$emit('map.marker.click', e);
-            }).mouseenter(e => {
-                this.scope.$emit('map.marker.mouseenter', e);
-            }).mouseleave(e => {
-                this.scope.$emit('map.marker.mouseleave', e);
-            });
-            map.getPanes().markerPane.appendChild(div[0]);
-            return div[0];
-        }
-
-        draw() {
-            let pixel             = this.map.pointToOverlayPixel(this.point);
-            let itemOffset, scope = this.scope;
-
-            if (!scope.offsetX || !scope.offsetY) {
-                itemOffset = scope.itemOffset();
-                if (itemOffset) {
-                    [scope.offsetX, scope.offsetY] = itemOffset(this.div);
-                } else {
-                    scope.offsetX = -10;
-                    scope.offsetY = -(this.div.height() + 10);
-                }
-            }
-
-            this.div.css({
-                left: pixel.x + scope.offsetX,
-                top : pixel.y + scope.offsetY,
-            });
-        }
-
-        getPosition() {
-            return this.point;
-        }
-
-        getMap() {
-            return this.map;
-        }
-    };
+    static $inject        = ['$timeout', '$compile', 'MapService'];
 
     constructor(...args) {
         super(...args);
@@ -78,7 +21,6 @@ export default class MapView extends Injector {
     }
 
     link(scope, element) {
-        window.scope = scope;
         let mapId = element.attr('id');
         if (!mapId) {
             mapId = 'map' + Math.random().toString().substr(2);
@@ -128,19 +70,21 @@ export default class MapView extends Injector {
 
         scope.$watch('items', (newVal) => {
             if (!angular.equals(items, newVal)) {
-                scope.markerClusterer.clearMarkers();
+                items = angular.copy(scope.items, items);
+                scope.markerClusterer && scope.markerClusterer.clearMarkers();
                 this._addMarkers(scope);
             }
         });
     }
 
     _addMarkers(scope) {
+        const {MapService} = this.$injected;
         scope.markers = [];
         scope.items && scope.items.forEach(i => {
             let _scope      = scope.$new();
             _scope.data     = i;
-            _scope.template = scope.itemTemplate;
-            scope.markers.push(new MapView.MapViewOverlay(_scope));
+            scope.markers.push(new MapService.HtmlMarkerOverlay(_scope, new window.BMap.Point(i.lng, i.lat),
+                scope.itemTemplate, scope.itemOffset()));
             scope.markerClusterer = new window.BMapLib.MarkerClusterer(scope.map, {markers: scope.markers});
         });
     }

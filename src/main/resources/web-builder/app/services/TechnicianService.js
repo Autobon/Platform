@@ -23,8 +23,8 @@ export default class TechnicianService extends Injector {
         return $http.get(Settings.domain + '/api/web/admin/technician/mapview', {province: province, city: city, page: page, pageSize: pageSize});
     }
 
-    maptrack(techId, page, pageSize) {
+    mapTrack(techId, page, pageSize) {
         const {$http, Settings} = this.$injected;
-        return $http.get(Settings.domain + '/api/web/admin/technician/maptrack/' + techId, {page: page, pageSize: pageSize});
+        return $http.get(Settings.domain + '/api/web/admin/technician/maptrack/' + techId, {params: {page: page, pageSize: pageSize}});
     }
 }

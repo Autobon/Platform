@@ -11,13 +11,12 @@ export default class MapTrack extends Injector {
         this.replace  = true;
         this.restrict = 'EA';
         this.scope    = {
-            // points: '=',
+            points: '=',
             apiKey: '@',
         };
     }
 
     link(scope, element) {
-        scope.points = [{lng: 114.402524, lat: 30.559999}, {lng: 114.413304, lat: 30.543951}, {lng: 114.424514, lat: 30.525164}];
         window.scope = scope;
         let mapId    = element.attr('id');
         if (!mapId) {
@@ -59,16 +58,20 @@ export default class MapTrack extends Injector {
             });
             await new Promise(resolve => {
                 new window.BMap.Geocoder().getPoint(center, point => {
-                    map.centerAndZoom(point, 5);
+                    map.centerAndZoom(point, 11);
                     resolve();
                 });
             });
         }
 
-        scope.$watch('points', (newVal) => {
-            if (!angular.equals(points, newVal)) {
-                this._addPoints(scope);
-            }
+        // Only $timeout can save my life, but I don't know why I need a $timeout here.
+        this.$injected.$timeout(() => {
+            scope.$watch('points', (newVal) => {
+                if (!angular.equals(points, newVal)) {
+                    points = angular.copy(scope.points);
+                    this._addPoints(scope);
+                }
+            });
         });
     }
 
@@ -77,13 +80,14 @@ export default class MapTrack extends Injector {
         if (scope.points && scope.points.length) {
             let points = [], lng = 0, lat = 0;
             scope.points.forEach(p => {
-                lng += p.lng;
-                lat += p.lat;
+                lng += parseFloat(p.lng);
+                lat += parseFloat(p.lat);
                 points.push(new window.BMap.Point(p.lng, p.lat));
             });
             scope.map.centerAndZoom(new window.BMap.Point(lng / points.length, lat / points.length), 11);
-            points.forEach(p => {
-                let icon = new window.BMap.Icon(require('./map-marker.png'), new window.BMap.Size(32, 32));
+            points.forEach((p, i) => {
+                let url = i === points.length - 1 ? require('./map-marker-end.png') : require('./map-marker.png');
+                let icon = new window.BMap.Icon(url, new window.BMap.Size(32, 32));
                 icon.anchor = new window.BMap.Size(16, 32);
                 scope.map.addOverlay(new window.BMap.Marker(p, {icon: icon}));
             });
