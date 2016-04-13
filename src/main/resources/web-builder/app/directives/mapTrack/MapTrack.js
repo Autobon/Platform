@@ -82,14 +82,24 @@ export default class MapTrack extends Injector {
             scope.points.forEach(p => {
                 lng += parseFloat(p.lng);
                 lat += parseFloat(p.lat);
-                points.push(new window.BMap.Point(p.lng, p.lat));
+                let point = new window.BMap.Point(p.lng, p.lat);
+                point.$data = p;
+                points.push(point);
             });
-            scope.map.centerAndZoom(new window.BMap.Point(lng / points.length, lat / points.length), 11);
+            scope.map.centerAndZoom(new window.BMap.Point(lng / scope.points.length, lat / scope.points.length), 11);
             points.forEach((p, i) => {
-                let url = i === points.length - 1 ? require('./map-marker-end.png') : require('./map-marker.png');
+                let url = i === scope.points.length - 1 ? require('./map-marker-end.png') : require('./map-marker.png');
                 let icon = new window.BMap.Icon(url, new window.BMap.Size(32, 32));
                 icon.anchor = new window.BMap.Size(16, 32);
-                scope.map.addOverlay(new window.BMap.Marker(p, {icon: icon}));
+
+                let marker = new window.BMap.Marker(p, {icon: icon});
+                marker.addEventListener('click', (e) => {
+                    scope.$emit('map.track.point.click', e, p.$data);
+                });
+                marker.addEventListener('mouseover', (e) => {
+                    scope.$emit('map.track.point.mouseover', e, p.$data);
+                });
+                scope.map.addOverlay(marker);
             });
             scope.map.addOverlay(new window.BMap.Polyline(points, {
                 strokeColor  : '#336D1C',

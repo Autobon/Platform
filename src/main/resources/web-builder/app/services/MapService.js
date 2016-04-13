@@ -15,7 +15,7 @@ export default class MapService extends Injector {
 
         initialize(map) {
             this.map = map;
-            let div = $('<div>返回</div>').css({
+            let div  = $('<div>返回</div>').css({
                 background   : '#FFF',
                 color        : '#000',
                 cursor       : 'pointer',
@@ -25,14 +25,13 @@ export default class MapService extends Injector {
                 'line-height': '22px',
             });
             div.on('click', () => {
-                console.log(angular.element(div).scope());
                 angular.element(div).scope().$emit('map.action.back', map);
             });
             map.getContainer().appendChild(div[0]);
             return div[0];
         }
     };
-    
+
     FullScreenOverlay = class extends window.BMap.Control {
 
     };

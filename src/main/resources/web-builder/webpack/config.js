@@ -7,8 +7,8 @@ export const production = {
     entry   : {
         app   : [path.resolve(__dirname, '../app/main.js')],
         vendor: ['angular', 'angular-animate', 'angular-ui-router',
-                'angular-ui-bootstrap', 'angular-bootstrap-datetimepicker',
-                'jquery', 'moment', 'babel-polyfill'],
+            'angular-ui-bootstrap', 'angular-bootstrap-datetimepicker',
+            'jquery', 'moment', 'babel-polyfill'],
     },
     output  : {
         path      : path.resolve(__dirname, '../../static'),
@@ -42,8 +42,8 @@ export const production = {
     progress: true,
     plugins : [
         new webpack.ProvidePlugin({
-            $     : "jquery",
-            jQuery: "jquery"
+            $      : 'jquery',
+            jQuery : 'jquery',
         }),
         new webpack.ResolverPlugin(
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
@@ -103,5 +103,5 @@ export const development = {
         }),
     ],
     watch  : true,
-    devtool : 'source-map',
+    devtool: 'source-map',
 };
