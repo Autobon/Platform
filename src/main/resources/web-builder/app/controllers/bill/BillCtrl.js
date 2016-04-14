@@ -13,10 +13,10 @@ export default class BillCtrl extends Injector {
         this.getBills();
     }
 
-    getBills() {
+    getBills(resetPageNo) {
         const {$scope, BillService} = this.$injected;
         const {page, pageSize} = $scope.pagination;
-        BillService.search($scope.filter, page, pageSize).then(res => {
+        BillService.search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.bills                 = res.data.data.list;
                 $scope.pagination.totalItems = res.data.data.totalElements;
