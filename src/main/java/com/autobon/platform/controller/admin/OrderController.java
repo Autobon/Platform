@@ -1,6 +1,5 @@
 package com.autobon.platform.controller.admin;
 
-import com.autobon.getui.PushService;
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.DetailedOrder;
 import com.autobon.order.entity.Order;
@@ -13,14 +12,12 @@ import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.service.TechStatService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
 import org.im4java.process.Pipe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +26,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -51,8 +48,6 @@ public class OrderController {
     @Autowired TechStatService techStatService;
     @Autowired DetailedOrderService detailedOrderService;
     @Autowired ApplicationEventPublisher publisher;
-    @Autowired @Qualifier("PushServiceA")
-    PushService pushServiceA;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -115,20 +110,10 @@ public class OrderController {
         order.setPositionLon(positionLon);
         order.setPositionLat(positionLat);
         order.setOrderType(orderType);
-        order.setOrderTime(Date.from(
-                LocalDateTime.from(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse(orderTime))
-                .atZone(ZoneId.systemDefault()).toInstant()));
+        order.setOrderTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(orderTime));
         order.setRemark(remark);
         order.setPhoto(photo);
         orderService.save(order);
-
-        String msgTitle = "你收到新订单推送消息";
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("action", "NEW_ORDER");
-        map.put("order", order);
-        map.put("title", msgTitle);
-        boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
-        if (!result) log.info("订单: " + order.getOrderNum() + "的推送消息发送失败");
 
         publisher.publishEvent(order);
         return new JsonMessage(true, "", "", order);

@@ -3,7 +3,6 @@ package com.autobon.platform.controller.coop;
 import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.service.CooperatorService;
-import com.autobon.getui.PushService;
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
 import com.autobon.order.service.CommentService;
@@ -14,11 +13,9 @@ import com.autobon.shared.JsonPage;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.service.TechStatService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,12 +27,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -46,8 +43,6 @@ import java.util.regex.Pattern;
 public class OrderController {
     private static Logger log = LoggerFactory.getLogger(OrderController.class);
 
-    @Autowired @Qualifier("PushServiceA")
-    PushService pushServiceA;
     @Autowired OrderService orderService;
     @Autowired CommentService commentService;
     @Autowired TechStatService techStatService;
@@ -163,9 +158,7 @@ public class OrderController {
         order.setCreatorName(coopAccount.getShortname());
         order.setPhoto(photo);
         order.setRemark(remark);
-        order.setOrderTime(Date.from(
-                LocalDateTime.from(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").parse(orderTime))
-                        .atZone(ZoneId.systemDefault()).toInstant()));
+        order.setOrderTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(orderTime));
         order.setOrderType(orderType);
         order.setPositionLon(cooperator.getLongitude());
         order.setPositionLat(cooperator.getLatitude());
@@ -176,14 +169,6 @@ public class OrderController {
         orderNum+=1;
         cooperator.setOrderNum(orderNum);
         cooperatorService.save(cooperator);
-
-        String msgTitle = "你收到新订单推送消息";
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("action", "NEW_ORDER");
-        map.put("order", order);
-        map.put("title", msgTitle);
-        boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
-        if (!result) log.info("订单: " + order.getOrderNum() + "的推送消息发送失败");
 
         publisher.publishEvent(order);
         return new JsonMessage(true, "", "", order);

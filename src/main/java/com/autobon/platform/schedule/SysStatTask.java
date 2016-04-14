@@ -44,11 +44,11 @@ public class SysStatTask {
     @Async
     @Scheduled(cron = "0 0 7 1 * ?")
     public void monthStat() {
-        log.info("每日统计任务开始");
+        log.info("每月统计任务开始");
         Date from = Date.from(LocalDate.now().minusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         Date to = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         this.statBetween(2, from, to);
-        log.info("每日统计任务结束");
+        log.info("每月统计任务结束");
     }
 
     private void statBetween(int type, Date from, Date to) {

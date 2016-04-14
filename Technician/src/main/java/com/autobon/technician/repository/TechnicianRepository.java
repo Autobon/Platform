@@ -32,6 +32,6 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
     @Query("select count(t) from Technician t where t.createAt between ?1 and ?2")
     int countOfNew(Date from, Date to);
 
-    @Query("select count(t) from Technician t where t.verifyAt between ?1 and ?2 and t.")
+    @Query("select count(t) from Technician t where t.verifyAt between ?1 and ?2 and t.statusCode = 2")
     int countOfVerified();
 }
