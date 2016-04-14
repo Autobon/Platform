@@ -84,9 +84,11 @@ export default class LocationPicker extends Injector {
             }));
             map.addControl(new window.BMap.NavigationControl({
                 anchor: window.BMAP_ANCHOR_TOP_RIGHT,
+                offset: new window.BMap.Size(10, 50),
                 type  : window.BMAP_NAVIGATION_CONTROL_ZOOM,
             }));
-            map.addControl(new MapService.BackButtonCtrl());
+            map.addControl(new MapService.FullScreenCtrl(window.BMAP_ANCHOR_TOP_RIGHT, 10, 10));
+            map.addControl(new MapService.BackButtonCtrl(window.BMAP_ANCHOR_TOP_LEFT, 10, 20));
 
             map.addEventListener('click', e => {
                 if (scope.marker) map.removeOverlay(scope.marker);

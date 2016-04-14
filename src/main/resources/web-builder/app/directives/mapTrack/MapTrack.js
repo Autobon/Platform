@@ -3,7 +3,7 @@ import angular from 'angular';
 import $ from 'jquery';
 
 export default class MapTrack extends Injector {
-    static $inject = ['$timeout'];
+    static $inject = ['$timeout', 'MapService'];
 
     constructor(...args) {
         super(...args);
@@ -38,13 +38,16 @@ export default class MapTrack extends Injector {
     }
 
     async _showMap(scope, mapId) {
+        let {MapService} = this.$injected;
         let points = angular.copy(scope.points);
         let map    = scope.map = new window.BMap.Map(mapId);
         map.enableScrollWheelZoom(true);
         map.addControl(new window.BMap.NavigationControl({
             anchor: window.BMAP_ANCHOR_TOP_RIGHT,
+            offset: new window.BMap.Size(10, 50),
             type  : window.BMAP_NAVIGATION_CONTROL_ZOOM,
         }));
+        map.addControl(new MapService.FullScreenCtrl(window.BMAP_ANCHOR_TOP_RIGHT, 10, 10));
 
         if (points && points.length) {
             this._addPoints(scope);

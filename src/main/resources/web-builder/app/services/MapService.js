@@ -7,24 +7,15 @@ export default class MapService extends Injector {
     static $inject = [];
 
     BackButtonCtrl = class extends window.BMap.Control {
-        constructor() {
+        constructor(anchor, offsetX, offsetY) {
             super();
-            this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
-            this.defaultOffset = new window.BMap.Size(10, 20);
+            this.defaultAnchor = anchor;
+            this.defaultOffset = new window.BMap.Size(offsetX, offsetY);
         }
 
         initialize(map) {
             this.map = map;
-            let div  = $('<div>返回</div>').css({
-                background   : '#FFF',
-                color        : '#000',
-                cursor       : 'pointer',
-                padding      : '0 10px',
-                border       : '1px solid #CCC',
-                'font-size'  : '12px',
-                'line-height': '22px',
-            });
-            div.on('click', () => {
+            let div  = $('<div class="map-ctrl">返回</div>').on('click', () => {
                 angular.element(div).scope().$emit('map.action.back', map);
             });
             map.getContainer().appendChild(div[0]);
@@ -32,8 +23,21 @@ export default class MapService extends Injector {
         }
     };
 
-    FullScreenOverlay = class extends window.BMap.Control {
+    FullScreenCtrl = class extends window.BMap.Control {
+        constructor(anchor, offsetX, offsetY) {
+            super();
+            this.defaultAnchor = anchor;
+            this.defaultOffset = new window.BMap.Size(offsetX, offsetY);
+        }
 
+        initialize(map) {
+            this.map = map;
+            let div = $(`<div class="map-ctrl"><i class="glyphicon glyphicon-fullscreen"></i></div>`).on('click', () => {
+                $(map.getContainer()).toggleClass('map-fullscreen');
+            });
+            map.getContainer().appendChild(div[0]);
+            return div[0];
+        }
     };
 
     HtmlMarkerOverlay = class extends window.BMap.Overlay {
