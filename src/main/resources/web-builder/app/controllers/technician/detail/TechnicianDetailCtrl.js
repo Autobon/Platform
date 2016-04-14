@@ -19,7 +19,7 @@ export default class TechnicianDetailCtrl extends Injector {
                 if (!$scope.technician.starRate) $scope.technician.starRate = 3;
                 TechnicianService.mapTrack($stateParams.id, 1, 60).then(res2 => {
                     if (res2.data && res2.data.result) {
-                        $scope.technician.locations = res2.data.data.list;
+                        $scope.technician.locations = res2.data.data.list.reverse();
                     }
                 });
             }

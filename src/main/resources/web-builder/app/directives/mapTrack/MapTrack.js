@@ -91,7 +91,9 @@ export default class MapTrack extends Injector {
             });
             scope.map.centerAndZoom(new window.BMap.Point(lng / scope.points.length, lat / scope.points.length), 11);
             points.forEach((p, i) => {
-                let url = i === scope.points.length - 1 ? require('./map-marker-end.png') : require('./map-marker.png');
+                let url = require('./map-marker.png');
+                if (i === 0) url = require('./map-marker-start.png');
+                else if (i === points.length - 1) url = require('./map-marker-end.png');
                 let icon = new window.BMap.Icon(url, new window.BMap.Size(32, 32));
                 icon.anchor = new window.BMap.Size(16, 32);
 
