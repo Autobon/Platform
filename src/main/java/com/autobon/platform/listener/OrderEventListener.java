@@ -25,7 +25,11 @@ public class OrderEventListener {
     @Autowired RedisCache redisCache;
 
     @EventListener
-    public void onOrderCreated(Order order) {
+    public void onOrderEvent(Order order) {
+        if (order.getStatus() == Order.Status.NEWLY_CREATED) this.onOrderCreated(order);
+    }
+
+    private void onOrderCreated(Order order) {
         LocalDate localDate = order.getAddTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
