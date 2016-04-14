@@ -6,6 +6,7 @@ import com.autobon.order.entity.Order;
 import com.autobon.order.service.CommentService;
 import com.autobon.order.service.DetailedOrderService;
 import com.autobon.order.service.OrderService;
+import com.autobon.platform.listener.Event;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.VerifyCode;
@@ -115,7 +116,7 @@ public class OrderController {
         order.setPhoto(photo);
         orderService.save(order);
 
-        publisher.publishEvent(order);
+        publisher.publishEvent(new Event<>(order, Event.Action.CREATED));
         return new JsonMessage(true, "", "", order);
     }
 

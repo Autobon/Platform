@@ -39,9 +39,9 @@ public class OrderEventListener {
     @Autowired @Qualifier("PushServiceB") PushService pushServiceB;
 
     @EventListener
-    public void onOrderEvent(Order order) throws IOException {
-        if (order.getStatus() == Order.Status.NEWLY_CREATED) this.onOrderCreated(order);
-        else if (order.getStatus() == Order.Status.FINISHED) this.onOrderFinished(order);
+    public void onOrderEvent(Event<Order> event) throws IOException {
+        if (event.getAction() == Event.Action.CREATED) this.onOrderCreated(event.getData());
+        else if (event.getAction() == Event.Action.FINISHED) this.onOrderFinished(event.getData());
     }
 
     public int getNewOrderCountOfToday() {

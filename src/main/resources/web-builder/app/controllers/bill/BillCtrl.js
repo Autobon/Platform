@@ -36,7 +36,7 @@ export default class BillCtrl extends Injector {
     reset() {
         const {$scope} = this.$injected;
         $scope.filter     = {};
-        $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
+        // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 
     async generate() {
