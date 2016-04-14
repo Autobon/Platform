@@ -40,5 +40,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     @Query("from Order o where (o.mainTechId = ?1 or o.secondTechId = ?1) and o.finishTime >= ?2 and o.finishTime < ?3")
     Page<Order> findBetweenByTechId(int techId, Date start, Date end, Pageable pageable);
 
+    @Query("select count(o) from Order o where o.addTime between ?1 and ?2")
+    int countOfNew(Date from, Date to);
+
+    @Query("select count(o) from Order o where o.finishTime between ?1 and ?2")
+    int countOfFinished(Date from, Date to);
+
 }
 

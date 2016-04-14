@@ -215,3 +215,13 @@ ul.side-nav-list {
 .anchorBL{
   display: none;
 }
+
+.BMap_CityListCtrl a.ui_city_change_inner {
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 22px !important;
+  border-radius: 3px;
+  border: 1px solid #aaa !important;
+  box-shadow: 1px 1px 2px rgba(0,0,0,.2);
+}

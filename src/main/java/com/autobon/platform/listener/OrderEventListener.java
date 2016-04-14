@@ -2,6 +2,7 @@ package com.autobon.platform.listener;
 
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.SysStat;
+import com.autobon.order.service.OrderService;
 import com.autobon.order.service.SysStatService;
 import com.autobon.shared.RedisCache;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ import java.util.Date;
 @Component
 public class OrderEventListener {
     private static final Logger log = LoggerFactory.getLogger(OrderEventListener.class);
-    @Autowired SysStatService sysStatService;
+    @Autowired OrderService orderService;
     @Autowired RedisCache redisCache;
 
     @EventListener
@@ -39,6 +40,8 @@ public class OrderEventListener {
         int iDayOrderCount = 0;
         if (sDayOrderCount != null) {
             iDayOrderCount = Integer.parseInt(sDayOrderCount);
+        } else {
+            iDayOrderCount = orderService.countOfNew(day, new Date());
         }
         iDayOrderCount += 1;
         redisCache.set(dayKey, "" + iDayOrderCount, 24*3600);
@@ -49,10 +52,7 @@ public class OrderEventListener {
         if (sMonthOrderCount != null) {
             iMonthOrderCount = Integer.parseInt(sMonthOrderCount);
         } else {
-            SysStat monthStat = sysStatService.getOfMonth(month);
-            if (monthStat != null) {
-                iMonthOrderCount = monthStat.getOrderCount();
-            }
+            iMonthOrderCount = orderService.countOfNew(month, new Date());
         }
         iMonthOrderCount += 1;
         redisCache.set(monthKey, "" + iMonthOrderCount, 24*3600);

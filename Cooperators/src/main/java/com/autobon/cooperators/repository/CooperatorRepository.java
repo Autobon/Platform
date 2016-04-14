@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 /**
  * Created by lu on 2016/3/7.
  */
@@ -27,4 +29,10 @@ public interface CooperatorRepository extends JpaRepository<Cooperator, Integer>
 
     @Query("from Cooperator c where (?1 is null or c.province = ?1) and (?2 is null or c.city = ?2)")
     Page<Cooperator> findByLocation(String province, String city, Pageable pageable);
+
+    @Query("select count(c) from Cooperator c where c.createTime between ?1 and ?2")
+    int countOfNew(Date from, Date to);
+
+    @Query("select count(c) from ReviewCooper c where c.reviewTime between ?1 and ?2 and c.result = true")
+    int countOfVerified(Date from, Date to);
 }

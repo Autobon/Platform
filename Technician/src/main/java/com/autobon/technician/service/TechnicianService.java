@@ -58,4 +58,12 @@ public class TechnicianService {
         return repository.find(phone, name, statusCode, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "lastLoginAt")));
     }
+
+    public int countOfNew(Date from, Date to) {
+        return repository.countOfNew(from, to);
+    }
+
+    public int countOfVerified(Date from, Date to) {
+        return repository.countOfVerified();
+    }
 }
