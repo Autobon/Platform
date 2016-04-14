@@ -22,10 +22,10 @@ export default class MessageCtrl extends Injector {
         this.getMessages();
     }
 
-    getMessages() {
+    getMessages(resetPageNo) {
         const {$scope, MessageService} = this.$injected;
         const {page, pageSize} = $scope.pagination;
-        MessageService.search($scope.filter, page, pageSize).then(res => {
+        MessageService.search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.messages              = res.data.data.list;
                 $scope.pagination.totalItems = res.data.data.totalElements;
@@ -45,7 +45,7 @@ export default class MessageCtrl extends Injector {
     reset() {
         const {$scope} = this.$injected;
         $scope.filter     = {};
-        $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
+        // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 
     onAdd() {
