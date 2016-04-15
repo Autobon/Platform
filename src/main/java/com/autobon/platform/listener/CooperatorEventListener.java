@@ -39,18 +39,59 @@ public class CooperatorEventListener {
         else if (event.getAction() == Event.Action.VERIFIED) this.onCooperatorVerified(event.getData());
     }
 
-    private void onCooperatorCreated(Cooperator cooper) {
+    public int getNewCooperatorCountOfToday() {
         String key = "DayNewCoopCount@" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        int iCount = redisCache.getInt(key, -1);
-        if (iCount < 0) {
-            iCount = cooperatorService.countOfNew(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date());
-        } else {
-            iCount += 1;
-        }
-        redisCache.set(key, "" + iCount, 24*3600);
+        return Integer.parseInt(redisCache.getOrElse(key,
+                () -> String.valueOf(cooperatorService.countOfNew(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
+                24*3600));
+    }
+
+    public int getVerifiedCooperatorCountOfToday() {
+        String key = "DayVerifiedCoopCount@" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        return Integer.parseInt(redisCache.getOrElse(key,
+                () -> String.valueOf(cooperatorService.countOfVerified(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
+                24*3600));
+    }
+
+    public int getNewCooperatorCountOfThisMonth() {
+        String key = "MonthNewCoopCount@" + new SimpleDateFormat("yyyy-MM-01").format(new Date());
+        return Integer.parseInt(redisCache.getOrElse(key,
+                () -> String.valueOf(cooperatorService.countOfNew(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
+                24*3600));
+    }
+
+    public int getVerifiedCooperatorCountOfThisMonth() {
+        String key = "MonthVerifiedCoopCount@" + new SimpleDateFormat("yyyy-MM-01").format(new Date());
+        return Integer.parseInt(redisCache.getOrElse(key,
+                () -> String.valueOf(cooperatorService.countOfVerified(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
+                24*3600));
+    }
+
+    private void onCooperatorCreated(Cooperator cooper) {
+        LocalDate localDate = cooper.getCreateTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+
+        String dayKey = "DayNewCoopCount@" + new SimpleDateFormat("yyyy-MM-dd").format(day);
+        String monthKey = "MonthNewCoopCount@" + new SimpleDateFormat("yyyy-MM-dd").format(month);
+        redisCache.getAfterUpdate(dayKey, () -> String.valueOf(cooperatorService.countOfNew(day, new Date()) - 1),
+                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+        redisCache.getAfterUpdate(monthKey, () -> String.valueOf(cooperatorService.countOfNew(month, new Date()) - 1),
+                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
     }
 
     private void onCooperatorVerified(Cooperator cooper) throws IOException {
+        LocalDate localDate = cooper.getCreateTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+
+        String dayKey = "DayVerifiedCoopCount@" + new SimpleDateFormat("yyyy-MM-dd").format(day);
+        String monthKey = "MonthVerifiedCoopCount@" + new SimpleDateFormat("yyyy-MM-dd").format(month);
+        redisCache.getAfterUpdate(dayKey, () -> String.valueOf(cooperatorService.countOfVerified(day, new Date()) - 1),
+                24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+        redisCache.getAfterUpdate(monthKey, () -> String.valueOf(cooperatorService.countOfVerified(month, new Date()) - 1),
+                24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+
         CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(cooper.getId(), true);
         if (cooper.getStatusCode() == 1) {
             String title = "你已通过合作商户资格认证";

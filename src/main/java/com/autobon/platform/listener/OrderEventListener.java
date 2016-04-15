@@ -96,7 +96,7 @@ public class OrderEventListener {
     }
 
     private void onOrderFinished(Order order) throws IOException {
-        LocalDate localDate = order.getAddTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localDate = order.getFinishTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
