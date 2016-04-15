@@ -6,12 +6,12 @@ import com.autobon.cooperators.entity.ReviewCooper;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
-import com.autobon.getui.PushService;
+import com.autobon.platform.listener.Event;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.staff.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +28,8 @@ public class CooperatorController {
     @Autowired CooperatorService cooperatorService;
     @Autowired CoopAccountService coopAccountService;
     @Autowired ReviewCooperService reviewCooperService;
-    @Autowired @Qualifier("PushServiceB")
-    PushService pushService;
+    @Autowired ApplicationEventPublisher publisher;
+
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -68,10 +68,6 @@ public class CooperatorController {
         if (verified) {
             coop.setStatusCode(1);
             reviewCooper.setResult(true);
-            String title = "你已通过合作商户资格认证";
-            pushService.pushToSingle(coopAccount.getPushId(), title,
-                    "{\"action\":\"VERIFICATION_SUCCEED\",\"title\":\"" + title + "\"}",
-                    3 * 24 * 3600);
         } else {
             if (remark.equals("")) {
                 return new JsonMessage(false, "INSUFFICIENT_PARAM", "请填写认证失败原因");
@@ -79,13 +75,10 @@ public class CooperatorController {
             reviewCooper.setRemark(remark);
             reviewCooper.setResult(false);
             coop.setStatusCode(2);
-            String title = "你的合作商户资格认证失败: " + remark;
-            pushService.pushToSingle(coopAccount.getPushId(), title,
-                    "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
-                    3 * 24 * 3600);
         }
         reviewCooperService.save(reviewCooper);
         cooperatorService.save(coop);
+        publisher.publishEvent(new Event<>(coop, Event.Action.VERIFIED));
         return new JsonMessage(true);
     }
 

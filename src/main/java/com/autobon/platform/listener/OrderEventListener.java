@@ -46,42 +46,30 @@ public class OrderEventListener {
 
     public int getNewOrderCountOfToday() {
         String key = "DayNewOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        int iCount = this.getIntFromCache(key);
-        if (iCount < 0) {
-            iCount = orderService.countOfNew(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date());
-            redisCache.set(key, "" + iCount, 24*3600);
-        }
-        return iCount;
+        return Integer.parseInt(redisCache.getOrElse(key,
+                () -> String.valueOf(orderService.countOfNew(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
+                24*3600));
     }
 
     public int getFinishedOrderCountOfToday() {
         String key = "DayFinishedOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        int iCount = this.getIntFromCache(key);
-        if (iCount < 0) {
-            iCount = orderService.countOfFinished(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date());
-            redisCache.set(key, "" + iCount, 24*3600);
-        }
-        return iCount;
+        return Integer.parseInt(redisCache.getOrElse(key,
+                () -> String.valueOf(orderService.countOfFinished(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
+                24*3600));
     }
 
     public int getNewOrderCountOfThisMonth() {
         String key = "MonthNewOrderCount@" + new SimpleDateFormat("yyyy-MM-01").format(new Date());
-        int iCount = this.getIntFromCache(key);
-        if (iCount < 0) {
-            iCount = orderService.countOfNew(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date());
-            redisCache.set(key, "" + iCount, 24*3600);
-        }
-        return iCount;
+        return Integer.parseInt(redisCache.getOrElse(key,
+                () -> String.valueOf(orderService.countOfNew(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
+                24*3600));
     }
 
     public int getFinishedOrderCountOfThisMonth() {
         String key = "MonthFinishedOrderCount@" + new SimpleDateFormat("yyyy-MM-01").format(new Date());
-        int iCount = this.getIntFromCache(key);
-        if (iCount < 0) {
-            iCount = orderService.countOfFinished(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date());
-            redisCache.set(key, "" + iCount, 24*3600);
-        }
-        return iCount;
+        return Integer.parseInt(redisCache.getOrElse(key,
+                () -> String.valueOf(orderService.countOfFinished(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
+                24*3600));
     }
 
     private void onOrderCreated(Order order) throws IOException {
@@ -90,20 +78,12 @@ public class OrderEventListener {
         Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
         String dayKey = "DayNewOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(day);
-        int iDayCount = this.getIntFromCache(dayKey);
-        if (iDayCount < 0) {
-            iDayCount = orderService.countOfNew(day, new Date());
-        }
-        iDayCount += 1;
-        redisCache.set(dayKey, "" + iDayCount, 24*3600);
+        int iDayCount = Integer.parseInt(redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfNew(day, new Date()) - 1),
+                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1)));
 
         String monthKey = "MonthNewOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(month);
-        int iMonthCount = this.getIntFromCache(monthKey);
-        if (iMonthCount < 0) {
-            iMonthCount = orderService.countOfNew(month, new Date());
-        }
-        iMonthCount += 1;
-        redisCache.set(monthKey, "" + iMonthCount, 24*3600);
+        redisCache.getAfterUpdate(monthKey, () -> String.valueOf(orderService.countOfNew(month, new Date()) - 1),
+                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
         log.info("今日第" + iDayCount + "单已创建, 订单编号: " + order.getOrderNum());
 
         String msgTitle = "你收到新订单推送消息";
@@ -121,20 +101,12 @@ public class OrderEventListener {
         Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
         String dayKey = "DayFinishedOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(day);
-        int iDayCount = this.getIntFromCache(dayKey);
-        if (iDayCount < 0) {
-            iDayCount = orderService.countOfFinished(day, new Date());
-        }
-        iDayCount += 1;
-        redisCache.set(dayKey, "" + iDayCount, 24*3600);
+        int iDayCount = Integer.parseInt(redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfFinished(day, new Date()) - 1),
+                    24*3600, v -> String.valueOf(Integer.parseInt(v) + 1)));
 
         String monthKey = "MonthFinishedOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(month);
-        int iMonthCount = this.getIntFromCache(monthKey);
-        if (iMonthCount < 0) {
-            iMonthCount = orderService.countOfFinished(month, new Date());
-        }
-        iMonthCount += 1;
-        redisCache.set(monthKey, "" + iMonthCount, 24*3600);
+        redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfFinished(month, new Date()) - 1),
+                24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
         log.info("今日已完成第" + iDayCount + "单, 订单编号: " + order.getOrderNum());
 
         // 向商户推送订单完成消息
@@ -165,12 +137,6 @@ public class OrderEventListener {
                     order.getSecondTechId(), order.getId()).getPayment());
             techStatService.save(secondStat);
         }
-    }
-
-    private int getIntFromCache(String key) {
-        String sCount = redisCache.get(key);
-        if (sCount == null) return -1;
-        else return Integer.parseInt(sCount);
     }
 
 }
