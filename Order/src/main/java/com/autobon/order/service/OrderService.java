@@ -64,4 +64,11 @@ public class OrderService {
         return repository.countOfFinished(from, to);
     }
 
+    public int totalOfCreated() {
+        return repository.totalOfCreated();
+    }
+
+    public int totalOfFinished() {
+        return repository.totalOfFinished();
+    }
 }

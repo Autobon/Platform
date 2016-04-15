@@ -66,4 +66,12 @@ public class TechnicianService {
     public int countOfVerified(Date from, Date to) {
         return repository.countOfVerified();
     }
+
+    public int totalOfRegistered() {
+        return repository.totalOfRegistered();
+    }
+
+    public int totalOfVerified() {
+        return repository.totalOfVerified();
+    }
 }

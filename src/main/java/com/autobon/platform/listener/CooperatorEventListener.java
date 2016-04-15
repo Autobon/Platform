@@ -72,6 +72,16 @@ public class CooperatorEventListener {
                 24*3600));
     }
 
+    public int getTotalRegisteredCooperatorCount() {
+
+        return 0;
+    }
+
+    public int getTotalVerifiedCooperatorCount() {
+
+        return 0;
+    }
+
     private void onCooperatorCreated(Cooperator cooper) {
         LocalDate localDate = cooper.getCreateTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());

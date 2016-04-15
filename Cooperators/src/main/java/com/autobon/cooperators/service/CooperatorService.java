@@ -41,4 +41,12 @@ public class CooperatorService {
     public int countOfVerified(Date from, Date to) {
         return repository.countOfVerified(from, to);
     }
+
+    public int totalOfRegistered() {
+        return repository.totalOfRegistered();
+    }
+
+    public int totalOfVerified() {
+        return repository.totalOfVerified();
+    }
 }

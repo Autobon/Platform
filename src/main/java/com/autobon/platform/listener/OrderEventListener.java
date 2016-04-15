@@ -77,6 +77,16 @@ public class OrderEventListener {
                 24*3600));
     }
 
+    public int getTotalCreatedOrderCount() {
+
+        return 0;
+    }
+
+    public int getTotalFinishedOrderCount() {
+
+        return 0;
+    }
+
     private void onOrderCreated(Order order) throws IOException {
         LocalDate localDate = order.getAddTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());

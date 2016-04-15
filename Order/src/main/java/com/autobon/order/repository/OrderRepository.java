@@ -46,5 +46,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     @Query("select count(o) from Order o where o.finishTime between ?1 and ?2")
     int countOfFinished(Date from, Date to);
 
+    @Query("select count(o) from Order o")
+    int totalOfCreated();
+
+    @Query("select count(o) from Order o where o.statusCode >= 60 and o.statusCode <= 70")
+    int totalOfFinished();
+
 }
 

@@ -35,4 +35,10 @@ public interface CooperatorRepository extends JpaRepository<Cooperator, Integer>
 
     @Query("select count(c) from ReviewCooper c where c.reviewTime between ?1 and ?2 and c.result = true")
     int countOfVerified(Date from, Date to);
+
+    @Query("select count(c) from Cooperator c")
+    int totalOfRegistered();
+
+    @Query("select count(c) from Cooperator c where c.statusCode = 1")
+    int totalOfVerified();
 }

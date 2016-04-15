@@ -66,6 +66,16 @@ public class TechnicianEventListener {
                 24*3600));
     }
 
+    public int getTotalRegisteredTechnicianCount() {
+
+        return 0;
+    }
+
+    public int getTotalVerifiedTechnicianCount() {
+
+        return 0;
+    }
+
     private void onTechnicianCreated(Technician technician) {
         LocalDate localDate = technician.getCreateAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());

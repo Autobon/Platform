@@ -34,4 +34,10 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
 
     @Query("select count(t) from Technician t where t.verifyAt between ?1 and ?2 and t.statusCode = 2")
     int countOfVerified();
+
+    @Query("select count(t) from Technician t")
+    int totalOfRegistered();
+
+    @Query("select count(t) from Technician t where t.statusCode = 2")
+    int totalOfVerified();
 }

@@ -20,6 +20,7 @@ CREATE TABLE `t_order` (
   `second_tech_id` int(11) DEFAULT NULL COMMENT '合作技师id',
   PRIMARY KEY (`id`),
   INDEX idx_coop_id(coop_id),
+  INDEX idx_order_status(status),
   UNIQUE KEY `unique_order_num` (`order_num`)
 ) DEFAULT CHARSET=utf8 COMMENT='订单表';
 

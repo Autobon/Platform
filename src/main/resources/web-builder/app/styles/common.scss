@@ -101,9 +101,20 @@ table.table-striped {
   border-bottom: 1px solid $color-border;
 }
 
-.list-group > .list-group-item {
+.list-group-item {
   background-color: transparent;
   border: 1px solid $color-border;
+
+  &.active {
+    &, &:hover, &:focus {
+      background-color: lighten($color-primary, 5%);
+      border-color: $color-border;
+    }
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
 }
 
 ul.side-nav-list {
