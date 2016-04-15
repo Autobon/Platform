@@ -29,7 +29,7 @@ public class ConsoleController {
 
     @RequestMapping(value = "/statInfo", method = RequestMethod.GET)
     public JsonMessage getStatInfo() {
-        HashMap<String, SysStat> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
 
         SysStat thisDayStat = new SysStat();
         thisDayStat.setStatType(1);
@@ -55,6 +55,9 @@ public class ConsoleController {
 
         map.put("lastDay", sysStatService.getOfDay(Date.from(LocalDate.now().minusDays(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
         map.put("lastMonth", sysStatService.getOfMonth(Date.from(LocalDate.now().minusMonths(1).withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+        map.put("totalOrder", new int[]{orderListener.getTotalCreatedOrderCount(), orderListener.getTotalFinishedOrderCount()});
+        map.put("totalCoop", new int[]{cooperatorListener.getTotalRegisteredCooperatorCount(), cooperatorListener.getTotalVerifiedCooperatorCount()});
+        map.put("totalTech", new int[]{technicianListener.getTotalRegisteredTechnicianCount(), technicianListener.getTotalVerifiedTechnicianCount()});
         return new JsonMessage(true, "", "", map);
     }
 }
