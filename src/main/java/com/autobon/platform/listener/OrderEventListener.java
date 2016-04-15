@@ -30,6 +30,11 @@ import java.util.HashMap;
 @Component
 public class OrderEventListener {
     private static final Logger log = LoggerFactory.getLogger(OrderEventListener.class);
+    private String dayNewKeyPrefix = "DayNewOrderCount@";
+    private String dayFinishedKeyPrefix = "DayFinishedOrderCount@";
+    private String monthNewKeyPrefix = "MonthNewOrderCount@";
+    private String monthFinishedKeyPrefix = "MonthFinishedOrderCount@";
+
     @Autowired OrderService orderService;
     @Autowired RedisCache redisCache;
     @Autowired CoopAccountService coopAccountService;
@@ -40,33 +45,33 @@ public class OrderEventListener {
 
     @EventListener
     public void onOrderEvent(Event<Order> event) throws IOException {
-        if (event.getAction() == Event.Action.CREATED) this.onOrderCreated(event.getData());
-        else if (event.getAction() == Event.Action.FINISHED) this.onOrderFinished(event.getData());
+        if (event.getAction() == Event.Action.CREATED) this.onOrderCreated(event.getPayload());
+        else if (event.getAction() == Event.Action.FINISHED) this.onOrderFinished(event.getPayload());
     }
 
     public int getNewOrderCountOfToday() {
-        String key = "DayNewOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String key = dayNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         return Integer.parseInt(redisCache.getOrElse(key,
                 () -> String.valueOf(orderService.countOfNew(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
                 24*3600));
     }
 
     public int getFinishedOrderCountOfToday() {
-        String key = "DayFinishedOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String key = dayFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         return Integer.parseInt(redisCache.getOrElse(key,
                 () -> String.valueOf(orderService.countOfFinished(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
                 24*3600));
     }
 
     public int getNewOrderCountOfThisMonth() {
-        String key = "MonthNewOrderCount@" + new SimpleDateFormat("yyyy-MM-01").format(new Date());
+        String key = monthNewKeyPrefix + new SimpleDateFormat("yyyy-MM-01").format(new Date());
         return Integer.parseInt(redisCache.getOrElse(key,
                 () -> String.valueOf(orderService.countOfNew(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
                 24*3600));
     }
 
     public int getFinishedOrderCountOfThisMonth() {
-        String key = "MonthFinishedOrderCount@" + new SimpleDateFormat("yyyy-MM-01").format(new Date());
+        String key = monthFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-01").format(new Date());
         return Integer.parseInt(redisCache.getOrElse(key,
                 () -> String.valueOf(orderService.countOfFinished(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
                 24*3600));
@@ -77,11 +82,11 @@ public class OrderEventListener {
         Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
-        String dayKey = "DayNewOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(day);
+        String dayKey = dayNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(day);
         int iDayCount = Integer.parseInt(redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfNew(day, new Date()) - 1),
                         24*3600, v -> String.valueOf(Integer.parseInt(v) + 1)));
 
-        String monthKey = "MonthNewOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(month);
+        String monthKey = monthNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
         redisCache.getAfterUpdate(monthKey, () -> String.valueOf(orderService.countOfNew(month, new Date()) - 1),
                         24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
         log.info("今日第" + iDayCount + "单已创建, 订单编号: " + order.getOrderNum());
@@ -100,12 +105,12 @@ public class OrderEventListener {
         Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
-        String dayKey = "DayFinishedOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(day);
+        String dayKey = dayFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(day);
         int iDayCount = Integer.parseInt(redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfFinished(day, new Date()) - 1),
                     24*3600, v -> String.valueOf(Integer.parseInt(v) + 1)));
 
-        String monthKey = "MonthFinishedOrderCount@" + new SimpleDateFormat("yyyy-MM-dd").format(month);
-        redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfFinished(month, new Date()) - 1),
+        String monthKey = monthFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
+        redisCache.getAfterUpdate(monthKey, () -> String.valueOf(orderService.countOfFinished(month, new Date()) - 1),
                 24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
         log.info("今日已完成第" + iDayCount + "单, 订单编号: " + order.getOrderNum());
 

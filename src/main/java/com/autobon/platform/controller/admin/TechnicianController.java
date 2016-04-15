@@ -1,6 +1,6 @@
 package com.autobon.platform.controller.admin;
 
-import com.autobon.getui.PushService;
+import com.autobon.platform.listener.Event;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
@@ -9,7 +9,7 @@ import com.autobon.technician.service.LocationService;
 import com.autobon.technician.service.TechLocationService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class TechnicianController {
     @Autowired DetailedTechnicianService detailedTechnicianService;
     @Autowired TechLocationService techLocationService;
     @Autowired LocationService locationService;
-    @Autowired @Qualifier("PushServiceA") PushService pushService;
+    @Autowired ApplicationEventPublisher publisher;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -93,23 +93,16 @@ public class TechnicianController {
         if (verified) {
             tech.setVerifyMsg(null);
             tech.setStatus(Technician.Status.VERIFIED);
-            String title = "你已通过技师资格认证";
-            pushService.pushToSingle(tech.getPushId(), title,
-                    "{\"action\":\"VERIFICATION_SUCCEED\",\"title\":\"" + title + "\"}",
-                    3*24*3600);
         } else {
             if (verifyMsg.equals("")) {
                 return new JsonMessage(false, "INSUFFICIENT_PARAM", "请填写认证失败原因");
             }
             tech.setStatus(Technician.Status.REJECTED);
             tech.setVerifyMsg(verifyMsg);
-            String title = "你的技师资格认证失败: " + verifyMsg;
-            pushService.pushToSingle(tech.getPushId(), title,
-                    "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
-                    3*24*3600);
         }
         tech.setVerifyAt(new Date());
         technicianService.save(tech);
+        publisher.publishEvent(new Event<>(tech, Event.Action.VERIFIED));
         return new JsonMessage(true);
     }
 

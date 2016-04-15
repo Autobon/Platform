@@ -5,20 +5,20 @@ package com.autobon.platform.listener;
  */
 public class Event<T> {
     public enum Action {CREATED, VERIFIED, FINISHED};
-    private T data;
+    private T payload;
     private Action action;
 
     public Event(T data, Action action) {
-        this.data = data;
+        this.payload = data;
         this.action = action;
     }
 
-    public T getData() {
-        return data;
+    public T getPayload() {
+        return payload;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setPayload(T payload) {
+        this.payload = payload;
     }
 
     public Action getAction() {

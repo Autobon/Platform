@@ -1,9 +1,7 @@
 package com.autobon.platform.controller.admin;
 
-import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.entity.ReviewCooper;
-import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.platform.listener.Event;
@@ -26,7 +24,6 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/web/admin/cooperator")
 public class CooperatorController {
     @Autowired CooperatorService cooperatorService;
-    @Autowired CoopAccountService coopAccountService;
     @Autowired ReviewCooperService reviewCooperService;
     @Autowired ApplicationEventPublisher publisher;
 
@@ -54,7 +51,6 @@ public class CooperatorController {
             @RequestParam("verified") boolean verified,
             @RequestParam(value = "remark", defaultValue = "") String remark) throws IOException {
         Cooperator coop = cooperatorService.get(coopId);
-        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
         Staff staff = (Staff) request.getAttribute("user");
 
         if (coop == null) {
