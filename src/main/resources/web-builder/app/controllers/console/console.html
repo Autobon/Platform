@@ -28,15 +28,17 @@
             <li><a href tooltip-placement="bottom" uib-tooltip="退出" class="logout glyphicon glyphicon-log-out"></a></li>
         </ul>
     </div>
-    <ul class="console-nav list-inline">
-        <li><a ui-sref="console.home" ui-sref-active="active">首页</a></li><li>
+    <div class="console-nav">
+        <ul class="list-inline">
+            <li><a ui-sref="console.home" ui-sref-active="active">首页</a></li><li>
             <a ui-sref="console.order" ui-sref-active="active">订单管理</a></li><li>
             <a ui-sref="console.cooperator" ui-sref-active="active">商户管理</a></li><li>
             <a ui-sref="console.technician" ui-sref-active="active">技师管理</a></li><li>
             <a ui-sref="console.bill" ui-sref-active="active">财务管理</a></li><li>
             <a href="#">统计分析</a>
-        </li>
-    </ul>
+            </li>
+        </ul>
+    </div>
     <div ui-view class="console-content"></div>
     <div class="console-footer">
         <span class="text-box">&copy; Copyright 2016 车邻帮</span>
