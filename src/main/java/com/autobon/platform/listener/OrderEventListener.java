@@ -30,10 +30,12 @@ import java.util.HashMap;
 @Component
 public class OrderEventListener {
     private static final Logger log = LoggerFactory.getLogger(OrderEventListener.class);
-    private String dayNewKeyPrefix = "DayNewOrderCount@";
-    private String dayFinishedKeyPrefix = "DayFinishedOrderCount@";
-    private String monthNewKeyPrefix = "MonthNewOrderCount@";
-    private String monthFinishedKeyPrefix = "MonthFinishedOrderCount@";
+    private final String dayNewKeyPrefix = "DayNewOrderCount@";
+    private final String dayFinishedKeyPrefix = "DayFinishedOrderCount@";
+    private final String monthNewKeyPrefix = "MonthNewOrderCount@";
+    private final String monthFinishedKeyPrefix = "MonthFinishedOrderCount@";
+    private final String totalCreatedKey = "totalCreatedOrder";
+    private final String totalFinishedKey = "totalFinishedOrder";
 
     @Autowired OrderService orderService;
     @Autowired RedisCache redisCache;
@@ -78,13 +80,11 @@ public class OrderEventListener {
     }
 
     public int getTotalCreatedOrderCount() {
-
-        return 0;
+        return Integer.parseInt(redisCache.getOrElse(totalCreatedKey, () -> String.valueOf(orderService.totalOfCreated()), 24*3600));
     }
 
     public int getTotalFinishedOrderCount() {
-
-        return 0;
+        return Integer.parseInt(redisCache.getOrElse(totalFinishedKey, () -> String.valueOf(orderService.totalOfFinished()), 24*3600));
     }
 
     private void onOrderCreated(Order order) throws IOException {
@@ -93,13 +93,13 @@ public class OrderEventListener {
         Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
         String dayKey = dayNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(day);
-        int iDayCount = Integer.parseInt(redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfNew(day, new Date()) - 1),
-                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1)));
-
         String monthKey = monthNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
+        redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfNew(day, new Date()) - 1),
+                24*3600, this::increase);
         redisCache.getAfterUpdate(monthKey, () -> String.valueOf(orderService.countOfNew(month, new Date()) - 1),
-                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
-        log.info("今日第" + iDayCount + "单已创建, 订单编号: " + order.getOrderNum());
+                24*3600, this::increase);
+        redisCache.getAfterUpdate(totalCreatedKey, () -> String.valueOf(orderService.totalOfCreated() - 1),
+                24*3600, this::increase);
 
         String msgTitle = "你收到新订单推送消息";
         HashMap<String, Object> map = new HashMap<>();
@@ -116,13 +116,13 @@ public class OrderEventListener {
         Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
         String dayKey = dayFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(day);
-        int iDayCount = Integer.parseInt(redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfFinished(day, new Date()) - 1),
-                    24*3600, v -> String.valueOf(Integer.parseInt(v) + 1)));
-
         String monthKey = monthFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
+        redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfFinished(day, new Date()) - 1),
+                24*3600, this::increase);
         redisCache.getAfterUpdate(monthKey, () -> String.valueOf(orderService.countOfFinished(month, new Date()) - 1),
-                24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
-        log.info("今日已完成第" + iDayCount + "单, 订单编号: " + order.getOrderNum());
+                24*3600, this::increase);
+        redisCache.getAfterUpdate(totalFinishedKey, () -> String.valueOf(orderService.totalOfFinished() - 1),
+                24*3600, this::increase);
 
         // 向商户推送订单完成消息
         if (order.getCreatorType() == 1) {
@@ -154,4 +154,7 @@ public class OrderEventListener {
         }
     }
 
+    private String increase(String v) {
+        return String.valueOf(Integer.parseInt(v) + 1);
+    }
 }

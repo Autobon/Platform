@@ -4,8 +4,6 @@ import com.autobon.getui.PushService;
 import com.autobon.shared.RedisCache;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
@@ -22,11 +20,12 @@ import java.util.Date;
  */
 @Component
 public class TechnicianEventListener {
-    private static final Logger log = LoggerFactory.getLogger(TechnicianEventListener.class);
-    private String dayNewKeyPrefix = "DayNewTechCount@";
-    private String dayVerifiedKeyPrefix = "DayVerifiedTechCount@";
-    private String monthNewKeyPrefix = "MonthNewTechCount@";
-    private String monthVerifiedKeyPrefix = "MonthVerifiedTechCount@";
+    private final String dayNewKeyPrefix = "DayNewTechCount@";
+    private final String dayVerifiedKeyPrefix = "DayVerifiedTechCount@";
+    private final String monthNewKeyPrefix = "MonthNewTechCount@";
+    private final String monthVerifiedKeyPrefix = "MonthVerifiedTechCount@";
+    private final String totalRegisteredKey = "totalRegisteredTech";
+    private final String totalVerifiedKey = "totalVerifiedTech";
 
     @Autowired RedisCache redisCache;
     @Autowired TechnicianService technicianService;
@@ -67,13 +66,11 @@ public class TechnicianEventListener {
     }
 
     public int getTotalRegisteredTechnicianCount() {
-
-        return 0;
+        return Integer.parseInt(redisCache.getOrElse(totalRegisteredKey, () -> String.valueOf(technicianService.totalOfRegistered()), 24*3600));
     }
 
     public int getTotalVerifiedTechnicianCount() {
-
-        return 0;
+        return Integer.parseInt(redisCache.getOrElse(totalVerifiedKey, () -> String.valueOf(technicianService.totalOfVerified()), 24*3600));
     }
 
     private void onTechnicianCreated(Technician technician) {
@@ -84,9 +81,11 @@ public class TechnicianEventListener {
         String dayKey = dayNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(day);
         String monthKey = monthNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
         redisCache.getAfterUpdate(dayKey, () -> String.valueOf(technicianService.countOfNew(day, new Date()) - 1),
-                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+                24*3600, this::increase);
         redisCache.getAfterUpdate(monthKey, () -> String.valueOf(technicianService.countOfNew(month, new Date()) - 1),
-                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+                24*3600, this::increase);
+        redisCache.getAfterUpdate(totalRegisteredKey, () -> String.valueOf(technicianService.totalOfRegistered() - 1),
+                24*3600, this::increase);
     }
 
     private void onTechnicianVerified(Technician technician) throws IOException {
@@ -98,9 +97,11 @@ public class TechnicianEventListener {
             String dayKey = dayVerifiedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(day);
             String monthKey = monthVerifiedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
             redisCache.getAfterUpdate(dayKey, () -> String.valueOf(technicianService.countOfVerified(day, new Date()) - 1),
-                    24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+                    24*3600, this::increase);
             redisCache.getAfterUpdate(monthKey, () -> String.valueOf(technicianService.countOfVerified(month, new Date()) - 1),
-                    24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+                    24*3600, this::increase);
+            redisCache.getAfterUpdate(totalVerifiedKey, () -> String.valueOf(technicianService.totalOfVerified() - 1),
+                    24*3600, this::increase);
 
             String title = "你已通过技师资格认证";
             pushServiceA.pushToSingle(technician.getPushId(), title,
@@ -112,5 +113,9 @@ public class TechnicianEventListener {
                     "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
                     3*24*3600);
         }
+    }
+
+    private String increase(String v) {
+        return String.valueOf(Integer.parseInt(v) + 1);
     }
 }

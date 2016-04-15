@@ -26,11 +26,12 @@ import java.util.Date;
  */
 @Component
 public class CooperatorEventListener {
-    private static final Logger log = LoggerFactory.getLogger(CooperatorEventListener.class);
-    private String dayNewKeyPrefix = "DayNewCoopCount@";
-    private String dayVerifiedKeyPrefix = "DayVerifiedCoopCount@";
-    private String monthNewKeyPrefix = "MonthNewCoopCount@";
-    private String monthVerifiedKeyPrefix = "MonthVerifiedCoopCount@";
+    private final String dayNewKeyPrefix = "DayNewCoopCount@";
+    private final String dayVerifiedKeyPrefix = "DayVerifiedCoopCount@";
+    private final String monthNewKeyPrefix = "MonthNewCoopCount@";
+    private final String monthVerifiedKeyPrefix = "MonthVerifiedCoopCount@";
+    private final String totalRegisteredKey = "totalRegisteredCooper";
+    private final String totalVerifiedKey = "totalVerifiedCooper";
 
     @Autowired RedisCache redisCache;
     @Autowired CooperatorService cooperatorService;
@@ -73,13 +74,11 @@ public class CooperatorEventListener {
     }
 
     public int getTotalRegisteredCooperatorCount() {
-
-        return 0;
+        return Integer.parseInt(redisCache.getOrElse(totalRegisteredKey, () -> String.valueOf(cooperatorService.totalOfRegistered()), 24*3600));
     }
 
     public int getTotalVerifiedCooperatorCount() {
-
-        return 0;
+        return Integer.parseInt(redisCache.getOrElse(totalVerifiedKey, () -> String.valueOf(cooperatorService.totalOfVerified()), 24*3600));
     }
 
     private void onCooperatorCreated(Cooperator cooper) {
@@ -90,9 +89,11 @@ public class CooperatorEventListener {
         String dayKey = dayNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(day);
         String monthKey = monthNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
         redisCache.getAfterUpdate(dayKey, () -> String.valueOf(cooperatorService.countOfNew(day, new Date()) - 1),
-                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+                24*3600, this::increase);
         redisCache.getAfterUpdate(monthKey, () -> String.valueOf(cooperatorService.countOfNew(month, new Date()) - 1),
-                        24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+                24*3600, this::increase);
+        redisCache.getAfterUpdate(totalRegisteredKey, () -> String.valueOf(cooperatorService.totalOfRegistered() - 1),
+                24*3600, this::increase);
     }
 
     private void onCooperatorVerified(Cooperator cooper) throws IOException {
@@ -107,9 +108,11 @@ public class CooperatorEventListener {
             String monthVerifiedKey = monthVerifiedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
 
             redisCache.getAfterUpdate(dayVerifiedKey, () -> String.valueOf(cooperatorService.countOfVerified(day, new Date()) - 1),
-                    24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+                    24*3600, this::increase);
             redisCache.getAfterUpdate(monthVerifiedKey, () -> String.valueOf(cooperatorService.countOfVerified(month, new Date()) - 1),
-                    24*3600, v -> String.valueOf(Integer.parseInt(v) + 1));
+                    24*3600, this::increase);
+            redisCache.getAfterUpdate(totalVerifiedKey, () -> String.valueOf(cooperatorService.totalOfVerified() - 1),
+                    24*3600, this::increase);
 
             String title = "你已通过合作商户资格认证";
             pushServiceB.pushToSingle(coopAccount.getPushId(), title,
@@ -121,5 +124,9 @@ public class CooperatorEventListener {
                     "{\"action\":\"VERIFICATION_FAILED\",\"title\":\"" + title + "\"}",
                     3 * 24 * 3600);
         }
+    }
+
+    private String increase(String v) {
+        return String.valueOf(Integer.parseInt(v) + 1);
     }
 }
