@@ -100,7 +100,7 @@ public class BillController {
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
     public JsonMessage generate() {
         Date from = Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-        Date to = Date.from(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date to = Date.from(from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
         int totalPages, pageNo = 1, billCount = 0;
 
         do {

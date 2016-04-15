@@ -2,7 +2,7 @@ import {Injector} from 'ngES6';
 import $ from 'jquery';
 
 export default class MapLocation extends Injector {
-    static $inject = ['$timeout'];
+    static $inject = ['$timeout', 'MapService'];
 
     constructor(...args) {
         super(...args);
@@ -39,9 +39,17 @@ export default class MapLocation extends Injector {
                 });
             });
         }
+
+        scope.$on('map.action.back', (e, map) => {
+            e.stopPropagation();
+            let position = scope.position;
+            if (typeof position === 'string' && position !== '') position = JSON.parse(position);
+            if (position && position.lng) map.panTo(new window.BMap.Point(position.lng, position.lat));
+        });
     }
 
     _showLocation(scope, mapId) {
+        const {MapService} = this.$injected;
         if (!scope.position) return;
         if (scope.map) {
             let position = scope.position;
@@ -59,35 +67,11 @@ export default class MapLocation extends Injector {
             map.enableScrollWheelZoom(true);
             map.addControl(new window.BMap.NavigationControl({
                 anchor: window.BMAP_ANCHOR_TOP_RIGHT,
+                offset: new window.BMap.Size(10, 50),
                 type  : window.BMAP_NAVIGATION_CONTROL_ZOOM,
             }));
-
-            let ShowCurrentCtrl = function() {
-                this.defaultAnchor = window.BMAP_ANCHOR_TOP_LEFT;
-                this.defaultOffset = new window.BMap.Size(10, 20);
-            };
-
-            ShowCurrentCtrl.prototype            = new window.BMap.Control();
-            ShowCurrentCtrl.prototype.initialize = _map => {
-                let div = $('<div>').css({
-                    background   : '#FFF',
-                    color        : '#000',
-                    cursor       : 'pointer',
-                    padding      : '0 10px',
-                    border       : '1px solid #CCC',
-                    'font-size'  : '12px',
-                    'line-height': '22px',
-                });
-                div.text('返回');
-                div.on('click', () => {
-                    let position = scope.position;
-                    if (typeof position === 'string' && position !== '') position = JSON.parse(position);
-                    if (position && position.lng) _map.panTo(new window.BMap.Point(position.lng, position.lat));
-                });
-                _map.getContainer().appendChild(div[0]);
-                return div[0];
-            };
-            map.addControl(new ShowCurrentCtrl());
+            map.addControl(new MapService.FullScreenCtrl(window.BMAP_ANCHOR_TOP_RIGHT, 10, 10));
+            map.addControl(new MapService.BackButtonCtrl(window.BMAP_ANCHOR_TOP_LEFT, 10, 20));
 
             let position = scope.position;
             position = JSON.parse(position);

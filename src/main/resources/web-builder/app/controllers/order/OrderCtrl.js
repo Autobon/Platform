@@ -14,10 +14,10 @@ export default class OrderCtrl extends Injector {
         this.getOrders();
     }
 
-    getOrders() {
+    getOrders(resetPageNo) {
         const {$scope, OrderService} = this.$injected;
         const {page, pageSize} = $scope.pagination;
-        OrderService.search($scope.filter, page, pageSize).then(res => {
+        OrderService.search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.orders = res.data.data.list;
                 $scope.pagination.totalItems = res.data.data.totalElements;
@@ -28,6 +28,6 @@ export default class OrderCtrl extends Injector {
     reset() {
         const {$scope} = this.$injected;
         $scope.filter = {};
-        $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
+        // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 }

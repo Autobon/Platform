@@ -1,6 +1,6 @@
 CREATE TABLE `t_message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(30) DEFAULT NULL COMMENT '标题',
+  `title` varchar(100) DEFAULT NULL COMMENT '标题',
   `content` varchar(255) DEFAULT NULL COMMENT '消息内容',
   `send_to` int(1) DEFAULT NULL COMMENT '发送给1技师端2合作商户',
   `create_time` datetime NOT NULL COMMENT '创建时间',

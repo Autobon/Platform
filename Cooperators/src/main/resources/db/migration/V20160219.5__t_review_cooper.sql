@@ -5,5 +5,6 @@ CREATE TABLE `t_review_cooper` (
   `reviewer_id` int(11) DEFAULT NULL COMMENT '审核人ID',
   `remark` varchar(255) DEFAULT NULL COMMENT '审核失败原因描述',
   result tinyint(1) DEFAULT TRUE  COMMENT '审核是否成功,默认成功true',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `review_time` (`review_time`)
 )DEFAULT CHARSET=utf8 COMMENT='合作商户审核表';

@@ -1,8 +1,10 @@
 import {Injector} from 'ngES6';
 import angular from 'angular';
+import moment from 'moment';
+import $ from 'jquery';
 
 export default class TechnicianDetailCtrl extends Injector {
-    static $inject = ['$scope', '$state', '$stateParams', 'Settings', 'TechnicianService'];
+    static $inject = ['$scope', '$state', '$stateParams', 'Settings', 'TechnicianService', '$compile'];
     static $template = require('./detail.html');
 
     constructor(...args) {
@@ -15,7 +17,26 @@ export default class TechnicianDetailCtrl extends Injector {
             if (res.data && res.data.result) {
                 $scope.technician = res.data.data;
                 if (!$scope.technician.starRate) $scope.technician.starRate = 3;
+                TechnicianService.mapTrack($stateParams.id, 1, 60).then(res2 => {
+                    if (res2.data && res2.data.result) {
+                        $scope.technician.locations = res2.data.data.list.reverse();
+                    }
+                });
             }
+        });
+
+        $scope.$on('map.track.point.mouseover', (e, evt, d) => {
+            e.stopPropagation();
+            const {$compile} = this.$injected;
+            let scope   = angular.element(evt.domEvent.target).scope();
+            let element = $(evt.domEvent.target);
+            if (element.data('has-tooltip')) return;
+
+            element.attr('uib-tooltip', '定位时间: ' + moment(d.createAt).format('YYYY-MM-DD HH:mm'));
+            element.attr('tooltip-append-to-body', true);
+            element.attr('tooltip-is-open', true);
+            $compile(element)(scope);
+            element.data('has-tooltip', true);
         });
     }
 

@@ -1,5 +1,6 @@
 package com.autobon.platform.controller.technician;
 
+import com.autobon.platform.listener.Event;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
 import com.autobon.shared.SmsSender;
@@ -12,6 +13,7 @@ import org.im4java.core.IMOperation;
 import org.im4java.process.Pipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,6 +49,7 @@ public class TechnicianAccountController {
     @Value("${com.autobon.env:PROD}") String env;
     @Value("${com.autobon.gm-path}") String gmPath;
     @Value("${com.autobon.uploadPath}") String uploadPath;
+    @Autowired ApplicationEventPublisher publisher;
 
     /**
      * 获取用户信息
@@ -93,6 +96,7 @@ public class TechnicianAccountController {
             technician.setPhone(phone);
             technician.setPassword(Technician.encryptPassword(password));
             technicianService.save(technician);
+            publisher.publishEvent(new Event<>(technician, Event.Action.CREATED));
             msg.setData(technician);
         }
         return msg;

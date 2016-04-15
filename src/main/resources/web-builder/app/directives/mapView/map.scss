@@ -10,6 +10,7 @@ $color-marker: #EE5D5B;
   line-height: 18px;
   white-space: nowrap;
   background-color: $color-marker;
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,.2);
 
   &:hover {
     background-color: #6BADCA;

@@ -1,23 +1,20 @@
 package com.autobon.platform.controller.technician.order;
 
-import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.service.CoopAccountService;
-import com.autobon.getui.PushService;
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkItemService;
+import com.autobon.platform.listener.Event;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.VerifyCode;
-import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,8 +45,7 @@ public class ConstructionController {
     @Autowired TechStatService techStatService;
     @Autowired CoopAccountService coopAccountService;
     @Value("${com.autobon.uploadPath}") String uploadPath;
-    @Autowired @Qualifier("PushServiceB")
-    PushService pushServiceB;
+    @Autowired ApplicationEventPublisher publisher;
 
     // 开始工作
     @RequestMapping(value = "/start", method = RequestMethod.POST)
@@ -259,35 +255,7 @@ public class ConstructionController {
             order.setStatus(Order.Status.FINISHED);
             order.setFinishTime(new Date());
             orderService.save(order);
-
-            // 向商户推送订单完成消息
-            if (order.getCreatorType() == 1) {
-                CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
-                pushServiceB.pushToSingle(coopAccount.getPushId(), "订单: " + order.getOrderNum() + "已完成", new ObjectMapper().writeValueAsString(order), 24*3600);
-            }
-
-            // 更新余额及未支付订单数
-            TechStat stat = techStatService.getByTechId(tech.getId());
-            if (stat == null) {
-                stat = new TechStat();
-                stat.setTechId(tech.getId());
-            }
-            stat.setUnpaidOrders(stat.getUnpaidOrders() + 1);
-            stat.setBalance(stat.getBalance() + cons.getPayment());
-            techStatService.save(stat);
-
-            // 更新主技师余额及未支付订单数
-            if (order.getMainTechId() != tech.getId()) {
-                TechStat mainStat = techStatService.getByTechId(order.getMainTechId());
-                if (mainStat == null) {
-                    mainStat = new TechStat();
-                    mainStat.setTechId(order.getMainTechId());
-                }
-                mainStat.setUnpaidOrders(mainStat.getUnpaidOrders() + 1);
-                mainStat.setBalance(mainStat.getBalance() + constructionService.getByTechIdAndOrderId(
-                        order.getMainTechId(), order.getId()).getPayment());
-                techStatService.save(mainStat);
-            }
+            publisher.publishEvent(new Event<>(order, Event.Action.FINISHED));
         }
 
         return msg;

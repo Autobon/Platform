@@ -55,4 +55,20 @@ public class OrderService {
     public Page<Order> findBetweenByTechId(int techId, Date start, Date end, int page, int pageSize) {
         return repository.findBetweenByTechId(techId, start, end, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }
+
+    public int countOfNew(Date from, Date to) {
+        return repository.countOfNew(from, to);
+    }
+
+    public int countOfFinished(Date from, Date to) {
+        return repository.countOfFinished(from, to);
+    }
+
+    public int totalOfCreated() {
+        return repository.totalOfCreated();
+    }
+
+    public int totalOfFinished() {
+        return repository.totalOfFinished();
+    }
 }

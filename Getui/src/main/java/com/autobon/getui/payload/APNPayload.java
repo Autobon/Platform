@@ -29,7 +29,7 @@ public class APNPayload implements IPayload {
         if (this.badge >= 0) map.put("badge", this.badge);
         map.put("sound", this.sound);
         if (this.contentAvailable > 0) map.put("content-available", this.contentAvailable);
-        if (this.category != null && this.category.length() > 0) map.put("category" ,this.category);
+        if (this.category != null && this.category.length() > 0) map.put("category", this.category);
 
         HashMap<String, Object> wrapper = new HashMap<>();
         for (String key : customMsg.keySet()) {
@@ -82,6 +82,7 @@ public class APNPayload implements IPayload {
         private String locKey;
         private List<String> locArgs = new ArrayList<>();
         private String launchImage;
+        private String payload;
 
         public DictionaryAlertMsg() {}
 
@@ -98,7 +99,7 @@ public class APNPayload implements IPayload {
         }
 
         public void addTitleLocArg(String titleLocArg) {
-            if(titleLocArg != null && titleLocArg.length() > 0) {
+            if (titleLocArg != null && titleLocArg.length() > 0) {
                 this.titleLocArgs.add(titleLocArg);
             }
         }
@@ -112,7 +113,7 @@ public class APNPayload implements IPayload {
         }
 
         public void addLocArg(String locArg) {
-            if(locArg != null && locArg.length() > 0) {
+            if (locArg != null && locArg.length() > 0) {
                 this.locArgs.add(locArg);
             }
         }
@@ -121,17 +122,29 @@ public class APNPayload implements IPayload {
             this.launchImage = launchImage;
         }
 
+        public String getPayload() {
+            return payload;
+        }
+
+        public void setPayload(String payload) {
+            this.payload = payload;
+        }
+
         @Override
         public Object getAlertMsg() {
             HashMap<String, Object> alertMap = new HashMap<>();
-            if(this.title != null && this.title.length() > 0) alertMap.put("title", this.title);
-            if(this.body != null && this.body.length() > 0) alertMap.put("body", this.body);
-            if(this.titleLocKey != null && this.titleLocKey.length() > 0) alertMap.put("title-loc-key", this.titleLocKey);
-            if(this.titleLocArgs.size() > 0) alertMap.put("title-loc-args", this.titleLocArgs);
-            if(this.actionLocKey != null && this.actionLocKey.length() > 0) alertMap.put("action-loc-key", this.actionLocKey);
-            if(this.locKey != null && this.locKey.length() > 0) alertMap.put("loc-key", this.locKey);
-            if(this.locArgs.size() > 0) alertMap.put("loc-args", this.locArgs);
-            if(this.launchImage != null && this.launchImage.length() > 0) alertMap.put("launch-image", this.launchImage);
+            if (this.title != null && this.title.length() > 0) alertMap.put("title", this.title);
+            if (this.body != null && this.body.length() > 0) alertMap.put("body", this.body);
+            if (this.titleLocKey != null && this.titleLocKey.length() > 0)
+                alertMap.put("title-loc-key", this.titleLocKey);
+            if (this.titleLocArgs.size() > 0) alertMap.put("title-loc-args", this.titleLocArgs);
+            if (this.actionLocKey != null && this.actionLocKey.length() > 0)
+                alertMap.put("action-loc-key", this.actionLocKey);
+            if (this.locKey != null && this.locKey.length() > 0) alertMap.put("loc-key", this.locKey);
+            if (this.locArgs.size() > 0) alertMap.put("loc-args", this.locArgs);
+            if (this.launchImage != null && this.launchImage.length() > 0)
+                alertMap.put("launch-image", this.launchImage);
+            if (this.payload != null) alertMap.put("payload", this.payload);
             return alertMap;
         }
     }

@@ -2,7 +2,7 @@ import {Injector} from 'ngES6';
 import './console.scss';
 
 export default class ConsoleCtrl extends Injector {
-    static $inject = ['$scope', '$state'];
+    static $inject = ['$state'];
     static $template = require('./console.html');
 
     constructor(...args) {

@@ -28,4 +28,16 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
             "and (?2 is null or t.name = ?2) " +
             "and (?3 is null or t.statusCode = ?3)")
     Page<Technician> find(String phone, String name, Integer statusCode, Pageable pageable);
+
+    @Query("select count(t) from Technician t where t.createAt between ?1 and ?2")
+    int countOfNew(Date from, Date to);
+
+    @Query("select count(t) from Technician t where t.verifyAt between ?1 and ?2 and t.statusCode = 2")
+    int countOfVerified(Date from, Date to);
+
+    @Query("select count(t) from Technician t")
+    int totalOfRegistered();
+
+    @Query("select count(t) from Technician t where t.statusCode = 2")
+    int totalOfVerified();
 }

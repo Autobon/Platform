@@ -1,0 +1,20 @@
+.map-fullscreen {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    z-index: 999 !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.map-ctrl {
+    background: #FFF;
+    color: #000;
+    cursor: pointer;
+    padding: 0 10px;
+    font-size: 12px;
+    line-height: 22px;
+    border-radius: 3px;
+    border: 1px solid #AAA;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+}

@@ -14,10 +14,10 @@ export default class TechnicianCtrl extends Injector {
         this.getTechnicians();
     }
 
-    getTechnicians() {
+    getTechnicians(resetPageNo) {
         const {$scope, TechnicianService} = this.$injected;
         const {page, pageSize} = $scope.pagination;
-        TechnicianService.search($scope.filter, page, pageSize).then(res => {
+        TechnicianService.search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.technicians = res.data.data.list;
                 $scope.pagination.totalItems = res.data.data.totalElements;
@@ -28,6 +28,6 @@ export default class TechnicianCtrl extends Injector {
     reset() {
         const {$scope} = this.$injected;
         $scope.filter = {};
-        $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
+        // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 }

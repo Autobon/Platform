@@ -24,7 +24,7 @@
                     ng-options="key as value for (key, value) in Settings.orderStatus">
             </select>
         </div>
-        <button class="btn btn-primary" ng-click="getOrders()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button class="btn btn-primary" ng-click="getOrders(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
         <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
     <a ui-sref="console.order.new" class="pull-right btn-new">发布订单&nbsp;<span class="glyphicon glyphicon-plus"></span></a>

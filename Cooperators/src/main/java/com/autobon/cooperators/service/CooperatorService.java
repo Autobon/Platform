@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by lu on 2016/3/7.
  */
@@ -30,5 +32,21 @@ public class CooperatorService {
 
     public Page<Cooperator> findByLocation(String province, String city, int page, int pageSize) {
         return repository.findByLocation(province, city, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
+    }
+
+    public int countOfNew(Date from, Date to) {
+        return repository.countOfNew(from, to);
+    }
+
+    public int countOfVerified(Date from, Date to) {
+        return repository.countOfVerified(from, to);
+    }
+
+    public int totalOfRegistered() {
+        return repository.totalOfRegistered();
+    }
+
+    public int totalOfVerified() {
+        return repository.totalOfVerified();
     }
 }
