@@ -38,28 +38,28 @@ public class TechnicianEventListener {
         if (event.getAction() == Event.Action.VERIFIED) this.onTechnicianVerified(event.getPayload());
     }
 
-    public int getNewCooperatorCountOfToday() {
+    public int getNewTechnicianCountOfToday() {
         String key = dayNewKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         return Integer.parseInt(redisCache.getOrElse(key,
                 () -> String.valueOf(technicianService.countOfNew(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
                 24*3600));
     }
 
-    public int getVerifiedCooperatorCountOfToday() {
+    public int getVerifiedTechnicianCountOfToday() {
         String key = dayVerifiedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         return Integer.parseInt(redisCache.getOrElse(key,
                 () -> String.valueOf(technicianService.countOfVerified(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
                 24*3600));
     }
 
-    public int getNewCooperatorCountOfThisMonth() {
+    public int getNewTechnicianCountOfThisMonth() {
         String key = monthNewKeyPrefix + new SimpleDateFormat("yyyy-MM-01").format(new Date());
         return Integer.parseInt(redisCache.getOrElse(key,
                 () -> String.valueOf(technicianService.countOfNew(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
                 24*3600));
     }
 
-    public int getVerifiedCooperatorCountOfThisMonth() {
+    public int getVerifiedTechnicianCountOfThisMonth() {
         String key = monthVerifiedKeyPrefix + new SimpleDateFormat("yyyy-MM-01").format(new Date());
         return Integer.parseInt(redisCache.getOrElse(key,
                 () -> String.valueOf(technicianService.countOfVerified(Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), new Date())),
