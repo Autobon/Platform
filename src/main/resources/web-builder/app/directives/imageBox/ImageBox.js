@@ -11,9 +11,7 @@ export default class ImageBox extends Injector {
         this.replace  = true;
         this.restrict = 'EA';
         this.scope    = {
-            url   : '@',
-            width : '@',
-            height: '@',
+            url: '@',
         };
     }
 
@@ -24,17 +22,12 @@ export default class ImageBox extends Injector {
         scope.image        = new Image();
         scope.image.src    = scope.url;
         scope.image.onload = () => {
-            let img       = $(scope.image);
-            let imgWidth  = img[0].naturalWidth;
-            let imgHeight = img[0].naturalHeight;
-            let elWidth   = scope.elWidth = parseInt(scope.width || element.width(), 10);
-            let elHeight = scope.elHeight = parseInt(scope.height || element.height() || parseInt(element.css('line-height'), 10), 10);
-            scope.direction = imgWidth / imgHeight > elWidth / elHeight ? 'H' : 'V';
-            scope.maxOffset = scope.direction === 'H' ? (elHeight / imgHeight) * imgWidth - elWidth : (elWidth / imgWidth) * imgHeight - elHeight;
+            let img         = $(scope.image);
+            scope.imgWidth  = img[0].naturalWidth;
+            scope.imgHeight = img[0].naturalHeight;
+
             element.css({
                 visibility        : 'visible',
-                width             : elWidth,
-                height            : elHeight,
                 'background-image': 'url(' + scope.url + ')',
                 'background-size' : 'cover',
             }).on('click', () => {
@@ -42,14 +35,22 @@ export default class ImageBox extends Injector {
             }).on('mousemove', e => {
                 this.onmousemove(e, scope);
             });
+
+            $(window).resize(() => {
+                element.css('background-position', '0 0');
+            });
         };
     }
 
     onmousemove(e, scope) {
-        if (scope.direction === 'H') {
-            scope.element.css('background-position-x', -Math.min(e.offsetX / scope.elWidth * scope.maxOffset, scope.maxOffset) + 'px');
+        let elWidth   = scope.element.width();
+        let elHeight  = scope.element.height() || parseInt(scope.element.css('line-height'), 10);
+        let direction = scope.imgWidth / scope.imgHeight > elWidth / elHeight ? 'H' : 'V';
+        let maxOffset = direction === 'H' ? (elHeight / scope.imgHeight) * scope.imgWidth - elWidth : (elWidth / scope.imgWidth) * scope.imgHeight - elHeight;
+        if (direction === 'H') {
+            scope.element.css('background-position-x', -Math.min(e.offsetX / elWidth * maxOffset, maxOffset) + 'px');
         } else {
-            scope.element.css('background-position-y', -Math.min(e.offsetY / scope.elHeight * scope.maxOffset, scope.maxOffset) + 'px');
+            scope.element.css('background-position-y', -Math.min(e.offsetY / elHeight * maxOffset, maxOffset) + 'px');
         }
     }
 
