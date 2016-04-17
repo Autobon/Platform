@@ -12,7 +12,7 @@
         <div class="col-sm-12"><b>备注: </b><span>{{order.remark}}</span></div>
     </div>
     <div class="row m-t-10">
-        <div class="col-sm-4"><img image-modal ng-src="{{order.photo}}" class="img-thumbnail"></div>
+        <div class="col-sm-4"><image-box ng-if="order.photo" url="{{order.photo}}" height="280"></image-box></div>
         <div class="col-sm-8">
             <div class="form-control" style="cursor: not-allowed;">
                 <span>经度: {{order.position.lng}}, 纬度: {{order.position.lat}}</span>
@@ -33,9 +33,9 @@
         </div>
         <div class="row m-t-20 clearfix">
             <div style="width: 3%; height: 10px; float: left;"></div>
-            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.beforePhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
+            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.beforePhotos.split(',')"><image-box url="{{p}}" height="120"></image-box></div>
             <div style="width: 3%; height: 10px; float: left;"></div>
-            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.afterPhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
+            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.afterPhotos.split(',')"><image-box url="{{p}}" height="120"></image-box></div>
         </div>
     </div>
     <div ng-if="order.secondTech">
@@ -51,9 +51,9 @@
         </div>
         <div class="row m-t-20 clearfix">
             <div style="width: 3%; height: 10px; float: left;"></div>
-            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.secondConstruct.beforePhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
+            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.secondConstruct.beforePhotos.split(',')"><image-box url="{{p}}" height="120"></image-box></div>
             <div style="width: 3%; height: 10px; float: left;"></div>
-            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.secondConstruct.afterPhotos.split(',')"><img ng-src="{{p}}" image-modal class="img-thumbnail"></div>
+            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.secondConstruct.afterPhotos.split(',')"><image-box url="{{p}}" height="120"></image-box></div>
         </div>
     </div>
     <div class="comment" ng-if="order.comment.id">
