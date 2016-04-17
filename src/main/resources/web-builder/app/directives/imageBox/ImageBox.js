@@ -3,7 +3,7 @@ import $ from 'jquery';
 import './box.scss';
 
 export default class ImageBox extends Injector {
-    static $inject = ['$uibModal'];
+    static $inject = ['$uibModal', '$timeout'];
 
     constructor(...args) {
         super(...args);
@@ -35,11 +35,16 @@ export default class ImageBox extends Injector {
             }).on('mousemove', e => {
                 this.onmousemove(e, scope);
             });
-
-            $(window).resize(() => {
-                element.css('background-position', '0 0');
-            });
         };
+
+        const resizeEvent = 'resize.ib' + Math.random().toString().substr(2);
+        $(window).on(resizeEvent, () => {
+            element.css('background-position', '0 0');
+        });
+        scope.$on('$destroy', () => {
+            // console.log('destroyed'); // TODO not working
+            $(window).off(resizeEvent);
+        });
     }
 
     onmousemove(e, scope) {
