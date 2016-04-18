@@ -86,32 +86,64 @@
   .console-nav {
     display: table-row;
     height: 40px;
-    ul {
+    > ul {
       margin: 0;
       background-color: $color-primary;
       box-shadow: 0 1px 1px rgba(0,0,0,.2);
 
-      li {
+      > li {
         padding: 0;
         margin: 0;
         &:first-child {
           margin-left: 20px;
         }
 
-        a {
+        > a, > .dropdown > a {
           color: darken($color-primary, 30%);
           font-size: 16px;
           font-weight: bold;
           padding: 0 40px;
           line-height: 40px;
           display: inline-block;
+          text-decoration: none;
           border-right: 1px solid darken($color-primary, 10%);
           &:hover, &.active {
             color: #734600;
-            text-decoration: none;
             background-color: lighten($color-primary, 10%);
           }
         }
+
+        .dropdown-menu {
+          margin-top: 0;
+          padding-top: 0;
+          border: none;
+          width: 145px;
+          min-width: 90px;
+          border-top: 1px solid darken($color-primary, 10%);
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+          background-color: $color-primary;
+          li {
+            line-height: 40px;
+            &.divider {
+              margin: 0;
+              background-color: darken($color-primary, 10%);
+            }
+
+            > a {
+              width: 100%;
+              color: darken($color-primary, 30%);
+              padding: 0 20px;
+              line-height: 40px;
+              display: inline-block;
+              &:hover {
+                color: #734600;
+                text-decoration: none;
+                background-color: lighten($color-primary, 10%);
+              }
+            }
+          }
+        } // .drop-down
       }
     }
   } // .console-nav

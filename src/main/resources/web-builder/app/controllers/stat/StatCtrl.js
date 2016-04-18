@@ -8,7 +8,7 @@ export default class StatCtrl extends Injector {
         super(...args);
         const {$scope} = this.$injected;
         this.attachMethodsTo($scope);
-
+        $scope.filter = {};
         $scope.stat = {
             type: 1,
             show: 'NewOrder',

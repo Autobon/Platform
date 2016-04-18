@@ -3,18 +3,60 @@
 </div>
 <div class="row-search">
     <form class="form-inline">
-        <div class="form-group">
-            <label>开始时间:</label>
-
+        <div ng-if="stat.type == 1" style="display: inline-block;">
+            <div class="form-group">
+                <label>开始时间:</label>
+                <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{filter.startDay | date: 'YYYY-MM-DD'}}</div>
+                    <ul uib-dropdown-menu>
+                        <datetimepicker ng-model="filter.startDay"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'day', startView: 'month'}"
+                                        before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>结束时间:</label>
+                <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{filter.endDay | date: 'YYYY-MM-DD'}}</div>
+                    <ul uib-dropdown-menu>
+                        <datetimepicker ng-model="filter.endDay"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'day', startView: 'month'}"
+                                        before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
+        <div ng-if="stat.type == 2" style="display: inline-block;">
+            <div class="form-group">
+                <label>开始时间:</label>
+                <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{filter.startMonth | date: 'YYYY-MM'}}</div>
+                    <ul uib-dropdown-menu>
+                        <datetimepicker ng-model="filter.startMonth"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'month', startView: 'month'}"
+                                        before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>结束时间:</label>
+                <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{filter.endMonth | date: 'YYYY-MM'}}</div>
+                    <ul uib-dropdown-menu>
+                        <datetimepicker ng-model="filter.endMonth"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'month', startView: 'month'}"
+                                        before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group m-l-10 m-r-10">
             <label class="radio-inline"><input type="radio" name="statType" ng-model="stat.type" value="1"> 日</label>
             <label class="radio-inline"><input type="radio" name="statType" ng-model="stat.type" value="2"> 月</label>
         </div>
+        <button class="btn btn-primary" ng-click="getBills(true)">确定</button>
+        <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
 </div>
-<div class="text-center">
-    <div class="btn-group" style="margin-top: 3px;">
+<div class="text-center m-t-20 m-b-20">
+    <div class="btn-group">
         <span class="btn btn-default" ng-class="{active: stat.show == 'NewOrder'}" ng-click="stat.show='NewOrder'">新增订单</span>
         <span class="btn btn-default" ng-class="{active: stat.show == 'FinishedOrder'}" ng-click="stat.show='FinishedOrder'">完成订单</span>
         <span class="btn btn-default" ng-class="{active: stat.show == 'RegisteredCoop'}" ng-click="stat.show='RegisteredCoop'">注册商户</span>
