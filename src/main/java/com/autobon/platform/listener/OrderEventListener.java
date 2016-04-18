@@ -45,6 +45,12 @@ public class OrderEventListener {
     @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
     @Autowired @Qualifier("PushServiceB") PushService pushServiceB;
 
+    public static class OrderEvent extends Event<Order> {
+        public OrderEvent(Order order, Action action) {
+            super(order, action);
+        }
+    }
+
     @EventListener
     public void onOrderEvent(Event<Order> event) throws IOException {
         if (event.getAction() == Event.Action.CREATED) this.onOrderCreated(event.getPayload());

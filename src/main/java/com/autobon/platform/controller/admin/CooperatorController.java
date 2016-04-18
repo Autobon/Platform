@@ -4,6 +4,7 @@ import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.entity.ReviewCooper;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
+import com.autobon.platform.listener.CooperatorEventListener;
 import com.autobon.platform.listener.Event;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
@@ -74,7 +75,7 @@ public class CooperatorController {
         }
         reviewCooperService.save(reviewCooper);
         cooperatorService.save(coop);
-        publisher.publishEvent(new Event<>(coop, Event.Action.VERIFIED));
+        publisher.publishEvent(new CooperatorEventListener.CooperatorEvent(coop, Event.Action.VERIFIED));
         return new JsonMessage(true);
     }
 

@@ -1,6 +1,7 @@
 package com.autobon.platform.controller.admin;
 
 import com.autobon.platform.listener.Event;
+import com.autobon.platform.listener.TechnicianEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.technician.entity.Technician;
@@ -102,7 +103,7 @@ public class TechnicianController {
         }
         tech.setVerifyAt(new Date());
         technicianService.save(tech);
-        publisher.publishEvent(new Event<>(tech, Event.Action.VERIFIED));
+        publisher.publishEvent(new TechnicianEventListener.TechnicianEvent(tech, Event.Action.VERIFIED));
         return new JsonMessage(true);
     }
 

@@ -8,6 +8,7 @@ import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.platform.listener.Event;
+import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
@@ -255,7 +256,7 @@ public class ConstructionController {
             order.setStatus(Order.Status.FINISHED);
             order.setFinishTime(new Date());
             orderService.save(order);
-            publisher.publishEvent(new Event<>(order, Event.Action.FINISHED));
+            publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
         }
 
         return msg;
