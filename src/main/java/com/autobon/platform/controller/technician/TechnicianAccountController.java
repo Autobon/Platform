@@ -1,6 +1,7 @@
 package com.autobon.platform.controller.technician;
 
 import com.autobon.platform.listener.Event;
+import com.autobon.platform.listener.TechnicianEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
 import com.autobon.shared.SmsSender;
@@ -96,7 +97,7 @@ public class TechnicianAccountController {
             technician.setPhone(phone);
             technician.setPassword(Technician.encryptPassword(password));
             technicianService.save(technician);
-            publisher.publishEvent(new Event<>(technician, Event.Action.CREATED));
+            publisher.publishEvent(new TechnicianEventListener.TechnicianEvent(technician, Event.Action.CREATED));
             msg.setData(technician);
         }
         return msg;

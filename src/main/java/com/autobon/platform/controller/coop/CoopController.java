@@ -6,6 +6,7 @@ import com.autobon.cooperators.entity.ReviewCooper;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
+import com.autobon.platform.listener.CooperatorEventListener;
 import com.autobon.platform.listener.Event;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.VerifyCode;
@@ -105,7 +106,7 @@ public class CoopController {
             coopAccount.setCooperatorId(cooperator.getId());
             coopAccount.setIsMain(true);
             coopAccountService.save(coopAccount);
-            publisher.publishEvent(new Event<>(cooperator, Event.Action.CREATED));
+            publisher.publishEvent(new CooperatorEventListener.CooperatorEvent(cooperator, Event.Action.CREATED));
             return new JsonMessage(true, "", "", cooperator);
         }else {
             //是否认证成功，成功则止。认证失败，再认证

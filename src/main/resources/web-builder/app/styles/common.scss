@@ -79,7 +79,7 @@ table.table-striped {
 }
 
 .btn-default {
-  @include button-variant($color-text, transparent, lighten($color-text, 5%));
+  @include button-variant($color-text, $color-bg, lighten($color-text, 5%));
 }
 
 .btn-primary {

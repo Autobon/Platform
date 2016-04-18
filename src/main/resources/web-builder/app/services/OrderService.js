@@ -35,6 +35,7 @@ export default class OrderService extends Injector {
 
     async assembleWorkItemsText(workItems, workPercent, orderType) {
         if (workPercent) return (workPercent * 100).toFixed(0) + '%';
+        if (!workItems) return '';
         if (!this.workItems || !this.workItems[orderType]) {
             let res = await this.getWorkItems(orderType);
             if (res.data && res.data.result) {

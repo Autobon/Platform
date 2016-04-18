@@ -89,6 +89,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'MessageCtrl',
             template  : templateCache.MessageCtrl,
         })
+        .state('console.stat', {
+            url        : '/stat',
+            controller: 'StatCtrl',
+            template   : templateCache.StatCtrl,
+        })
         .state('console.main', {
             url       : '/main',
             controller: 'Main',

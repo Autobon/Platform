@@ -37,6 +37,12 @@ public class CooperatorEventListener {
     @Autowired ReviewCooperService reviewCooperService;
     @Autowired @Qualifier("PushServiceB") PushService pushServiceB;
 
+    public static class CooperatorEvent extends Event<Cooperator> {
+        public CooperatorEvent(Cooperator coop, Action action) {
+            super(coop, action);
+        }
+    }
+
     @EventListener
     public void onCooperatorEvent(Event<Cooperator> event) throws IOException {
         if (event.getAction() == Event.Action.CREATED) this.onCooperatorCreated(event.getPayload());

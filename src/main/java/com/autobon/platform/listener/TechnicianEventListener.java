@@ -31,6 +31,12 @@ public class TechnicianEventListener {
     @Autowired TechnicianService technicianService;
     @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
 
+    public static class TechnicianEvent extends Event<Technician> {
+        public TechnicianEvent(Technician tech, Action action) {
+            super(tech, action);
+        }
+    }
+
     @EventListener
     public void onTechnicianEvent(Event<Technician> event) throws IOException {
         if (event.getAction() == Event.Action.CREATED) this.onTechnicianCreated(event.getPayload());

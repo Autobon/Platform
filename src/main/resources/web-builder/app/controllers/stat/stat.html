@@ -1,0 +1,25 @@
+<div class="page-title">
+    <span class="fa fa-bar-chart"></span>&nbsp;统计分析
+</div>
+<div class="row-search">
+    <form class="form-inline">
+        <div class="form-group">
+            <label>开始时间:</label>
+
+        </div>
+        <div class="form-group">
+            <label class="radio-inline"><input type="radio" name="statType" ng-model="stat.type" value="1"> 日</label>
+            <label class="radio-inline"><input type="radio" name="statType" ng-model="stat.type" value="2"> 月</label>
+        </div>
+    </form>
+</div>
+<div class="text-center">
+    <div class="btn-group" style="margin-top: 3px;">
+        <span class="btn btn-default" ng-class="{active: stat.show == 'NewOrder'}" ng-click="stat.show='NewOrder'">新增订单</span>
+        <span class="btn btn-default" ng-class="{active: stat.show == 'FinishedOrder'}" ng-click="stat.show='FinishedOrder'">完成订单</span>
+        <span class="btn btn-default" ng-class="{active: stat.show == 'RegisteredCoop'}" ng-click="stat.show='RegisteredCoop'">注册商户</span>
+        <span class="btn btn-default" ng-class="{active: stat.show == 'VerifiedCoop'}" ng-click="stat.show='VerifiedCoop'">认证商户</span>
+        <span class="btn btn-default" ng-class="{active: stat.show == 'RegisteredTech'}" ng-click="stat.show='RegisteredTech'">注册技师</span>
+        <span class="btn btn-default" ng-class="{active: stat.show == 'VerifiedTech'}" ng-click="stat.show='VerifiedTech'">认证技师</span>
+    </div>
+</div>

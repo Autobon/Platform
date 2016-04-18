@@ -41,10 +41,10 @@
     </div>
     <div class="row detail-row">
         <div class="col-sm-6"><b>营业执照副本照片: </b><br>
-            <img ng-if="cooperator.bussinessLicensePic" image-modal ng-src="{{cooperator.bussinessLicensePic}}" class="img-thumbnail">
+            <image-box ng-if="cooperator.bussinessLicensePic" url="{{cooperator.bussinessLicensePic}}" style="height: 120px;"></image-box>
         </div>
         <div class="col-sm-6"><b>法人身份证正面照: </b><br>
-            <img ng-if="cooperator.corporationIdPicA" image-modal ng-src="{{cooperator.corporationIdPicA}}" class="img-thumbnail">
+            <image-box ng-if="cooperator.corporationIdPicA" url="{{cooperator.corporationIdPicA}}" style="height: 120px;"></image-box>
         </div>
     </div>
     <div class="row m-t-15 m-l-0">

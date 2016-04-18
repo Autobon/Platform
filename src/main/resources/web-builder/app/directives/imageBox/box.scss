@@ -1,0 +1,21 @@
+@import '../../styles/_variables.scss';
+
+.image-box {
+  visibility: hidden;
+  border-radius: 4px;
+  border: 1px solid $color-border;
+}
+
+.image-modal-close {
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  color: #FFF;
+  cursor: pointer;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+}
