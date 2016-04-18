@@ -1,4 +1,5 @@
 import {Injector} from 'ngES6';
+import moment from 'moment';
 
 export default class BillCtrl extends Injector {
     static $inject = ['$scope', 'BillService'];
@@ -37,6 +38,15 @@ export default class BillCtrl extends Injector {
         const {$scope} = this.$injected;
         $scope.filter     = {};
         // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
+    }
+
+    beforeRenderDatetimepicker($view, $dates) {
+        const now = moment();
+        for (let i = 0; i < $dates.length; i++) {
+            if ($dates[i].localDateValue() > now.valueOf()) {
+                $dates[i].selectable = false;
+            }
+        }
     }
 
     async generate() {

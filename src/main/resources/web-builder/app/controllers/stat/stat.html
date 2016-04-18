@@ -3,23 +3,72 @@
 </div>
 <div class="row-search">
     <form class="form-inline">
-        <div class="form-group">
-            <label>开始时间:</label>
-
+        <div ng-if="stat.type == 1" style="display: inline-block;">
+            <div class="form-group">
+                <label>开始时间:</label>
+                <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{stat.startDay}}</div>
+                    <ul uib-dropdown-menu>
+                        <datetimepicker ng-model="filter.startDay"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'day', startView: 'month'}"
+                                        before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>结束时间:</label>
+                <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{stat.endDay}}</div>
+                    <ul uib-dropdown-menu>
+                        <datetimepicker ng-model="filter.endDay"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'day', startView: 'month'}"
+                                        before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
+        <div ng-if="stat.type == 2" style="display: inline-block;">
+            <div class="form-group">
+                <label>开始时间:</label>
+                <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{stat.startMonth | date: 'YYYY-MM'}}</div>
+                    <ul uib-dropdown-menu>
+                        <datetimepicker ng-model="filter.startMonth"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'month', startView: 'month'}"
+                                        before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>结束时间:</label>
+                <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{stat.endMonth | date: 'YYYY-MM'}}</div>
+                    <ul uib-dropdown-menu>
+                        <datetimepicker ng-model="filter.endMonth"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'month', startView: 'month'}"
+                                        before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group m-l-10 m-r-10">
             <label class="radio-inline"><input type="radio" name="statType" ng-model="stat.type" value="1"> 日</label>
             <label class="radio-inline"><input type="radio" name="statType" ng-model="stat.type" value="2"> 月</label>
         </div>
+        <button class="btn btn-primary" ng-click="getStat()">确定</button>
+        <button class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
 </div>
-<div class="text-center">
-    <div class="btn-group" style="margin-top: 3px;">
-        <span class="btn btn-default" ng-class="{active: stat.show == 'NewOrder'}" ng-click="stat.show='NewOrder'">新增订单</span>
-        <span class="btn btn-default" ng-class="{active: stat.show == 'FinishedOrder'}" ng-click="stat.show='FinishedOrder'">完成订单</span>
-        <span class="btn btn-default" ng-class="{active: stat.show == 'RegisteredCoop'}" ng-click="stat.show='RegisteredCoop'">注册商户</span>
-        <span class="btn btn-default" ng-class="{active: stat.show == 'VerifiedCoop'}" ng-click="stat.show='VerifiedCoop'">认证商户</span>
-        <span class="btn btn-default" ng-class="{active: stat.show == 'RegisteredTech'}" ng-click="stat.show='RegisteredTech'">注册技师</span>
-        <span class="btn btn-default" ng-class="{active: stat.show == 'VerifiedTech'}" ng-click="stat.show='VerifiedTech'">认证技师</span>
+<div class="text-center m-t-20 m-b-20">
+    <div class="btn-group">
+        <span class="btn btn-default" ng-class="{active: stat.show == 'order'}" ng-click="stat.show='order'">订&nbsp;单</span>
+        <span class="btn btn-default" ng-class="{active: stat.show == 'coop'}" ng-click="stat.show='coop'">商&nbsp;户</span>
+        <span class="btn btn-default" ng-class="{active: stat.show == 'tech'}" ng-click="stat.show='tech'">技&nbsp;师</span>
     </div>
 </div>
+<div class="container">
+    <canvas ng-if="stat.show == 'order'" class="chart chart-line" chart-data="orderData" chart-labels="labels"
+            chart-legend="true" chart-series="series.order"></canvas>
+    <canvas ng-if="stat.show == 'tech'" class="chart chart-line" chart-data="techData" chart-labels="labels"
+            chart-legend="true" chart-series="series.tech"></canvas>
+    <canvas ng-if="stat.show == 'coop'" class="chart chart-line" chart-data="coopData" chart-labels="labels"
+            chart-legend="true" chart-series="series.coop"></canvas>
+</div>
+
+
