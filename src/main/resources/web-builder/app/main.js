@@ -3,11 +3,13 @@ import angular from 'angular';
 import 'angular-animate';
 import 'angular-ui-router';
 import 'angular-ui-bootstrap';
+import 'angular-chart.js';
 import $ from 'jquery';
 import moment from 'moment';
 import 'angular-bootstrap-datetimepicker';
 import 'angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js';
 import 'angular-bootstrap-datetimepicker/src/css/datetimepicker.css';
+import 'angular-chart.js/dist/angular-chart.min.css';
 
 import directives from './directives';
 import controllers, {templateCache} from './controllers';
@@ -20,7 +22,7 @@ moment.locale('zh-cn');
 export const App = 'app';
 
 const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
-                'ui.bootstrap.datetimepicker',
+                'chart.js', 'ui.bootstrap.datetimepicker',
                 directives, services, controllers, filters])
             .provider('template', function() {
                 this.$get = () => {return templateCache;};

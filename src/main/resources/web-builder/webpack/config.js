@@ -8,7 +8,7 @@ export const production = {
         app   : [path.resolve(__dirname, '../app/main.js')],
         vendor: ['angular', 'angular-animate', 'angular-ui-router',
             'angular-ui-bootstrap', 'angular-bootstrap-datetimepicker',
-            'jquery', 'moment', 'babel-polyfill'],
+            'jquery', 'moment', 'babel-polyfill', 'chart.js'],
     },
     output  : {
         path      : path.resolve(__dirname, '../../static'),
