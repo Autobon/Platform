@@ -48,7 +48,7 @@ export default class OrderEditorCtrl extends Injector {
     beforeRenderDatetimepicker($view, $dates) {
         const now = moment();
         for (let i = 0; i < $dates.length; i++) {
-            if ($dates[i].localDateValue() <= now.valueOf()) {
+            if ($dates[i].localDateValue() < now.valueOf()) {
                 $dates[i].selectable = false;
             }
         }
