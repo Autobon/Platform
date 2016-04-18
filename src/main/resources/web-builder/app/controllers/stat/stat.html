@@ -62,12 +62,12 @@
         <span class="btn btn-default" ng-class="{active: stat.show == 'tech'}" ng-click="stat.show='tech'">技&nbsp;师</span>
     </div>
 </div>
-<div class="container">
-    <canvas ng-if="stat.show == 'order'" class="chart chart-line" chart-data="orderData" chart-labels="labels"
+<div style="width: 800px; margin: auto;">
+    <canvas width="800" height="300" ng-if="stat.show == 'order'" class="chart chart-line" chart-data="orderData" chart-labels="labels"
             chart-legend="true" chart-series="series.order"></canvas>
-    <canvas ng-if="stat.show == 'tech'" class="chart chart-line" chart-data="techData" chart-labels="labels"
+    <canvas width="800" height="300" ng-if="stat.show == 'tech'" class="chart chart-line" chart-data="techData" chart-labels="labels"
             chart-legend="true" chart-series="series.tech"></canvas>
-    <canvas ng-if="stat.show == 'coop'" class="chart chart-line" chart-data="coopData" chart-labels="labels"
+    <canvas width="800" height="300" ng-if="stat.show == 'coop'" class="chart chart-line" chart-data="coopData" chart-labels="labels"
             chart-legend="true" chart-series="series.coop"></canvas>
 </div>
 
