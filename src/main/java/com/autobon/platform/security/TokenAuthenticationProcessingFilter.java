@@ -88,8 +88,10 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
                     user = staffService.get(id);
                     if (user != null) {
                         Staff s = (Staff) user;
-                        if (sessionId != null && !sessionId.equals(s.getSessionId()) || new Date().getTime() - s.getLastLoginAt().getTime()  > 1000*3600) user = null;
-                        else {
+                        if (!sessionId.equals(s.getSessionId()) ||
+                                s.getLastLoginAt() != null && new Date().getTime() - s.getLastLoginAt().getTime()  > 1000*3600) {
+                            user = null;
+                        } else {
                             s.setLastLoginAt(new Date());
                             s.setLastLoginIp(request.getRemoteAddr());
                             staffService.save(s);
