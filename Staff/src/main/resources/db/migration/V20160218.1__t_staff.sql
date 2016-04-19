@@ -8,6 +8,7 @@ CREATE TABLE `t_staff` (
   `create_at` datetime DEFAULT NULL COMMENT '注册时间',
   `last_login_at` datetime DEFAULT NULL,
   `last_login_ip` varchar(125) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `session_id` varchar(125) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` int(11) DEFAULT '1' COMMENT '0: 禁用， 1： 可用',
   `role` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -16,5 +17,5 @@ CREATE TABLE `t_staff` (
   UNIQUE KEY `staff_phone_UNIQUE` (`phone`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='员工登陆账户表';
 
-INSERT INTO `t_staff` (id, username, password, email, phone, name, create_at, last_login_at, last_login_ip, status, role) values (
-'1', 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'huangdc@incardata.com.cn', '18827075338', '超级管理员', '2016-03-01 12:45:00', NULL, '127.0.0.1', 1, 'SUPER');
+INSERT INTO `t_staff` (id, username, password, email, phone, name, create_at, session_id, last_login_at, last_login_ip, status, role) values (
+'1', 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'huangdc@incardata.com.cn', '18827075338', '超级管理员', '2016-03-01 12:45:00', '123456', NULL, '127.0.0.1', 1, 'SUPER');

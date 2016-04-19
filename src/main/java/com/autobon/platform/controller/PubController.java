@@ -75,6 +75,7 @@ public class PubController {
     public void getFile(HttpServletRequest request, HttpServletResponse response, OutputStream out) throws IOException {
         long now = new Date().getTime();
         long maxAge = 60 * 24 * 3600;
+
         response.setHeader("Cache-Control", "max-age=" + maxAge);
         response.setDateHeader("Last-Modified", now);
         response.setDateHeader("Expires", now + maxAge * 1000);
@@ -85,15 +86,6 @@ public class PubController {
         } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
-    }
-
-    @RequestMapping(value = "/api/pub/logout", method = RequestMethod.GET)
-    public JsonMessage logout(HttpServletResponse response) {
-        SecurityContextHolder.clearContext();
-        Cookie cookie = new Cookie("autoken", null);
-        cookie.setMaxAge(0); // 立即删除
-        response.addCookie(cookie);
-        return new JsonMessage(true);
     }
 
     @RequestMapping(value = "/api/pub/technician/skills", method = RequestMethod.GET)

@@ -2,9 +2,11 @@ package com.autobon.platform.controller.admin;
 
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.SmsSender;
+import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
@@ -50,6 +53,7 @@ public class StaffAccountController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public JsonMessage login(
+            HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam("username") String username,
             @RequestParam("password") String password) {
@@ -67,10 +71,37 @@ public class StaffAccountController {
         } else if (!staff.getPassword().equals(Staff.encryptPassword(password))) {
             return new JsonMessage(false, "PASSWORD_MISMATCH", "密码错误");
         } else {
-            response.addCookie(new Cookie("autoken", Staff.makeToken(staff.getId())));
+            staff.setLastLoginAt(new Date());
+            staff.setLastLoginIp(request.getRemoteAddr());
+            staff.setSessionId(VerifyCode.generateVerifyCode(6));
+            staffService.save(staff);
+
+            Cookie c = new Cookie("autoken", Staff.makeToken(staff.getId()) + "@" + staff.getSessionId());
+            c.setPath("/");
+            c.setHttpOnly(true);
+            response.addCookie(c);
             return new JsonMessage(true, "", "", staff);
         }
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public JsonMessage logout(
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        Staff staff = (Staff) request.getAttribute("user");
+        staff.setSessionId(VerifyCode.generateVerifyCode(6));
+        staffService.save(staff);
+
+        SecurityContextHolder.clearContext();
+        Cookie cookie = new Cookie("autoken", null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0); // 立即删除
+        response.addCookie(cookie);
+        return new JsonMessage(true);
+    }
+
+
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public JsonMessage changePassword(

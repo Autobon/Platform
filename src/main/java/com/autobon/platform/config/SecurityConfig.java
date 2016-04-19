@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(
                 "/api/web/admin/login",
+                "/api/web/admin/logout",
                 "/api/mobile/*/login",
                 "/api/mobile/*/register",
                 "/api/mobile/*/resetPassword").permitAll()
