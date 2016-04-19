@@ -47,10 +47,15 @@ export default class OrderCtrl extends Injector {
     }
 
     assign(order, tech) {
-        const {OrderService} = this.$injected;
+        const {$scope, OrderService} = this.$injected;
         OrderService.assign(order.id, tech.id).then(res => {
             if (res.data && res.data.result) {
                 angular.extend(order, res.data.data);
+                order.mainTech = tech;
+                if ($scope.orders) {
+                    let pOrder = $scope.orders.find(o => o.id === order.id);
+                    angular.extend(pOrder, order);
+                }
                 this.$injected.$scope.techQuery['show' + order.id] = false;
             }
         });

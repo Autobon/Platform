@@ -2,6 +2,8 @@
     <h3>订单编号: {{order.orderNum}}&nbsp;&nbsp;
         <span class="btn btn-sm btn-default">{{Settings.orderTypes[order.orderType]}}</span>
         <span class="btn btn-sm btn-success">{{Settings.orderStatus[order.status]}}</span>
+        <span class="btn btn-sm btn-default" ng-if="order.status == 'NEWLY_CREATED'" popover-placement="left"
+              popover-trigger="outsideClick" uib-popover-template="'assignOrder.html'"><i class="fa fa-paper-plane-o"></i>&nbsp;派单</span>
     </h3>
     <div class="row detail-row">
         <div class="col-sm-4"><b>预约时间: </b><span>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
