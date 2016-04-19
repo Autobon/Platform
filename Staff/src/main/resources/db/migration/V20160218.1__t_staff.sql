@@ -8,6 +8,7 @@ CREATE TABLE `t_staff` (
   `create_at` datetime DEFAULT NULL COMMENT '注册时间',
   `last_login_at` datetime DEFAULT NULL,
   `last_login_ip` varchar(125) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `session_id` varchar(125) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` int(11) DEFAULT '1' COMMENT '0: 禁用， 1： 可用',
   `role` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),

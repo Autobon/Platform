@@ -87,15 +87,6 @@ public class PubController {
         }
     }
 
-    @RequestMapping(value = "/api/pub/logout", method = RequestMethod.GET)
-    public JsonMessage logout(HttpServletResponse response) {
-        SecurityContextHolder.clearContext();
-        Cookie cookie = new Cookie("autoken", null);
-        cookie.setMaxAge(0); // 立即删除
-        response.addCookie(cookie);
-        return new JsonMessage(true);
-    }
-
     @RequestMapping(value = "/api/pub/technician/skills", method = RequestMethod.GET)
     public JsonMessage getSkills() {
         return getOrderTypes();

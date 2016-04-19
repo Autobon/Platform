@@ -77,8 +77,26 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
             int id = CoopAccount.decodeToken(token);
             if (id > 0) user = applicationContext.getBean(CoopAccountService.class).getById(id);
         } else if (token.startsWith("staff:")) {
-            int id = Staff.decodeToken(token);
-            if (id > 0) user = applicationContext.getBean(StaffService.class).get(id);
+            String sessionId = null;
+            String[] tokenArr = token.split("@");
+            if (tokenArr.length >= 2) {
+                token = tokenArr[0];
+                sessionId = tokenArr[1];
+                int id = Staff.decodeToken(token);
+                if (id > 0) {
+                    StaffService staffService = applicationContext.getBean(StaffService.class);
+                    user = staffService.get(id);
+                    if (user != null) {
+                        Staff s = (Staff) user;
+                        if (sessionId != null && !sessionId.equals(s.getSessionId()) || new Date().getTime() - s.getLastLoginAt().getTime()  > 1000*3600) user = null;
+                        else {
+                            s.setLastLoginAt(new Date());
+                            s.setLastLoginIp(request.getRemoteAddr());
+                            staffService.save(s);
+                        }
+                    }
+                }
+            }
         }
 
         if (user == null) {
