@@ -49,10 +49,11 @@ public class StaffAccountController {
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public JsonMessage login(HttpServletResponse response,
-             @RequestParam("username") String username,
-             @RequestParam("password") String password) {
-        Staff staff = null;
+    public JsonMessage login(
+            HttpServletResponse response,
+            @RequestParam("username") String username,
+            @RequestParam("password") String password) {
+        Staff staff;
         if (Pattern.matches("[0-9]{11}", username)) {
             staff = staffService.findByPhone(username);
         } else if (Pattern.matches("[\\w.\\-]+@([\\w\\-]+\\.)+[a-zA-Z]+", username)) {
@@ -72,26 +73,28 @@ public class StaffAccountController {
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-    public JsonMessage changePassword(HttpServletRequest request,
+    public JsonMessage changePassword(
+            HttpServletRequest request,
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword) {
+        Staff staff = (Staff) request.getAttribute("user");
 
-        Staff staff = (Staff)request.getAttribute("user");
-        if(oldPassword .equals(newPassword) ){
-            return  new JsonMessage(false, "SAME_PASSWORD", "新旧密码不能相同");
-        }else if(!staff.getPassword().equals(Staff.encryptPassword(oldPassword))){
+        if (oldPassword.equals(newPassword)) {
+            return new JsonMessage(false, "SAME_PASSWORD", "新旧密码不能相同");
+        } else if (!staff.getPassword().equals(Staff.encryptPassword(oldPassword))) {
             return new JsonMessage(false, "PASSWORD_MISMATCH", "密码错误");
-        }else{
+        } else {
             staff.setPassword(Staff.encryptPassword(newPassword));
+            staffService.save(staff);
             return new JsonMessage(true);
         }
-
     }
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
-    public JsonMessage resetPassword(HttpServletRequest request,
-             @RequestParam("phone") String phone,
-             @RequestParam("verifyCode") String verifyCode) {
+    public JsonMessage resetPassword(
+            HttpServletRequest request,
+            @RequestParam("phone") String phone,
+            @RequestParam("verifyCode") String verifyCode) {
 
         // TODO 重置密码
 
@@ -102,14 +105,15 @@ public class StaffAccountController {
 
     @RequestMapping(value = "/changeEmail", method = RequestMethod.POST)
     public JsonMessage changeEmail(HttpServletRequest request,
-            @RequestParam("email") String email) {
+                                   @RequestParam("email") String email) {
 
         // TODO 修改邮箱
         return null;
     }
 
     @RequestMapping(value = "/changePhone", method = RequestMethod.POST)
-    public JsonMessage changePhone(HttpServletRequest request,
+    public JsonMessage changePhone(
+            HttpServletRequest request,
             @RequestParam("phone") String phone,
             @RequestParam("verifyCode") String verifyCode) {
 
@@ -118,9 +122,10 @@ public class StaffAccountController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
-    public JsonMessage updateProfile(HttpServletRequest request,
-             @RequestParam(value = "name", required = false) String name,
-             @RequestParam(value = "username", required = false) String username) {
+    public JsonMessage updateProfile(
+            HttpServletRequest request,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "username", required = false) String username) {
 
         // TODO 更新个人信息
         return null;

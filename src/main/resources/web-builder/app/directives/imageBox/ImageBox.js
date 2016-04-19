@@ -42,7 +42,6 @@ export default class ImageBox extends Injector {
             element.css('background-position', '0 0');
         });
         scope.$on('$destroy', () => {
-            console.log('event callback distached: ' + resizeEvent);
             $(window).off(resizeEvent);
         });
     }

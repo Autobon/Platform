@@ -7,21 +7,21 @@
             <div class="form-group">
                 <label>开始时间:</label>
                 <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{stat.startDay}}</div>
-                    <ul uib-dropdown-menu>
-                        <datetimepicker ng-model="filter.startDay"
-                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'day', startView: 'month'}"
+                    <div uib-dropdown-menu>
+                        <datetimepicker ng-model="stat.startDay"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD', minView: 'day', startView: 'month'}"
                                         before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
-                    </ul>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
                 <label>结束时间:</label>
                 <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{stat.endDay}}</div>
-                    <ul uib-dropdown-menu>
-                        <datetimepicker ng-model="filter.endDay"
-                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'day', startView: 'month'}"
+                    <div uib-dropdown-menu>
+                        <datetimepicker ng-model="stat.endDay"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD', minView: 'day', startView: 'month'}"
                                         before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -30,8 +30,8 @@
                 <label>开始时间:</label>
                 <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{stat.startMonth | date: 'YYYY-MM'}}</div>
                     <ul uib-dropdown-menu>
-                        <datetimepicker ng-model="filter.startMonth"
-                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'month', startView: 'month'}"
+                        <datetimepicker ng-model="stat.startMonth"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM', minView: 'month', startView: 'month'}"
                                         before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
                     </ul>
                 </div>
@@ -40,8 +40,8 @@
                 <label>结束时间:</label>
                 <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{stat.endMonth | date: 'YYYY-MM'}}</div>
                     <ul uib-dropdown-menu>
-                        <datetimepicker ng-model="filter.endMonth"
-                                        data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm', minView: 'month', startView: 'month'}"
+                        <datetimepicker ng-model="stat.endMonth"
+                                        data-datetimepicker-config="{modelType: 'YYYY-MM', minView: 'month', startView: 'month'}"
                                         before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
                     </ul>
                 </div>

@@ -90,9 +90,19 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.MessageCtrl,
         })
         .state('console.stat', {
-            url        : '/stat',
+            url       : '/stat',
             controller: 'StatCtrl',
-            template   : templateCache.StatCtrl,
+            template  : templateCache.StatCtrl,
+        })
+        .state('console.account', {
+            url       : '/account',
+            controller: 'AccountCtrl',
+            template  : templateCache.AccountCtrl,
+        })
+        .state('console.password', {
+            url       : '/password',
+            controller: 'PasswordCtrl',
+            template  : templateCache.PasswordCtrl,
         })
         .state('console.main', {
             url       : '/main',
