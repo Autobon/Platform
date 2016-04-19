@@ -17,6 +17,11 @@ export default class OrderService extends Injector {
         return $http.get(Settings.domain + '/api/web/admin/order/' + orderNum);
     }
 
+    assign(orderId, techId) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/order/assign', {orderId: orderId, techId: techId});
+    }
+
     add(order) {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/order', order);

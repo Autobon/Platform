@@ -26,7 +26,7 @@ export default class StatCtrl extends Injector {
     getStat() {
         const {$scope, StatService} = this.$injected;
         let stat = $scope.stat;
-        let [start, end] = stat.type === 1 ? [stat.startDay, stat.endDay] : [stat.startMonth, stat.endMonth];
+        let [start, end] = parseInt(stat.type, 10) === 1 ? [stat.startDay, stat.endDay] : [stat.startMonth, stat.endMonth];
         $scope.series = {
             order: ['新建订单', '完成订单'],
             coop: ['注册商户', '认证商户'],
@@ -39,7 +39,7 @@ export default class StatCtrl extends Injector {
                 $scope.techData = [[], []];
                 $scope.coopData = [[], []];
                 res.data.data.forEach(d => {
-                    $scope.labels.push(moment(d.statTime).format(stat.type === 1 ? 'YYYY-MM-DD' : 'YYYY-MM'));
+                    $scope.labels.push(moment(d.statTime).format(parseInt(stat.type, 10) === 1 ? 'YYYY-MM-DD' : 'YYYY-MM'));
                     $scope.orderData[0].push(d.newOrderCount);
                     $scope.orderData[1].push(d.finishedOrderCount);
                     $scope.techData[0].push(d.newTechCount);

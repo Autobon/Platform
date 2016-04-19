@@ -262,3 +262,30 @@
     "title": "这是通知消息标题"
 }
 ```
+
+## 5. 派单消息
+
+```
+{
+    "action": "ASSIGN_ORDER",
+    "order": {
+        "id": 47,
+        "orderNum": "20160303120243AS54GE",
+        "orderType": 0,
+        "photo": null,
+        "orderTime": null,
+        "addTime": 1456977763758,
+        "creatorType": 0,
+        "creatorId": 0,
+        "creatorName": null,
+        "contactPhone": null,
+        "positionLon": null,
+        "positionLat": null,
+        "remark": null,
+        "mainTechId": 1,
+        "secondTechId": 0,
+        "status": "TAKEN_UP"
+    },
+    "title": "你收到派单消息"
+}
+```

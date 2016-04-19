@@ -222,6 +222,21 @@ ul.side-nav-list {
   display: block !important;
 }
 
+.datetimepicker .active, .datetimepicker .active:hover {
+  background: $color-bg !important;
+  color: $color-text !important;
+}
+
+.line-legend li {
+  line-height: 20px;
+  span {
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    margin: 0 5px;
+  }
+}
+
 // baidu map
 .anchorBL{
   display: none;
