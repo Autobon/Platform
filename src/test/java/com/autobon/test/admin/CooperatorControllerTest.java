@@ -69,4 +69,28 @@ public class CooperatorControllerTest extends MvcTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
     }
+
+    @Test
+    public void createCoop() throws Exception {
+        mockMvcS.perform(post("/api/web/admin/cooperator/createCoop")
+                .param("fullname", "A汽车美容公司")
+                .param("businessLicense", "3335555")
+                .param("corporationName", "张三")
+                .param("corporationIdNo", "422130199202030016")
+                .param("bussinessLicensePic", "/uploads/coop/20160420001122.jpg")
+                .param("corporationIdPicA", "/uploads/coop/20160420001123.jpg")
+                .param("invoiceHeader", "武汉市A科技公司")
+                .param("taxIdNo", "362362236")
+                .param("postcode", "430000")
+                .param("address", "中山路3号")
+                .param("contact", "李四")
+                .param("contactPhone", "13025523002")
+                .param("phone", "13085856335")
+                .param("shortname", "Corpration ABC")
+                .param("password","123456")
+                .param("rpassword","123456")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
 }
