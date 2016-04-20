@@ -45,15 +45,13 @@ public class CooperatorControllerTest extends MvcTest {
     @Test
     public void update() throws Exception {
         mockMvcS.perform(post("/api/web/admin/cooperator/update/1")
-                .param("phone", "13085856332")
-                .param("shortname", "A公司")
                 .param("fullname", "A汽车美容公司")
                 .param("businessLicense", "3335555")
                 .param("corporationName", "张三")
                 .param("corporationIdNo", "422365196605050001")
-                .param("bussinessLicensePic", "a/a.jpg")
-                .param("corporationIdPicA", "a/b.jpg")
-                .param("corporationIdPicB", "a/c.jpg")
+                .param("bussinessLicensePic", "/uploads/coop/20160420001122.jpg")
+                .param("corporationIdPicA", "/uploads/coop/20160420001123.jpg")
+                .param("corporationIdPicB", "/uploads/coop/20160420001124.jpg")
                 .param("longitude", "120.34")
                 .param("latitude", "35.55")
                 .param("invoiceHeader", "武汉市A科技公司")
@@ -65,6 +63,30 @@ public class CooperatorControllerTest extends MvcTest {
                 .param("address", "中山路3号")
                 .param("contact", "李四")
                 .param("contactPhone", "13025523002")
+                .cookie(new Cookie("autoken", token)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.result", is(true)));
+    }
+
+    @Test
+    public void createCoop() throws Exception {
+        mockMvcS.perform(post("/api/web/admin/cooperator/createCoop")
+                .param("fullname", "A汽车美容公司")
+                .param("businessLicense", "3335555")
+                .param("corporationName", "张三")
+                .param("corporationIdNo", "422130199202030016")
+                .param("bussinessLicensePic", "/uploads/coop/20160420001122.jpg")
+                .param("corporationIdPicA", "/uploads/coop/20160420001123.jpg")
+                .param("invoiceHeader", "武汉市A科技公司")
+                .param("taxIdNo", "362362236")
+                .param("postcode", "430000")
+                .param("address", "中山路3号")
+                .param("contact", "李四")
+                .param("contactPhone", "13025523002")
+                .param("phone", "13085856335")
+                .param("shortname", "Corpration ABC")
+                .param("password","123456")
+                .param("rpassword","123456")
                 .cookie(new Cookie("autoken", token)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
