@@ -18,6 +18,7 @@ import com.autobon.technician.service.TechStatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +45,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/mobile/coop/order")
 public class OrderController {
     private static Logger log = LoggerFactory.getLogger(OrderController.class);
-
+    @Value("${com.autobon.uploadPath}") String uploadPath;
     @Autowired OrderService orderService;
     @Autowired CommentService commentService;
     @Autowired TechStatService techStatService;
@@ -183,7 +184,7 @@ public class OrderController {
         String path ="/uploads/order/photo";
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
         JsonMessage msg = new JsonMessage(true);
-        File dir = new File(request.getServletContext().getRealPath(path));
+        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
