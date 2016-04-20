@@ -524,3 +524,68 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
 }
 ```
 
+## 6. 拉取可抢订单列表
+### URL及请求方法
+`GET /api/mobile/technician/order/listNew`
+
+### 请求参数
+
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| page | 否 | 分页页码, 从1开始，默认为1 | 1 |
+| pageSize | 否 | 每页条数, 默认20 | 20 |
+
+
+### 返回数据
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "page": 1,
+        "totalElements": 2,
+        "totalPages": 1,
+        "pageSize": 20,
+        "count": 2,
+        "list": [
+            {
+                "id": 47,
+                "orderNum": "20160303120243AS54GE",
+                "orderType": 0,
+                "photo": null,
+                "orderTime": null,
+                "addTime": 1456977763758,
+                "creatorType": 0,
+                "creatorId": 0,
+                "creatorName": null,
+                "contactPhone": null,
+                "positionLon": null,
+                "positionLat": null,
+                "remark": null,
+                "mainTechId": 0,
+                "secondTechId": 0,
+                "status": "NEWLY_CREATED"
+            }, {
+                "id": 48,
+                "orderNum": "20160303120243AS5WWW",
+                "orderType": 0,
+                "photo": null,
+                "orderTime": null,
+                "addTime": 1456977763758,
+                "creatorType": 0,
+                "creatorId": 0,
+                "creatorName": null,
+                "contactPhone": null,
+                "positionLon": null,
+                "positionLat": null,
+                "remark": null,
+                "mainTechId": 0,
+                "secondTechId": 0,
+                "status": "NEWLY_CREATED"
+            }
+        ]
+    }
+}
+```

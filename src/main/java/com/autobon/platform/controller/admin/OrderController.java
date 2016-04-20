@@ -71,9 +71,9 @@ public class OrderController {
         String creatorName = null;
         String contactPhone = null;
         List<Integer> types = null;
-        Integer statusCode = orderStatus.getStatusCode();
+        Integer statusCode = orderStatus != null ? orderStatus.getStatusCode() : null;
 
-        if (!"orderTime".equals(sort) && "id".equals(sort)) return new JsonMessage(false, "ILLEGAL_SORT_PARAM" , "sort参数只能为id或orderTime");
+        if (!"orderTime".equals(sort) && !"id".equals(sort)) return new JsonMessage(false, "ILLEGAL_SORT_PARAM" , "sort参数只能为id或orderTime");
 
         if (orderCreator != null) {
             if (Pattern.matches("\\d{11}", orderCreator)) {
