@@ -275,5 +275,21 @@ public class CooperatorController {
         return msg;
     }
 
+    @RequestMapping(value="/changePhone/{coopId:[\\d]+}",method = RequestMethod.POST)
+    public JsonMessage changePhone(@PathVariable("coopId") int coopId,
+                                   @RequestParam("phone") String phone){
+        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
+        if(coopAccount == null){
+            return new JsonMessage(false,"ILLEGAL_PARAM","商户id有误");
+        }else{
+            if (coopAccountService.getByPhone(phone) != null) {
+                return new JsonMessage(false,"OCCUPIED_ID","手机号已被注册");
+            }else{
+                coopAccount.setPhone(phone);
+                coopAccountService.save(coopAccount);
+                return new JsonMessage(true);
+            }
+        }
+    }
 
 }
