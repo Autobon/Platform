@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by yuh on 2016/2/22.
@@ -27,12 +30,12 @@ public class OrderController {
     @Autowired ConstructionService constructionService;
     @Autowired WorkItemService workItemService;
     @Autowired CommentService commentService;
-    @Autowired
-    TechStatService techStatService;
+    @Autowired TechStatService techStatService;
 
     // 获取已完成的主要责任人订单列表
     @RequestMapping(value = "/listMain", method = RequestMethod.GET)
-    public JsonMessage listMain(HttpServletRequest request,
+    public JsonMessage listMain(
+            HttpServletRequest request,
              @RequestParam(value = "page", defaultValue = "1") int page,
              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
@@ -42,7 +45,8 @@ public class OrderController {
 
     // 获取已完成的次要责任人订单列表
     @RequestMapping(value = "/listSecond", method = RequestMethod.GET)
-    public JsonMessage listSecond(HttpServletRequest request,
+    public JsonMessage listSecond(
+            HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
@@ -52,12 +56,30 @@ public class OrderController {
 
     // 获取未完成的订单
     @RequestMapping(value = "/listUnfinished", method = RequestMethod.GET)
-    public JsonMessage listUnfinished(HttpServletRequest request,
+    public JsonMessage listUnfinished(
+            HttpServletRequest request,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
                 new JsonPage<>(detailedOrderService.findUnfinishedByTechId(technician.getId(), page, pageSize)));
+    }
+
+    // 获取新建订单列表
+    @RequestMapping(value = "/listNew", method = RequestMethod.GET)
+    public JsonMessage listNew(
+            HttpServletRequest request,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Technician technician = (Technician) request.getAttribute("user");
+        String sSkill = technician.getSkill();
+        if (sSkill == null || "".equals(sSkill)) {
+            return new JsonMessage(true, "", "", new JsonPage<>());
+        }
+        List<Integer> skills = Arrays.stream(technician.getSkill().split(",")).map(Integer::parseInt).collect(Collectors.toList());
+
+        return new JsonMessage(true, "", "", new JsonPage<>(orderService.find(null, null, null, skills,
+                Order.Status.NEWLY_CREATED.getStatusCode(), "orderTime", page, pageSize)));
     }
 
     // 获取订单信息
@@ -68,7 +90,8 @@ public class OrderController {
 
     // 抢单
     @RequestMapping(value = "/takeup", method = RequestMethod.POST)
-    public JsonMessage takeUpOrder(HttpServletRequest request,
+    public JsonMessage takeUpOrder(
+            HttpServletRequest request,
             @RequestParam("orderId") int orderId) {
         Technician tech = (Technician) request.getAttribute("user");
         Order order = orderService.get(orderId);

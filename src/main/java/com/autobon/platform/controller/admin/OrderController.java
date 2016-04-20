@@ -39,9 +39,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -66,12 +64,16 @@ public class OrderController {
             @RequestParam(value = "orderNum", required = false) String orderNum,
             @RequestParam(value = "orderCreator", required = false) String orderCreator,
             @RequestParam(value = "orderType", required = false) Integer orderType,
-            @RequestParam(value = "orderStatus", required = false) String orderStatus,
+            @RequestParam(value = "orderStatus", required = false) Order.Status orderStatus,
+            @RequestParam(value = "sort", defaultValue = "id") String sort,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         String creatorName = null;
         String contactPhone = null;
-        Integer statusCode = null;
+        List<Integer> types = null;
+        Integer statusCode = orderStatus.getStatusCode();
+
+        if (!"orderTime".equals(sort) && "id".equals(sort)) return new JsonMessage(false, "ILLEGAL_SORT_PARAM" , "sort参数只能为id或orderTime");
 
         if (orderCreator != null) {
             if (Pattern.matches("\\d{11}", orderCreator)) {
@@ -81,17 +83,13 @@ public class OrderController {
             }
         }
 
-        if (orderStatus != null) {
-            try {
-                Order.Status s = Order.Status.valueOf(orderStatus);
-                statusCode = s.getStatusCode();
-            } catch (Exception e) {
-            }
+        if (orderType != null) {
+            types = Arrays.asList(orderType);
         }
 
         return new JsonMessage(true, "", "",
                 new JsonPage<>(orderService.find(orderNum, creatorName, contactPhone,
-                        orderType, statusCode, page, pageSize)));
+                        types, statusCode, sort, page, pageSize)));
     }
 
     @RequestMapping(value = "/{orderNum:\\d+.*}", method = RequestMethod.GET)
