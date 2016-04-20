@@ -10,13 +10,23 @@ import com.autobon.platform.listener.CooperatorEventListener;
 import com.autobon.platform.listener.Event;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
+import org.im4java.core.ConvertCmd;
+import org.im4java.core.IMOperation;
+import org.im4java.process.Pipe;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -33,7 +43,8 @@ public class CooperatorController {
     @Autowired ApplicationEventPublisher publisher;
     @Autowired
     private CoopAccountService coopAccountService;
-
+    @Value("${com.autobon.uploadPath}") String uploadPath;
+    @Value("${com.autobon.gm-path}") String gmPath;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -142,6 +153,37 @@ public class CooperatorController {
         cooperatorService.save(cooperator);
         return new JsonMessage(true, "", "", cooperator);
     }
+
+    @RequestMapping(value = "/photo", method = RequestMethod.POST)
+    public JsonMessage uploadPhoto(HttpServletRequest request,
+                                   @RequestParam("file") MultipartFile file) throws Exception {
+        if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
+
+        String path = "/uploads/coop";
+        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
+        if (!dir.exists()) dir.mkdirs();
+
+        String originalName = file.getOriginalFilename();
+        String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase();
+        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                + VerifyCode.generateVerifyCode(6) + extension;
+
+        InputStream in;
+        if (file == null || file.isEmpty()) return new JsonMessage(false, "没有选择上传文件");
+        in = file.getInputStream();
+
+        ConvertCmd cmd = new ConvertCmd(true);
+        cmd.setSearchPath(gmPath);
+        cmd.setInputProvider(new Pipe(in, null));
+        IMOperation operation = new IMOperation();
+        operation.addImage("-");
+        operation.resize(1200, 1200, ">");
+        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+        cmd.run(operation);
+
+        return new JsonMessage(true, "", "", path + "/" + filename);
+    }
+
 
 
     @RequestMapping(value = "/createCoop", method = RequestMethod.POST)
