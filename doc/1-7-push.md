@@ -43,7 +43,7 @@
         "positionLon": null,
         "positionLat": null,
         "remark": null,
-        "mainTechId": 1,
+        "mainTechId": 0,
         "secondTechId": 0,
         "status": "NEWLY_CREATED"
     },
