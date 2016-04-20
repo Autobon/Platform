@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yuh on 2016/2/22.
@@ -43,9 +44,9 @@ public class OrderService {
     }
 
     public Page<Order> find(String orderNum, String creatorName, String contactPhone,
-                            Integer orderType, Integer statusCode, int page, int pageSize) {
+                            List<Integer> orderType, Integer statusCode, String sort, int page, int pageSize) {
         return repository.find(orderNum, creatorName, contactPhone, orderType,
-                statusCode, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
+                statusCode, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, sort));
     }
 
     public Page<Order> findExpired(Date signInBefore, Date finishBefore,  int page, int pageSize){

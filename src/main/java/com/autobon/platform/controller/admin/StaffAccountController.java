@@ -1,7 +1,7 @@
 package com.autobon.platform.controller.admin;
 
 import com.autobon.shared.JsonMessage;
-import com.autobon.shared.SmsSender;
+import com.autobon.shared.RedisCache;
 import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/web/admin")
 public class StaffAccountController {
     @Autowired StaffService staffService;
-    @Autowired SmsSender smsSender;
+    @Autowired RedisCache redisCache;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -71,12 +72,13 @@ public class StaffAccountController {
         } else if (!staff.getPassword().equals(Staff.encryptPassword(password))) {
             return new JsonMessage(false, "PASSWORD_MISMATCH", "密码错误");
         } else {
+            String sessionId = VerifyCode.generateVerifyCode(6);
+            redisCache.set("SSESSION:" + staff.getId() + "@" + sessionId, "" + staff.getId(), 3600);
             staff.setLastLoginAt(new Date());
             staff.setLastLoginIp(request.getRemoteAddr());
-            staff.setSessionId(VerifyCode.generateVerifyCode(6));
             staffService.save(staff);
 
-            Cookie c = new Cookie("autoken", Staff.makeToken(staff.getId()) + "@" + staff.getSessionId());
+            Cookie c = new Cookie("autoken", Staff.makeToken(staff.getId()) + "@" + sessionId);
             c.setPath("/");
             c.setHttpOnly(true);
             response.addCookie(c);
@@ -86,18 +88,22 @@ public class StaffAccountController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public JsonMessage logout(
-            HttpServletRequest request,
-            HttpServletResponse response) {
+            HttpServletRequest request) {
         Staff staff = (Staff) request.getAttribute("user");
-        staff.setSessionId(VerifyCode.generateVerifyCode(6));
-        staffService.save(staff);
+
+        Cookie[] cookies = request.getCookies();
+        Cookie cookie = null;
+        if (cookies != null) {
+            cookie = Arrays.stream(cookies).filter(c -> c.getName().equals("autoken")).findFirst().orElse(null);
+        }
+        if (cookie != null) {
+            String[] arr = cookie.getValue().split("@");
+            if (arr.length > 1) {
+                redisCache.delete("SSESSION:" + staff.getId() + "@" + arr[1]);
+            }
+        }
 
         SecurityContextHolder.clearContext();
-        Cookie cookie = new Cookie("autoken", null);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(0); // 立即删除
-        response.addCookie(cookie);
         return new JsonMessage(true);
     }
 

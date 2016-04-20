@@ -37,8 +37,6 @@ public class Staff implements UserDetails {
 
     @Column private Date createAt;
 
-    @Column private String sessionId;
-
     @Column private Date lastLoginAt;
 
     @Column private String lastLoginIp;
@@ -132,14 +130,6 @@ public class Staff implements UserDetails {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
     public Date getLastLoginAt() {

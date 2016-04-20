@@ -2,6 +2,7 @@ package com.autobon.platform.security;
 
 import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.service.CoopAccountService;
+import com.autobon.shared.RedisCache;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
 import com.autobon.technician.entity.Technician;
@@ -85,11 +86,11 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
                 int id = Staff.decodeToken(token);
                 if (id > 0) {
                     StaffService staffService = applicationContext.getBean(StaffService.class);
+                    RedisCache redisCache = applicationContext.getBean(RedisCache.class);
                     user = staffService.get(id);
                     if (user != null) {
                         Staff s = (Staff) user;
-                        if (!sessionId.equals(s.getSessionId()) ||
-                                s.getLastLoginAt() != null && new Date().getTime() - s.getLastLoginAt().getTime()  > 1000*3600) {
+                        if (s.getLastLoginAt() != null && !String.valueOf(s.getId()).equals(redisCache.get("SSESSION:" + s.getId() + "@" + sessionId))) {
                             user = null;
                         } else {
                             s.setLastLoginAt(new Date());

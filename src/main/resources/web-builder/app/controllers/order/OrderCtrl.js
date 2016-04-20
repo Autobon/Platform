@@ -10,7 +10,7 @@ export default class OrderCtrl extends Injector {
         const {$scope, Settings} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.Settings   = Settings;
-        $scope.filter     = {};
+        $scope.filter     = {sort: 'id'};
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
         $scope.assignTemplate = 'assignOrder.html';
         $scope.techQuery = {};
