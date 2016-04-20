@@ -1,7 +1,9 @@
 package com.autobon.platform.controller.admin;
 
+import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.entity.ReviewCooper;
+import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.platform.listener.CooperatorEventListener;
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by yuh on 2016/3/10.
@@ -27,6 +31,8 @@ public class CooperatorController {
     @Autowired CooperatorService cooperatorService;
     @Autowired ReviewCooperService reviewCooperService;
     @Autowired ApplicationEventPublisher publisher;
+    @Autowired
+    private CoopAccountService coopAccountService;
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -135,6 +141,96 @@ public class CooperatorController {
         cooperator.setContactPhone(contactPhone);
         cooperatorService.save(cooperator);
         return new JsonMessage(true, "", "", cooperator);
+    }
+
+
+    @RequestMapping(value = "/createCoop", method = RequestMethod.POST)
+    public JsonMessage createCoop(
+            @RequestParam("fullname") String fullname,
+            @RequestParam("businessLicense") String businessLicense,
+            @RequestParam("corporationName") String corporationName,
+            @RequestParam("corporationIdNo") String corporationIdNo,
+            @RequestParam("bussinessLicensePic") String bussinessLicensePic,
+            @RequestParam("corporationIdPicA") String corporationIdPicA,
+            @RequestParam("invoiceHeader") String invoiceHeader,
+            @RequestParam("taxIdNo") String taxIdNo,
+            @RequestParam("postcode") String postcode,
+            @RequestParam("address") String address,
+            @RequestParam("contact") String contact,
+            @RequestParam("contactPhone") String contactPhone,
+            @RequestParam("phone") String phone,
+            @RequestParam("shortname") String shortname,
+            @RequestParam("password")  String password,
+            @RequestParam("rpassword") String rpassword){
+        JsonMessage msg = new JsonMessage(true);
+        ArrayList<String> messages = new ArrayList<>();
+
+        if(coopAccountService.getByShortname(shortname)!=null){
+            msg.setError("OCCUPIED_ID");
+            messages.add("企业简称已被注册");
+        }
+
+        if (!Pattern.matches("^\\d{11}$", phone)) {
+            msg.setError("ILLEGAL_PARAM");
+            messages.add("手机号格式错误");
+        } else if (coopAccountService.getByPhone(phone) != null) {
+            msg.setError("OCCUPIED_ID");
+            messages.add("手机号已被注册");
+        }
+
+        if (password.length() < 6) {
+            msg.setError("ILLEGAL_PARAM");
+            messages.add("密码至少6位");
+        }
+
+        if(!password.equals(rpassword)){
+            msg.setError("ILLEGAL_PARAM");
+            messages.add("两次输入密码不一致");
+        }
+
+        corporationIdNo = corporationIdNo.toUpperCase();
+        if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", corporationIdNo)) {
+            msg.setError("ILLEGAL_PARAM");
+            messages.add("身份证号码有误");
+        }
+
+        if (!Pattern.matches("^\\d{11}$", contactPhone)) {
+            msg.setError("ILLEGAL_PARAM");
+            messages.add("联系人电话格式错误");
+        }
+
+        if (messages.size() > 0) {
+            msg.setResult(false);
+            msg.setMessage(messages.stream().collect(Collectors.joining(",")));
+        } else {
+            //创建商户
+            Cooperator cooperator = new Cooperator();
+            cooperator.setFullname(fullname);
+            cooperator.setBusinessLicense(businessLicense);
+            cooperator.setCorporationName(corporationName);
+            cooperator.setCorporationIdNo(corporationIdNo);
+            cooperator.setBussinessLicensePic(bussinessLicensePic);
+            cooperator.setCorporationIdPicA(corporationIdPicA);
+            cooperator.setInvoiceHeader(invoiceHeader);
+            cooperator.setTaxIdNo(taxIdNo);
+            cooperator.setPostcode(postcode);
+            cooperator.setAddress(address);
+            cooperator.setContact(contact);
+            cooperator.setContactPhone(contactPhone);
+            cooperator.setStatusCode(0);
+            cooperatorService.save(cooperator);
+
+            //创建商户下属管理员账户
+            CoopAccount coopAccount = new CoopAccount();
+            coopAccount.setShortname(shortname);
+            coopAccount.setPhone(phone);
+            coopAccount.setPassword(coopAccount.encryptPassword(password));
+            coopAccount.setCooperatorId(cooperator.getId());
+            coopAccount.setIsMain(true);
+            coopAccount.setCreateTime(new Date());
+            coopAccountService.save(coopAccount);
+        }
+        return msg;
     }
 
 
