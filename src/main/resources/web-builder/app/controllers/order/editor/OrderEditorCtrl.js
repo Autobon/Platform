@@ -25,7 +25,6 @@ export default class OrderEditorCtrl extends Injector {
     uploaded(data) {
         const {$scope, $uibModal} = this.$injected;
         if (!data.result) {
-            $scope.message = data.message;
             $uibModal.open({
                 size     : 'sm',
                 scope    : $scope,
@@ -35,7 +34,7 @@ export default class OrderEditorCtrl extends Injector {
                         <h3 class="modal-title">提示消息</h3>
                     </div>
                     <div class="modal-body">
-                        <b>{{message}}</b>
+                        <b>${data.message}</b>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="button" ng-click="$close()">确定</button>

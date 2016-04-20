@@ -30,7 +30,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             "where (?1 is null or o.orderNum = ?1) " +
             "and (?2 is null or o.creatorName = ?2) " +
             "and (?3 is null or o.contactPhone = ?3) " +
-            "and (?4 is null or o.orderType in ?4) " +
+            "and (COALESCE(?4) is null or o.orderType in (?4)) " +
             "and (?5 is null or o.statusCode = ?5)")
     Page<Order> find(String orderNum, String creatorName, String contactPhone,
                      List<Integer> orderType, Integer statusCode, Pageable pageable);

@@ -179,8 +179,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/uploadPhoto",method = RequestMethod.POST)
-    public JsonMessage uploadPhoto(HttpServletRequest request,
-                                   @RequestParam("file") MultipartFile file) throws  Exception{
+    public JsonMessage uploadPhoto(@RequestParam("file") MultipartFile file) throws  Exception{
         String path ="/uploads/order/photo";
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
         JsonMessage msg = new JsonMessage(true);

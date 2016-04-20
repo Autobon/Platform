@@ -155,8 +155,8 @@ public class CooperatorController {
     }
 
     @RequestMapping(value = "/photo", method = RequestMethod.POST)
-    public JsonMessage uploadPhoto(HttpServletRequest request,
-                                   @RequestParam("file") MultipartFile file) throws Exception {
+    public JsonMessage uploadPhoto(
+            @RequestParam("file") MultipartFile file) throws Exception {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
         String path = "/uploads/coop";
