@@ -60,9 +60,14 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.CooperatorDetailCtrl,
         })
         .state('console.cooperator.new', {
-            url: '/new',
+            url       : '/new',
             controller: 'CooperatorEditCtrl',
-            template: templateCache.CooperatorEditCtrl,
+            template  : templateCache.CooperatorEditCtrl,
+        })
+        .state('console.cooperator.edit', {
+            url       : '/edit/{:id\\d+}',
+            controller: 'CooperatorEditCtrl',
+            template  : templateCache.CooperatorEditCtrl,
         })
         .state('console.bill', {
             url       : '/bill',
