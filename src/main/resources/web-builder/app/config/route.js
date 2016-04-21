@@ -65,7 +65,7 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.CooperatorEditCtrl,
         })
         .state('console.cooperator.edit', {
-            url       : '/edit/{:id\\d+}',
+            url       : '/edit/{id:\\d+}',
             controller: 'CooperatorEditCtrl',
             template  : templateCache.CooperatorEditCtrl,
         })

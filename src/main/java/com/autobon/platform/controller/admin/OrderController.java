@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -89,7 +90,7 @@ public class OrderController {
 
         return new JsonMessage(true, "", "",
                 new JsonPage<>(orderService.find(orderNum, creatorName, contactPhone,
-                        types, statusCode, sort, page, pageSize)));
+                        types, statusCode, sort, Sort.Direction.DESC, page, pageSize)));
     }
 
     @RequestMapping(value = "/{orderNum:\\d+.*}", method = RequestMethod.GET)

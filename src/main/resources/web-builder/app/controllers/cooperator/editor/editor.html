@@ -1,5 +1,5 @@
 <div class="container-fluid m-l-40 m-r-40">
-    <div class="page-header"><h3>新建商户</h3></div>
+    <div class="page-header"><h3>{{$state.is('console.cooperator.new') ? '新建商户' : '编辑商户'}}</h3></div>
     <uib-alert type="warning" close="error = ''" ng-show="error">{{error}}</uib-alert>
     <form class="form-horizontal" name="form">
         <div class="form-group">
