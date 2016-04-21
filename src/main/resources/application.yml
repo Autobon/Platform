@@ -12,8 +12,8 @@ com.autobon:
         appSecret: QIBL2KCDIX5wbklRBLIxUA
         masterSecret: bMG7Hlt8Vd8sfifVetKqg4
     sms:
-        appKey: 23326353
-        appSecret: 6bee28f8cd8e35b3f7448f45cc7bada9
+        appKey: 23310302
+        appSecret: cd103a35b45d72bcab8f7b4eaf063fad
         templateId: SMS_6160009
         signature: 身份验证
         gateway: http://114.215.172.92/message/messageSend # SMS Gateway
