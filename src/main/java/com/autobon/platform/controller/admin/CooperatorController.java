@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,12 @@ public class CooperatorController {
 
     @RequestMapping(value = "/{coopId:\\d+}", method = RequestMethod.GET)
     public JsonMessage getCoop(@PathVariable(value = "coopId") int coopId) {
-        return new JsonMessage(true, "", "", cooperatorService.get(coopId));
+        Cooperator coop = cooperatorService.get(coopId);
+        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("coop", coop);
+        map.put("mainAccount", coopAccount);
+        return new JsonMessage(true, "", "", map);
     }
 
     // 认证商户
@@ -108,23 +114,25 @@ public class CooperatorController {
 
     @RequestMapping(value = "/{coopId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("coopId") int coopId,
-            @RequestParam(value = "fullname") String fullname,
-            @RequestParam(value = "businessLicense") String businessLicense,
-            @RequestParam(value = "corporationName") String corporationName,
-            @RequestParam(value = "corporationIdNo") String corporationIdNo,
-            @RequestParam(value = "bussinessLicensePic") String bussinessLicensePic,
-            @RequestParam(value = "corporationIdPicA") String corporationIdPicA,
-            @RequestParam(value = "longitude") String longitude,
-            @RequestParam(value = "latitude") String latitude,
-            @RequestParam(value = "invoiceHeader") String invoiceHeader,
-            @RequestParam(value = "taxIdNo") String taxIdNo,
-            @RequestParam(value = "postcode") String postcode,
-            @RequestParam(value = "province") String province,
-            @RequestParam(value = "city") String city,
-            @RequestParam(value = "district") String district,
-            @RequestParam(value = "address") String address,
-            @RequestParam(value = "contact") String contact,
-            @RequestParam(value = "contactPhone") String contactPhone) {
+            @RequestParam("fullname") String fullname,
+            @RequestParam("businessLicense") String businessLicense,
+            @RequestParam("corporationName") String corporationName,
+            @RequestParam("corporationIdNo") String corporationIdNo,
+            @RequestParam("bussinessLicensePic") String bussinessLicensePic,
+            @RequestParam("corporationIdPicA") String corporationIdPicA,
+            @RequestParam("longitude") String longitude,
+            @RequestParam("latitude") String latitude,
+            @RequestParam("invoiceHeader") String invoiceHeader,
+            @RequestParam("taxIdNo") String taxIdNo,
+            @RequestParam("postcode") String postcode,
+            @RequestParam("province") String province,
+            @RequestParam("city") String city,
+            @RequestParam("district") String district,
+            @RequestParam("address") String address,
+            @RequestParam("contact") String contact,
+            @RequestParam("contactPhone") String contactPhone,
+            @RequestParam("phone") String phone,
+            @RequestParam("shortname") String shortname) {
 
         corporationIdNo = corporationIdNo.toUpperCase();
         if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", corporationIdNo))
@@ -149,6 +157,12 @@ public class CooperatorController {
         cooperator.setContact(contact);
         cooperator.setContactPhone(contactPhone);
         cooperatorService.save(cooperator);
+
+        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
+        coopAccount.setPhone(phone);
+        coopAccount.setShortname(shortname);
+        coopAccountService.save(coopAccount);
+        coopAccountService.batchUpdateShortname(coopId, shortname);
         return new JsonMessage(true, "", "", cooperator);
     }
 
@@ -271,22 +285,4 @@ public class CooperatorController {
         }
         return msg;
     }
-
-    @RequestMapping(value="/changePhone/{coopId:[\\d]+}",method = RequestMethod.POST)
-    public JsonMessage changePhone(@PathVariable("coopId") int coopId,
-                                   @RequestParam("phone") String phone){
-        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
-        if(coopAccount == null){
-            return new JsonMessage(false,"ILLEGAL_PARAM","商户id有误");
-        }else{
-            if (coopAccountService.getByPhone(phone) != null) {
-                return new JsonMessage(false,"OCCUPIED_ID","手机号已被注册");
-            }else{
-                coopAccount.setPhone(phone);
-                coopAccountService.save(coopAccount);
-                return new JsonMessage(true);
-            }
-        }
-    }
-
 }

@@ -12,7 +12,8 @@ export default class CooperatorDetailCtrl extends Injector {
 
         CooperatorService.getDetail($stateParams.id).then(res => {
             if (res.data && res.data.result) {
-                $scope.cooperator = res.data.data;
+                $scope.cooperator = res.data.data.coop;
+                $scope.mainAccount = res.data.data.mainAccount;
                 $scope.cooperator.position = {lng: $scope.cooperator.longitude, lat: $scope.cooperator.latitude};
             }
         });

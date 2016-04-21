@@ -14,8 +14,10 @@ export default class CooperatorEditCtrl extends Injector {
         if ($stateParams.id) {
             CooperatorService.getDetail($stateParams.id).then(res => {
                 if (res.data && res.data.result) {
-                    $scope.coop          = res.data.data;
-                    $scope.coop.position = {lng: $scope.coop.longitude, lat: $scope.coop.latitude};
+                    $scope.coop           = res.data.data.coop;
+                    $scope.coop.shortname = res.data.data.mainAccount.shortname;
+                    $scope.coop.phone     = res.data.data.mainAccount.phone;
+                    $scope.coop.position  = {lng: $scope.coop.longitude, lat: $scope.coop.latitude};
                 }
             });
         } else {
