@@ -21,7 +21,7 @@ com.autobon:
     test.adminToken: staff:ssEoVBwJ3rSYnidORQUvhQ==@123456
     test.coopToken: cooperator:pHpP/b+PYAbZ3bcSs7dqsQ==
     gm-path: /usr/bin # graphicsMagick工具路径
-    env: TEST
+    # env: TEST
     baiduKey: lhFpgbOkc15RHjiexfP2aDhg
     uploadPath: ..
 

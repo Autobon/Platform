@@ -53,7 +53,7 @@ public class TechnicianAccountController {
     @Autowired ApplicationEventPublisher publisher;
 
     /**
-     * 获取用户信息
+     * 获取用户信息 
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
