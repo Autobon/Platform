@@ -63,6 +63,8 @@ public class CooperatorControllerTest extends MvcTest {
                 .param("address", "中山路3号")
                 .param("contact", "李四")
                 .param("contactPhone", "13025523002")
+                .param("phone", "13025523002")
+                .param("shortname", "abc")
                 .cookie(new Cookie("autoken", token)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));
@@ -95,12 +97,4 @@ public class CooperatorControllerTest extends MvcTest {
                 .andExpect(jsonPath("$.result", is(true)));
     }
 
-    @Test
-    public void changePhone() throws Exception {
-        mockMvcS.perform(post("/api/web/admin/cooperator/changePhone/1")
-                .param("phone", "13072726006")
-                .cookie(new Cookie("autoken", token)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(jsonPath("$.result", is(true)));
-    }
 }

@@ -4,6 +4,7 @@ import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.repository.CoopAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,5 +43,10 @@ public class CoopAccountService {
 
     public CoopAccount getByPushId(String pushId) {
         return coopAccountRepository.getByPushId(pushId);
+    }
+
+    @Transactional
+    public int batchUpdateShortname(int cooperatorId, String shortname) {
+        return coopAccountRepository.batchUpdateShortname(cooperatorId, shortname);
     }
 }

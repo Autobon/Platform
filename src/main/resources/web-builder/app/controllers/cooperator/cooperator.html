@@ -40,8 +40,8 @@
                     <td>{{c.orderNum}}</td>
                     <td>{{['未认证','认证通过','认证失败'][c.statusCode]}}</td>
                     <td>{{c.createTime | date : 'YYYY-MM-DD HH:mm'}}</td>
-                    <td><a ui-sref="console.cooperator.detail({id: c.id})" class="btn btn-xs btn-default">
-                        <i class="fa fa-list"></i>&nbsp;详情</a>
+                    <td><a ui-sref="console.cooperator.detail({id: c.id})" class="btn btn-xs btn-default"><i class="fa fa-list"></i>&nbsp;详情</a>
+                        <a ui-sref="console.cooperator.edit({id: c.id})" class="btn btn-xs btn-default"><i class="fa fa-edit"></i>&nbsp;编辑</a>
                     </td>
                 </tr>
                 </tbody>
