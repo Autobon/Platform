@@ -44,7 +44,7 @@ public class CooperatorControllerTest extends MvcTest {
 
     @Test
     public void update() throws Exception {
-        mockMvcS.perform(post("/api/web/admin/cooperator/update/1")
+        mockMvcS.perform(post("/api/web/admin/cooperator/1")
                 .param("fullname", "A汽车美容公司")
                 .param("businessLicense", "3335555")
                 .param("corporationName", "张三")
@@ -70,7 +70,7 @@ public class CooperatorControllerTest extends MvcTest {
 
     @Test
     public void createCoop() throws Exception {
-        mockMvcS.perform(post("/api/web/admin/cooperator/createCoop")
+        mockMvcS.perform(post("/api/web/admin/cooperator")
                 .param("fullname", "A汽车美容公司")
                 .param("businessLicense", "3335555")
                 .param("corporationName", "张三")
@@ -85,8 +85,11 @@ public class CooperatorControllerTest extends MvcTest {
                 .param("contactPhone", "13025523002")
                 .param("phone", "13085856335")
                 .param("shortname", "Corpration ABC")
-                .param("password","123456")
-                .param("rpassword","123456")
+                .param("province", "湖北省")
+                .param("city", "武汉市")
+                .param("district", "光谷")
+                .param("longitude", "120.34")
+                .param("latitude", "35.55")
                 .cookie(new Cookie("autoken", token)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.result", is(true)));

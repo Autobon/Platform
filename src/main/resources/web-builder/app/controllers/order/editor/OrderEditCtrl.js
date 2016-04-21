@@ -1,7 +1,7 @@
 import {Injector} from 'ngES6';
 import moment from 'moment';
 
-export default class OrderEditorCtrl extends Injector {
+export default class OrderEditCtrl extends Injector {
     static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'OrderService', 'Settings'];
     static $template = require('./editor.html');
 
@@ -68,7 +68,6 @@ export default class OrderEditorCtrl extends Injector {
                             $scope.$parent.orders.unshift(res.data.data);
                         }
                     } else {
-                        console.log(res.data.message);
                         $scope.error = res.data.message;
                     }
                 }

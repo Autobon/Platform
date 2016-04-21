@@ -106,7 +106,7 @@ public class CooperatorController {
         return new JsonMessage(true, "", "", new JsonPage<>(cooperatorService.findByLocation(province, city, page, pageSize)));
     }
 
-    @RequestMapping(value = "/update/{coopId:[\\d]+}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{coopId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("coopId") int coopId,
             @RequestParam(value = "fullname") String fullname,
             @RequestParam(value = "businessLicense") String businessLicense,
@@ -114,7 +114,6 @@ public class CooperatorController {
             @RequestParam(value = "corporationIdNo") String corporationIdNo,
             @RequestParam(value = "bussinessLicensePic") String bussinessLicensePic,
             @RequestParam(value = "corporationIdPicA") String corporationIdPicA,
-            @RequestParam(value = "corporationIdPicB") String corporationIdPicB,
             @RequestParam(value = "longitude") String longitude,
             @RequestParam(value = "latitude") String latitude,
             @RequestParam(value = "invoiceHeader") String invoiceHeader,
@@ -138,7 +137,6 @@ public class CooperatorController {
         cooperator.setCorporationIdNo(corporationIdNo);
         cooperator.setBussinessLicensePic(bussinessLicensePic);
         cooperator.setCorporationIdPicA(corporationIdPicA);
-        cooperator.setCorporationIdPicB(corporationIdPicB);
         cooperator.setLongitude(longitude);
         cooperator.setLatitude(latitude);
         cooperator.setInvoiceHeader(invoiceHeader);
@@ -186,7 +184,7 @@ public class CooperatorController {
 
 
 
-    @RequestMapping(value = "/createCoop", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public JsonMessage createCoop(
             @RequestParam("fullname") String fullname,
             @RequestParam("businessLicense") String businessLicense,
@@ -200,10 +198,13 @@ public class CooperatorController {
             @RequestParam("address") String address,
             @RequestParam("contact") String contact,
             @RequestParam("contactPhone") String contactPhone,
+            @RequestParam("province") String province,
+            @RequestParam("city") String city,
+            @RequestParam("district") String district,
+            @RequestParam("longitude") String longitude,
+            @RequestParam("latitude") String latitude,
             @RequestParam("phone") String phone,
-            @RequestParam("shortname") String shortname,
-            @RequestParam("password")  String password,
-            @RequestParam("rpassword") String rpassword){
+            @RequestParam("shortname") String shortname) {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
 
@@ -218,16 +219,6 @@ public class CooperatorController {
         } else if (coopAccountService.getByPhone(phone) != null) {
             msg.setError("OCCUPIED_ID");
             messages.add("手机号已被注册");
-        }
-
-        if (password.length() < 6) {
-            msg.setError("ILLEGAL_PARAM");
-            messages.add("密码至少6位");
-        }
-
-        if(!password.equals(rpassword)){
-            msg.setError("ILLEGAL_PARAM");
-            messages.add("两次输入密码不一致");
         }
 
         corporationIdNo = corporationIdNo.toUpperCase();
@@ -260,13 +251,19 @@ public class CooperatorController {
             cooperator.setContact(contact);
             cooperator.setContactPhone(contactPhone);
             cooperator.setStatusCode(0);
+            cooperator.setProvince(province);
+            cooperator.setCity(city);
+            cooperator.setDistrict(district);
+            cooperator.setLongitude(longitude);
+            cooperator.setLatitude(latitude);
             cooperatorService.save(cooperator);
+            msg.setData(cooperator);
 
             //创建商户下属管理员账户
             CoopAccount coopAccount = new CoopAccount();
             coopAccount.setShortname(shortname);
             coopAccount.setPhone(phone);
-            coopAccount.setPassword(coopAccount.encryptPassword(password));
+            coopAccount.setPassword(coopAccount.encryptPassword("123456"));
             coopAccount.setCooperatorId(cooperator.getId());
             coopAccount.setIsMain(true);
             coopAccount.setCreateTime(new Date());

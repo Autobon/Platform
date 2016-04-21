@@ -36,8 +36,8 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
         })
         .state('console.order.new', {
             url       : '/new',
-            controller: 'OrderEditorCtrl',
-            template  : templateCache.OrderEditorCtrl,
+            controller: 'OrderEditCtrl',
+            template  : templateCache.OrderEditCtrl,
         })
         .state('console.technician', {
             url       : '/technician',
@@ -58,6 +58,16 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             url       : '/{id:\\d+}',
             controller: 'CooperatorDetailCtrl',
             template  : templateCache.CooperatorDetailCtrl,
+        })
+        .state('console.cooperator.new', {
+            url       : '/new',
+            controller: 'CooperatorEditCtrl',
+            template  : templateCache.CooperatorEditCtrl,
+        })
+        .state('console.cooperator.edit', {
+            url       : '/edit/{:id\\d+}',
+            controller: 'CooperatorEditCtrl',
+            template  : templateCache.CooperatorEditCtrl,
         })
         .state('console.bill', {
             url       : '/bill',
