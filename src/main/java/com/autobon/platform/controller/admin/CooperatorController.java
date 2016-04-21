@@ -114,7 +114,6 @@ public class CooperatorController {
             @RequestParam(value = "corporationIdNo") String corporationIdNo,
             @RequestParam(value = "bussinessLicensePic") String bussinessLicensePic,
             @RequestParam(value = "corporationIdPicA") String corporationIdPicA,
-            @RequestParam(value = "corporationIdPicB") String corporationIdPicB,
             @RequestParam(value = "longitude") String longitude,
             @RequestParam(value = "latitude") String latitude,
             @RequestParam(value = "invoiceHeader") String invoiceHeader,
@@ -138,7 +137,6 @@ public class CooperatorController {
         cooperator.setCorporationIdNo(corporationIdNo);
         cooperator.setBussinessLicensePic(bussinessLicensePic);
         cooperator.setCorporationIdPicA(corporationIdPicA);
-        cooperator.setCorporationIdPicB(corporationIdPicB);
         cooperator.setLongitude(longitude);
         cooperator.setLatitude(latitude);
         cooperator.setInvoiceHeader(invoiceHeader);
