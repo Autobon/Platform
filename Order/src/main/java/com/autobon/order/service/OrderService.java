@@ -44,9 +44,9 @@ public class OrderService {
     }
 
     public Page<Order> find(String orderNum, String creatorName, String contactPhone,
-                            List<Integer> orderType, Integer statusCode, String sort, int page, int pageSize) {
+                            List<Integer> orderType, Integer statusCode, String sort, Sort.Direction direction, int page, int pageSize) {
         return repository.find(orderNum, creatorName, contactPhone, orderType,
-                statusCode, new PageRequest(page - 1, pageSize, Sort.Direction.DESC, sort));
+                statusCode, new PageRequest(page - 1, pageSize, direction, sort));
     }
 
     public Page<Order> findExpired(Date signInBefore, Date finishBefore,  int page, int pageSize){

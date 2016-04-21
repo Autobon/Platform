@@ -10,6 +10,7 @@ import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +80,7 @@ public class OrderController {
         List<Integer> skills = Arrays.stream(technician.getSkill().split(",")).map(Integer::parseInt).collect(Collectors.toList());
 
         return new JsonMessage(true, "", "", new JsonPage<>(orderService.find(null, null, null, skills,
-                Order.Status.NEWLY_CREATED.getStatusCode(), "orderTime", page, pageSize)));
+                Order.Status.NEWLY_CREATED.getStatusCode(), "orderTime", Sort.Direction.ASC, page, pageSize)));
     }
 
     // 获取订单信息
