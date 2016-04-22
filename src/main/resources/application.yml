@@ -14,7 +14,7 @@ com.autobon:
     sms:
         appKey: 23310302
         appSecret: cd103a35b45d72bcab8f7b4eaf063fad
-        templateId: SMS_6160009
+        templateId: SMS_4992411
         signature: 身份验证
         gateway: http://114.215.172.92/message/messageSend # SMS Gateway
     test.token: technician:HM6GlQ4/4AXxoe2ZfZVM2Q==

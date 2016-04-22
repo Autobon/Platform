@@ -39,5 +39,14 @@ public class PubControllerTest extends MvcTest {
             .andExpect(jsonPath("$.result", is(true)));
     }
 
+    @Test
+    public void getSmsCode() throws Exception {
+        this.mockMvc.perform(get("/api/pub/verifySms")
+                .param("phone", "18827075338"))
+            .andExpect(status().isOk())
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(jsonPath("$.result", is(true)));
+    }
+
 
 }
