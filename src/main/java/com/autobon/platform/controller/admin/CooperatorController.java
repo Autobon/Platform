@@ -136,8 +136,10 @@ public class CooperatorController {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
         corporationIdNo = corporationIdNo.toUpperCase();
+        Cooperator cooperator = cooperatorService.get(coopId);
+        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
 
-        if(coopAccountService.getByShortname(shortname)!=null){
+        if(!shortname.equals(coopAccount.getShortname()) && coopAccountService.getByShortname(shortname) != null){
             msg.setError("OCCUPIED_ID");
             messages.add("企业简称已被注册");
         }
@@ -145,7 +147,7 @@ public class CooperatorController {
         if (!Pattern.matches("^\\d{11}$", phone)) {
             msg.setError("ILLEGAL_PARAM");
             messages.add("手机号格式错误");
-        } else if (coopAccountService.getByPhone(phone) != null) {
+        } else if (!phone.equals(coopAccount.getPhone()) && coopAccountService.getByPhone(phone) != null) {
             msg.setError("OCCUPIED_ID");
             messages.add("手机号已被注册");
         }
@@ -167,7 +169,6 @@ public class CooperatorController {
             return msg;
         }
 
-        Cooperator cooperator = cooperatorService.get(coopId);
         cooperator.setFullname(fullname);
         cooperator.setBusinessLicense(businessLicense);
         cooperator.setCorporationName(corporationName);
@@ -187,7 +188,6 @@ public class CooperatorController {
         cooperator.setContactPhone(contactPhone);
         cooperatorService.save(cooperator);
 
-        CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
         coopAccount.setPhone(phone);
         coopAccount.setShortname(shortname);
         coopAccountService.save(coopAccount);
