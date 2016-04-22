@@ -88,7 +88,9 @@ public class SmsSender {
         JsonNode rootNode = new ObjectMapper().readTree(response);
         String status = rootNode.path("alibaba_aliqin_fc_sms_num_send_response")
                         .path("result").path("success").asText();
-        return "true".equals(status);
+        boolean result = "true".equals(status);
+        if (!result) log.error("向" + sim + "发送验证短信失败: " + response);
+        return result;
     }
 
     public static String computeSignature(Map<String, String> params, String appSecret) throws IOException {
