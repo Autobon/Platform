@@ -133,10 +133,39 @@ public class CooperatorController {
             @RequestParam("contactPhone") String contactPhone,
             @RequestParam("phone") String phone,
             @RequestParam("shortname") String shortname) {
+        JsonMessage msg = new JsonMessage(true);
+        ArrayList<String> messages = new ArrayList<>();
+        corporationIdNo = corporationIdNo.toUpperCase();
+
+        if(coopAccountService.getByShortname(shortname)!=null){
+            msg.setError("OCCUPIED_ID");
+            messages.add("企业简称已被注册");
+        }
+
+        if (!Pattern.matches("^\\d{11}$", phone)) {
+            msg.setError("ILLEGAL_PARAM");
+            messages.add("手机号格式错误");
+        } else if (coopAccountService.getByPhone(phone) != null) {
+            msg.setError("OCCUPIED_ID");
+            messages.add("手机号已被注册");
+        }
 
         corporationIdNo = corporationIdNo.toUpperCase();
-        if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", corporationIdNo))
-            return new JsonMessage(false, "ILLEGAL_PARAM", "身份证号码有误");
+        if (!Pattern.matches("^(\\d{15})|(\\d{17}[0-9X])$", corporationIdNo)) {
+            msg.setError("ILLEGAL_PARAM");
+            messages.add("身份证号码有误");
+        }
+
+        if (!Pattern.matches("^\\d{11}$", contactPhone)) {
+            msg.setError("ILLEGAL_PARAM");
+            messages.add("联系人电话格式错误");
+        }
+
+        if (messages.size() > 0) {
+            msg.setResult(false);
+            msg.setMessage(messages.stream().collect(Collectors.joining(",")));
+            return msg;
+        }
 
         Cooperator cooperator = cooperatorService.get(coopId);
         cooperator.setFullname(fullname);
@@ -163,7 +192,8 @@ public class CooperatorController {
         coopAccount.setShortname(shortname);
         coopAccountService.save(coopAccount);
         coopAccountService.batchUpdateShortname(coopId, shortname);
-        return new JsonMessage(true, "", "", cooperator);
+        msg.setData(cooperator);
+        return msg;
     }
 
     @RequestMapping(value = "/photo", method = RequestMethod.POST)
