@@ -4,6 +4,9 @@
     "es2015"
   ],
   "plugins": [
-    "transform-class-properties"
+    "transform-proto-to-assign",
+    "transform-class-properties",
+    ["transform-es2015-classes", { "loose": true }],
+    "add-module-exports"
   ]
 }

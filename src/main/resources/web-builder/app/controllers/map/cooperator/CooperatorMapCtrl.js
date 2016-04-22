@@ -5,7 +5,7 @@ import $ from 'jquery';
 export default class CooperatorMapCtrl extends Injector {
     static $inject   = ['$scope', 'CooperatorService', '$compile', '$timeout', '$sce', '$state'];
     static $template = `<map-view items="items" center="中国" item-template="{{itemTemplate}}"
-                            style="height: 100%; width: 100%; border: 1px solid #cabe9c; position: absolute;"></map-view>`;
+                            style="height: 100%; width: 100%; border: 1px solid #cabe9c;"></map-view>`;
 
     constructor(...args) {
         super(...args);

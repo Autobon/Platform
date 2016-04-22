@@ -28,6 +28,7 @@ export const production = {
             {test: /\.less$/, loader: 'style!css!postcss!less'},
             {test: /\.scss$/, loader: 'style!css!postcss!sass'},
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel'},
+            {test: /ngES6.*\.js$/, loader: 'babel'},
             {test: /\.json$/, loader: 'json'},
             {test: /\.html$/, exclude: /node_modules/, loader: 'html'},
             {test: /\.(jpg|png|gif|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url?limit=50000'},

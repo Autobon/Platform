@@ -13,7 +13,7 @@
             <label class="radio-inline"><input type="radio" name="status" ng-model="filter.status" value="0"> 未发送</label>
             <label class="radio-inline"><input type="radio" name="status" ng-model="filter.status" value="1"> 已发送</label>
         </div>
-        <button type="button" class="btn btn-primary" ng-click="getMessages(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button type="submit" class="btn btn-primary" ng-click="getMessages(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
         <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
     <a href class="pull-right btn-new" ng-click="onAdd()">新建消息&nbsp;<span class="glyphicon glyphicon-plus"></span></a>

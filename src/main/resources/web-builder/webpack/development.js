@@ -17,7 +17,7 @@ const server = new WebpackDevServer(compiler, {
     historyApiFallback: true,
 });
 
-server.listen(54321, 'localhost', (err) => {
+server.listen(54321, '0.0.0.0', (err) => {
     if (err) {
         throw err;
     }

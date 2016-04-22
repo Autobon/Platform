@@ -47,6 +47,14 @@ export default function httpConfig($httpProvider) {
                 }
                 return res;
             },
+            request: function(config) {
+                for (let key in config.params) {
+                    if (/^\s*$/.test(config.params[key])) {
+                        delete config.params[key];
+                    }
+                }
+                return config;
+            },
         };
     });
 }
