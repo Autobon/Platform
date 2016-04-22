@@ -84,7 +84,6 @@ public class SmsSender {
         } finally {
             if (connection != null) connection.disconnect();
         }
-        log.info(response);
         JsonNode rootNode = new ObjectMapper().readTree(response);
         String status = rootNode.path("alibaba_aliqin_fc_sms_num_send_response")
                         .path("result").path("success").asText();
