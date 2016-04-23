@@ -82,7 +82,7 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
         .state('console.map', {
             url     : '/map',
             abstract: true,
-            template: '<div ui-view style="display: table-cell;"></div>',
+            template: '<div ui-view style="display: table-cell; height: 100%;"></div>',
         })
         .state('console.map.technician', {
             url       : '/technician',

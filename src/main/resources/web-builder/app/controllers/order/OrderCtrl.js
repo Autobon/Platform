@@ -36,7 +36,7 @@ export default class OrderCtrl extends Injector {
 
     searchTech(q) {
         const {$scope, TechnicianService} = this.$injected;
-        let params = {status: 'VERIFIED'};
+        let params = {};
         if (/\d+/.test(q)) params.phone = q;
         else params.name = q;
         TechnicianService.search(params, 1, 50).then(res => {
@@ -49,14 +49,18 @@ export default class OrderCtrl extends Injector {
     assign(order, tech) {
         const {$scope, OrderService} = this.$injected;
         OrderService.assign(order.id, tech.id).then(res => {
-            if (res.data && res.data.result) {
-                angular.extend(order, res.data.data);
-                order.mainTech = tech;
-                if ($scope.orders) {
-                    let pOrder = $scope.orders.find(o => o.id === order.id);
-                    angular.extend(pOrder, order);
+            if (res.data) {
+                if (res.data.result) {
+                    angular.extend(order, res.data.data);
+                    order.mainTech = tech;
+                    if ($scope.orders) {
+                        let pOrder = $scope.orders.find(o => o.id === order.id);
+                        angular.extend(pOrder, order);
+                    }
+                    this.$injected.$scope.techQuery['show' + order.id] = false;
+                } else {
+                    $scope.error = res.data.message;
                 }
-                this.$injected.$scope.techQuery['show' + order.id] = false;
             }
         });
     }
