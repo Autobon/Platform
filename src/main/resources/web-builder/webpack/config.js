@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 export const production = {
     context : path.resolve(__dirname, '..'),
@@ -24,9 +25,9 @@ export const production = {
         ],
         loaders   : [
             {test: /[\/]angular\.js$/, loader: 'exports?angular'},
-            {test: /\.css$/, loader: 'style!css!postcss'},
-            {test: /\.less$/, loader: 'style!css!postcss!less'},
-            {test: /\.scss$/, loader: 'style!css!postcss!sass'},
+            {test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css!postcss')},
+            {test: /\.less$/, loader: ExtractTextPlugin.extract('style-loader', 'css!postcss!less')},
+            {test: /\.scss$/, loader: ExtractTextPlugin.extract('style-loader', 'css!postcss!sass')},
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel'},
             {test: /ngES6.*\.js$/, loader: 'babel'},
             {test: /\.json$/, loader: 'json'},
@@ -52,6 +53,8 @@ export const production = {
         new webpack.ResolverPlugin(
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
         ),
+        new ExtractTextPlugin('[name].css'),
+        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
