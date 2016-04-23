@@ -39,12 +39,15 @@ export const production = {
         root              : [path.join(__dirname, '../bower_components')],
         extensions        : ['', '.js'],
         modulesDirectories: ['node_modules'],
+        alias             : {
+            angular: require.resolve('angular'),
+        }
     },
     progress: true,
     plugins : [
         new webpack.ProvidePlugin({
-            $      : 'jquery',
-            jQuery : 'jquery',
+            $     : 'jquery',
+            jQuery: 'jquery',
         }),
         new webpack.ResolverPlugin(
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])

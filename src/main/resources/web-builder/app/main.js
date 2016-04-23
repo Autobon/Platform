@@ -4,7 +4,6 @@ import 'angular-animate';
 import 'angular-ui-router';
 import 'angular-ui-bootstrap';
 import 'angular-chart.js';
-import $ from 'jquery';
 import moment from 'moment';
 import 'angular-bootstrap-datetimepicker';
 import 'angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js';
@@ -17,7 +16,6 @@ import services from './services';
 import filters from './filters';
 import config from './config';
 
-window.$ = window.jQuery = $;
 moment.locale('zh-cn');
 export const App = 'app';
 
