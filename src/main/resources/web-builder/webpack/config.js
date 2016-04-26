@@ -94,6 +94,7 @@ export const development = {
         new webpack.ResolverPlugin(
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
         ),
+        new ExtractTextPlugin('[name].css'),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
         new webpack.DefinePlugin({
             'process.env': {
