@@ -102,6 +102,7 @@ export const development = {
                 BROWSER : JSON.stringify(true),
             },
         }),
+        new webpack.HotModuleReplacementPlugin(),
         // print a webpack progress
         new webpack.ProgressPlugin((percentage, message) => {
             const MOVE_LEFT  = new Buffer('1b5b3130303044', 'hex').toString();

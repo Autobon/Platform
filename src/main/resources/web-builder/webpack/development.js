@@ -3,6 +3,8 @@ import webpack from 'webpack';
 import { development } from './config';
 import path from 'path';
 
+var port = 54321;
+development.entry.app.push('webpack/hot/dev-server', 'webpack-dev-server/client?http://localhost:' + port);
 const compiler = webpack(development);
 const server = new WebpackDevServer(compiler, {
     contentBase: path.resolve(__dirname, '../build/'),
@@ -17,7 +19,7 @@ const server = new WebpackDevServer(compiler, {
     historyApiFallback: true,
 });
 
-server.listen(54321, '0.0.0.0', (err) => {
+server.listen(port, '0.0.0.0', (err) => {
     if (err) {
         throw err;
     }
