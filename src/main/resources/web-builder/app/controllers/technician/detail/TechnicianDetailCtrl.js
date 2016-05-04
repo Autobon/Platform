@@ -28,8 +28,9 @@ export default class TechnicianDetailCtrl extends Injector {
         $scope.$on('map.track.point.mouseover', (e, evt, d) => {
             e.stopPropagation();
             const {$compile} = this.$injected;
-            let scope   = angular.element(evt.domEvent.target).scope();
-            let element = $(evt.domEvent.target);
+            let element = $(evt.domEvent.target || evt.domEvent.srcElement);
+            let scope   = angular.element(element).scope();
+
             if (element.data('has-tooltip')) return;
 
             element.attr('uib-tooltip', '定位时间: ' + moment(d.createAt).format('YYYY-MM-DD HH:mm'));

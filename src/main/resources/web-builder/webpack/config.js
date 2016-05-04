@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 export const production = {
     context : path.resolve(__dirname, '..'),
@@ -24,11 +25,11 @@ export const production = {
         ],
         loaders   : [
             {test: /[\/]angular\.js$/, loader: 'exports?angular'},
-            {test: /\.css$/, loader: 'style!css!postcss'},
-            {test: /\.less$/, loader: 'style!css!postcss!less'},
-            {test: /\.scss$/, loader: 'style!css!postcss!sass'},
+            {test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css!postcss')},
+            {test: /\.less$/, loader: ExtractTextPlugin.extract('style-loader', 'css!postcss!less')},
+            {test: /\.scss$/, loader: ExtractTextPlugin.extract('style-loader', 'css!postcss!sass')},
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel'},
-            {test: /ngES6.*\.js$/, loader: 'babel'},
+            {test: /ngES6.*\.js$/, loader: 'babel?cacheDirectory'},
             {test: /\.json$/, loader: 'json'},
             {test: /\.html$/, exclude: /node_modules/, loader: 'html'},
             {test: /\.(jpg|png|gif|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url?limit=50000'},
@@ -52,6 +53,8 @@ export const production = {
         new webpack.ResolverPlugin(
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
         ),
+        new ExtractTextPlugin('[name].css'),
+        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
@@ -91,6 +94,7 @@ export const development = {
         new webpack.ResolverPlugin(
             new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
         ),
+        new ExtractTextPlugin('[name].css'),
         new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
         new webpack.DefinePlugin({
             'process.env': {
@@ -98,6 +102,7 @@ export const development = {
                 BROWSER : JSON.stringify(true),
             },
         }),
+        new webpack.HotModuleReplacementPlugin(),
         // print a webpack progress
         new webpack.ProgressPlugin((percentage, message) => {
             const MOVE_LEFT  = new Buffer('1b5b3130303044', 'hex').toString();
