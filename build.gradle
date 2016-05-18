@@ -37,6 +37,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-freemarker:1.+"
     compile 'redis.clients:jedis:2.+'
     compile 'org.im4java:im4java:1.+'
+    compile 'com.mchange:c3p0:0.9.+'
     compile 'commons-fileupload:commons-fileupload:1.+'
     testCompile "org.springframework.boot:spring-boot-starter-test:1.+"
     testCompile "com.jayway.jsonpath:json-path:2.+"
