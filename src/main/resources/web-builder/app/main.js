@@ -28,7 +28,7 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                 return {
                     domain: $location.protocol() + '://' + $location.host() + ':' + $location.port(),
                     baiduMapKey: 'FPzmlgz02SERkbPsRyGOiGfj',
-                    orderTypes: {'1': '隔热层', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
+                    orderTypes: {'1': '隔热膜', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
                     orderStatus: {
                         'NEWLY_CREATED': '未接单',
                         'TAKEN_UP': '已接单',
