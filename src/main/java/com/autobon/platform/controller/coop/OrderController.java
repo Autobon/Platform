@@ -14,7 +14,9 @@ import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.TechStat;
+import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
+import com.autobon.technician.service.TechnicianService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,7 @@ public class OrderController {
     @Autowired DetailedOrderService detailedOrderService;
     @Autowired CooperatorService cooperatorService;
     @Autowired ApplicationEventPublisher publisher;
+    @Autowired TechnicianService technicianService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -175,6 +178,67 @@ public class OrderController {
 
         publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
         return new JsonMessage(true, "", "", order);
+
+    }
+
+    /**
+     * 创建订单（指定技师）
+     * @param request
+     * @param photo 照片
+     * @param remark 订单备注
+     * @param orderTime 订单时间
+     * @param orderType 订单类型
+     * @param mainTechId 主技师ID
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/createOrderAndAppoint",method = RequestMethod.POST)
+    public JsonMessage createOrderAndAppoint(HttpServletRequest request,
+                                             @RequestParam("photo") String photo,
+                                             @RequestParam("remark") String remark,
+                                             @RequestParam("orderTime") String orderTime,
+                                             @RequestParam("orderType") int orderType,
+                                             @RequestParam("mainTechId") int mainTechId) throws Exception {
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        int coopId = coopAccount.getCooperatorId();
+        Cooperator cooperator = cooperatorService.get(coopId);
+        Technician MainTechnician = technicianService.get(mainTechId);
+
+        if(!MainTechnician.getSkill().contains(orderType+"")){
+            return new JsonMessage(false,"NO_SUCH_TYPE","主技师无此项技能");
+        }
+
+        if(MainTechnician.getStatus().getStatusCode()!=1){
+            return new JsonMessage(false,"ILLEGAL_PARAM","主技师未通过审核");
+        }
+
+        if(cooperator.getStatusCode() !=1){
+            return new JsonMessage(false, "ILLEGAL_PARAM", "商户未通过验证");
+        }
+
+        if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
+            return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
+
+        Order order = new Order();
+        order.setCreatorType(1);
+        order.setCreatorId(coopAccount.getId());
+        order.setCoopId(coopId);
+        order.setCreatorName(coopAccount.getShortname());
+        order.setPhoto(photo);
+        order.setRemark(remark);
+        order.setOrderTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(orderTime));
+        order.setOrderType(orderType);
+        order.setPositionLon(cooperator.getLongitude());
+        order.setPositionLat(cooperator.getLatitude());
+        order.setContactPhone(coopAccount.getPhone());
+        order.setStatus(Order.Status.TAKEN_UP);
+        order.setMainTechId(mainTechId);
+        orderService.save(order);
+        int orderNum = cooperator.getOrderNum();
+        orderNum+=1;
+        cooperator.setOrderNum(orderNum);
+        cooperatorService.save(cooperator);
+        return new JsonMessage(true, "订单创建并指定技师", "", order);
 
     }
 

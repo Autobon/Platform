@@ -132,7 +132,7 @@ POST /api/mobile/coop/order/createOrder
 商户端未完成订单列表
 
 ### URL及请求方法
-POST /api/mobile/coop/order/listUnfinished  
+POST /api/mobile/coop/order/listUnfinished
 
 ### 请求参数
 
@@ -402,3 +402,93 @@ POST /api/mobile/coop/order/uploadPhoto
 ```
 
 
+## 8.创建订单并在创建的时候指定技师
+合作商创建订单并指定技师
+
+### URL及请求方法
+`POST /api/mobile/coop/order/createOrderAndAppoint`
+
+### 请求参数
+
+| 参数名称 | 说明 | 举例 |
+| ------ | ---- | --- |
+| photo | 订单图片地址 | a/a.jpg |
+| remark | 备注 |remark is here |
+| orderTime | 订单时间 |2016-03-01 12:02 |
+| orderType | 订单类型 |1 |
+| mainTechId | 技师id | 1 |
+
+#### a.创建订单
+
+```
+{
+    "result": true,
+    "message": "订单创建并指定技师",
+    "error": "",
+    "data":{
+            "id": 3,
+            "orderNum": "16032813BCU8SL",
+            "orderType": 1,
+            "photo": "a/a.jpg",
+            "orderTime": 1467858031000,
+            "addTime": 1465289338595,
+            "finishTime": null,
+            "creatorType": 1,
+            "creatorId": 1,
+            "creatorName": "Tom",
+            "contactPhone": null,
+            "positionLon": null,
+            "positionLat": null,
+            "remark": "remark is here",
+            "mainTechId": 1,
+            "secondTechId": 0,
+            "status": "NEWLY_CREATED"
+
+    }
+
+}
+```
+
+#### b.主技师无此项技能
+
+```
+{
+    "result":false,
+    "message":"NO_SUCH_TYPE",
+     "error": "主技师无此项技能",
+      "data": null
+}
+```
+
+#### c.主技师未通过审核
+
+```
+{
+    "result":false,
+    "message":"ILLEGAL_PARAM",
+     "error": "主技师未通过审核",
+      "data": null
+}
+```
+
+#### d.商户未通过验证
+
+```
+{
+    "result":false,
+    "message":"ILLEGAL_PARAM",
+     "error": "商户未通过验证",
+      "data": null
+}
+```
+
+#### e.订单格式不正确
+
+```
+{
+    "result":false,
+    "message":"ILLEGAL_PARAM",
+     "error": "订单时间格式不对, 正确格式: 2016-02-10 09:23",
+      "data": null
+}
+```
