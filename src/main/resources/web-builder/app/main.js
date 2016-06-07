@@ -8,7 +8,6 @@ import moment from 'moment';
 import 'angular-bootstrap-datetimepicker';
 import 'angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js';
 import 'angular-bootstrap-datetimepicker/src/css/datetimepicker.css';
-import 'angular-chart.js/dist/angular-chart.min.css';
 
 import directives from './directives';
 import controllers, {templateCache} from './controllers';

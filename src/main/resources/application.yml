@@ -40,9 +40,18 @@ spring:
     profiles.active: dev
 
     datasource:
+        type: com.mchange.v2.c3p0.ComboPooledDataSource
         url: jdbc:mysql://127.0.0.1:3306/autobondb?characterEncoding=utf8&useSSL=false
-        username: autobon
+        user: autobon
         password: autobon
+        checkoutTimeout: 6000 # 获取数据库连接等待超时时间,毫秒
+        idleConnectionTestPeriod: 600 # 空闲连接检测时间, 秒
+        initialPoolSize: 3 # 初始连接池连接数
+        maxIdleTime: 1800 # 空闲连接保留最长时间,秒
+        maxPoolSize: 10 # 连接池最大连接数
+        minPoolSize: 3 # 连接池最小连接数
+        maxStatements: 300 # 连接池为数据源缓存的PreparedStatement的总数
+        maxStatementsPerConnection: 30 # 单个连接缓存的PreparedStatement数
     jpa:
         show-sql: true
         hibernate:
