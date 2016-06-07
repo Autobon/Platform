@@ -14,73 +14,73 @@ import java.util.Date;
 @Entity
 @Table(name="t_order")
 public class Order {
-    public enum Status {
-        NEWLY_CREATED(0), // 新建
-        TAKEN_UP(10), // 已有人抢单
-        SEND_INVITATION(20), // 已发送合作邀请并等待结果
-        INVITATION_ACCEPTED(30), // 合作邀请已接受
-        INVITATION_REJECTED(40), // 合作邀请已拒绝
-        IN_PROGRESS(50), // 订单开始工作中
-        FINISHED(60), // 订单已结束
-        COMMENTED(70), // 订单已评论
-        CANCELED(200), // 订单已取消
-        EXPIRED(210); // 订单已超时
-        private int statusCode;
-
-        Status(int statusCode) {
-            this.statusCode = statusCode;
-        }
-
-        public static Status getStatus(int statusCode) {
-            for (Status s : Status.values()) {
-                if (s.getStatusCode() == statusCode) return s;
-            }
-            return null;
-        }
-        public int getStatusCode() {
-            return this.statusCode;
-        }
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @Column private String orderNum;
-
-    @Column private int orderType; // 订单类型(1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁)
-
-    @Column private String photo;
-
-    @Column private Date orderTime; // 预约时间
-
-    @Column private Date addTime; // 创建时间
-
-    @Column private Date finishTime; // 施工完成时间
-
-    @JsonIgnore
-    @Column(name="status")
+   public enum Status {
+    NEWLY_CREATED(0), // 新建
+    TAKEN_UP(10), // 已有人抢单
+    SEND_INVITATION(20), // 已发送合作邀请并等待结果
+    INVITATION_ACCEPTED(30), // 合作邀请已接受
+    INVITATION_REJECTED(40), // 合作邀请已拒绝
+    IN_PROGRESS(50), // 订单开始工作中
+    FINISHED(60), // 订单已结束
+    COMMENTED(70), // 订单已评论
+    CANCELED(200), // 订单已取消
+    EXPIRED(210); // 订单已超时
     private int statusCode;
 
-    @Column private int creatorType; // 下单人类型(1-合作商户 2-后台 3-用户)
+    Status(int statusCode) {
+        this.statusCode = statusCode;
+    }
 
-    @Column private int creatorId;
+    public static Status getStatus(int statusCode) {
+        for (Status s : Status.values()) {
+            if (s.getStatusCode() == statusCode) return s;
+        }
+        return null;
+    }
+    public int getStatusCode() {
+        return this.statusCode;
+    }
+}
 
-    @Column private int coopId;
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
+private int id;
 
-    @Column private String creatorName;
+@Column private String orderNum;
 
-    @Column private String contactPhone;
+@Column private int orderType; // 订单类型(1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁)
 
-    @Column private String positionLon;
+@Column private String photo;
 
-    @Column private String positionLat;
+@Column private Date orderTime; // 预约时间
 
-    @Column private String remark;
+@Column private Date addTime; // 创建时间
 
-    @Column private int mainTechId;
+@Column private Date finishTime; // 施工完成时间
 
-    @Column private int secondTechId;
+@JsonIgnore
+@Column(name="status")
+private int statusCode;
+
+@Column private int creatorType; // 下单人类型(1-合作商户 2-后台 3-用户)
+
+@Column private int creatorId;
+
+@Column private int coopId;
+
+@Column private String creatorName;
+
+@Column private String contactPhone;
+
+@Column private String positionLon;
+
+@Column private String positionLat;
+
+@Column private String remark;
+
+@Column private int mainTechId;
+
+@Column private int secondTechId;
 
     public Order() {
         this.orderNum = generateOrderNum();

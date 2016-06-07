@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dave on 16/2/13.
@@ -29,6 +30,7 @@ public class TechnicianService {
     public Technician save(Technician technician) {
         return repository.save(technician);
     }
+
 
     public void deleteById(int id) {
         repository.delete(id);
@@ -74,4 +76,31 @@ public class TechnicianService {
     public int totalOfVerified() {
         return repository.totalOfVerified();
     }
+
+    /**
+     * 增加技师
+     *
+     * @param technician
+     */
+    public void saveTechnician(Technician technician){ repository.save(technician);}
+
+    /**
+     * 查询所有集合
+     *
+     * @return
+     */
+   public List<Technician> findList(){ return repository.findAll();}
+
+
+    /**
+     * 修改技师信息
+     *
+     * @param phone
+     * @param password
+     * @param name
+     * @param gender
+     * @param id
+     */
+    public void updatebyId(String phone,String password,String name,String gender,int id){  repository.updateById(phone,password,name,gender,id);}
+
 }

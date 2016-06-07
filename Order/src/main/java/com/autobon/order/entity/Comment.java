@@ -46,6 +46,7 @@ public class Comment implements Serializable {
     private String advice;
 
     @Column
+/*    @Temporal(TemporalType.DATE)*/
     private Date createAt;
 
     public Comment() {

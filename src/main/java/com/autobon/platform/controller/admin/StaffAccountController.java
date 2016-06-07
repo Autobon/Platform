@@ -2,6 +2,7 @@ package com.autobon.platform.controller.admin;
 
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
+import com.autobon.shared.SmsSender;
 import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 /**
@@ -25,8 +28,12 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/api/web/admin")
 public class StaffAccountController {
-    @Autowired StaffService staffService;
-    @Autowired RedisCache redisCache;
+    @Autowired
+    StaffService staffService;
+    @Autowired
+    RedisCache redisCache;
+    @Autowired
+    SmsSender smsSender;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -108,7 +115,6 @@ public class StaffAccountController {
     }
 
 
-
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public JsonMessage changePassword(
             HttpServletRequest request,
@@ -129,14 +135,29 @@ public class StaffAccountController {
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public JsonMessage resetPassword(
-            HttpServletRequest request,
             @RequestParam("phone") String phone,
-            @RequestParam("verifyCode") String verifyCode) {
+            @RequestParam("verifyCode") String verifyCode) throws IOException {
+        Staff staff = staffService.findByPhone(phone);
+        if (staff == null) {
+            //手机号未找到
+            return new JsonMessage(false, "NO_VALUES", "没有注册的手机号");
+        } else {
+            String code = redisCache.get("verifySms:" + phone);
+            if (!verifyCode.equals(code)) {
+                // 验证码错误
+                return new JsonMessage(false, "ERR_CODE", "验证码错误");
+            } else {
+                // TODO 重置密码
+                String newPassword = VerifyCode.generateRandomNumber(6);
+                staff.setPassword(Staff.encryptPassword(newPassword));
+                //保存密码
+                staffService.save(staff);
+                // 密码发送到手机
+                smsSender.sendVerifyCode(phone, newPassword);
+                return new JsonMessage(true, "", "密码修改成功");
+            }
 
-        // TODO 重置密码
-
-
-        return null;
+        }
     }
 
 

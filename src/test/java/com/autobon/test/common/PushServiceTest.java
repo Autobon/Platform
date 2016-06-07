@@ -42,4 +42,6 @@ public class PushServiceTest extends MvcTest {
     public void pushToApp() throws Exception {
         Assert.assertTrue(pushService.pushToApp("你的认证申请已获通过。", "can you see me", 3600));
     }
+
+
 }

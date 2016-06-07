@@ -23,7 +23,8 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/api/web/admin/stat")
 public class StatController {
-    @Autowired SysStatService sysStatService;
+    @Autowired
+    SysStatService sysStatService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage getLast(

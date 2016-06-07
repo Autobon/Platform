@@ -4,10 +4,12 @@ import com.autobon.technician.entity.Technician;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dave on 16/2/13.
@@ -40,4 +42,9 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
 
     @Query("select count(t) from Technician t where t.statusCode = 2")
     int totalOfVerified();
+
+    @Modifying
+    @Query("update Technician t set t.phone=?1,t.password=?2,t.name=?3,t.gender=?4 where t.id=?5")
+    void updateById(String phone,String password,String name,String gender,int id);
+
 }

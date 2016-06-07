@@ -19,6 +19,7 @@ import java.util.Date;
 @Entity
 @Table(name = "t_coop_account")
 public class CoopAccount implements UserDetails {
+    //打印日志
     private static Logger log = LoggerFactory.getLogger(CoopAccount.class);
     private static String Token = "Autobon~!@#ABCD=";
 

@@ -39,13 +39,18 @@ import java.util.stream.Collectors;
 @RestController("adminCooperatorController")
 @RequestMapping("/api/web/admin/cooperator")
 public class CooperatorController {
-    @Autowired CooperatorService cooperatorService;
-    @Autowired ReviewCooperService reviewCooperService;
-    @Autowired ApplicationEventPublisher publisher;
+    @Autowired
+    CooperatorService cooperatorService;
+    @Autowired
+    ReviewCooperService reviewCooperService;
+    @Autowired
+    ApplicationEventPublisher publisher;
     @Autowired
     private CoopAccountService coopAccountService;
-    @Value("${com.autobon.uploadPath}") String uploadPath;
-    @Value("${com.autobon.gm-path}") String gmPath;
+    @Value("${com.autobon.uploadPath}")
+    String uploadPath;
+    @Value("${com.autobon.gm-path}")
+    String gmPath;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -71,9 +76,9 @@ public class CooperatorController {
     // 认证商户
     @RequestMapping(value = "/verify/{coopId:\\d+}", method = RequestMethod.POST)
     public JsonMessage verify(HttpServletRequest request,
-            @PathVariable("coopId") int coopId,
-            @RequestParam("verified") boolean verified,
-            @RequestParam(value = "remark", defaultValue = "") String remark) throws IOException {
+                              @PathVariable("coopId") int coopId,
+                              @RequestParam("verified") boolean verified,
+                              @RequestParam(value = "remark", defaultValue = "") String remark) throws IOException {
         Cooperator coop = cooperatorService.get(coopId);
         Staff staff = (Staff) request.getAttribute("user");
 
@@ -114,32 +119,32 @@ public class CooperatorController {
 
     @RequestMapping(value = "/{coopId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("coopId") int coopId,
-            @RequestParam("fullname") String fullname,
-            @RequestParam("businessLicense") String businessLicense,
-            @RequestParam("corporationName") String corporationName,
-            @RequestParam("corporationIdNo") String corporationIdNo,
-            @RequestParam("bussinessLicensePic") String bussinessLicensePic,
-            @RequestParam("corporationIdPicA") String corporationIdPicA,
-            @RequestParam("longitude") String longitude,
-            @RequestParam("latitude") String latitude,
-            @RequestParam("invoiceHeader") String invoiceHeader,
-            @RequestParam("taxIdNo") String taxIdNo,
-            @RequestParam("postcode") String postcode,
-            @RequestParam("province") String province,
-            @RequestParam("city") String city,
-            @RequestParam("district") String district,
-            @RequestParam("address") String address,
-            @RequestParam("contact") String contact,
-            @RequestParam("contactPhone") String contactPhone,
-            @RequestParam("phone") String phone,
-            @RequestParam("shortname") String shortname) {
+                              @RequestParam("fullname") String fullname,
+                              @RequestParam("businessLicense") String businessLicense,
+                              @RequestParam("corporationName") String corporationName,
+                              @RequestParam("corporationIdNo") String corporationIdNo,
+                              @RequestParam("bussinessLicensePic") String bussinessLicensePic,
+                              @RequestParam("corporationIdPicA") String corporationIdPicA,
+                              @RequestParam("longitude") String longitude,
+                              @RequestParam("latitude") String latitude,
+                              @RequestParam("invoiceHeader") String invoiceHeader,
+                              @RequestParam("taxIdNo") String taxIdNo,
+                              @RequestParam("postcode") String postcode,
+                              @RequestParam("province") String province,
+                              @RequestParam("city") String city,
+                              @RequestParam("district") String district,
+                              @RequestParam("address") String address,
+                              @RequestParam("contact") String contact,
+                              @RequestParam("contactPhone") String contactPhone,
+                              @RequestParam("phone") String phone,
+                              @RequestParam("shortname") String shortname) {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
         corporationIdNo = corporationIdNo.toUpperCase();
         Cooperator cooperator = cooperatorService.get(coopId);
         CoopAccount coopAccount = coopAccountService.getByCooperatorIdAndIsMain(coopId, true);
 
-        if(!shortname.equals(coopAccount.getShortname()) && coopAccountService.getByShortname(shortname) != null){
+        if (!shortname.equals(coopAccount.getShortname()) && coopAccountService.getByShortname(shortname) != null) {
             msg.setError("OCCUPIED_ID");
             messages.add("企业简称已被注册");
         }
@@ -204,15 +209,13 @@ public class CooperatorController {
         String path = "/uploads/coop";
         File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         if (!dir.exists()) dir.mkdirs();
-
-        String originalName = file.getOriginalFilename();
-        String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase();
+        String originalName = file.getOriginalFilename();   //得到上传时候的文件名
+        String extension = originalName.substring(originalName.lastIndexOf('.')).toLowerCase(); //得到文件类型，如.jpg并转化为小写
         String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + VerifyCode.generateVerifyCode(6) + extension;
+                + VerifyCode.generateVerifyCode(6) + extension; //给上传文件取别名，如20160524151223478652.jpg
 
         InputStream in;
-        if (file == null || file.isEmpty()) return new JsonMessage(false, "没有选择上传文件");
-        in = file.getInputStream();
+        in = file.getInputStream(); //得到文件输入流
 
         ConvertCmd cmd = new ConvertCmd(true);
         cmd.setSearchPath(gmPath);
@@ -225,7 +228,6 @@ public class CooperatorController {
 
         return new JsonMessage(true, "", "", path + "/" + filename);
     }
-
 
 
     @RequestMapping(method = RequestMethod.POST)
@@ -252,7 +254,7 @@ public class CooperatorController {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
 
-        if(coopAccountService.getByShortname(shortname)!=null){
+        if (coopAccountService.getByShortname(shortname) != null) {
             msg.setError("OCCUPIED_ID");
             messages.add("企业简称已被注册");
         }

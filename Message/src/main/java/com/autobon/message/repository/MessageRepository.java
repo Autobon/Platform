@@ -17,4 +17,6 @@ public interface MessageRepository extends JpaRepository<Message,Integer> {
     @Query("from Message m where (?1 is null or m.sendTo = ?1) " +
             "and (?2 is null or m.status = ?2)")
     Page<Message> find(Integer sendTo, Integer status, Pageable pageable);
+
+
 }

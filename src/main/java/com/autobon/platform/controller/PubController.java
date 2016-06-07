@@ -65,8 +65,14 @@ public class PubController {
         if (env.equals("TEST")) {
             code = "123456";
         } else {
+
+            //发送短信
+
             smsSender.sendVerifyCode(phone, code);
         }
+
+        //设置超时
+
         redisCache.set("verifySms:" + phone, code, 5 * 60);
         return new JsonMessage(true);
     }

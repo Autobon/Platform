@@ -50,15 +50,25 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/web/admin/order")
 public class OrderController {
     private static Logger log = LoggerFactory.getLogger(OrderController.class);
-    @Value("${com.autobon.gm-path}") String gmPath;
-    @Value("${com.autobon.uploadPath}") String uploadPath;
-    @Autowired OrderService orderService;
-    @Autowired CommentService commentService;
-    @Autowired TechnicianService technicianService;
-    @Autowired TechStatService techStatService;
-    @Autowired DetailedOrderService detailedOrderService;
-    @Autowired ApplicationEventPublisher publisher;
-    @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
+    @Value("${com.autobon.gm-path}")
+    String gmPath;
+    @Value("${com.autobon.uploadPath}")
+    String uploadPath;
+    @Autowired
+    OrderService orderService;
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    TechnicianService technicianService;
+    @Autowired
+    TechStatService techStatService;
+    @Autowired
+    DetailedOrderService detailedOrderService;
+    @Autowired
+    ApplicationEventPublisher publisher;
+    @Autowired
+    @Qualifier("PushServiceA")
+    PushService pushServiceA;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -74,7 +84,8 @@ public class OrderController {
         List<Integer> types = null;
         Integer statusCode = orderStatus != null ? orderStatus.getStatusCode() : null;
 
-        if (!"orderTime".equals(sort) && !"id".equals(sort)) return new JsonMessage(false, "ILLEGAL_SORT_PARAM" , "sort参数只能为id或orderTime");
+        if (!"orderTime".equals(sort) && !"id".equals(sort))
+            return new JsonMessage(false, "ILLEGAL_SORT_PARAM", "sort参数只能为id或orderTime");
 
         if (orderCreator != null) {
             if (Pattern.matches("\\d{11}", orderCreator)) {
@@ -168,11 +179,13 @@ public class OrderController {
             @RequestParam("techId") int techId) throws IOException {
         Order order = orderService.get(orderId);
         if (order == null) return new JsonMessage(false, "NO_SUCH_ORDER", "订单不存在");
-        if (order.getStatus() != Order.Status.NEWLY_CREATED) return new JsonMessage(false, "UNASSIGNABLE_ORDER", "订单已有人接单或已取消");
+        if (order.getStatus() != Order.Status.NEWLY_CREATED)
+            return new JsonMessage(false, "UNASSIGNABLE_ORDER", "订单已有人接单或已取消");
 
         Technician tech = technicianService.get(techId);
         if (tech == null) return new JsonMessage(false, "NO_SUCH_TECH", "技师不存在");
-        if (tech.getStatus() != Technician.Status.VERIFIED) return new JsonMessage(false, "TECH_NOT_VERIFIED", "技师未认证,不可接单");
+        if (tech.getStatus() != Technician.Status.VERIFIED)
+            return new JsonMessage(false, "TECH_NOT_VERIFIED", "技师未认证,不可接单");
         if (tech.getSkill() == null || !Arrays.stream(tech.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType())))
             return new JsonMessage(false, "TECH_SKILL_NOT_SUFFICIANT", tech.getName() + "没有此订单类型的技能认证");
 
@@ -195,7 +208,7 @@ public class OrderController {
         map.put("action", "ASSIGN_ORDER");
         map.put("order", order);
         map.put("title", msgTitle);
-        boolean result = pushServiceA.pushToSingle(tech.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
+        boolean result = pushServiceA.pushToSingle(tech.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72 * 3600);
         if (!result) log.error("订单: " + order.getOrderNum() + "的派单消息发送失败");
         return new JsonMessage(true, "", "", order);
     }

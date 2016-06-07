@@ -22,10 +22,14 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/web/admin/console")
 public class ConsoleController {
-    @Autowired OrderEventListener orderListener;
-    @Autowired TechnicianEventListener technicianListener;
-    @Autowired CooperatorEventListener cooperatorListener;
-    @Autowired SysStatService sysStatService;
+    @Autowired
+    OrderEventListener orderListener;
+    @Autowired
+    TechnicianEventListener technicianListener;
+    @Autowired
+    CooperatorEventListener cooperatorListener;
+    @Autowired
+    SysStatService sysStatService;
 
     @RequestMapping(value = "/statInfo", method = RequestMethod.GET)
     public JsonMessage getStatInfo() {

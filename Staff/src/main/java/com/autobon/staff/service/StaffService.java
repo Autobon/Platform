@@ -47,4 +47,8 @@ public class StaffService {
                 new Sort(Sort.Direction.DESC, "createAt")));
     }
 
+    public void updateByPhone(String newPassword,String phone){
+        repository.update(newPassword,phone);
+    }
+
 }

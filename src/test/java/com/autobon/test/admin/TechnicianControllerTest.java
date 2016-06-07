@@ -69,4 +69,42 @@ public class TechnicianControllerTest extends MvcTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.result", is(true)));
     }
+
+    @Test
+    public void save() throws Exception{
+        mockMvcS.perform(post("/api/web/admin/technician")
+                .param("phone","13045678441")
+                .param("password","123456")
+                .param("name","张三")
+                .param("gender","男")
+                .cookie(new Cookie("autoken", adminToken)))
+                .andDo(print()).andExpect(jsonPath("$.result",is(true)));
+
+    }
+
+    @Test
+    public void delete() throws Exception{
+        mockMvcS.perform(post("/api/web/admin/technician/delete/" + tech.getId())
+                .cookie(new Cookie("autoken", adminToken)))
+                .andDo(print()).andExpect(jsonPath("$.result",is(true)));
+    }
+
+
+    @Test
+    public void selectAll() throws Exception{
+        mockMvcS.perform(get("/api/web/admin/technician/find")
+                .cookie(new Cookie("autoken", adminToken)))
+                .andDo(print()).andExpect(jsonPath("$.result",is(true)));
+    }
+
+    @Test
+    public void update2() throws Exception{
+        mockMvcS.perform(post("/api/web/admin/technician/update/" + tech.getId())
+                .param("phone","123")
+                .param("password","123")
+                .param("name","张")
+                .param("gender","女")
+                .cookie(new Cookie("autoken", adminToken)))
+                .andDo(print()).andExpect(jsonPath("$.result",is(true)));
+    }
 }

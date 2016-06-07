@@ -72,4 +72,6 @@ public class OrderService {
     public int totalOfFinished() {
         return repository.totalOfFinished();
     }
+
+    public void deleteById(int id){ repository.delete(id); }
 }

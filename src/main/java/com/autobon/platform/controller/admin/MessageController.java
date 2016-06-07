@@ -24,10 +24,16 @@ import java.util.HashMap;
 @RequestMapping("/api/web/admin/message")
 public class MessageController {
     private static Logger log = LoggerFactory.getLogger(MessageController.class);
-    @Autowired MessageService messageService;
-    @Autowired ApplicationEventPublisher publisher;
-    @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
-    @Autowired @Qualifier("PushServiceB") PushService pushServiceB;
+    @Autowired
+    MessageService messageService;
+    @Autowired
+    ApplicationEventPublisher publisher;
+    @Autowired
+    @Qualifier("PushServiceA")
+    PushService pushServiceA;
+    @Autowired
+    @Qualifier("PushServiceB")
+    PushService pushServiceB;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage getMessages(

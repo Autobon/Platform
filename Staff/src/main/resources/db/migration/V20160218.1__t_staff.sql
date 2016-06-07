@@ -17,4 +17,4 @@ CREATE TABLE `t_staff` (
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='员工登陆账户表';
 
 INSERT INTO `t_staff` (id, username, password, email, phone, name, create_at, last_login_at, last_login_ip, status, role) values (
-'1', 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'huangdc@incardata.com.cn', '18827075338', '超级管理员', '2016-03-01 12:45:00', NULL, '127.0.0.1', 1, 'SUPER');
+'1', 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'huangdc@incardata.com.cn', '15107116464', '超级管理员', '2016-03-01 12:45:00', NULL, '127.0.0.1', 1, 'SUPER');

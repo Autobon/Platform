@@ -26,13 +26,20 @@ import java.util.regex.Pattern;
 @RestController("adminBillController")
 @RequestMapping("/api/web/admin/bill")
 public class BillController {
-    @Autowired BillService billService;
-    @Autowired OrderService orderService;
-    @Autowired TechnicianService technicianService;
-    @Autowired TechStatService techStatService;
-    @Autowired ConstructionService constructionService;
-    @Autowired DetailedBillService detailedBillService;
-    @Autowired DetailedOrderService detailedOrderService;
+    @Autowired
+    BillService billService;
+    @Autowired
+    OrderService orderService;
+    @Autowired
+    TechnicianService technicianService;
+    @Autowired
+    TechStatService techStatService;
+    @Autowired
+    ConstructionService constructionService;
+    @Autowired
+    DetailedBillService detailedBillService;
+    @Autowired
+    DetailedOrderService detailedOrderService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -78,7 +85,6 @@ public class BillController {
     public JsonMessage setPaid(@PathVariable("billId") int billId) {
         Bill bill = billService.get(billId);
         if (bill.isPaid()) return new JsonMessage(false, "ALREADY_PAID_BILL", "订单已支付");
-
         Date start = bill.getBillMonth();
         Date end = Date.from(start.toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDate().plusMonths(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
