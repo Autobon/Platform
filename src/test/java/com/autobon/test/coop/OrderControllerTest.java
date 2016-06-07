@@ -152,19 +152,6 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.result", is(false)));
     }
 
-    @Test   //商户未通过验证
-    public void createOrderAndAppoint4()throws Exception {
-        mockMvcS.perform(post("/api/mobile/coop/order/createOrderAndAppoint")
-                .param("photo","photo")
-                .param("remark","订单注释")
-                .param("orderTime","2016-02-10 09:23")
-                .param("orderType","1")
-                .param("mainTechId","1")
-                .cookie(new Cookie("autoken", token)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(jsonPath("$.result", is(false)));
-    }
-
     @Test   //订单创建并指定技师
     public void createOrderAndAppoint5()throws Exception {
         mockMvcS.perform(post("/api/mobile/coop/order/createOrderAndAppoint")
