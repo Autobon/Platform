@@ -238,7 +238,7 @@ public class OrderController {
         orderNum+=1;
         cooperator.setOrderNum(orderNum);
         cooperatorService.save(cooperator);
-        return new JsonMessage(true, "", "订单创建并制定技师", order);
+        return new JsonMessage(true, "订单创建并指定技师", "", order);
 
     }
 
