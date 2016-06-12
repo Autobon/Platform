@@ -23,7 +23,7 @@
     "font-awesome": "",
     "moment": "",
     "angular-bootstrap-datetimepicker": "",
-    "angular-chart.js": ""
+    "angular-chart.js": "^0.10.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.1",
