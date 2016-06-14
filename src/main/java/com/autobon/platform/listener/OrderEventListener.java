@@ -133,7 +133,12 @@ public class OrderEventListener {
         // 向商户推送订单完成消息
         if (order.getCreatorType() == 1) {
             CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
-            pushServiceB.pushToSingle(coopAccount.getPushId(), "订单: " + order.getOrderNum() + "已完成", new ObjectMapper().writeValueAsString(order), 24*3600);
+            String msgTitle = "订单: " + order.getOrderNum() + "已完成";
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("action", "ORDER_COMPLETE");
+            map.put("title", msgTitle);
+            map.put("order", order);
+            pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
         }
 
         // 更新主技师余额及未支付订单数
