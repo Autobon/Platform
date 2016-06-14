@@ -31,10 +31,10 @@ public class GtPushTest {
         Assert.assertTrue(GtPush.connect(gtConfig));
     }
 
-    @Test
-    public void pushToApp() throws Exception {
-        Assert.assertTrue(new PushService(gtConfig).pushToApp("this is title", "this is json", 0));
-    }
+//    @Test
+//    public void pushToApp() throws Exception {
+//        Assert.assertTrue(new PushService(gtConfig).pushToApp("this is title", "this is json", 0));
+//    }
 
         /*
     @Test
