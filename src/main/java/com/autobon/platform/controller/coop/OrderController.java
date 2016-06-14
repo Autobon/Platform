@@ -60,78 +60,59 @@ public class OrderController {
     private EntityManager entityManager;
 
 
-    @RequestMapping(value="/comment",method = RequestMethod.POST)
+    @RequestMapping(value = "/comment", method = RequestMethod.POST)
     public JsonMessage comment(@RequestParam("orderId") int orderId,
                                @RequestParam("star") int star,
-                               @RequestParam(value = "arriveOnTime",defaultValue = "false") boolean arriveOnTime,
-                               @RequestParam(value = "completeOnTime",defaultValue = "false") boolean completeOnTime,
-                               @RequestParam(value = "professional",defaultValue = "false") boolean professional,
-                               @RequestParam(value = "dressNeatly",defaultValue = "false") boolean dressNeatly,
-                               @RequestParam(value = "carProtect",defaultValue = "false") boolean carProtect,
-                               @RequestParam(value = "goodAttitude",defaultValue = "false") boolean goodAttitude,
-                               @RequestParam("advice") String advice){
+                               @RequestParam(value = "arriveOnTime", defaultValue = "false") boolean arriveOnTime,
+                               @RequestParam(value = "completeOnTime", defaultValue = "false") boolean completeOnTime,
+                               @RequestParam(value = "professional", defaultValue = "false") boolean professional,
+                               @RequestParam(value = "dressNeatly", defaultValue = "false") boolean dressNeatly,
+                               @RequestParam(value = "carProtect", defaultValue = "false") boolean carProtect,
+                               @RequestParam(value = "goodAttitude", defaultValue = "false") boolean goodAttitude,
+                               @RequestParam("advice") String advice) {
 
-        JsonMessage jsonMessage = new JsonMessage(true,"comment");
+        JsonMessage jsonMessage = new JsonMessage(true, "comment");
         Order order = orderService.get(orderId);
-        if(order.getStatus() == Order.Status.FINISHED){
+        if (order.getStatus() == Order.Status.FINISHED) {
 
-        int mainTechId = order.getMainTechId();
-        int secondTechId = order.getSecondTechId();
-        if(mainTechId == 0){
-            return new JsonMessage(false,"此订单未指定技师");
-        }
+            int mainTechId = order.getMainTechId();
+            if (mainTechId == 0) {
+                return new JsonMessage(false, "此订单未指定技师");
+            }
 
-        Comment comment = new Comment();
-        comment.setTechId(mainTechId);
-        comment.setOrderId(orderId);
-        comment.setStar(star);
-        comment.setArriveOnTime(arriveOnTime);
-        comment.setCompleteOnTime(completeOnTime);
-        comment.setProfessional(professional);
-        comment.setDressNeatly(dressNeatly);
-        comment.setCarProtect(carProtect);
-        comment.setGoodAttitude(goodAttitude);
-        comment.setAdvice(advice);
-        commentService.save(comment);
-
-        order.setStatus(Order.Status.COMMENTED);
-        orderService.save(order);
-
-        // 写入技师星级统计
-        TechStat mainStat = techStatService.getByTechId(mainTechId);
-        if (mainStat == null) {
-            mainStat = new TechStat();
-            mainStat.setTechId(mainTechId);
-        }
-        int commentCount = commentService.countByTechId(mainTechId);
-        float starRate = commentService.calcStarRateByTechId(mainTechId,
-                Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-        if (commentCount < 100) starRate = ((100 - commentCount) * 3f + commentCount * starRate) / 100f;
-        mainStat.setStarRate(starRate);
-        techStatService.save(mainStat);
-
-        //根据原形只对主责任人进行评价
-/*        if(secondTechId != 0){
-            entityManager.detach(comment);
-            comment.setId(0);
-            comment.setTechId(secondTechId);
+            Comment comment = new Comment();
+            comment.setTechId(mainTechId);
+            comment.setOrderId(orderId);
+            comment.setStar(star);
+            comment.setArriveOnTime(arriveOnTime);
+            comment.setCompleteOnTime(completeOnTime);
+            comment.setProfessional(professional);
+            comment.setDressNeatly(dressNeatly);
+            comment.setCarProtect(carProtect);
+            comment.setGoodAttitude(goodAttitude);
+            comment.setAdvice(advice);
             commentService.save(comment);
 
+            order.setStatus(Order.Status.COMMENTED);
+            orderService.save(order);
+
             // 写入技师星级统计
-            TechStat secondStat = techStatService.getByTechId(secondTechId);
-            if (secondStat == null) {
-                secondStat = new TechStat();
-                secondStat.setTechId(secondTechId);
+            TechStat mainStat = techStatService.getByTechId(mainTechId);
+            if (mainStat == null) {
+                mainStat = new TechStat();
+                mainStat.setTechId(mainTechId);
             }
-            secondStat.setStarRate(commentService.calcStarRateByTechId(secondTechId,
-                    Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
-            techStatService.save(secondStat);
-        }*/
+            int commentCount = commentService.countByTechId(mainTechId);
+            float starRate = commentService.calcStarRateByTechId(mainTechId,
+                    Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            if (commentCount < 100) starRate = ((100 - commentCount) * 3f + commentCount * starRate) / 100f;
+            mainStat.setStarRate(starRate);
+            techStatService.save(mainStat);
 
-        return jsonMessage;
+            return jsonMessage;
 
-        }else{
-            return new JsonMessage(false,"订单未完成或已评论");
+        } else {
+            return new JsonMessage(false, "订单未完成或已评论");
         }
     }
 
