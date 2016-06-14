@@ -85,7 +85,9 @@ export default class MapView extends Injector {
             _scope.data     = i;
             scope.markers.push(new MapService.HtmlMarkerOverlay(_scope, new window.BMap.Point(i.lng, i.lat),
                 scope.itemTemplate, scope.itemOffset()));
-            scope.markerClusterer = new window.BMapLib.MarkerClusterer(scope.map, {markers: scope.markers});
         });
+        if (scope.markers.length > 0) {
+            scope.markerClusterer = new window.BMapLib.MarkerClusterer(scope.map, {markers: scope.markers});
+        }
     }
 }

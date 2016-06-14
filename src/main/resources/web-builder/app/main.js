@@ -5,9 +5,14 @@ import 'angular-ui-router';
 import 'angular-ui-bootstrap';
 import 'angular-chart.js';
 import moment from 'moment';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'font-awesome/css/font-awesome.min.css';
 import 'angular-bootstrap-datetimepicker';
 import 'angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js';
 import 'angular-bootstrap-datetimepicker/src/css/datetimepicker.css';
+import 'angular-chart.js/dist/angular-chart.css';
+import './styles/common.scss';
 
 import directives from './directives';
 import controllers, {templateCache} from './controllers';
@@ -28,7 +33,7 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                 return {
                     domain: $location.protocol() + '://' + $location.host() + ':' + $location.port(),
                     baiduMapKey: 'FPzmlgz02SERkbPsRyGOiGfj',
-                    orderTypes: {'1': '隔热层', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
+                    orderTypes: {'1': '隔热膜', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
                     orderStatus: {
                         'NEWLY_CREATED': '未接单',
                         'TAKEN_UP': '已接单',
@@ -54,13 +59,8 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                 $rootScope.$state = $state;
             }]);
 
-config.forEach(c => {
-    app.config(c);
-});
+config.forEach(c => app.config(c));
 
-import 'bootstrap/dist/css/bootstrap.css';
-import 'font-awesome/css/font-awesome.min.css';
-import './styles/common.scss';
 window.name = 'NG_DEFER_BOOTSTRAP!';
 angular.element().ready(() => {
     angular.resumeBootstrap([App]);

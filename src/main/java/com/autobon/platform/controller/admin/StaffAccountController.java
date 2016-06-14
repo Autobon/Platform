@@ -107,8 +107,6 @@ public class StaffAccountController {
         return new JsonMessage(true);
     }
 
-
-
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public JsonMessage changePassword(
             HttpServletRequest request,

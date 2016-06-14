@@ -34,6 +34,7 @@ export default class LocationPicker extends Injector {
             };
         } else {
             this.$injected.$timeout(() => {
+                this._showMap(scope, mapId);
                 scope.$watch('position', () => {
                     this._showMap(scope, mapId);
                 });
@@ -50,7 +51,7 @@ export default class LocationPicker extends Injector {
 
     _showMap(scope, mapId) {
         const {MapService} = this.$injected;
-        if (scope.map) {
+        if (scope.map && scope.position) {
             const oldMarker = scope.marker;
             const point = new window.BMap.Point(scope.position.lng, scope.position.lat);
             scope.marker = new window.BMap.Marker(point);
@@ -60,7 +61,12 @@ export default class LocationPicker extends Injector {
                     scope.position = scope.marker.getPosition();
                 });
             });
-            scope.map.panTo(point);
+            if (this.init) {
+                this.init = false;
+                scope.map.centerAndZoom(point, 12);
+            } else {
+                scope.map.panTo(point);
+            }
             scope.map.addOverlay(scope.marker);
 
             if (oldMarker) {
@@ -68,13 +74,17 @@ export default class LocationPicker extends Injector {
                     scope.map.removeOverlay(oldMarker);
                 });
             }
-        } else {
+        } else if (!scope.map) {
             let map = scope.map = new window.BMap.Map(mapId);
             if (scope.position) {
                 map.centerAndZoom(new window.BMap.Point(scope.position.lng, scope.position.lat), 12);
             } else {
+                this.init = true; // 获取当前城市速度较慢, 作为一个标志位, 防止过慢覆盖了初始值
                 new window.BMap.LocalCity().get(result => {
-                    map.centerAndZoom(result.name, 12);
+                    if (this.init) {
+                        this.init = false;
+                        map.centerAndZoom(result.name, 12);
+                    }
                 });
             }
             map.enableScrollWheelZoom(true);
