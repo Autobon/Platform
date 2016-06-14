@@ -1,9 +1,7 @@
 # 订单
 
-
 ## 1.订单评论
 评论
-
 
 ### URL及请求方法
 POST /api/mobile/coop/order/comment
@@ -141,8 +139,6 @@ POST /api/mobile/coop/order/listUnfinished
 | page | 页码(默认值为1) | 1 |
 | pageSize | 每页显示数目（默认值为20） | 20 |
 
-
-
 ### 返回结果
 
 ````
@@ -227,7 +223,6 @@ POST /api/mobile/coop/order/listUnfinished
 
 ````
 
-
 ## 4.商户端已完成订单列表
 商户端已完成订单列表
 
@@ -240,8 +235,6 @@ POST /api/mobile/coop/order/listFinished
 | ------ | ---- | --- |
 | page | 页码(默认值为1) | 1 |
 | pageSize | 每页显示数目（默认值为20） | 20 |
-
-
 
 ### 返回结果
 
@@ -275,8 +268,6 @@ POST /api/mobile/coop/order/listUncomment
 | page | 页码(默认值为1) | 1 |
 | pageSize | 每页显示数目（默认值为20） | 20 |
 
-
-
 ### 返回结果
 
 ````
@@ -299,7 +290,6 @@ POST /api/mobile/coop/order/listUncomment
 ## 6.查看技师详情
 查看技师详情
 
-
 ### URL及请求方法
 GET /api/mobile/coop/technician/getTechnician?orderId=1
 
@@ -310,7 +300,6 @@ GET /api/mobile/coop/technician/getTechnician?orderId=1
 | orderId | 订单id | 1 |
 
 订单需要有指定主技师。
-
 
 ### 返回结果
 
@@ -413,9 +402,9 @@ POST /api/mobile/coop/order/uploadPhoto
 | 参数名称 | 说明 | 举例 |
 | ------ | ---- | --- |
 | photo | 订单图片地址 | a/a.jpg |
-| remark | 备注 |remark is here |
-| orderTime | 订单时间 |2016-03-01 12:02 |
-| orderType | 订单类型 |1 |
+| remark | 备注 | remark is here |
+| orderTime | 订单时间 | 2016-03-01 12:02 |
+| orderType | 订单类型 | 1 |
 | mainTechId | 技师id | 1 |
 
 #### a.创建订单

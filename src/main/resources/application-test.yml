@@ -1,0 +1,5 @@
+spring:
+    datasource:
+        url: jdbc:mysql://121.40.157.200:3306/autobondb_test?characterEncoding=utf8&useSSL=false
+        user: test
+        password: test
