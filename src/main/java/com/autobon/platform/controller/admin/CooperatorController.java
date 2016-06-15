@@ -211,7 +211,7 @@ public class CooperatorController {
                 + VerifyCode.generateVerifyCode(6) + extension;
 
         InputStream in;
-        if (file == null || file.isEmpty()) return new JsonMessage(false, "没有选择上传文件");
+        if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有选择上传文件");
         in = file.getInputStream();
 
         ConvertCmd cmd = new ConvertCmd(true);

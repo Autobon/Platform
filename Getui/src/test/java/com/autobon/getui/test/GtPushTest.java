@@ -2,7 +2,6 @@ package com.autobon.getui.test;
 
 import com.autobon.getui.Application;
 import com.autobon.getui.GtPush;
-import com.autobon.getui.PushService;
 import com.autobon.getui.utils.GtConfig;
 import org.junit.Assert;
 import org.junit.Before;

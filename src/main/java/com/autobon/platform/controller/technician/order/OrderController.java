@@ -66,7 +66,7 @@ public class OrderController {
                 new JsonPage<>(detailedOrderService.findUnfinishedByTechId(technician.getId(), page, pageSize)));
     }
 
-    // 获取新建订单列表
+    // 获取可抢订单列表
     @RequestMapping(value = "/listNew", method = RequestMethod.GET)
     public JsonMessage listNew(
             HttpServletRequest request,

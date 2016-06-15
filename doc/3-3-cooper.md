@@ -3,7 +3,7 @@
 ## 1. 商户资料提交认证
 商户资料提交
 ### URL及请求方法
-post("/api/mobile/coop/check")
+POST /api/mobile/coop/check
 
 ### 请求参数
 | 参数名称 | 是否必须 | 说明 | 举例 |
@@ -25,7 +25,6 @@ post("/api/mobile/coop/check")
 | address | 是 | 详细地址| 中山路3号 |
 | contact | 是 | 联系人姓名|李四 |
 | contactPhone | 是 | 联系人电话| 13025523002 |
-
 
 ### 返回数据
 
