@@ -15,7 +15,8 @@ import java.util.Date;
 @Table(name="t_order")
 public class Order {
     public enum Status {
-        NEWLY_CREATED(0), // 新建
+        CREATED_TO_APPOINT(-10), // 已创建待指定技师
+        NEWLY_CREATED(0), // 已创建并推送, 待技师抢单
         TAKEN_UP(10), // 已有人抢单
         SEND_INVITATION(20), // 已发送合作邀请并等待结果
         INVITATION_ACCEPTED(30), // 合作邀请已接受
