@@ -9,10 +9,7 @@ import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -221,7 +218,6 @@ public class CoopAccountController {
         }
     }
 
-
     @RequestMapping(value = "/addAccount",method = RequestMethod.POST)
     public JsonMessage addAccount(HttpServletRequest request,
                                   @RequestParam("phone") String phone,
@@ -253,7 +249,24 @@ public class CoopAccountController {
         return new JsonMessage(true,"","",coopAccount);
     }
 
-    @RequestMapping(value = "/changeAccountPassword",method = RequestMethod.POST)
+    @RequestMapping(value = "/account/{accountId:\\d+}", method = RequestMethod.POST)
+    public JsonMessage updateAccount(HttpServletRequest request,
+            @PathVariable("accountId") int accountId,
+            @RequestParam("phone") String phone,
+            @RequestParam("name") String name,
+            @RequestParam("gender") boolean gender) {
+        CoopAccount coopLogin = (CoopAccount) request.getAttribute("user");
+        CoopAccount coopAccount = coopAccountService.getById(accountId);
+        if (!coopLogin.isMain() || coopAccount.isMain()) return new JsonMessage(false, "ILLEGAL_OPERATION", "仅允许管理员修改员工帐户");
+        if (!Pattern.matches("^\\d{11}$", phone)) return new JsonMessage(false, "ILLEGAL_PHONE_NO", "手机号格式错误, 正确格式: 18812345678");
+        coopAccount.setPhone(phone);
+        coopAccount.setName(name);
+        coopAccount.setGender(gender);
+        coopAccountService.save(coopAccount);
+        return new JsonMessage(true);
+    }
+
+    @RequestMapping(value = "/changeAccountPassword", method = RequestMethod.POST)
     public JsonMessage changeAccountPassword(@RequestParam("coopAccountId") int coopAccountId,
                                             @RequestParam("oldPassword") String oldPassword,
                                             @RequestParam("newPassword") String newPassword) {

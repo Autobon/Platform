@@ -469,6 +469,7 @@ POST /api/mobile/coop/addAccount
 ## 9.修改账户密码
 ### URL及请求方法
 POST /api/mobile/coop/changeAccountPassword
+
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
@@ -513,3 +514,50 @@ POST /api/mobile/coop/changeAccountPassword
 }
 
 ```
+
+## 10. 修改员工帐户
+### URL及请求方法
+`POST /api/mobile/coop/account/{accountId}`
+
+### 请求参数
+
+| 参数名称 | 是否可选 | 说明 | 举例 |
+| ------ | ------- | ---- | ---- |
+| accountId | 否 | URL占参数, 员工帐ID | 1 |
+| phone | 否 | 员工登录手机号 | 18812345678 |
+| name | 否 | 员工姓名 | 张三 |
+| gender | 否 | 员工性别, false为男, true为女 | false |
+
+### 返回数据
+1. 请求成功
+
+    ```
+    {
+        "result": true,
+        "message": "",
+        "error": "",
+        "data": null
+    }
+    ```
+
+2. 手机号格式错误
+
+    ```
+    {
+        "result": false,
+        "message": "手机号格式错误, 正确格式: 18812345678",
+        "error": "ILLEGAL_PHONE_NO",
+        "data": null
+    }
+    ```
+    
+3. 仅允许管理员修改员工帐户
+
+    ```
+    {
+            "result": false,
+            "message": "仅允许管理员修改员工帐户",
+            "error": "ILLEGAL_OPERATION",
+            "data": null
+        }
+    ```

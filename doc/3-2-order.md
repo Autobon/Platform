@@ -18,7 +18,7 @@ POST /api/mobile/coop/order/comment
 | dressNeatly | 整洁着装 |true |
 | carProtect | 车辆保护 |true |
 | goodAttitude | 态度好 |true |
-| advice | 建议 |贴膜技术不错 |
+| advice | 建议 | 贴膜技术不错 |
 
 订单需要有指定主技师。
 
@@ -65,14 +65,13 @@ POST /api/mobile/coop/order/createOrder
 
 ### 请求参数
 
-| 参数名称 | 说明 | 举例 |
-| ------ | ---- | --- |
-| photo | 订单图片地址 | a/a.jpg |
-| remark | 备注 |remark is here |
-| orderTime | 订单时间 |2016-03-01 12:02 |
-| orderType | 订单类型 |1 |
-
-
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| -------- | -------- | ---- | --- |
+| photo | 是 | 订单图片地址 | a/a.jpg |
+| remark | 是 | 备注 | remark is here |
+| orderTime | 是 | 订单时间 |2016-03-01 12:02 |
+| orderType | 是 | 订单类型 | 1 |
+| pushToAll | 否 | 是否推送给技师, 不指定时, 向技师群推 | false |
 
 ### 返回结果
 
@@ -390,94 +389,50 @@ POST /api/mobile/coop/order/uploadPhoto
 }
 ```
 
-
-## 8.创建订单并在创建的时候指定技师
-合作商创建订单并指定技师
+## 8. 给订单指定技师
+商户下单时如果选择不推送给所有员工,可以在下单后指定技师
 
 ### URL及请求方法
-`POST /api/mobile/coop/order/createOrderAndAppoint`
+`POST /api/mobile/coop/order/assign`
 
 ### 请求参数
 
-| 参数名称 | 说明 | 举例 |
-| ------ | ---- | --- |
-| photo | 订单图片地址 | a/a.jpg |
-| remark | 备注 | remark is here |
-| orderTime | 订单时间 | 2016-03-01 12:02 |
-| orderType | 订单类型 | 1 |
-| mainTechId | 技师id | 1 |
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| -------- | -------- | ---- | ---- |
+| orderId | 是 | 订单ID | 1 |
+| techId | 是 | 技师ID | 2 |
 
-#### a.创建订单
+### 返回数据
+
+#### a. 请求成功
 
 ```
 {
     "result": true,
-    "message": "订单创建并指定技师",
     "error": "",
-    "data":{
-            "id": 3,
-            "orderNum": "16032813BCU8SL",
-            "orderType": 1,
-            "photo": "a/a.jpg",
-            "orderTime": 1467858031000,
-            "addTime": 1465289338595,
-            "finishTime": null,
-            "creatorType": 1,
-            "creatorId": 1,
-            "creatorName": "Tom",
-            "contactPhone": null,
-            "positionLon": null,
-            "positionLat": null,
-            "remark": "remark is here",
-            "mainTechId": 1,
-            "secondTechId": 0,
-            "status": "NEWLY_CREATED"
-
-    }
-
+    "message": "",
+    "date": null
 }
 ```
 
-#### b.主技师无此项技能
+### b. 技师技能不支持订单类型
 
 ```
 {
-    "result":false,
-    "message":"NO_SUCH_TYPE",
-     "error": "主技师无此项技能",
-      "data": null
+    "result": false,
+    "error": "TECH_SKILL_NOT_SUFFICIANT",
+    "message": "技师技能不支持订单类型",
+    "date": null
 }
 ```
 
-#### c.主技师未通过审核
+### c. 订单不可指定技师
 
 ```
 {
-    "result":false,
-    "message":"ILLEGAL_PARAM",
-     "error": "主技师未通过审核",
-      "data": null
-}
-```
-
-#### d.商户未通过验证
-
-```
-{
-    "result":false,
-    "message":"ILLEGAL_PARAM",
-     "error": "商户未通过验证",
-      "data": null
-}
-```
-
-#### e.订单格式不正确
-
-```
-{
-    "result":false,
-    "message":"ILLEGAL_PARAM",
-     "error": "订单时间格式不对, 正确格式: 2016-02-10 09:23",
-      "data": null
+    "result": false,
+    "error": "NOT_ASSIGNABLE_ORDER",
+    "message": "订单不可指定技师",
+    "date": null
 }
 ```

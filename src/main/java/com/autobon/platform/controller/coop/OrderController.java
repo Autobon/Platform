@@ -32,11 +32,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -118,20 +120,17 @@ public class OrderController {
 
     @RequestMapping(value="/createOrder",method = RequestMethod.POST)
     public JsonMessage createOrder(HttpServletRequest request,
-                                @RequestParam("photo") String photo,
-                                @RequestParam("remark") String remark,
-                                @RequestParam("orderTime") String orderTime,
-                                @RequestParam("orderType") int orderType) throws Exception {
-
-        //Cooperator cooperator = (Cooperator) request.getAttribute("user");
-        //int statuCode = cooperator.getStatusCode();
+            @RequestParam("photo") String photo,
+            @RequestParam("remark") String remark,
+            @RequestParam("orderTime") String orderTime,
+            @RequestParam("orderType") int orderType,
+            @RequestParam(value = "pushToAll", defaultValue = "true") boolean pushToAll) throws Exception {
 
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         int coopId = coopAccount.getCooperatorId();
         Cooperator cooperator = cooperatorService.get(coopId);
         int statuCode = cooperator.getStatusCode();
-
-        if(statuCode !=1){
+        if(statuCode !=1) {
             return new JsonMessage(false, "ILLEGAL_PARAM", "商户未通过验证");
         }
 
@@ -150,16 +149,28 @@ public class OrderController {
         order.setPositionLon(cooperator.getLongitude());
         order.setPositionLat(cooperator.getLatitude());
         order.setContactPhone(coopAccount.getPhone());
+        if (!pushToAll) order.setStatus(Order.Status.CREATED_TO_APPOINT);
         orderService.save(order);
-
-        int orderNum = cooperator.getOrderNum();
-        orderNum+=1;
-        cooperator.setOrderNum(orderNum);
+        cooperator.setOrderNum(cooperator.getOrderNum() + 1);
         cooperatorService.save(cooperator);
 
         publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
         return new JsonMessage(true, "", "", order);
+    }
 
+    @RequestMapping(value = "/assign", method = RequestMethod.POST)
+    public JsonMessage assignOrder(@RequestParam("orderId") int orderId, @RequestParam("techId") int techId) {
+        Order order = orderService.get(orderId);
+        Technician tech = technicianService.get(techId);
+        if (order.getStatus() != Order.Status.CREATED_TO_APPOINT)
+            return new JsonMessage(false, "NOT_ASSIGNABLE_ORDER", "订单不可指定技师");
+        if (tech.getSkill() == null || !Arrays.stream(tech.getSkill().split(",")).anyMatch(i -> i.equals("" + order.getOrderType())))
+            return new JsonMessage(false, "TECH_SKILL_NOT_SUFFICIANT", "技师技能不支持订单类型");
+
+        order.setMainTechId(techId);
+        order.setStatus(Order.Status.TAKEN_UP);
+        orderService.save(order);
+        return new JsonMessage(true);
     }
 
     /**
@@ -219,7 +230,7 @@ public class OrderController {
         orderNum+=1;
         cooperator.setOrderNum(orderNum);
         cooperatorService.save(cooperator);
-        return new JsonMessage(true, "订单创建并指定技师", "", order);
+        return new JsonMessage(true, "", "", order);
 
     }
 

@@ -107,6 +107,7 @@ public class OrderEventListener {
         redisCache.getAfterUpdate(totalCreatedKey, () -> String.valueOf(orderService.totalOfCreated() - 1),
                 24*3600, this::increase);
 
+        if (order.getStatusCode() < Order.Status.NEWLY_CREATED.getStatusCode()) return;
         String msgTitle = "你收到新订单推送消息";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "NEW_ORDER");
