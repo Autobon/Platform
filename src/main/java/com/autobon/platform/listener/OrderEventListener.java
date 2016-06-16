@@ -8,7 +8,9 @@ import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.shared.RedisCache;
 import com.autobon.technician.entity.TechStat;
+import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
+import com.autobon.technician.service.TechnicianService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,7 @@ public class OrderEventListener {
     @Autowired OrderService orderService;
     @Autowired RedisCache redisCache;
     @Autowired CoopAccountService coopAccountService;
+    @Autowired TechnicianService technicianService;
     @Autowired TechStatService techStatService;
     @Autowired ConstructionService constructionService;
     @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
@@ -117,6 +120,27 @@ public class OrderEventListener {
         if (!result) log.error("订单: " + order.getOrderNum() + "的推送消息发送失败");
     }
 
+    private void onOrderAppointed(Order order) throws IOException {
+        // 更新订单总数
+        Technician tech = technicianService.get(order.getMainTechId());
+        TechStat stat = techStatService.getByTechId(tech.getId());
+        if (stat == null) {
+            stat = new TechStat();
+            stat.setTechId(tech.getId());
+        }
+        stat.setTotalOrders(stat.getTotalOrders() + 1);
+        techStatService.save(stat);
+
+        // 推送派单消息
+        String msgTitle = "你收到派单消息";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "ASSIGN_ORDER");
+        map.put("order", order);
+        map.put("title", msgTitle);
+        boolean result = pushServiceA.pushToSingle(tech.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
+        if (!result) log.error("订单: " + order.getOrderNum() + "的派单消息发送失败");
+    }
+
     private void onOrderFinished(Order order) throws IOException {
         LocalDate localDate = order.getFinishTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
@@ -132,15 +156,13 @@ public class OrderEventListener {
                 24*3600, this::increase);
 
         // 向商户推送订单完成消息
-        if (order.getCreatorType() == 1) {
-            CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
-            String msgTitle = "订单: " + order.getOrderNum() + "已完成";
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("action", "ORDER_COMPLETE");
-            map.put("title", msgTitle);
-            map.put("order", order);
-            pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
-        }
+        CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
+        String msgTitle = "订单: " + order.getOrderNum() + "已完成";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "ORDER_COMPLETE");
+        map.put("title", msgTitle);
+        map.put("order", order);
+        pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
 
         // 更新主技师余额及未支付订单数
         TechStat stat = techStatService.getByTechId(order.getMainTechId());

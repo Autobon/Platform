@@ -63,8 +63,6 @@ public class Order {
     @Column(name="status")
     private int statusCode;
 
-    @Column private int creatorType; // 下单人类型(1-合作商户 2-后台 3-用户)
-
     @Column private int creatorId;
 
     @Column private int coopId;
@@ -156,14 +154,6 @@ public class Order {
 
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
-    }
-
-    public int getCreatorType() {
-        return creatorType;
-    }
-
-    public void setCreatorType(int creatorType) {
-        this.creatorType = creatorType;
     }
 
     public int getCreatorId() {

@@ -1,5 +1,7 @@
 package com.autobon.order.entity;
 
+import com.autobon.cooperators.entity.CoopAccount;
+import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.technician.entity.Technician;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
@@ -33,12 +35,6 @@ public class DetailedOrder {
     @JsonIgnore
     @Column(name = "status")
     private int statusCode;
-
-    @Column private int creatorType; // 下单人类型(1-合作商户 2-后台 3-用户)
-
-    @Column private int creatorId;
-
-    @Column private int coopId;
 
     @Column private String creatorName;
 
@@ -74,6 +70,16 @@ public class DetailedOrder {
     @JoinColumns({@JoinColumn(name = "id", referencedColumnName = "order_id", insertable = false, updatable = false),
             @JoinColumn(name = "main_tech_id", referencedColumnName = "tech_id", insertable = false, updatable = false)})
     private Comment comment;
+
+    @ManyToOne
+    @JoinColumn(name = "coop_id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    private Cooperator cooperator;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    private CoopAccount creator;
 
     public int getId() {
         return id;
@@ -139,28 +145,20 @@ public class DetailedOrder {
         this.statusCode = statusCode;
     }
 
-    public int getCreatorType() {
-        return creatorType;
+    public Cooperator getCooperator() {
+        return cooperator;
     }
 
-    public void setCreatorType(int creatorType) {
-        this.creatorType = creatorType;
+    public void setCooperator(Cooperator cooperator) {
+        this.cooperator = cooperator;
     }
 
-    public int getCreatorId() {
-        return creatorId;
+    public CoopAccount getCreator() {
+        return creator;
     }
 
-    public void setCreatorId(int creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public int getCoopId() {
-        return coopId;
-    }
-
-    public void setCoopId(int coopId) {
-        this.coopId = coopId;
+    public void setCreator(CoopAccount creator) {
+        this.creator = creator;
     }
 
     public String getCreatorName() {

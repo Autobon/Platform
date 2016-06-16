@@ -72,4 +72,8 @@ public class OrderService {
     public int totalOfFinished() {
         return repository.totalOfFinished();
     }
+
+    public int countOfCoopAccount(int accountId) {
+        return repository.countOfCoopAccount(accountId);
+    }
 }

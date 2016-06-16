@@ -75,6 +75,8 @@ POST /api/mobile/coop/order/createOrder
 
 ### 返回结果
 
+### a.请求成功
+
 ````
 {
     "result": true,
@@ -88,8 +90,6 @@ POST /api/mobile/coop/order/createOrder
         "orderTime": 1456804920000,
         "addTime": 1459144745063,
         "finishTime": null,
-        "creatorType": 1,
-        "creatorId": 1,
         "creatorName": "Tom",
         "contactPhone": null,
         "positionLon": null,
@@ -97,12 +97,51 @@ POST /api/mobile/coop/order/createOrder
         "remark": "remark is here",
         "mainTechId": 0,
         "secondTechId": 0,
+        "cooperator": {
+            "id": 1,
+            "fullname": "非常历害的公司",
+            "businessLicense": null,
+            "corporationName": "王大拿",
+            "corporationIdNo": null,
+            "bussinessLicensePic": null,
+            "corporationIdPicA": null,
+            "corporationIdPicB": null,
+            "longitude": "114.287685",
+            "latitude": "30.639203",
+            "invoiceHeader": null,
+            "taxIdNo": null,
+            "postcode": null,
+            "province": "湖北省",
+            "city": "武汉市",
+            "district": "洪山区",
+            "address": "软件园中路",
+            "contact": "王大拿",
+            "contactPhone": "13072705000",
+            "createTime": 1457677133000,
+            "statusCode": 1,
+            "orderNum": 2
+        },
+        "creator": {
+            "id": 1,
+            "cooperatorId": 1,
+            "fired": false,
+            "shortname": "Tom",
+            "phone": "13072726003",
+            "name": "Tom",
+            "gender": true,
+            "lastLoginTime": 1425525071000,
+            "lastLoginIp": "192.168.1.1",
+            "createTime": 1425265871000,
+            "pushId": null,
+            "main": true
+        },
         "status": "NEWLY_CREATED"
     }
 }
 
 ````
-#### a.商户未通过验证
+
+#### b.商户未通过验证
 
 ```
 {
@@ -113,7 +152,8 @@ POST /api/mobile/coop/order/createOrder
 }
 
 ```
-#### b.订单时间格式不对
+
+#### c.订单时间格式不对
 
 ```
 {
@@ -160,8 +200,6 @@ POST /api/mobile/coop/order/listUnfinished
                 "orderTime": 1456804920000,
                 "addTime": 1459144745000,
                 "finishTime": null,
-                "creatorType": 1,
-                "creatorId": 1,
                 "creatorName": "Tom",
                 "contactPhone": null,
                 "positionLon": null,
@@ -172,49 +210,45 @@ POST /api/mobile/coop/order/listUnfinished
                 "mainConstruct": null,
                 "secondConstruct": null,
                 "comment": null,
-                "status": "NEWLY_CREATED"
-            },
-            {
-                "id": 1,
-                "orderNum": "16022313fsd123",
-                "orderType": 1,
-                "photo": "",
-                "orderTime": 1456293600000,
-                "addTime": 1456196963000,
-                "finishTime": null,
-                "creatorType": 1,
-                "creatorId": 1,
-                "creatorName": "超级管理员",
-                "contactPhone": null,
-                "positionLon": null,
-                "positionLat": null,
-                "remark": "bababala",
-                "mainTech": {
+                "cooperator": {
                     "id": 1,
-                    "phone": "18812345678",
-                    "name": "tom",
-                    "gender": null,
-                    "avatar": null,
-                    "idNo": "422302198608266313",
-                    "idPhoto": "/etc/a.jpg",
-                    "bank": "027",
-                    "bankAddress": "光谷",
-                    "bankCardNo": "88888888888",
-                    "verifyAt": null,
-                    "requestVerifyAt": null,
-                    "verifyMsg": null,
-                    "lastLoginAt": 1456195103000,
-                    "lastLoginIp": "127.0.0.1",
-                    "createAt": 1455724800000,
-                    "skill": "1",
-                    "pushId": null,
-                    "status": "NEWLY_CREATED"
+                    "fullname": "非常历害的公司",
+                    "businessLicense": null,
+                    "corporationName": "王大拿",
+                    "corporationIdNo": null,
+                    "bussinessLicensePic": null,
+                    "corporationIdPicA": null,
+                    "corporationIdPicB": null,
+                    "longitude": "114.287685",
+                    "latitude": "30.639203",
+                    "invoiceHeader": null,
+                    "taxIdNo": null,
+                    "postcode": null,
+                    "province": "湖北省",
+                    "city": "武汉市",
+                    "district": "洪山区",
+                    "address": "软件园中路",
+                    "contact": "王大拿",
+                    "contactPhone": "13072705000",
+                    "createTime": 1457677133000,
+                    "statusCode": 1,
+                    "orderNum": 2
                 },
-                "secondTech": null,
-                "mainConstruct": null,
-                "secondConstruct": null,
-                "comment": null,
-                "status": "TAKEN_UP"
+                "creator": {
+                    "id": 1,
+                    "cooperatorId": 1,
+                    "fired": false,
+                    "shortname": "Tom",
+                    "phone": "13072726003",
+                    "name": "Tom",
+                    "gender": true,
+                    "lastLoginTime": 1425525071000,
+                    "lastLoginIp": "192.168.1.1",
+                    "createTime": 1425265871000,
+                    "pushId": null,
+                    "main": true
+                },
+                "status": "NEWLY_CREATED"
             }
         ]
     }
@@ -390,10 +424,10 @@ POST /api/mobile/coop/order/uploadPhoto
 ```
 
 ## 8. 给订单指定技师
-商户下单时如果选择不推送给所有员工,可以在下单后指定技师
+商户下单时如果选择不推送给所有员工,可以在下单后指定技师。指定技师后, 技师将收到派单推送消息。
 
 ### URL及请求方法
-`POST /api/mobile/coop/order/assign`
+`POST /api/mobile/coop/order/appoint`
 
 ### 请求参数
 

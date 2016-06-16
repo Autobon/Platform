@@ -53,5 +53,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     @Query("select count(o) from Order o where o.statusCode >= 60 and o.statusCode <= 70")
     int totalOfFinished();
 
+    @Query("select count(o) from Order o where o.creatorId = ?1")
+    int countOfCoopAccount(int id);
+
 }
 
