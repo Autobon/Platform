@@ -75,6 +75,8 @@ POST /api/mobile/coop/order/createOrder
 
 ### 返回结果
 
+### a.请求成功
+
 ````
 {
     "result": true,
@@ -138,7 +140,8 @@ POST /api/mobile/coop/order/createOrder
 }
 
 ````
-#### a.商户未通过验证
+
+#### b.商户未通过验证
 
 ```
 {
@@ -149,7 +152,8 @@ POST /api/mobile/coop/order/createOrder
 }
 
 ```
-#### b.订单时间格式不对
+
+#### c.订单时间格式不对
 
 ```
 {
