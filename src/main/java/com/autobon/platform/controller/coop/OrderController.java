@@ -138,7 +138,6 @@ public class OrderController {
             return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
 
         Order order = new Order();
-        order.setCreatorType(1);
         order.setCreatorId(coopAccount.getId());
         order.setCoopId(coopId);
         order.setCreatorName(coopAccount.getShortname());
@@ -212,7 +211,6 @@ public class OrderController {
             return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
 
         Order order = new Order();
-        order.setCreatorType(1);
         order.setCreatorId(coopAccount.getId());
         order.setCoopId(coopId);
         order.setCreatorName(coopAccount.getShortname());
@@ -308,7 +306,7 @@ public class OrderController {
             int orderNum = cooperator.getOrderNum();
             return new JsonMessage(true,"","",orderNum);
         }else{
-            return new JsonMessage(true,"","",detailedOrderService.findCountByCreatorId(coopAccountId));
+            return new JsonMessage(true, "", "", orderService.countOfCoopAccount(coopAccountId));
         }
 
     }

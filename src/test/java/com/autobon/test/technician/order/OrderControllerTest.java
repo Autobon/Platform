@@ -37,6 +37,8 @@ public class OrderControllerTest extends MvcTest {
         technicianService.save(technician);
         myOrder = new Order();
         myOrder.setMainTechId(technician.getId());
+        myOrder.setCoopId(1);
+        myOrder.setCreatorId(1);
         orderService.save(myOrder);
         newOrder = new Order();
         newOrder.setOrderType(3);

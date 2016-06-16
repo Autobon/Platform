@@ -1,18 +1,14 @@
 package com.autobon.platform.controller.admin;
 
 import com.autobon.getui.PushService;
-import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.DetailedOrder;
 import com.autobon.order.entity.Order;
 import com.autobon.order.service.CommentService;
 import com.autobon.order.service.DetailedOrderService;
 import com.autobon.order.service.OrderService;
-import com.autobon.platform.listener.Event;
-import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.VerifyCode;
-import com.autobon.staff.entity.Staff;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
@@ -35,12 +31,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -111,25 +106,26 @@ public class OrderController {
             @RequestParam("contact") String contact,
             @RequestParam("photo") String photo,
             @RequestParam(value = "remark", required = false) String remark) throws Exception {
-        Staff staff = (Staff) request.getAttribute("user");
-        if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
-            return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
-
-        Order order = new Order();
-        order.setCreatorType(2);
-        order.setCreatorId(staff.getId());
-        order.setCreatorName(contact);
-        order.setContactPhone(contactPhone);
-        order.setPositionLon(positionLon);
-        order.setPositionLat(positionLat);
-        order.setOrderType(orderType);
-        order.setOrderTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(orderTime));
-        order.setRemark(remark);
-        order.setPhoto(photo);
-        orderService.save(order);
-
-        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
-        return new JsonMessage(true, "", "", order);
+        return new JsonMessage(false, "DEPRECATED", "后台创建订单功能已关闭");
+//        Staff staff = (Staff) request.getAttribute("user");
+//        if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
+//            return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
+//
+//        Order order = new Order();
+//        order.setCreatorType(2);
+//        order.setCreatorId(staff.getId());
+//        order.setCreatorName(contact);
+//        order.setContactPhone(contactPhone);
+//        order.setPositionLon(positionLon);
+//        order.setPositionLat(positionLat);
+//        order.setOrderType(orderType);
+//        order.setOrderTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(orderTime));
+//        order.setRemark(remark);
+//        order.setPhoto(photo);
+//        orderService.save(order);
+//
+//        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
+//        return new JsonMessage(true, "", "", order);
     }
 
     @RequestMapping(value = "/photo", method = RequestMethod.POST)
@@ -211,47 +207,48 @@ public class OrderController {
             @RequestParam(value = "dressNeatly", defaultValue = "false") boolean dressNeatly,
             @RequestParam(value = "carProtect", defaultValue = "false") boolean carProtect,
             @RequestParam(value = "goodAttitude", defaultValue = "false") boolean goodAttitude) {
-        Order order = orderService.get(orderId);
-        if (order.getCreatorType() != 2) {
-            return new JsonMessage(false, "NOT_PLATFORM_ORDER", "非平台下单,不可评论");
-        } else if (order.getStatus() != Order.Status.FINISHED) {
-            if (order.getStatusCode() < Order.Status.FINISHED.getStatusCode()) {
-                return new JsonMessage(false, "NOT_FINISHED_ORDER", "订单尚未完成");
-            } else if (order.getStatus() == Order.Status.COMMENTED) {
-                return new JsonMessage(false, "COMMENTED_ORDER", "订单已评论");
-            } else {
-                return new JsonMessage(false, "NOT_COMMENTABLE", "订单不可评论, 订单未取消或已超时");
-            }
-        }
-
-        Comment comment = new Comment();
-        comment.setTechId(order.getMainTechId());
-        comment.setOrderId(orderId);
-        comment.setStar(star);
-        comment.setArriveOnTime(arriveOnTime);
-        comment.setCompleteOnTime(completeOnTime);
-        comment.setProfessional(professional);
-        comment.setDressNeatly(dressNeatly);
-        comment.setCarProtect(carProtect);
-        comment.setGoodAttitude(goodAttitude);
-        comment.setAdvice(advice);
-        commentService.save(comment);
-        order.setStatus(Order.Status.COMMENTED);
-        orderService.save(order);
-
-        // 写入技师星级统计
-        TechStat techStat = techStatService.getByTechId(order.getMainTechId());
-        if (techStat == null) {
-            techStat = new TechStat();
-            techStat.setTechId(order.getMainTechId());
-        }
-        int commentCount = commentService.countByTechId(order.getMainTechId());
-        float starRate = commentService.calcStarRateByTechId(order.getMainTechId(),
-                Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-        if (commentCount < 100) starRate = ((100 - commentCount) * 3f + commentCount * starRate) / 100f;
-        techStat.setStarRate(starRate);
-        techStatService.save(techStat);
-
-        return new JsonMessage(true, "", "", comment);
+        return new JsonMessage(false, "DEPRECATED", "后台评论功能已关闭");
+//        Order order = orderService.get(orderId);
+//        if (order.getCreatorType() != 2) {
+//            return new JsonMessage(false, "NOT_PLATFORM_ORDER", "非平台下单,不可评论");
+//        } else if (order.getStatus() != Order.Status.FINISHED) {
+//            if (order.getStatusCode() < Order.Status.FINISHED.getStatusCode()) {
+//                return new JsonMessage(false, "NOT_FINISHED_ORDER", "订单尚未完成");
+//            } else if (order.getStatus() == Order.Status.COMMENTED) {
+//                return new JsonMessage(false, "COMMENTED_ORDER", "订单已评论");
+//            } else {
+//                return new JsonMessage(false, "NOT_COMMENTABLE", "订单不可评论, 订单未取消或已超时");
+//            }
+//        }
+//
+//        Comment comment = new Comment();
+//        comment.setTechId(order.getMainTechId());
+//        comment.setOrderId(orderId);
+//        comment.setStar(star);
+//        comment.setArriveOnTime(arriveOnTime);
+//        comment.setCompleteOnTime(completeOnTime);
+//        comment.setProfessional(professional);
+//        comment.setDressNeatly(dressNeatly);
+//        comment.setCarProtect(carProtect);
+//        comment.setGoodAttitude(goodAttitude);
+//        comment.setAdvice(advice);
+//        commentService.save(comment);
+//        order.setStatus(Order.Status.COMMENTED);
+//        orderService.save(order);
+//
+//        // 写入技师星级统计
+//        TechStat techStat = techStatService.getByTechId(order.getMainTechId());
+//        if (techStat == null) {
+//            techStat = new TechStat();
+//            techStat.setTechId(order.getMainTechId());
+//        }
+//        int commentCount = commentService.countByTechId(order.getMainTechId());
+//        float starRate = commentService.calcStarRateByTechId(order.getMainTechId(),
+//                Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+//        if (commentCount < 100) starRate = ((100 - commentCount) * 3f + commentCount * starRate) / 100f;
+//        techStat.setStarRate(starRate);
+//        techStatService.save(techStat);
+//
+//        return new JsonMessage(true, "", "", comment);
     }
 }

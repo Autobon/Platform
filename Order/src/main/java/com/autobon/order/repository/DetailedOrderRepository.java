@@ -30,24 +30,21 @@ public interface DetailedOrderRepository extends JpaRepository<DetailedOrder, In
     @Query("from DetailedOrder o where (o.mainTech.id = ?1 or o.secondTech.id = ?1) and o.finishTime >= ?2 and o.finishTime < ?3")
     Page<DetailedOrder> findBetweenByTechId(int techId, Date start, Date end, Pageable pageable);
 
-    @Query("from DetailedOrder o where o.creatorId = ?1  and o.statusCode < 60 and o.creatorType = 1")
+    @Query("from DetailedOrder o where o.creator.id = ?1  and o.statusCode < 60")
     Page<DetailedOrder> findUnfinishedByCoopAccountId(int creatorId, Pageable pageable);
 
-    @Query("from DetailedOrder o where o.creatorId = ?1  and o.statusCode >= 60 and o.creatorType = 1")
+    @Query("from DetailedOrder o where o.creator.id = ?1  and o.statusCode >= 60")
     Page<DetailedOrder> findFinishedByCoopAccountId(int creatorId, Pageable pageable);
 
-
-    @Query("from DetailedOrder o where o.creatorId = ?1  and o.statusCode = 60 and o.creatorType = 1")
+    @Query("from DetailedOrder o where o.creator.id = ?1  and o.statusCode = 60")
     Page<DetailedOrder> findUncommentByCoopAccountId(int creatorId, Pageable pageable);
 
-    long countByCreatorIdAndCreatorType(int creatorId,int creatorType);
-
-    @Query("from DetailedOrder o where o.coopId = ?1  and o.statusCode < 60 and o.creatorType = 1")
+    @Query("from DetailedOrder o where o.cooperator.id = ?1 and o.statusCode < 60")
     Page<DetailedOrder> findUnfinishedByCoopId(int coopId, Pageable pageable);
 
-    @Query("from DetailedOrder o where o.coopId = ?1  and o.statusCode >= 60 and o.creatorType = 1")
+    @Query("from DetailedOrder o where o.cooperator.id = ?1 and o.statusCode >= 60")
     Page<DetailedOrder> findFinishedByCoopId(int coopId, Pageable pageable);
 
-    @Query("from DetailedOrder o where o.coopId = ?1  and o.statusCode = 60 and o.creatorType = 1")
+    @Query("from DetailedOrder o where o.cooperator.id = ?1 and o.statusCode = 60")
     Page<DetailedOrder> findUncommentByCoopId(int coopId, Pageable pageable);
 }
