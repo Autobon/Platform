@@ -88,8 +88,6 @@ POST /api/mobile/coop/order/createOrder
         "orderTime": 1456804920000,
         "addTime": 1459144745063,
         "finishTime": null,
-        "creatorType": 1,
-        "creatorId": 1,
         "creatorName": "Tom",
         "contactPhone": null,
         "positionLon": null,
