@@ -1,6 +1,7 @@
 package com.autobon.order.repository;
 
 import com.autobon.order.entity.DetailedOrder;
+import com.autobon.order.entity.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dave on 16/3/10.
@@ -17,6 +19,9 @@ import java.util.Date;
 public interface DetailedOrderRepository extends JpaRepository<DetailedOrder, Integer> {
 
     DetailedOrder getByOrderNum(String orderNum);
+
+    @Query("from DetailedOrder o where (COALESCE(?1) is null or o.orderType in (?1)) and o.statusCode = 0")
+    Page<DetailedOrder> findAvailable(List<Integer> orderType, Pageable pageable); // 查找可抢订单列表
 
     @Query("from DetailedOrder o where o.mainTech.id = ?1 and o.statusCode >= 60")
     Page<DetailedOrder> findFinishedByMainTechId(int techId, Pageable pageable);

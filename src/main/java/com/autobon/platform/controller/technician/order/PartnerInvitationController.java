@@ -3,12 +3,12 @@ package com.autobon.platform.controller.technician.order;
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.WorkItem;
+import com.autobon.order.service.DetailedOrderService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
-import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,8 +33,8 @@ public class PartnerInvitationController {
     private static Logger log = LoggerFactory.getLogger(PartnerInvitationController.class);
 
     @Autowired private TechnicianService technicianService;
-    @Autowired private DetailedTechnicianService detailedTechnicianService;
     @Autowired private OrderService orderService;
+    @Autowired private DetailedOrderService detailedOrderService;
     @Autowired private WorkItemService workItemService;
     @Autowired private TechStatService techStatService;
     @Autowired @Qualifier("PushServiceA")
@@ -60,10 +60,10 @@ public class PartnerInvitationController {
             return new JsonMessage(false, "ORDER_STARTED", "订单已开始或结束");
         } else if (order.getStatus() == Order.Status.INVITATION_ACCEPTED) {
             return new JsonMessage(false, "INVITATION_ACCEPTED", "订单已有人接受合作邀请");
-        } else if (order.getMainTechId() == partner.getId()) {
-            return new JsonMessage(false, "ILLEGAL_OPERATION", "主技师和合作技师不能为同一人");
         } else if (partner == null) {
             return new JsonMessage(false, "NO_SUCH_TECH", "系统中没有邀请的技师");
+        } else if (order.getMainTechId() == partner.getId()) {
+            return new JsonMessage(false, "ILLEGAL_OPERATION", "主技师和合作技师不能为同一人");
         } else if (partner.getStatus() != Technician.Status.VERIFIED) {
             return new JsonMessage(false, "NOT_VERIFIED", "受邀技师没有通过认证");
         } else if (partner.getSkill() == null ||
@@ -82,8 +82,7 @@ public class PartnerInvitationController {
         String title = technician.getName() + "向你发起订单合作邀请";
         map.put("action", "INVITE_PARTNER");
         map.put("title", title);
-        map.put("order", order);
-        map.put("owner", detailedTechnicianService.get(technician.getId()));
+        map.put("order", detailedOrderService.get(order.getId()));
         boolean result = pushService.pushToSingle(partner.getPushId(),
                             title,
                             new ObjectMapper().writeValueAsString(map),
