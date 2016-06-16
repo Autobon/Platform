@@ -424,10 +424,10 @@ POST /api/mobile/coop/order/uploadPhoto
 ```
 
 ## 8. 给订单指定技师
-商户下单时如果选择不推送给所有员工,可以在下单后指定技师
+商户下单时如果选择不推送给所有员工,可以在下单后指定技师。指定技师后, 技师将收到派单推送消息。
 
 ### URL及请求方法
-`POST /api/mobile/coop/order/assign`
+`POST /api/mobile/coop/order/appoint`
 
 ### 请求参数
 

@@ -6,6 +6,8 @@ import com.autobon.order.entity.Order;
 import com.autobon.order.service.CommentService;
 import com.autobon.order.service.DetailedOrderService;
 import com.autobon.order.service.OrderService;
+import com.autobon.platform.listener.Event;
+import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.VerifyCode;
@@ -176,23 +178,7 @@ public class OrderController {
         order.setStatus(Order.Status.TAKEN_UP);
         orderService.save(order);
 
-        // 更新订单总数
-        TechStat stat = techStatService.getByTechId(tech.getId());
-        if (stat == null) {
-            stat = new TechStat();
-            stat.setTechId(tech.getId());
-        }
-        stat.setTotalOrders(stat.getTotalOrders() + 1);
-        techStatService.save(stat);
-
-        // 推送派单消息
-        String msgTitle = "你收到派单消息";
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("action", "ASSIGN_ORDER");
-        map.put("order", order);
-        map.put("title", msgTitle);
-        boolean result = pushServiceA.pushToSingle(tech.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
-        if (!result) log.error("订单: " + order.getOrderNum() + "的派单消息发送失败");
+        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.APPOINTED));
         return new JsonMessage(true, "", "", order);
     }
 

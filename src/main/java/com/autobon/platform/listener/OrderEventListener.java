@@ -8,7 +8,9 @@ import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
 import com.autobon.shared.RedisCache;
 import com.autobon.technician.entity.TechStat;
+import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
+import com.autobon.technician.service.TechnicianService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,7 @@ public class OrderEventListener {
     @Autowired OrderService orderService;
     @Autowired RedisCache redisCache;
     @Autowired CoopAccountService coopAccountService;
+    @Autowired TechnicianService technicianService;
     @Autowired TechStatService techStatService;
     @Autowired ConstructionService constructionService;
     @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
@@ -115,6 +118,27 @@ public class OrderEventListener {
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.error("订单: " + order.getOrderNum() + "的推送消息发送失败");
+    }
+
+    private void onOrderAppointed(Order order) throws IOException {
+        // 更新订单总数
+        Technician tech = technicianService.get(order.getMainTechId());
+        TechStat stat = techStatService.getByTechId(tech.getId());
+        if (stat == null) {
+            stat = new TechStat();
+            stat.setTechId(tech.getId());
+        }
+        stat.setTotalOrders(stat.getTotalOrders() + 1);
+        techStatService.save(stat);
+
+        // 推送派单消息
+        String msgTitle = "你收到派单消息";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "ASSIGN_ORDER");
+        map.put("order", order);
+        map.put("title", msgTitle);
+        boolean result = pushServiceA.pushToSingle(tech.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
+        if (!result) log.error("订单: " + order.getOrderNum() + "的派单消息发送失败");
     }
 
     private void onOrderFinished(Order order) throws IOException {

@@ -1,8 +1,8 @@
 # 订单
 
 订单状态列表:
-
-1. `NEWLY_CREATED` 新建
+0. `CREATED_TO_APPOINT` 新建待指定技师
+1. `NEWLY_CREATED` 新建并已推送
 2. `TAKEN_UP` 已接单
 3. `SEND_INVITATION` 已发送合作邀请并等待结果
 4. `INVITATION_ACCEPTED` 合作邀请已接受
