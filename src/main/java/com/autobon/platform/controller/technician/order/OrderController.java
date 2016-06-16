@@ -14,7 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,8 +78,7 @@ public class OrderController {
         }
         List<Integer> skills = Arrays.stream(technician.getSkill().split(",")).map(Integer::parseInt).collect(Collectors.toList());
 
-        return new JsonMessage(true, "", "", new JsonPage<>(orderService.find(null, null, null, skills,
-                Order.Status.NEWLY_CREATED.getStatusCode(), "orderTime", Sort.Direction.ASC, page, pageSize)));
+        return new JsonMessage(true, "", "", new JsonPage<>(detailedOrderService.findAvailable(skills, page, pageSize)));
     }
 
     // 获取订单信息

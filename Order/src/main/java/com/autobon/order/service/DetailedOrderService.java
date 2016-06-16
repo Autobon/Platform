@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dave on 16/3/10.
@@ -23,6 +24,10 @@ public class DetailedOrderService {
 
     public DetailedOrder getByOrderNum(String orderNum) {
         return repository.getByOrderNum(orderNum);
+    }
+
+    public Page<DetailedOrder> findAvailable(List<Integer> orderType, int page, int pageSize) {
+        return repository.findAvailable(orderType, new PageRequest(page - 1, pageSize, new Sort(Sort.Direction.DESC, "orderTime")));
     }
 
     public Page<DetailedOrder> findFinishedByMainTechId(int techId, int page, int pageSize) {

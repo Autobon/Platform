@@ -5,6 +5,7 @@ import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
 import com.autobon.order.service.ConstructionService;
+import com.autobon.order.service.DetailedOrderService;
 import com.autobon.order.service.OrderService;
 import com.autobon.shared.RedisCache;
 import com.autobon.technician.entity.TechStat;
@@ -40,6 +41,7 @@ public class OrderEventListener {
     private final String totalFinishedKey = "totalFinishedOrder";
 
     @Autowired OrderService orderService;
+    @Autowired DetailedOrderService detailedOrderService;
     @Autowired RedisCache redisCache;
     @Autowired CoopAccountService coopAccountService;
     @Autowired TechnicianService technicianService;
@@ -57,6 +59,7 @@ public class OrderEventListener {
     @EventListener
     public void onOrderEvent(Event<Order> event) throws IOException {
         if (event.getAction() == Event.Action.CREATED) this.onOrderCreated(event.getPayload());
+        else if (event.getAction() == Event.Action.APPOINTED) this.onOrderAppointed(event.getPayload());
         else if (event.getAction() == Event.Action.FINISHED) this.onOrderFinished(event.getPayload());
     }
 
@@ -114,7 +117,7 @@ public class OrderEventListener {
         String msgTitle = "你收到新订单推送消息";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "NEW_ORDER");
-        map.put("order", order);
+        map.put("order", detailedOrderService.get(order.getId()));
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.error("订单: " + order.getOrderNum() + "的推送消息发送失败");

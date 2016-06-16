@@ -234,8 +234,6 @@ public class CoopAccountController {
         }
 
         int coopId = coopAccountLogin.getCooperatorId();
-        //Cooperator cooperator = (Cooperator)request.getAttribute("user");
-        //int coopId = cooperator.getId();
         CoopAccount coopAccount = new CoopAccount();
         coopAccount.setCooperatorId(coopId);
         coopAccount.setPhone(phone);
