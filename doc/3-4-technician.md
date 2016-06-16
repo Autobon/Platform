@@ -71,6 +71,61 @@ get("api/mobile/coop/technician/getTechnician")
 ```
 
 
+## 2. 查询技师
+### URL及请求方法
+GET /api/mobile/coop/technician/search
 
+### 请求参数
+
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| query| 是 | 手机号或姓名 | 张三 |
+| page | 否 | 分页页码, 从1开始，默认为1, 仅当query参数为姓名时有效 | 1 |
+| pageSize | 否 | 每页条数, 默认20, 仅当query参数为姓名时有效 | 20 |
+
+### 返回数据
+
+```
+{
+    "result": true,
+    "message": "",
+    "error": "",
+    "data": {
+        "page": 1,
+        "totalElements": 1,
+        "totalPages": 1,
+        "pageSize": 20,
+        "count": 1,
+        "list": [
+            {
+                "id": 1,
+                "phone": "18812345678",
+                "name": "tom",
+                "gender": null,
+                "avatar": null,
+                "idNo": "422302198608266313",
+                "idPhoto": "/etc/a.jpg",
+                "bank": "027",
+                "bankAddress": "光谷",
+                "bankCardNo": "88888888888",
+                "verifyAt": null,
+                "requestVerifyAt": null,
+                "verifyMsg": null,
+                "lastLoginAt": 1456195103000,
+                "lastLoginIp": "127.0.0.1",
+                "createAt": 1455724800000,
+                "skill": "1",
+                "pushId": null,
+                "starRate": null,
+                "balance": null,
+                "unpaidOrders": null,
+                "totalOrders": null,
+                "commentCount": null,
+                "status": "NEWLY_CREATED"
+            }
+        ]
+    }
+}
+```
 
 

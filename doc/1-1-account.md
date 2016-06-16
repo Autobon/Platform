@@ -429,7 +429,7 @@ GET /api/mobile/technician/search
 }
 ```
 
-返回值中的data属性是一个分布对象:
+返回值中的data属性是一个分页对象:
 
 | 字段 | 说明 |
 | ---- | ---- |
