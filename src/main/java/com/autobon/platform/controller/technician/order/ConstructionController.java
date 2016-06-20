@@ -138,8 +138,8 @@ public class ConstructionController {
             @RequestParam("urls") String urls) {
         if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+)*$", urls)) {
             return new JsonMessage(false, "URLS_PATTERN_MISMATCH", "图片地址格式错误, 请查阅urls参数说明");
-        } else if (urls.split(",").length > 3) {
-            return new JsonMessage(false, "PHOTO_LIMIT_EXCEED", "图片数量超出限制, 最多3张");
+        } else if (urls.split(",").length > 9) {
+            return new JsonMessage(false, "PHOTO_LIMIT_EXCEED", "图片数量超出限制, 最多9张");
         }
 
         Technician tech = (Technician) request.getAttribute("user");
@@ -166,9 +166,9 @@ public class ConstructionController {
             @RequestParam(value = "workItems", defaultValue = "") String workItems,
             @RequestParam(value = "percent", defaultValue = "0") float percent) throws IOException {
 
-        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+){2,5}$", afterPhotos)) {
+        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+){2,8}$", afterPhotos)) {
             return new JsonMessage(false, "AFTER_PHOTOS_PATTERN_MISMATCH",
-                    "afterPhotos参数格式错误, 施工完成后照片应至少3张, 至多6张");
+                    "afterPhotos参数格式错误, 施工完成后照片应至少3张, 至多9张");
         } else if (!"".equals(workItems) && !Pattern.matches("^(\\d+)(,\\d+)*$", workItems)) {
             return new JsonMessage(false, "WORK_ITEMS_PATTERN_MISMATCH", "workItems参数格式错误");
         } else if (percent < 0 || percent > 1) {

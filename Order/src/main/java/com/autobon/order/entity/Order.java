@@ -21,10 +21,12 @@ public class Order {
         SEND_INVITATION(20), // 已发送合作邀请并等待结果
         INVITATION_ACCEPTED(30), // 合作邀请已接受
         INVITATION_REJECTED(40), // 合作邀请已拒绝
-        IN_PROGRESS(50), // 订单开始工作中
+        SIGNED_TO_CONFIRM(45), // 已签到待确认
+        IN_PROGRESS(50), // 已确认签到, 订单进入工作中
         FINISHED(60), // 订单已结束
         COMMENTED(70), // 订单已评论
-        CANCELED(200), // 订单已取消
+        CANCELED(200), // 订单已撤销
+        GIVEN_UP(201), // 订单已被放弃
         EXPIRED(210); // 订单已超时
         private int statusCode;
 
@@ -38,6 +40,7 @@ public class Order {
             }
             return null;
         }
+
         public int getStatusCode() {
             return this.statusCode;
         }

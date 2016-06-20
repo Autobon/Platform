@@ -10,7 +10,6 @@ import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -122,6 +121,13 @@ public class OrderController {
         stat.setTotalOrders(stat.getTotalOrders() + 1);
         techStatService.save(stat);
         return new JsonMessage(true, "", "", order);
+    }
+
+    // 取消订单
+    @RequestMapping(value = "/{orderId:\\d+}/cancel", method = RequestMethod.POST)
+    public JsonMessage cancelOrder() {
+
+        return new JsonMessage(true);
     }
 
 }
