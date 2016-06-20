@@ -3,17 +3,20 @@ package com.autobon.platform.controller.technician.order;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.*;
+import com.autobon.platform.listener.Event;
+import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
-import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,7 @@ public class OrderController {
     @Autowired WorkItemService workItemService;
     @Autowired CommentService commentService;
     @Autowired TechStatService techStatService;
+    @Autowired ApplicationEventPublisher publisher;
 
     // 获取已完成的主要责任人订单列表
     @RequestMapping(value = "/listMain", method = RequestMethod.GET)
@@ -109,25 +113,31 @@ public class OrderController {
         }
 
         order.setMainTechId(tech.getId());
+        order.setTakenTime(new Date());
         order.setStatus(Order.Status.TAKEN_UP);
         orderService.save(order);
 
-        // 更新订单总数
-        TechStat stat = techStatService.getByTechId(tech.getId());
-        if (stat == null) {
-            stat = new TechStat();
-            stat.setTechId(tech.getId());
-        }
-        stat.setTotalOrders(stat.getTotalOrders() + 1);
-        techStatService.save(stat);
+       publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.TAKEN));
         return new JsonMessage(true, "", "", order);
     }
 
     // 取消订单
     @RequestMapping(value = "/{orderId:\\d+}/cancel", method = RequestMethod.POST)
-    public JsonMessage cancelOrder() {
+    public JsonMessage cancelOrder(HttpServletRequest request, @PathVariable("orderId") int orderId) {
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
 
-        return new JsonMessage(true);
+        if (order == null) return new JsonMessage(false, "NO_SUCH_ORDER", "没有此订单");
+        if (order.getMainTechId() != tech.getId()) return new JsonMessage(false, "ONLY_MAIN_TECH_ALLOWED", "只有主技师可以进行弃单操作");
+
+        if (order.getTakenTime().getTime() + 30*60*1000 > new Date().getTime() || order.getOrderTime().getTime() - 5*3600*1000 > new Date().getTime()) {
+            order.setStatus(Order.Status.GIVEN_UP);
+            orderService.save(order);
+            publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.GIVEN_UP));
+            return new JsonMessage(true);
+        } else {
+            return new JsonMessage(false, "OFFEND_ORDER_GIVE_UP_RULE", "只允许接单后半小时内或订单约定时间前5小时撤单");
+        }
     }
 
 }

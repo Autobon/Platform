@@ -22,10 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
@@ -56,10 +53,6 @@ public class OrderController {
     @Autowired CooperatorService cooperatorService;
     @Autowired ApplicationEventPublisher publisher;
     @Autowired TechnicianService technicianService;
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
 
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     public JsonMessage comment(@RequestParam("orderId") int orderId,
@@ -166,10 +159,30 @@ public class OrderController {
             return new JsonMessage(false, "TECH_SKILL_NOT_SUFFICIANT", "技师技能不支持订单类型");
 
         order.setMainTechId(techId);
+        order.setTakenTime(new Date());
         order.setStatus(Order.Status.TAKEN_UP);
         orderService.save(order);
         publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.APPOINTED));
         return new JsonMessage(true);
+    }
+
+    @RequestMapping(value = "/{orderId:\\d+}/cancel", method = RequestMethod.GET)
+    public JsonMessage cancelOrder(HttpServletRequest request, @PathVariable("orderId") int orderId) {
+        CoopAccount account = (CoopAccount) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+        if (order == null || order.getCreatorId() != account.getId() || order.getCoopId() != account.getId()) {
+            return new JsonMessage(false, "NO_SUCH_RECORD", "你没有此定单");
+        }
+
+        if (order.getMainTechId() == 0 || new Date(order.getAddTime().getTime() + 30*60*1000).after(new Date())
+                || new Date().before(new Date(order.getOrderType() - 2*3600*1000))) {
+            order.setStatus(Order.Status.CANCELED);
+            orderService.save(order);
+            publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CANCELED));
+            return new JsonMessage(true);
+        } else {
+            return new JsonMessage(false, "OFFEND_ORDER_CANCEL_RULE", "只允许未接订单或下单后半小时内或订单约定时间前2小时撤单");
+        }
     }
 
     @RequestMapping(value = "/uploadPhoto",method = RequestMethod.POST)
@@ -250,6 +263,4 @@ public class OrderController {
         }
 
     }
-
-
 }

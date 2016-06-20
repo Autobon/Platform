@@ -534,3 +534,60 @@ data字段是一个典型的分页对象, 请参考 [帐户及登录 - 10. 查�
     }
 }
 ```
+
+## 7. 放弃订单
+技师在接到订单后30分钟内或预约的时间5小时前可以放弃订单
+
+### URL及请求方法
+`POST /api/mobile/technician/order/{orderId}/cancel`
+
+### 请求参数
+
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| orderId | 是 | URL占位符参数, 订单编号  | 1 |
+
+### 返回数据
+1. 请求成功
+
+    ```
+    {
+        "result": true,
+        "message": "",
+        "error": "",
+        "data": null
+    }
+    ```
+    
+2. 没有此订单
+
+    ```
+    {
+        "result": false,
+        "message": "没有此订单",
+        "error": "NO_SUCH_ORDER",
+        "data": null
+    }
+    ```
+    
+3. 只有主技师可以进行弃单操作
+
+    ```
+    {
+        "result": false,
+        "message": "只有主技师可以进行弃单操作",
+        "error": "ONLY_MAIN_TECH_ALLOWED",
+        "data": null
+    }
+    ```
+    
+4. 只允许接单后半小时内或订单约定时间前5小时撤单
+
+    ```
+    {
+        "result": false,
+        "message": "只允许接单后半小时内或订单约定时间前5小时撤单",
+        "error": "OFFEND_ORDER_GIVE_UP_RULE",
+        "data": null
+    }
+    ```

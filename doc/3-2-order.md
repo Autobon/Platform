@@ -470,3 +470,49 @@ POST /api/mobile/coop/order/uploadPhoto
     "date": null
 }
 ```
+
+## 7. 撤销订单
+商户在发布订单后30分钟内或预约的时间2小时前可以放弃订单
+
+### URL及请求方法
+`POST /api/mobile/coop/order/{orderId}/cancel`
+
+### 请求参数
+
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| orderId | 是 | URL占位符参数, 订单编号  | 1 |
+
+### 返回数据
+1. 请求成功
+
+    ```
+    {
+        "result": true,
+        "message": "",
+        "error": "",
+        "data": null
+    }
+    ```
+    
+2. 没有此订单
+
+    ```
+    {
+        "result": false,
+        "message": "没有此订单",
+        "error": "NO_SUCH_ORDER",
+        "data": null
+    }
+    ```
+    
+3. 只允许未接订单或下单后半小时内或订单约定时间前2小时撤单
+
+    ```
+    {
+        "result": false,
+        "message": "只允许未接订单或下单后半小时内或订单约定时间前2小时撤单",
+        "error": "OFFEND_ORDER_CANCEL_RULE",
+        "data": null
+    }
+    ```

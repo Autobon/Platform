@@ -6,6 +6,7 @@ CREATE TABLE `t_order` (
   `order_time` datetime DEFAULT NULL COMMENT '预约时间',
   `add_time` datetime DEFAULT NULL COMMENT '下单时间',
   `finish_time` datetime DEFAULT NULL COMMENT '施工完成时间',
+  `taken_time` datetime DEFAULT NULL COMMENT '接单时间',
   `status` int(1) NOT NULL DEFAULT '0' COMMENT '订单状态 0-新建 10-已接单 20-已发出合作邀请等待结果 30-合作人已接受
       40-合作人已拒绝 50-工作中 60-已完成 70-已评价 200-已撤销',
   `creator_type` int(1) NOT NULL DEFAULT '0' COMMENT '下单人类型(1-合作商户 2-后台 3-用户)',
