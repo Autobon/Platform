@@ -62,6 +62,8 @@ public class Order {
 
     @Column private Date finishTime; // 施工完成时间
 
+    @Column private Date takenTime; // 接单时间
+
     @JsonIgnore
     @Column(name="status")
     private int statusCode;
@@ -149,6 +151,14 @@ public class Order {
 
     public void setFinishTime(Date finishTime) {
         this.finishTime = finishTime;
+    }
+
+    public Date getTakenTime() {
+        return takenTime;
+    }
+
+    public void setTakenTime(Date takenTime) {
+        this.takenTime = takenTime;
     }
 
     public int getStatusCode() {

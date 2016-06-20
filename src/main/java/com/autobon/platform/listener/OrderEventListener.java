@@ -58,9 +58,27 @@ public class OrderEventListener {
 
     @EventListener
     public void onOrderEvent(Event<Order> event) throws IOException {
-        if (event.getAction() == Event.Action.CREATED) this.onOrderCreated(event.getPayload());
-        else if (event.getAction() == Event.Action.APPOINTED) this.onOrderAppointed(event.getPayload());
-        else if (event.getAction() == Event.Action.FINISHED) this.onOrderFinished(event.getPayload());
+        Order order = event.getPayload();
+        switch(event.getAction()) {
+            case CREATED:
+                this.onOrderCreated(order);
+                break;
+            case TAKEN:
+                this.onOrderTaken(order);
+                break;
+            case APPOINTED:
+                this.onOrderAppointed(order);
+                break;
+            case FINISHED:
+                this.onOrderFinished(order);
+                break;
+            case GIVEN_UP:
+                this.onOrderGivenUp(order);
+                break;
+            case CANCELED:
+                this.onOrderCanceled(order);
+                break;
+        }
     }
 
     public int getNewOrderCountOfToday() {
@@ -123,6 +141,16 @@ public class OrderEventListener {
         if (!result) log.error("订单: " + order.getOrderNum() + "的推送消息发送失败");
     }
 
+    private void onOrderTaken(Order order) throws IOException {
+        TechStat stat = techStatService.getByTechId(order.getMainTechId());
+        if (stat == null) {
+            stat = new TechStat();
+            stat.setTechId(order.getMainTechId());
+        }
+        stat.setTotalOrders(stat.getTotalOrders() + 1);
+        techStatService.save(stat);
+    }
+
     private void onOrderAppointed(Order order) throws IOException {
         // 更新订单总数
         Technician tech = technicianService.get(order.getMainTechId());
@@ -138,10 +166,45 @@ public class OrderEventListener {
         String msgTitle = "你收到派单消息";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "ASSIGN_ORDER");
-        map.put("order", order);
+        map.put("order", detailedOrderService.get(order.getId()));
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToSingle(tech.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
         if (!result) log.error("订单: " + order.getOrderNum() + "的派单消息发送失败");
+    }
+
+    private void onOrderCanceled(Order order) throws IOException {
+        if (order.getMainTechId() > 0) {
+            Technician mainTech = technicianService.get(order.getMainTechId());
+            // 推送撤单消息
+            String msgTitle = "你有订单已被商户撤销";
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("action", "ORDER_CANCELED");
+            map.put("order", detailedOrderService.get(order.getId()));
+            map.put("title", msgTitle);
+
+            boolean result;
+            if (order.getSecondTechId() > 0) {
+                result = pushServiceA.pushToList(new String[] {mainTech.getPushId(), technicianService.get(order.getSecondTechId()).getPushId()},
+                            msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
+            } else {
+                result = pushServiceA.pushToSingle(mainTech.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
+            }
+
+            if (!result) log.error("订单: " + order.getOrderNum() + "的撤单消息发送失败");
+        }
+    }
+
+    private void onOrderGivenUp(Order order) throws IOException {
+        CoopAccount account = coopAccountService.getById(order.getCreatorId());
+
+        String msgTitle = "你有订单已被技师放弃";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "ORDER_GIVEN_UP");
+        map.put("order", detailedOrderService.get(order.getId()));
+        map.put("title", msgTitle);
+
+        boolean result = pushServiceB.pushToSingle(account.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
+        if (!result) log.error("订单: " + order.getOrderNum() + "的弃单消息发送失败");
     }
 
     private void onOrderFinished(Order order) throws IOException {
