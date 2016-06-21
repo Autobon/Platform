@@ -34,7 +34,6 @@ public class PartnerInvitationController {
 
     @Autowired private TechnicianService technicianService;
     @Autowired private OrderService orderService;
-    @Autowired private DetailedOrderService detailedOrderService;
     @Autowired private WorkItemService workItemService;
     @Autowired private TechStatService techStatService;
     @Autowired @Qualifier("PushServiceA")
@@ -82,7 +81,7 @@ public class PartnerInvitationController {
         String title = technician.getName() + "向你发起订单合作邀请";
         map.put("action", "INVITE_PARTNER");
         map.put("title", title);
-        map.put("order", detailedOrderService.get(order.getId()));
+        map.put("order", order.getId());
         boolean result = pushService.pushToSingle(partner.getPushId(),
                             title,
                             new ObjectMapper().writeValueAsString(map),

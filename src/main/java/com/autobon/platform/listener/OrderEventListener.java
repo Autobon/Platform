@@ -135,7 +135,7 @@ public class OrderEventListener {
         String msgTitle = "你收到新订单推送消息";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "NEW_ORDER");
-        map.put("order", detailedOrderService.get(order.getId()));
+        map.put("order", order);
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.error("订单: " + order.getOrderNum() + "的推送消息发送失败");
@@ -149,6 +149,15 @@ public class OrderEventListener {
         }
         stat.setTotalOrders(stat.getTotalOrders() + 1);
         techStatService.save(stat);
+
+        // 向商户推送订单已有人接单消息
+        CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
+        String msgTitle = "订单: " + order.getOrderNum() + "已接单";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "ORDER_COMPLETE");
+        map.put("title", msgTitle);
+        map.put("order", order);
+        pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
     }
 
     private void onOrderAppointed(Order order) throws IOException {
@@ -166,7 +175,7 @@ public class OrderEventListener {
         String msgTitle = "你收到派单消息";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "ASSIGN_ORDER");
-        map.put("order", detailedOrderService.get(order.getId()));
+        map.put("order", order);
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToSingle(tech.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
         if (!result) log.error("订单: " + order.getOrderNum() + "的派单消息发送失败");
@@ -179,7 +188,7 @@ public class OrderEventListener {
             String msgTitle = "你有订单已被商户撤销";
             HashMap<String, Object> map = new HashMap<>();
             map.put("action", "ORDER_CANCELED");
-            map.put("order", detailedOrderService.get(order.getId()));
+            map.put("order", order);
             map.put("title", msgTitle);
 
             boolean result;
@@ -200,7 +209,7 @@ public class OrderEventListener {
         String msgTitle = "你有订单已被技师放弃";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "ORDER_GIVEN_UP");
-        map.put("order", detailedOrderService.get(order.getId()));
+        map.put("order", order);
         map.put("title", msgTitle);
 
         boolean result = pushServiceB.pushToSingle(account.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
