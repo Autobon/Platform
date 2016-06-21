@@ -166,7 +166,7 @@ public class OrderController {
         return new JsonMessage(true);
     }
 
-    @RequestMapping(value = "/{orderId:\\d+}/cancel", method = RequestMethod.GET)
+    @RequestMapping(value = "/{orderId:\\d+}/cancel", method = RequestMethod.POST)
     public JsonMessage cancelOrder(HttpServletRequest request, @PathVariable("orderId") int orderId) {
         CoopAccount account = (CoopAccount) request.getAttribute("user");
         Order order = orderService.get(orderId);
