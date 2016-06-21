@@ -9,6 +9,7 @@ import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +37,7 @@ public class PartnerInvitationController {
     @Autowired private OrderService orderService;
     @Autowired private WorkItemService workItemService;
     @Autowired private TechStatService techStatService;
+    @Autowired private DetailedTechnicianService detailedTechnicianService;
     @Autowired @Qualifier("PushServiceA")
     private PushService pushService;
 
@@ -82,6 +84,7 @@ public class PartnerInvitationController {
         map.put("action", "INVITE_PARTNER");
         map.put("title", title);
         map.put("order", order.getId());
+        map.put("owner", detailedTechnicianService.get(technician.getId()));
         boolean result = pushService.pushToSingle(partner.getPushId(),
                             title,
                             new ObjectMapper().writeValueAsString(map),

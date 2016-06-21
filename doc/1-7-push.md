@@ -116,6 +116,32 @@
         "mainTechId": 1,
         "secondTechId": 0,
         "status": "NEWLY_CREATED"
+    },
+    "owner": {
+        "id": 1,
+        "phone": "18812345678",
+        "name": "tom",
+        "gender": null,
+        "avatar": null,
+        "idNo": "422302198608266313",
+        "idPhoto": "/etc/a.jpg",
+        "bank": "027",
+        "bankAddress": "光谷",
+        "bankCardNo": "88888888888",
+        "verifyAt": null,
+        "requestVerifyAt": null,
+        "verifyMsg": null,
+        "lastLoginAt": 1456195103000,
+        "lastLoginIp": "127.0.0.1",
+        "createAt": 1455724800000,
+        "skill": "1",
+        "pushId": null,
+        "starRate": null,
+        "balance": null,
+        "unpaidOrders": null,
+        "totalOrders": null,
+        "commentCount": null,
+        "status": "NEWLY_CREATED"
     }
 }
 ```
