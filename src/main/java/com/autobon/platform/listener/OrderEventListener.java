@@ -135,7 +135,7 @@ public class OrderEventListener {
         String msgTitle = "你收到新订单推送消息";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "NEW_ORDER");
-        map.put("order", order);
+        map.put("order", detailedOrderService.get(order.getId()));
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.error("订单: " + order.getOrderNum() + "的推送消息发送失败");
