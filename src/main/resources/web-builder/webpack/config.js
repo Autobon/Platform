@@ -31,7 +31,7 @@ export const production = {
             {test: /\.js$/, exclude: /node_modules/, loader: 'babel'},
             {test: /ngES6.*\.js$/, loader: 'babel?cacheDirectory'},
             {test: /\.json$/, loader: 'json'},
-            {test: /\.html$/, exclude: /node_modules/, loader: 'html'},
+            {test: /\.html$/, exclude: /node_modules/, loader: 'raw!html-minify'},
             {test: /\.(jpg|png|gif|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url?limit=50000'},
             {test: /\.(svg|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file'}
         ],
