@@ -1,18 +1,19 @@
 # 订单
 
 订单状态列表:
-0. `CREATED_TO_APPOINT` 新建待指定技师
-1. `NEWLY_CREATED` 新建并已推送
-2. `TAKEN_UP` 已接单
-3. `SEND_INVITATION` 已发送合作邀请并等待结果
-4. `INVITATION_ACCEPTED` 合作邀请已接受
-5. `INVITATION_REJECTED` 合作邀请已拒绝
-6. `IN_PROGRESS` 订单开始工作中
-7. `FINISHED` 订单已结束
-8. `COMMENTED` 订单已评论
-9. `CANCELED` 订单已撤销(商户撤销)
-10. `GIVEN_UP` 订单已被放弃(技师放弃)
-11. `EXPIRED` 订单已超时, 超过预约3个小时还没有签到的订单自动进入超时状态, 超过3天未完成施工的订单自动进入超时
+
+* `CREATED_TO_APPOINT` 新建待指定技师
+* `NEWLY_CREATED` 新建并已推送
+* `TAKEN_UP` 已接单
+* `SEND_INVITATION` 已发送合作邀请并等待结果
+* `INVITATION_ACCEPTED` 合作邀请已接受
+* `INVITATION_REJECTED` 合作邀请已拒绝
+* `IN_PROGRESS` 订单开始工作中
+* `FINISHED` 订单已结束
+* `COMMENTED` 订单已评论
+* `CANCELED` 订单已撤销(商户撤销)
+* `GIVEN_UP` 订单已被放弃(技师放弃)
+* `EXPIRED` 订单已超时, 超过预约3个小时还没有签到的订单自动进入超时状态, 超过3天未完成施工的订单自动进入超时
 
 当技师抢到订单或接受了别人的合作邀请时,订单进入技师的未完成订单列表.此时订单详情返回数据没有施工信息(construction字段为NULL).
 当技师已点击“开始工作”后,系统为技师创建一个施工记录，此时订单详情返回数据中的施工信息字段不再为NULL,且startTime为开始工作时间.

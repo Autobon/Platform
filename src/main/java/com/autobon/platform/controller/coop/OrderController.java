@@ -56,14 +56,14 @@ public class OrderController {
 
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     public JsonMessage comment(@RequestParam("orderId") int orderId,
-                               @RequestParam("star") int star,
-                               @RequestParam(value = "arriveOnTime", defaultValue = "false") boolean arriveOnTime,
-                               @RequestParam(value = "completeOnTime", defaultValue = "false") boolean completeOnTime,
-                               @RequestParam(value = "professional", defaultValue = "false") boolean professional,
-                               @RequestParam(value = "dressNeatly", defaultValue = "false") boolean dressNeatly,
-                               @RequestParam(value = "carProtect", defaultValue = "false") boolean carProtect,
-                               @RequestParam(value = "goodAttitude", defaultValue = "false") boolean goodAttitude,
-                               @RequestParam("advice") String advice) {
+            @RequestParam("star") int star,
+            @RequestParam(value = "arriveOnTime", defaultValue = "false") boolean arriveOnTime,
+            @RequestParam(value = "completeOnTime", defaultValue = "false") boolean completeOnTime,
+            @RequestParam(value = "professional", defaultValue = "false") boolean professional,
+            @RequestParam(value = "dressNeatly", defaultValue = "false") boolean dressNeatly,
+            @RequestParam(value = "carProtect", defaultValue = "false") boolean carProtect,
+            @RequestParam(value = "goodAttitude", defaultValue = "false") boolean goodAttitude,
+            @RequestParam("advice") String advice) {
 
         JsonMessage jsonMessage = new JsonMessage(true, "comment");
         Order order = orderService.get(orderId);
@@ -234,8 +234,8 @@ public class OrderController {
 
     @RequestMapping(value="/listUncomment",method = RequestMethod.POST)
     public JsonMessage listUncomment(HttpServletRequest request,
-                                      @RequestParam(value = "page", defaultValue = "1") int page,
-                                      @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         Boolean isMain = coopAccount.isMain();
         if(isMain){
