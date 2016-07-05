@@ -3,7 +3,6 @@ package com.autobon.platform.controller.technician.order;
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.WorkItem;
-import com.autobon.order.service.DetailedOrderService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.shared.JsonMessage;
