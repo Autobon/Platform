@@ -25,8 +25,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -176,13 +174,13 @@ public class OrderController {
 
 //        if (order.getMainTechId() == 0 || new Date(order.getAddTime().getTime() + 30*60*1000).after(new Date())
 //                || new Date().before(new Date(order.getOrderType() - 2*3600*1000))) {
-//            order.setStatus(Order.Status.CANCELED);
         if (order.getStatusCode() < Order.Status.SIGNED_IN.getStatusCode()) {
+            order.setStatus(Order.Status.CANCELED);
             orderService.save(order);
             publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CANCELED));
             return new JsonMessage(true);
         } else {
-            return new JsonMessage(false, "OFFEND_ORDER_CANCEL_RULE", "已开始施工订单, 不能撤销");
+            return new JsonMessage(false, "OFFEND_ORDER_CANCEL_RULE", "已开始或结束施工订单, 不能撤销");
         }
     }
 
