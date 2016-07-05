@@ -43,10 +43,11 @@
     <div ng-class="$state.is('console.order') ? 'col-sm-12' : 'col-sm-3'">
         <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.order')">
             <table class="table table-striped">
-                <thead><tr><th>序号</th><th>订单类型</th><th>预约时间</th><th>下单人</th><th>下单时间</th><th>订单状态</th><th>操作</th></tr></thead>
+                <thead><tr><th>序号</th><th>订单编号</th><th>订单类型</th><th>预约时间</th><th>下单人</th><th>下单时间</th><th>订单状态</th><th>操作</th></tr></thead>
                 <tbody>
                     <tr ng-repeat="order in orders">
                         <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                        <td>{{order.orderNum}}</td>
                         <td>{{Settings.orderTypes[order.orderType]}}</td>
                         <td>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</td>
                         <td>{{order.creatorName}}</td>

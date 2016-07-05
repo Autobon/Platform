@@ -511,7 +511,7 @@ POST /api/mobile/coop/order/uploadPhoto
     ```
     {
         "result": false,
-        "message": "只允许未接订单或下单后半小时内或订单约定时间前2小时撤单",
+        "message": "已开始施工订单, 不能撤销",
         "error": "OFFEND_ORDER_CANCEL_RULE",
         "data": null
     }
