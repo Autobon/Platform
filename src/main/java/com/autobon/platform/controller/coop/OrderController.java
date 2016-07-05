@@ -170,18 +170,19 @@ public class OrderController {
     public JsonMessage cancelOrder(HttpServletRequest request, @PathVariable("orderId") int orderId) {
         CoopAccount account = (CoopAccount) request.getAttribute("user");
         Order order = orderService.get(orderId);
-        if (order == null || order.getCreatorId() != account.getId() || order.getCoopId() != account.getId()) {
+        if (order == null || order.getCreatorId() != account.getId() || order.getCoopId() != account.getCooperatorId()) {
             return new JsonMessage(false, "NO_SUCH_RECORD", "你没有此定单");
         }
 
-        if (order.getMainTechId() == 0 || new Date(order.getAddTime().getTime() + 30*60*1000).after(new Date())
-                || new Date().before(new Date(order.getOrderType() - 2*3600*1000))) {
-            order.setStatus(Order.Status.CANCELED);
+//        if (order.getMainTechId() == 0 || new Date(order.getAddTime().getTime() + 30*60*1000).after(new Date())
+//                || new Date().before(new Date(order.getOrderType() - 2*3600*1000))) {
+//            order.setStatus(Order.Status.CANCELED);
+        if (order.getStatusCode() < Order.Status.SIGNED_IN.getStatusCode()) {
             orderService.save(order);
             publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CANCELED));
             return new JsonMessage(true);
         } else {
-            return new JsonMessage(false, "OFFEND_ORDER_CANCEL_RULE", "只允许未接订单或下单后半小时内或订单约定时间前2小时撤单");
+            return new JsonMessage(false, "OFFEND_ORDER_CANCEL_RULE", "已开始施工订单, 不能撤销");
         }
     }
 

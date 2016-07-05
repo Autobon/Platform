@@ -106,6 +106,11 @@ public class ConstructionController {
             return new JsonMessage(false, "REPEATED_OPERATION", "你已签到, 请不要重复操作");
         }
 
+        if (order.getStatusCode() < Order.Status.SIGNED_IN.getStatusCode()) {
+            order.setStatus(Order.Status.SIGNED_IN);
+            orderService.save(order);
+        }
+
         cons.setPositionLon(positionLon);
         cons.setPositionLat(positionLat);
         cons.setSigninTime(new Date());
