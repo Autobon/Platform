@@ -1,5 +1,8 @@
 package com.autobon.technician.entity;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -29,6 +32,7 @@ public class TechLocation {
 
     @ManyToOne
     @JoinColumn(name = "tech_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Technician technician;
 
     public int getId() {
