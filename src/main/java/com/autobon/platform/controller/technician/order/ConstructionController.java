@@ -65,8 +65,11 @@ public class ConstructionController {
             return new JsonMessage(false, "NOT_ACCEPTED_INVITATION", "你还没有接受邀请");
         } else if (o.getMainTechId() == t.getId() && o.getStatus() == Order.Status.SEND_INVITATION && !ignoreInvitation) {
             return new JsonMessage(false, "INVITATION_NOT_FINISH", "你邀请的合作人还未接受或拒绝邀请");
-        } else if (constructionService.getByTechIdAndOrderId(t.getId(), orderId) != null) {
-            return new JsonMessage(false, "REPEATED_OPERATION", "你已开始工作,请不要重复操作");
+        }
+
+        Construction cons = constructionService.getByTechIdAndOrderId(t.getId(), orderId);
+        if (cons!= null) {
+            return new JsonMessage(true, "", "", cons);
         }
 
         // 忽略邀请时,将第二责任人置空
@@ -184,7 +187,7 @@ public class ConstructionController {
         Order order = orderService.get(orderId);
         if (order == null) {
             return new JsonMessage(false, "NO_SUCH_ORDER", "没有这个订单");
-        } else if (order.getStatus() != Order.Status.IN_PROGRESS) {
+        } else if (order.getStatus() != Order.Status.SIGNED_IN) {
             return new JsonMessage(false, "ORDER_NOT_IN_PROGRESS", "订单未开始或已结束");
         }
 
