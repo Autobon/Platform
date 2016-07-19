@@ -42,7 +42,7 @@ public class ConstructionControllerTest  extends MvcTest {
         order.setOrderType(4);
         order.setCoopId(1);
         order.setCreatorId(1);
-        order.setStatus(Order.Status.IN_PROGRESS);
+        order.setStatus(Order.Status.SIGNED_IN);
         orderService.save(order);
         construction = new Construction();
         construction.setOrderId(order.getId());
