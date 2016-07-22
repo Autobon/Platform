@@ -9,6 +9,7 @@
 * `INVITATION_ACCEPTED` 合作邀请已接受
 * `INVITATION_REJECTED` 合作邀请已拒绝
 * `IN_PROGRESS` 订单开始工作中
+* `SIGNED_IN` 已签到
 * `FINISHED` 订单已结束
 * `COMMENTED` 订单已评论
 * `CANCELED` 订单已撤销(商户撤销)
