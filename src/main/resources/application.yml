@@ -61,5 +61,5 @@ spring:
         properties:
             hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
     redis:
-        host: 121.40.157.200
+        host: 127.0.0.1
         port: 6379
