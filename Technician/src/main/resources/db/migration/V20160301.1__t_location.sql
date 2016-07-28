@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS t_location (
   province varchar(20) DEFAULT NULL COMMENT '省',
   city varchar(20) DEFAULT NULL COMMENT '市',
   district varchar(20) DEFAULT NULL COMMENT '区县',
-  street varchar(20) DEFAULT NULL COMMENT '街道',
+  street varchar(255) DEFAULT NULL COMMENT '街道',
   street_number varchar(20) DEFAULT NULL COMMENT '街道号',
   tech_id int(11) DEFAULT NULL COMMENT '技师id',
   PRIMARY KEY (id),
