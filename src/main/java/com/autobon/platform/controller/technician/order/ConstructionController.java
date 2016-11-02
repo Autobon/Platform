@@ -503,31 +503,7 @@ public class ConstructionController {
         order.setAfterPhotos(constructionShow.getAfterPhotos());
         orderService.save(order);
 
-         List<ConstructionDetail> constructionDetails = constructionShow.getConstructionDetails();
-         for(ConstructionDetail constructionDetail: constructionDetails){
-             WorkDetail workDetail = new WorkDetail();
-             workDetail.setOrderId(constructionShow.getOrderId());
-             workDetail.setTechId(constructionDetail.getTechId());
-             List<ProjectPosition> projectPositions = constructionDetail.getProjectPositions();
-             for(int i= 0; i<projectPositions.size();i++){
-                 if(i+1 ==1){
-                     workDetail.setProject1(projectPositions.get(i).getProject());
-                     workDetail.setPosition1(projectPositions.get(i).getPosition());
-                 }else if(i+1 ==2){
-                     workDetail.setProject2(projectPositions.get(i).getProject());
-                     workDetail.setPosition2(projectPositions.get(i).getPosition());
-                 }
-                 else if(i+1 ==3){
-                     workDetail.setProject3(projectPositions.get(i).getProject());
-                     workDetail.setPosition3(projectPositions.get(i).getPosition());
-                 }else{
-                     workDetail.setProject4(projectPositions.get(i).getProject());
-                     workDetail.setPosition4(projectPositions.get(i).getPosition());
-                 }
-             }
-             workDetailService.save(workDetail);
-         }
-         List<ConstructionWaste> constructionWastes = constructionShow.getConstructionWastes();
+        workDetailService.save(constructionShow);
 
 
         publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
