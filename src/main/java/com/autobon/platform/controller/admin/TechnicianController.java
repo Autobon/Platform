@@ -170,4 +170,7 @@ public class TechnicianController {
                                           @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         return new JsonMessage(true, "", "", new JsonPage<>(locationService.findByTechId(techId, page, pageSize)));
     }
+
+
+
 }

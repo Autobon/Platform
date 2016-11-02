@@ -3,9 +3,11 @@ package com.autobon.platform.controller.technician.order;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
+import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
+import com.autobon.order.service.WorkDetailService;
 import com.autobon.order.service.WorkItemService;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
@@ -14,7 +16,10 @@ import com.autobon.shared.JsonResult;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
+import com.autobon.technician.vo.ConstructionDetail;
 import com.autobon.technician.vo.ConstructionShow;
+import com.autobon.technician.vo.ConstructionWaste;
+import com.autobon.technician.vo.ProjectPosition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -46,6 +51,8 @@ public class ConstructionController {
     @Autowired CoopAccountService coopAccountService;
     @Value("${com.autobon.uploadPath}") String uploadPath;
     @Autowired ApplicationEventPublisher publisher;
+    @Autowired
+    WorkDetailService workDetailService;
 
     // 开始工作
     @RequestMapping(value = "/start", method = RequestMethod.POST)
@@ -286,9 +293,12 @@ public class ConstructionController {
     public JsonResult start(@RequestParam("orderId") int orderId,
                             HttpServletRequest request)throws Exception{
 
-        Technician t = (Technician) request.getAttribute("user");
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
         Order order = orderService.get(orderId);
-        if (order == null || (t.getId() != order.getMainTechId())) {
+        if (order == null || (tech.getId() != order.getMainTechId())) {
             return new JsonResult(false, "你没有这个订单");
         }
         if (order.getStatus() == Order.Status.CANCELED) {
@@ -320,6 +330,9 @@ public class ConstructionController {
                            HttpServletRequest request)throws Exception {
 
         Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
         Order order = orderService.get(orderId);
 
         if (order == null || order.getMainTechId() !=tech.getId() ) {
@@ -393,7 +406,6 @@ public class ConstructionController {
 
         if (file.isEmpty()) {
             return new JsonResult(false, "没有上传文件");
-
         }
         String path = "/uploads/order";
         File dir = new File(new File(uploadPath).getCanonicalPath() + path);
@@ -421,6 +433,9 @@ public class ConstructionController {
                                         @RequestParam("urls") String urls)throws Exception{
 
         Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
         Order order = orderService.get(orderId);
 
         if (order == null || order.getMainTechId() !=tech.getId() ) {
@@ -432,13 +447,19 @@ public class ConstructionController {
         if (urls.split(",").length > 9) {
             return new JsonResult(false,  "图片数量超出限制, 最多9张");
         }
+
+        if (order.getStatusCode() != Order.Status.SIGNED_IN.getStatusCode()) {
+            return new JsonResult(false, "签到以后才能施工");
+        }
+
         if (order.getSignTime() == null) {
             return new JsonResult(false, "签到前不可上传照片");
         }
         if (order.getEndTime() != null) {
             return new JsonResult(false, "你已完成施工,不可再次上传照片");
         }
-
+        order.setStatus(Order.Status.AT_WORK); // 进入工作状态
+        order.setStartTime(new Date());
         order.setBeforePhotos(urls);
         orderService.save(order);
         return new JsonResult(true,"上传施工前照片成功");
@@ -462,25 +483,54 @@ public class ConstructionController {
         }
 
         Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
         Order order = orderService.get(constructionShow.getOrderId());
-        if (order == null) {
-            return new JsonResult(false, "没有这个订单");
-        }
-        if (order.getStatus() != Order.Status.SIGNED_IN) {
-            return new JsonResult(false,  "订单未开始或已结束");
-        }
-        if (order.getBeforePhotos() == null || "".equals(order.getBeforePhotos())) {
-            return new JsonResult(false,  "没有上传施工前照片");
-        }
-
-
+//        if (order == null || order.getMainTechId() !=tech.getId()) {
+//            return new JsonResult(false, "没有这个订单");
+//        }
+//        if (order.getStatus() != Order.Status.AT_WORK) {
+//            return new JsonResult(false,  "订单不在工作中，无法完成订单");
+//        }
+//        if (order.getBeforePhotos() == null || "".equals(order.getBeforePhotos())) {
+//            return new JsonResult(false,  "没有上传施工前照片");
+//        }
 
         // 结束订单
         order.setStatus(Order.Status.FINISHED);
         order.setFinishTime(new Date());
+        order.setAfterPhotos(constructionShow.getAfterPhotos());
         orderService.save(order);
-        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
 
+         List<ConstructionDetail> constructionDetails = constructionShow.getConstructionDetails();
+         for(ConstructionDetail constructionDetail: constructionDetails){
+             WorkDetail workDetail = new WorkDetail();
+             workDetail.setOrderId(constructionShow.getOrderId());
+             workDetail.setTechId(constructionDetail.getTechId());
+             List<ProjectPosition> projectPositions = constructionDetail.getProjectPositions();
+             for(int i= 0; i<projectPositions.size();i++){
+                 if(i+1 ==1){
+                     workDetail.setProject1(projectPositions.get(i).getProject());
+                     workDetail.setPosition1(projectPositions.get(i).getPosition());
+                 }else if(i+1 ==2){
+                     workDetail.setProject2(projectPositions.get(i).getProject());
+                     workDetail.setPosition2(projectPositions.get(i).getPosition());
+                 }
+                 else if(i+1 ==3){
+                     workDetail.setProject3(projectPositions.get(i).getProject());
+                     workDetail.setPosition3(projectPositions.get(i).getPosition());
+                 }else{
+                     workDetail.setProject4(projectPositions.get(i).getProject());
+                     workDetail.setPosition4(projectPositions.get(i).getPosition());
+                 }
+             }
+             workDetailService.save(workDetail);
+         }
+         List<ConstructionWaste> constructionWastes = constructionShow.getConstructionWastes();
+
+
+        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
 
 
         //合作技师施工部位推送
@@ -488,6 +538,9 @@ public class ConstructionController {
         return new JsonResult(true, "施工完成");
     }
 
-
+    @RequestMapping(value = "/v2/test", method = RequestMethod.GET)
+    public JsonResult test(){
+        return new JsonResult(true,"true");
+    }
 
 }

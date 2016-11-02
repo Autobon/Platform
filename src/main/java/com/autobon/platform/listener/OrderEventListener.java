@@ -70,7 +70,7 @@ public class OrderEventListener {
                 this.onOrderAppointed(order);
                 break;
             case FINISHED:
-                this.onOrderFinished(order);
+                this.orderFinished(order);
                 break;
             case GIVEN_UP:
                 this.onOrderGivenUp(order);
@@ -261,6 +261,38 @@ public class OrderEventListener {
                     order.getSecondTechId(), order.getId()).getPayment());
             techStatService.save(secondStat);
         }
+    }
+
+
+    /**
+     *
+     * @param order
+     * @throws IOException
+     */
+    private void orderFinished(Order order) throws IOException {
+        LocalDate localDate = order.getFinishTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+
+        String dayKey = dayFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(day);
+        String monthKey = monthFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
+        redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfFinished(day, new Date()) - 1),
+                24*3600, this::increase);
+        redisCache.getAfterUpdate(monthKey, () -> String.valueOf(orderService.countOfFinished(month, new Date()) - 1),
+                24*3600, this::increase);
+        redisCache.getAfterUpdate(totalFinishedKey, () -> String.valueOf(orderService.totalOfFinished() - 1),
+                24*3600, this::increase);
+
+        // 向商户推送订单完成消息
+        CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
+        String msgTitle = "订单: " + order.getOrderNum() + "已完成";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "ORDER_COMPLETE");
+        map.put("title", msgTitle);
+        map.put("order", order);
+        pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
+
+
     }
 
     private String increase(String v) {

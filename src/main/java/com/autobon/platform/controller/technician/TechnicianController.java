@@ -3,6 +3,7 @@ package com.autobon.platform.controller.technician;
 
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.shared.JsonResult;
 import com.autobon.technician.entity.DetailedTechnician;
 import com.autobon.technician.entity.Location;
 import com.autobon.technician.entity.Technician;
@@ -83,6 +84,56 @@ public class TechnicianController {
         location.setStreetNumber(streetNumber);
         locationService.save(location);
         return new JsonMessage(true);
+    }
+
+
+    /**
+     * 车邻帮二期
+     * 上报经纬度
+     * @param request
+     * @param positionLon
+     * @param positionLat
+     * @param province
+     * @param city
+     * @param district
+     * @param street
+     * @param streetNumber
+     * @return
+     */
+    @RequestMapping(value="/mobile/technician/v2/reportLocation", method = RequestMethod.POST)
+    public JsonResult uploadLocation(HttpServletRequest request,
+                                      @RequestParam("lng") String positionLon,
+                                      @RequestParam("lat") String positionLat,
+                                      @RequestParam("province") String province,
+                                      @RequestParam("city") String city,
+                                      @RequestParam(value = "district", required = false) String district,
+                                      @RequestParam(value = "street", required = false) String street,
+                                      @RequestParam(value = "streetNumber", required = false) String streetNumber) {
+
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        //查询最近的位置信息
+        Page<Location> locations = locationService.findByTechId(tech.getId(), 1, 1);
+        if (locations.getNumberOfElements() > 0) {
+            Location l = locations.getContent().get(0);
+            if (new Date().getTime() - l.getCreateAt().getTime() < 60*1000) {
+                return new JsonResult(false,   "请求间隔不得少于1分钟");
+            }
+        }
+        Location location = new Location();
+        location.setTechId(tech.getId());
+        location.setCreateAt(new Date());
+        location.setLat(positionLat);
+        location.setLng(positionLon);
+        location.setProvince(province);
+        location.setCity(city);
+        location.setDistrict(district);
+        location.setStreet(street);
+        location.setStreetNumber(streetNumber);
+        locationService.save(location);
+        return new JsonResult(true, "上传成功");
     }
 
 }
