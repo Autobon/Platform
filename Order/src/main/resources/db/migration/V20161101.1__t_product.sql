@@ -11,5 +11,5 @@ CREATE TABLE `t_product` (
   `scrap_cost` int(4) DEFAULT NULL COMMENT '报废扣款',
   `warranty` int(3) DEFAULT NULL COMMENT '质保',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='产品表';;
 

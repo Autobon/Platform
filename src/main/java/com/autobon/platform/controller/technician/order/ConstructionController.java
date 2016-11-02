@@ -10,16 +10,15 @@ import com.autobon.order.service.WorkItemService;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
+import com.autobon.shared.JsonResult;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
+import com.autobon.technician.vo.ConstructionShow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,6 +85,9 @@ public class ConstructionController {
         construction = constructionService.save(construction);
         return new JsonMessage(true, "", "", construction);
     }
+
+
+
 
     // 工作签到
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
@@ -269,4 +271,223 @@ public class ConstructionController {
 
         return msg;
     }
+
+
+
+
+    /**
+     * 车邻帮二期
+     * 订单进入施工环节中
+     * @param request
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/v2/start", method = RequestMethod.POST)
+    public JsonResult start(@RequestParam("orderId") int orderId,
+                            HttpServletRequest request)throws Exception{
+
+        Technician t = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+        if (order == null || (t.getId() != order.getMainTechId())) {
+            return new JsonResult(false, "你没有这个订单");
+        }
+        if (order.getStatus() == Order.Status.CANCELED) {
+            return new JsonResult(false,  "订单已取消");
+        }
+        if (order.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
+            return new JsonResult(false, "订单已结束");
+        }
+
+        order.setStatus(Order.Status.IN_PROGRESS); // 订单状态进入IN_PROGRESS状态; 订单所有技师完成工作时,订单结束
+        orderService.save(order);
+        return new JsonResult(true, order);
+    }
+
+
+    /**
+     * 车邻帮二期
+     * 订单签到
+     * @param request
+     * @param positionLon
+     * @param positionLat
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/v2/signIn", method = RequestMethod.POST)
+    public JsonResult sign(@RequestParam("positionLon") String positionLon,
+                           @RequestParam("positionLat") String positionLat,
+                           @RequestParam("orderId") int orderId,
+                           HttpServletRequest request)throws Exception {
+
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+
+        if (order == null || order.getMainTechId() !=tech.getId() ) {
+            return new JsonResult(false,  "没有这个订单");
+        }
+        if (order.getStatus() == Order.Status.CANCELED) {
+            return new JsonResult(false, "订单已取消");
+        }
+        if (order.getStatus() != Order.Status.IN_PROGRESS) {
+            return new JsonResult(false, "订单还未开始或已结束");
+        }
+        if (order.getSignTime() != null) {
+            return new JsonResult(false, "你已签到, 请不要重复操作");
+        }
+        if (order.getStatusCode() >= Order.Status.SIGNED_IN.getStatusCode()) {
+            return new JsonResult(false, "你已签到, 请不要重复操作");
+        }
+        order.setStatus(Order.Status.SIGNED_IN);
+        order.setSignTime(new Date());
+        orderService.save(order);
+        return new JsonResult(true,"签到成功");
+    }
+
+
+
+
+    /**
+     * 车邻帮二期
+     * 开始工作
+     * @param request
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/v2/working", method = RequestMethod.POST)
+    public JsonResult construction(@RequestParam("orderId") int orderId,
+                            HttpServletRequest request)throws Exception{
+
+        Technician t = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+        if (order == null || (t.getId() != order.getMainTechId())) {
+            return new JsonResult(false, "你没有这个订单");
+        }
+        if (order.getStatus() == Order.Status.CANCELED) {
+            return new JsonResult(false,  "订单已取消");
+        }
+        if (order.getStatusCode() != Order.Status.SIGNED_IN.getStatusCode()) {
+            return new JsonResult(false, "签到以后才能施工");
+        }
+
+        if (order.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
+            return new JsonResult(false, "订单已结束");
+        }
+
+        order.setStatus(Order.Status.AT_WORK); // 订单状态进入IN_PROGRESS状态; 订单所有技师完成工作时,订单结束
+        order.setStartTime(new Date());
+        orderService.save(order);
+        return new JsonResult(true, order);
+    }
+
+
+
+    /**
+     * 车邻帮二期
+     * 上传施工照片
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/v2/uploadPhoto", method = RequestMethod.POST)
+    public JsonResult upload(@RequestParam("file")MultipartFile file) throws IOException {
+
+        if (file.isEmpty()) {
+            return new JsonResult(false, "没有上传文件");
+
+        }
+        String path = "/uploads/order";
+        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
+        if (!dir.exists()) dir.mkdirs();
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+        String filename = "c-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"))
+                + "-" + VerifyCode.generateVerifyCode(8) + extension;
+        file.transferTo(new File(dir.getAbsoluteFile() + File.separator + filename));
+        return new JsonResult(true,  path + "/" + filename);
+    }
+
+
+    /**
+     * 车邻帮二期
+     * 提供施工前图片
+     * @param request
+     * @param orderId
+     * @param urls
+     * @return
+     */
+    @RequestMapping(value = "/v2/beforePhoto", method = RequestMethod.POST)
+    public JsonResult uploadBeforePhoto(HttpServletRequest request,
+                                        @RequestParam("orderId") int orderId,
+                                        @RequestParam("urls") String urls)throws Exception{
+
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+
+        if (order == null || order.getMainTechId() !=tech.getId() ) {
+            return new JsonResult(false,  "没有这个订单");
+        }
+        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+)*$", urls)) {
+            return new JsonResult(false,  "图片地址格式错误, 请查阅urls参数说明");
+        }
+        if (urls.split(",").length > 9) {
+            return new JsonResult(false,  "图片数量超出限制, 最多9张");
+        }
+        if (order.getSignTime() == null) {
+            return new JsonResult(false, "签到前不可上传照片");
+        }
+        if (order.getEndTime() != null) {
+            return new JsonResult(false, "你已完成施工,不可再次上传照片");
+        }
+
+        order.setBeforePhotos(urls);
+        orderService.save(order);
+        return new JsonResult(true,"上传施工前照片成功");
+    }
+
+
+    /**
+     * 车邻帮二期
+     * 完成工作
+     * @param constructionShow
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/v2/finish", method = RequestMethod.POST)
+    public JsonResult finish(@RequestBody ConstructionShow constructionShow,
+                             HttpServletRequest request) throws IOException {
+
+        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+){2,8}$", constructionShow.getAfterPhotos())) {
+            return new JsonResult(false, "afterPhotos参数格式错误, 施工完成后照片应至少3张, 至多9张");
+        }
+
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.get(constructionShow.getOrderId());
+        if (order == null) {
+            return new JsonResult(false, "没有这个订单");
+        }
+        if (order.getStatus() != Order.Status.SIGNED_IN) {
+            return new JsonResult(false,  "订单未开始或已结束");
+        }
+        if (order.getBeforePhotos() == null || "".equals(order.getBeforePhotos())) {
+            return new JsonResult(false,  "没有上传施工前照片");
+        }
+
+
+
+        // 结束订单
+        order.setStatus(Order.Status.FINISHED);
+        order.setFinishTime(new Date());
+        orderService.save(order);
+        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
+
+
+
+        //合作技师施工部位推送
+
+        return new JsonResult(true, "施工完成");
+    }
+
+
+
 }

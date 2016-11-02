@@ -1,8 +1,8 @@
 CREATE TABLE `t_construction_position` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL DEFAULT '名称',
+  `name` varchar(20) NOT NULL COMMENT '名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='施工部位表';;
 
 insert into t_construction_position values
 ('1','前风挡'),
