@@ -3,12 +3,11 @@ package com.autobon.platform.controller.technician.order;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.order.entity.Construction;
 import com.autobon.order.entity.Order;
-import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
-import com.autobon.order.service.WorkDetailService;
 import com.autobon.order.service.WorkItemService;
+import com.autobon.order.vo.ConstructionShow;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
@@ -16,16 +15,11 @@ import com.autobon.shared.JsonResult;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
-import com.autobon.technician.vo.ConstructionDetail;
-import com.autobon.technician.vo.ConstructionShow;
-import com.autobon.technician.vo.ConstructionWaste;
-import com.autobon.technician.vo.ProjectPosition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -51,8 +45,7 @@ public class ConstructionController {
     @Autowired CoopAccountService coopAccountService;
     @Value("${com.autobon.uploadPath}") String uploadPath;
     @Autowired ApplicationEventPublisher publisher;
-    @Autowired
-    WorkDetailService workDetailService;
+
 
     // 开始工作
     @RequestMapping(value = "/start", method = RequestMethod.POST)
@@ -493,6 +486,9 @@ public class ConstructionController {
 //        if (order.getStatus() != Order.Status.AT_WORK) {
 //            return new JsonResult(false,  "订单不在工作中，无法完成订单");
 //        }
+//        if (order.getStatus() != Order.Status.FINISHED) {
+//            return new JsonResult(false,  "订单已经提交，不能再次提交");
+//        }
 //        if (order.getBeforePhotos() == null || "".equals(order.getBeforePhotos())) {
 //            return new JsonResult(false,  "没有上传施工前照片");
 //        }
@@ -501,10 +497,7 @@ public class ConstructionController {
         order.setStatus(Order.Status.FINISHED);
         order.setFinishTime(new Date());
         order.setAfterPhotos(constructionShow.getAfterPhotos());
-        orderService.save(order);
-
-        workDetailService.save(constructionShow);
-
+        orderService.save(order, constructionShow);
 
         publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
 

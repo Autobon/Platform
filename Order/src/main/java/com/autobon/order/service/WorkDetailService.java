@@ -1,14 +1,17 @@
 package com.autobon.order.service;
 
+import com.autobon.order.entity.ConstructionWaste;
 import com.autobon.order.entity.WorkDetail;
+import com.autobon.order.repository.ConstructionWasteRepository;
 import com.autobon.order.repository.WorkDetailRepository;
-import com.autobon.technician.vo.ConstructionDetail;
-import com.autobon.technician.vo.ConstructionShow;
-import com.autobon.technician.vo.ConstructionWaste;
-import com.autobon.technician.vo.ProjectPosition;
+
+import com.autobon.order.vo.ConstructionDetail;
+import com.autobon.order.vo.ConstructionShow;
+import com.autobon.order.vo.ProjectPosition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +23,8 @@ public class WorkDetailService {
 
     @Autowired
     WorkDetailRepository workDetailRepository;
+    @Autowired
+    ConstructionWasteRepository constructionWasteRepository;
 
     public int save(WorkDetail workDetail){
         workDetailRepository.save(workDetail);
@@ -49,8 +54,13 @@ public class WorkDetailService {
                     workDetail.setPosition4(projectPositions.get(i).getPosition());
                 }
             }
+            workDetail.setCreateDate(new Date());
             workDetailRepository.save(workDetail);
         }
         List<ConstructionWaste> constructionWastes = constructionShow.getConstructionWastes();
+        for(ConstructionWaste constructionWaste: constructionWastes){
+            constructionWaste.setOrderId(constructionShow.getOrderId());
+            constructionWasteRepository.save(constructionWastes);
+        }
     }
 }

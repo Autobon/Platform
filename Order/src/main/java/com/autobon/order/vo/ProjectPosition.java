@@ -1,4 +1,4 @@
-package com.autobon.technician.vo;
+package com.autobon.order.vo;
 
 /**
  * Created by wh on 2016/11/2.

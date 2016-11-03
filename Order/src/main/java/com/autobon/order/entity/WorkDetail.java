@@ -1,6 +1,7 @@
 package com.autobon.order.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 /**
@@ -45,7 +46,10 @@ public class WorkDetail {
     private float payment;
 
     @Column(name = "pay_status")
-    private int payStatus; //Ö§¸¶×´Ì¬: 0-Î´³öÕÊ, 1-ÒÑ³öÕË½øÈëÔÂ¶ÈÕËµ¥, 2-ÒÑ×ªÕËÖ§¸¶
+    private int payStatus; //æ”¯ä»˜çŠ¶æ€: 0-æœªå‡ºå¸, 1-å·²å‡ºè´¦è¿›å…¥æœˆåº¦è´¦å•, 2-å·²è½¬è´¦æ”¯ä»˜
+
+    @Column(name = "create_date")
+    private Date createDate;
 
 
     public int getId() {
@@ -150,5 +154,13 @@ public class WorkDetail {
 
     public void setPayStatus(int payStatus) {
         this.payStatus = payStatus;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }

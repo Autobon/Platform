@@ -1,4 +1,4 @@
-package com.autobon.technician.vo;
+package com.autobon.order.vo;
 
 import java.util.List;
 

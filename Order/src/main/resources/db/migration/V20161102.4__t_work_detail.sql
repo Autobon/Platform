@@ -12,6 +12,7 @@ CREATE TABLE `t_work_detail` (
   `position4` varchar(100) default null comment '施工部位4',
   `payment` FLOAT(8,2) DEFAULT '0' COMMENT '结算金额',
   `pay_status` int(11) DEFAULT '0' COMMENT '支付状态: 0-未出帐, 1-已出账, 2-已转账支付',
+  `create_date` datetime DEFAULT null COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8 COMMENT='施工表';
 

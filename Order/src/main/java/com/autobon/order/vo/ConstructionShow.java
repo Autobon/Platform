@@ -1,4 +1,6 @@
-package com.autobon.technician.vo;
+package com.autobon.order.vo;
+
+import com.autobon.order.entity.ConstructionWaste;
 
 import java.util.List;
 
