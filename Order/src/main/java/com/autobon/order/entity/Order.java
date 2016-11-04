@@ -97,6 +97,8 @@ public class Order {
 
     @Column private Date endTime;
 
+    @Column private String type;
+
 
     public Order() {
         this.orderNum = generateOrderNum();
@@ -299,5 +301,13 @@ public class Order {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

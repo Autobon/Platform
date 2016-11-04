@@ -1,12 +1,9 @@
 package com.autobon.order.service;
 
-import com.autobon.order.entity.ConstructionWaste;
-import com.autobon.order.entity.Order;
-import com.autobon.order.entity.WorkDetail;
-import com.autobon.order.repository.ConstructionWasteRepository;
-import com.autobon.order.repository.OrderRepository;
-import com.autobon.order.repository.WorkDetailRepository;
+import com.autobon.order.entity.*;
+import com.autobon.order.repository.*;
 import com.autobon.order.vo.ConstructionDetail;
+import com.autobon.order.vo.ConstructionProjectShow;
 import com.autobon.order.vo.ConstructionShow;
 import com.autobon.order.vo.ProjectPosition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +32,13 @@ public class OrderService {
     @Autowired
     private ConstructionWasteRepository constructionWasteRepository;
 
+    @Autowired
+    private ConstructionProjectRepository constructionProjectRepository;
+
+    @Autowired
+    private ConstructionPositionRepository constructionPositionRepository;
+
+
 
     public Order get(int orderId) {
         return repository.findOne(orderId);
@@ -43,6 +48,78 @@ public class OrderService {
         repository.save(order);
     }
 
+    /**
+     * 通过订单编号获取订单施工项目
+     * @return
+     */
+    public List<ConstructionProjectShow> getAllProject(){
+
+            List<ConstructionProjectShow> constructionProjectShowList = new ArrayList<>();
+
+            List<ConstructionProject> constructionProjects = constructionProjectRepository.findAll();
+            for(ConstructionProject constructionProject:constructionProjects){
+                ConstructionProjectShow constructionProjectShow = new ConstructionProjectShow();
+                constructionProjectShow.setId(constructionProject.getId());
+                constructionProjectShow.setName(constructionProject.getName());
+                String position = constructionProject.getIds();
+                String[] positionArr = position.split(",");
+                List<Integer> plist = new ArrayList<>();
+                for(String positionId: positionArr){
+                    plist.add( Integer.valueOf(positionId));
+                }
+
+                List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds(plist);
+                constructionProjectShow.setConstructionPositions(constructionPositions);
+                constructionProjectShowList.add(constructionProjectShow);
+            }
+            return constructionProjectShowList;
+
+    }
+
+
+    /**
+     * 通过订单编号获取订单施工项目
+     * @param orderId
+     * @return
+     */
+    public List<ConstructionProjectShow> getProject(int orderId){
+        Order order = repository.findOne(orderId);
+        if(order != null){
+            List<ConstructionProjectShow> constructionProjectShowList = new ArrayList<>();
+
+            String type = order.getType();
+            String[] typeArr = type.split(",");
+            List<Integer> list = new ArrayList<>();
+            for(String projectId: typeArr){
+               list.add( Integer.valueOf(projectId));
+            }
+
+            List<ConstructionProject> constructionProjects = constructionProjectRepository.getByIds(list);
+            for(ConstructionProject constructionProject:constructionProjects){
+                ConstructionProjectShow constructionProjectShow = new ConstructionProjectShow();
+                constructionProjectShow.setId(constructionProject.getId());
+                constructionProjectShow.setName(constructionProject.getName());
+                String position = constructionProject.getIds();
+                String[] positionArr = position.split(",");
+                List<Integer> plist = new ArrayList<>();
+                for(String positionId: positionArr){
+                    plist.add( Integer.valueOf(positionId));
+                }
+
+               List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds(plist);
+                constructionProjectShow.setConstructionPositions(constructionPositions);
+                constructionProjectShowList.add(constructionProjectShow);
+            }
+            return constructionProjectShowList;
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param order
+     * @param constructionShow
+     */
     @Transactional
     public void save(Order order,ConstructionShow constructionShow){
         repository.save(order);

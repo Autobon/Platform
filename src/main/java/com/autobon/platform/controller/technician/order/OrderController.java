@@ -7,6 +7,7 @@ import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.shared.JsonResult;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
@@ -139,5 +140,40 @@ public class OrderController {
             return new JsonMessage(false, "OFFEND_ORDER_GIVE_UP_RULE", "只允许接单后半小时内或订单约定时间前5小时撤单");
         }
     }
+
+
+    /**
+     * 技师查询主订单
+     * @param request
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/v2/listMain", method = RequestMethod.GET)
+    public JsonResult getOrderList(
+            HttpServletRequest request,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Technician technician = (Technician) request.getAttribute("user");
+
+        return new JsonResult(true,"");
+    }
+
+
+    /**
+     * 获取订单详情
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/{orderId:\\d+}", method = RequestMethod.GET)
+    public JsonResult getOrder( HttpServletRequest request,
+                                @PathVariable("orderId") int orderId) {
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+
+
+        return null;
+    }
+
 
 }

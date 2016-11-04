@@ -9,6 +9,7 @@ import com.autobon.technician.entity.Location;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.LocationService;
+import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -32,6 +35,9 @@ public class TechnicianController {
 
     @Autowired
     private LocationService locationService;
+
+    @Autowired
+    private TechnicianService technicianService1;
 
     @RequestMapping(value = "/mobile/technician/search",method = RequestMethod.GET)
     public JsonMessage search(@RequestParam("query") String query,
@@ -84,6 +90,41 @@ public class TechnicianController {
         location.setStreetNumber(streetNumber);
         locationService.save(location);
         return new JsonMessage(true);
+    }
+
+
+    /**
+     * 车邻邦二期
+     * 查询技师
+     * @param query 查询内容 纯数字则查询手机 反之查询姓名
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/mobile/v2/technician/search",method = RequestMethod.GET)
+    public JsonResult getTech(HttpServletRequest request,
+                              HttpServletResponse response,
+                              @RequestParam("query") String query,
+                              @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+//        Technician tech = (Technician) request.getAttribute("user");
+//        if(tech == null){
+//            return new JsonResult(false, "登陆过期");
+//        }
+
+        Page<Technician> technicians;
+
+        String query1 = "%"+query+"%";
+        if (Pattern.matches("\\d+", query)) {
+            technicians = technicianService1.find(query1, null, page, pageSize);
+
+        }else{
+            technicians = technicianService1.find(null, query1, page, pageSize);
+
+        }
+
+
+        return new JsonResult(true, new JsonPage<>(technicians));
     }
 
 

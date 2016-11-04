@@ -414,12 +414,56 @@ public class ConstructionController {
 
     /**
      * 车邻帮二期
-     * 提供施工前图片
+     * 通过订单编号获取施工项目及对应的施工部位
      * @param request
      * @param orderId
-     * @param urls
      * @return
+     * @throws IOException
      */
+    @RequestMapping(value = "/v2/project/position/{orderId}", method = RequestMethod.GET)
+    public JsonResult getProject(HttpServletRequest request,
+                               @PathVariable("orderId") int orderId) throws IOException {
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        Order order = orderService.get(orderId);
+
+        if (order == null || order.getMainTechId() !=tech.getId() ) {
+            return new JsonResult(false,  "没有这个订单");
+        }
+
+
+        return new JsonResult(true, orderService.getProject(orderId));
+    }
+
+    /**
+     * 车邻帮二期
+     * 通过订单编号获取施工项目及对应的施工部位
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/v2/project/position", method = RequestMethod.GET)
+    public JsonResult getAllProject(HttpServletRequest request) throws IOException {
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+
+        return new JsonResult(true, orderService.getAllProject());
+    }
+
+
+
+        /**
+         * 车邻帮二期
+         * 提供施工前图片
+         * @param request
+         * @param orderId
+         * @param urls
+         * @return
+         */
     @RequestMapping(value = "/v2/beforePhoto", method = RequestMethod.POST)
     public JsonResult uploadBeforePhoto(HttpServletRequest request,
                                         @RequestParam("orderId") int orderId,
