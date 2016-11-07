@@ -1,70 +1,57 @@
 <div class="page-title">
-    <span class="glyphicon glyphicon-list-alt"></span>&nbsp;订单管理
+    <span class="glyphicon glyphicon-list-alt"></span>&nbsp;产品管理
 </div>
 <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
 <div class="row-search">
     <form class="form-inline pull-left">
         <div class="form-group">
-            <label for="orderNum">订单编号:</label>
+            <label for="orderNum">类别:</label>
             <input type="text" class="form-control" id="orderNum" ng-model="filter.orderNum">
         </div>
         <div class="form-group">
-            <label for="orderCreator">下单人:</label>
-            <input type="text" class="form-control" id="orderCreator" ng-model="filter.orderCreator"
-                   placeholder="姓名或手机号">
+            <label for="orderCreator">品牌:</label>
+            <input type="text" class="form-control" id="orderCreator" ng-model="filter.orderCreator">
         </div>
         <div class="form-group">
-            <label for="orderType">订单类型:</label>
+            <label for="orderType">编码:</label>
             <select class="form-control" id="orderType" ng-model="filter.orderType"
                     ng-options="key as value for (key, value) in Settings.orderTypes">
             </select>
         </div>
         <div class="form-group">
-            <label for="orderStatus">订单状态:</label>
+            <label for="orderStatus">型号:</label>
             <select class="form-control" id="orderStatus" ng-model="filter.orderStatus"
                     ng-options="key as value for (key, value) in Settings.orderStatus">
             </select>
         </div>
-        <div class="form-group m-l-10 m-r-10">
-            <label class="radio-inline">
-                <input type="radio" name="paid" ng-model="filter.sort" value="id"> 按下单时间
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="paid" ng-model="filter.sort" value="orderTime"> 按预约时间
-            </label>
-        </div>
         <button type="submit" class="btn btn-primary" ng-click="getOrders(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
-        <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="reset()">批量导入产品</button>
     </form>
-    <a ui-sref="console.order.new" class="pull-right btn-new">发布订单&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+    <a ui-sref="console.product.new" class="pull-right btn-new">添加产品&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
 </div>
 <br>
 <div class="clearfix">
-    <div ng-class="$state.is('console.order') ? 'col-sm-12' : 'col-sm-3'">
-        <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.order')">
+    <div ng-class="$state.is('console.product') ? 'col-sm-12' : 'col-sm-3'">
+        <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.product')">
             <table class="table table-striped">
-                <thead><tr><th>序号</th><th>订单编号</th><th>订单类型</th><th>预约时间</th><th>下单人</th><th>下单时间</th><th>订单状态</th><th>操作</th></tr></thead>
+                <thead><tr><th>序号</th><th>产品类别</th><th>品牌</th><th>编码</th><th>型号</th><th>施工部位(单位:分钟)</th><th>施工提成(单位:元)</th><th>报废扣款(单位:元)</th><th>技师级别(单位:星级)</th><th>质保期间(单位:月)</th><th>订单状态</th><th>操作</th></tr></thead>
                 <tbody>
-                    <tr ng-repeat="order in orders">
-                        <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
-                        <td>{{order.orderNum}}</td>
-                        <td>{{Settings.orderTypes[order.orderType]}}</td>
-                        <td>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</td>
-                        <td>{{order.creatorName}}</td>
-                        <td>{{order.addTime | date : 'YYYY-MM-DD HH:mm'}}</td>
-                        <td>{{Settings.orderStatus[order.status]}}</td>
-                        <td><a ui-sref="console.order.detail({orderNum: order.orderNum})" class="btn btn-xs btn-default">
-                            <i class="fa fa-list"></i>&nbsp;详情</a>
+                <tr ng-repeat="order in orders">
+                    <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                    <td>{{order.orderNum}}</td>
+                    <td>{{Settings.orderTypes[order.orderType]}}</td>
+                    <td>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</td>
+                    <td>{{order.creatorName}}</td>
+                    <td>{{order.addTime | date : 'YYYY-MM-DD HH:mm'}}</td>
+                    <td>{{Settings.orderStatus[order.status]}}</td>
+                    <td><a ui-sref="console.order.detail({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                        <i class="fa fa-list"></i>&nbsp;详情</a>
                             <span ng-if="order.status == 'NEWLY_CREATED'" class="btn btn-default btn-xs" popover-placement="left"
-                                 popover-trigger="outsideClick" popover-is-open="techQuery['show' + order.id]" uib-popover-template="'assignOrder.html'">
+                                  popover-trigger="outsideClick" popover-is-open="techQuery['show' + order.id]" uib-popover-template="'assignProduct.html'">
                                 <i class="fa fa-paper-plane-o"></i>&nbsp;派单
                             </span>
-
-                            <a ng-if="order.status == 'CREATED_TO_APPOINT'" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.makeup({orderNum: order.orderNum})" class="btn btn-xs btn-default">
-                                <i class="fa fa-paper-plane-o"></i>&nbsp;订单回填
-                            </a>
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             <footer class="text-right">
@@ -75,11 +62,11 @@
             </footer>
         </div>
 
-        <div ng-if="!$state.is('console.order')">
+        <div ng-if="!$state.is('console.product')">
             <div class="clearfix">
                 <div class="pull-right btn-inverse m-b-5" ng-click="$state.go('^')"
                      style="width: 24px; height: 16px; line-height: 16px; border-radius: 16px; text-align: center; cursor: pointer;">
-                <i class="fa fa-arrows-h"></i></div>
+                    <i class="fa fa-arrows-h"></i></div>
             </div>
             <ul class="side-nav-list">
                 <li ng-repeat="order in orders" ui-sref-active="active">
@@ -102,7 +89,7 @@
     </div>
     <div ui-view class="col-sm-9"></div>
 </div>
-<script type="text/ng-template" id="assignOrder.html">
+<script type="text/ng-template" id="assignProduct.html">
     <div>
         <form class="form-inline" ng-submit="searchTech(techQuery.query)">
             <input type="text" class="form-control input-sm" ng-model="techQuery.query" required style="width: 100%;" placeholder="手机号或姓名">
