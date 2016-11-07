@@ -2,10 +2,7 @@ package com.autobon.order.service;
 
 import com.autobon.order.entity.*;
 import com.autobon.order.repository.*;
-import com.autobon.order.vo.ConstructionDetail;
-import com.autobon.order.vo.ConstructionProjectShow;
-import com.autobon.order.vo.ConstructionShow;
-import com.autobon.order.vo.ProjectPosition;
+import com.autobon.order.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -156,6 +153,18 @@ public class OrderService {
         }
 
     }
+
+
+    public OrderShow getByOrderId(int orderId){
+
+        List<Object[]> o = repository.getByOrderId(orderId);
+
+       return new OrderShow(o.get(0));
+
+    }
+
+
+
 
     public Page<Order> findFinishedOrderByMainTechId(int techId, int page, int pageSize) {
         return repository.findFinishedOrderByMainTechId(techId, new PageRequest(page - 1, pageSize,

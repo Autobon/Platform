@@ -99,6 +99,9 @@ public class Order {
 
     @Column private String type;
 
+    @Column private Date AgreedStartTime;
+
+    @Column private Date AgreedEndTime;
 
     public Order() {
         this.orderNum = generateOrderNum();
@@ -309,5 +312,21 @@ public class Order {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Date getAgreedStartTime() {
+        return AgreedStartTime;
+    }
+
+    public void setAgreedStartTime(Date agreedStartTime) {
+        AgreedStartTime = agreedStartTime;
+    }
+
+    public Date getAgreedEndTime() {
+        return AgreedEndTime;
+    }
+
+    public void setAgreedEndTime(Date agreedEndTime) {
+        AgreedEndTime = agreedEndTime;
     }
 }

@@ -8,9 +8,11 @@ import com.autobon.order.repository.WorkDetailRepository;
 import com.autobon.order.vo.ConstructionDetail;
 import com.autobon.order.vo.ConstructionShow;
 import com.autobon.order.vo.ProjectPosition;
+import com.autobon.order.vo.WorkDetailShow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +32,26 @@ public class WorkDetailService {
         workDetailRepository.save(workDetail);
         return 0;
     }
+
+
+    public WorkDetail getByOderIdAndTechId(int orderId, int techId){
+
+        return workDetailRepository.findByOrderIdAndTechId(orderId, techId);
+    }
+
+
+    public List<WorkDetailShow> getByOrderId(int orderId){
+        List<Object[]> list = workDetailRepository.getByOrderId(orderId);
+        List<WorkDetailShow> workDetailShows = new ArrayList<>();
+        for(Object[] objects : list){
+            WorkDetailShow workDetailShow = new WorkDetailShow(objects);
+            workDetailShows.add(workDetailShow);
+        }
+
+        return workDetailShows;
+    }
+
+
 
     public void save(ConstructionShow constructionShow){
         List<ConstructionDetail> constructionDetails = constructionShow.getConstructionDetails();
