@@ -54,6 +54,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'TechnicianDetailCtrl',
             template  : templateCache.TechnicianDetailCtrl,
         })
+        .state('console.technician.edit', {
+            url       : '/{id:\\d+}',
+            controller: 'TechnicianEditorCtrl',
+            template  : templateCache.TechnicianEditorCtrl,
+        })
         .state('console.cooperator', {
             url       : '/cooperator',
             controller: 'CooperatorCtrl',

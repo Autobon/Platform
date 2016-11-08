@@ -1,12 +1,7 @@
 <div class="container-fluid">
     <div class="clearfix m-b-20">
         <img ng-src="{{technician.avatar}}" resize="90,90" image-modal class="img-thumbnail pull-left m-r-10">
-        <div class="pull-right text-right" ng-if="technician.status == 'IN_VERIFICATION'">
-            <button class="btn btn-primary" ng-click="verify(true)" ng-if="!willReject">通过认证</button>
-            <button class="btn btn-default" ng-click="willReject = !willReject" ng-show="willReject">取消操作</button>
-            <button class="btn btn-danger" ng-disabled="willReject && !rejectMsg" ng-click="willReject = !willReject || verify(false, rejectMsg)">拒绝认证</button><br>
-            <textarea class="form-control m-t-5" style="width: 200px;" ng-model="rejectMsg" ng-show="willReject"></textarea>
-        </div>
+
         <h3 style="display: inline-block; margin: 10px 0;">{{technician.name}}
             <small class="btn btn-success btn-xs">{{Settings.technicianStatus[technician.status]}}</small>&nbsp;&nbsp;
             <small><i class="glyphicon glyphicon-earphone"></i>{{technician.phone}}</small>
