@@ -19,6 +19,7 @@ import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -277,19 +278,87 @@ public class OrderController {
             constructionShowList.add(orderConstructionShow);
         }
         String type = orderShow.getType();
-        String[] projectArr = type.split(",");
-        String projectStr = "";
-        for (String projectId : projectArr) {
-            if (projectStr.length() > 0) {
-                projectStr += "," + projectMap.get(Integer.valueOf(projectId));
-            } else {
-                projectStr += projectMap.get(Integer.valueOf(projectId));
+        if(type!=null&& type.length()>0) {
+            String[] projectArr = type.split(",");
+            String projectStr = "";
+            for (String projectId : projectArr) {
+                if (projectStr.length() > 0) {
+                    projectStr += "," + projectMap.get(Integer.valueOf(projectId));
+                } else {
+                    projectStr += projectMap.get(Integer.valueOf(projectId));
+                }
             }
+            orderShow.setType(projectStr);
         }
-        orderShow.setType(projectStr);
+
         orderShow.setOrderConstructionShow(constructionShowList);
         return new JsonResult(true, orderShow);
     }
+
+
+    /**
+     * 车邻邦二期
+     * 查询订单
+     * @param status 1 所有订单  2 未完成  3 已完成
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/v2/order", method = RequestMethod.GET)
+    public JsonResult getUnFinishedOrder(
+            @RequestParam(value = "status", defaultValue = "1") int status,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+            HttpServletRequest request) {
+        Technician technician = (Technician) request.getAttribute("user");
+        if(technician == null){
+            return new JsonResult(false, "请登录");
+        }
+        Page<Order> orders = null;
+
+        if(status == 1){
+            orders = orderService.findOrderByTechId(technician.getId(), page, pageSize);
+        }
+        else if(status == 2){
+            orders = orderService.findUnfinishedOrderByTechId(technician.getId(), page, pageSize);
+        }
+        else if (status == 3){
+            orders = orderService.findFinishedOrderByMainTechId(technician.getId(), page, pageSize);
+        }
+
+        return new JsonResult(true, orders);
+
+
+    }
+
+
+    /**
+     *
+     * @param request
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/v2/{orderId:\\d+}/cancel", method = RequestMethod.PUT)
+    public JsonResult cancel(HttpServletRequest request,
+                             @PathVariable("orderId") int orderId) {
+
+        Technician tech = (Technician) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+
+        if (order == null) return new JsonResult(false,   "没有此订单");
+        if (order.getMainTechId() != tech.getId()) return new JsonResult(false,   "只有接单人可以进行弃单操作");
+
+        if(order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ){
+            return new JsonResult(false,   "订单进入工作状态不能放弃，请申请改派");
+        }
+        order.setStatusCode(Order.Status.NEWLY_CREATED.getStatusCode());
+        orderService.save(order);
+        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
+
+        return new JsonResult(true, "订单已放弃，已重新释放");
+    }
+
 
 
 }

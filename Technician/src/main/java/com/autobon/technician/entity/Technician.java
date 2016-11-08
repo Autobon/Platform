@@ -83,11 +83,19 @@ public class Technician implements UserDetails {
 
     @Column private int filmLevel;
 
+    @Column private int filmWorkingSeniority;
+
     @Column private int carCoverLevel;
+
+    @Column private int carCoverWorkingSeniority;
 
     @Column private int colorModifyLevel;
 
+    @Column private int colorModifyWorkingSeniority;
+
     @Column private int beautyLevel;
+
+    @Column private int beautyWorkingSeniority;
 
     @Column private String resume;
 
@@ -391,5 +399,38 @@ public class Technician implements UserDetails {
     @Override
     public boolean isEnabled() {
         return getStatus() != Status.BANNED;
+    }
+
+
+    public int getFilmWorkingSeniority() {
+        return filmWorkingSeniority;
+    }
+
+    public void setFilmWorkingSeniority(int filmWorkingSeniority) {
+        this.filmWorkingSeniority = filmWorkingSeniority;
+    }
+
+    public int getCarCoverWorkingSeniority() {
+        return carCoverWorkingSeniority;
+    }
+
+    public void setCarCoverWorkingSeniority(int carCoverWorkingSeniority) {
+        this.carCoverWorkingSeniority = carCoverWorkingSeniority;
+    }
+
+    public int getColorModifyWorkingSeniority() {
+        return colorModifyWorkingSeniority;
+    }
+
+    public void setColorModifyWorkingSeniority(int colorModifyWorkingSeniority) {
+        this.colorModifyWorkingSeniority = colorModifyWorkingSeniority;
+    }
+
+    public int getBeautyWorkingSeniority() {
+        return beautyWorkingSeniority;
+    }
+
+    public void setBeautyWorkingSeniority(int beautyWorkingSeniority) {
+        this.beautyWorkingSeniority = beautyWorkingSeniority;
     }
 }

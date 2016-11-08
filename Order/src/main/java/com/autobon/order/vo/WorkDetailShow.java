@@ -60,7 +60,7 @@ public class WorkDetailShow {
         this.position3 = (String)objects[8];
         this.project4 = (Integer)objects[9];
         this.position4 = (String)objects[10];
-        this.payment = (Float)objects[11];
+        this.payment = (float)objects[11];
         this.payStatus = (Integer)objects[12];
         this.createDate = (Date)objects[13];
         this.techName = (String)objects[14];

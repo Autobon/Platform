@@ -164,6 +164,10 @@ public class OrderService {
     }
 
 
+    public Page<Order> findOrderByTechId(int techId, int page, int pageSize){
+        return  repository.findOrderByTechId(techId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
 
 
     public Page<Order> findFinishedOrderByMainTechId(int techId, int page, int pageSize) {

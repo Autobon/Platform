@@ -30,6 +30,9 @@ public class OrderShow {
     private String type; //'订单类型(1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁) 支持多个施工项目逗号分隔',
     private Integer coopId;  //商户ID
     private String coopName; //商户名称
+    private String address; //商户地址
+    private String longitude; // 商户位置经度
+    private String latitude;// 商户位置纬度
     private Integer creatorId; //下单人ID
     private String creatorName; //下单人姓名
     private String contactPhone; //联系电话
@@ -65,6 +68,10 @@ public class OrderShow {
         this.creatorId = (Integer)objects[20];
         this.creatorName = (String)objects[21];
         this.contactPhone = (String)objects[22];
+        this.address = (String) objects[23];
+        this.longitude = (String) objects[24];
+        this.latitude = (String) objects[25];
+
     }
 
     public Integer getId() {
@@ -258,5 +265,29 @@ public class OrderShow {
 
     public void setOrderConstructionShow(List<OrderConstructionShow> orderConstructionShow) {
         this.orderConstructionShow = orderConstructionShow;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 }

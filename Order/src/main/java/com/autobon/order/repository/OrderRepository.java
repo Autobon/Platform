@@ -23,6 +23,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     Page<Order> findFinishedOrderBySecondTechId(int techId, Pageable pageable);
 
 
+    @Query("from Order o where o.mainTechId = ?1")
+    Page<Order> findOrderByTechId(int techId, Pageable pageable);
+
     @Query("from Order o where (o.mainTechId = ?1 or o.secondTechId = ?1) and o.statusCode < 60")
     Page<Order> findUnfinishedOrderByTechId(int techId, Pageable pageable);
 
@@ -81,11 +84,15 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ca.shortname as coopName," +
             " o.creator_id as creatorId," +
             " o.creator_name as creatorName," +
-            " ca.phone as creatorPhone " +
+            " ca.phone as creatorPhone ," +
+            " ct.address as address ," +
+            " ct.longitude as longitude ," +
+            " ct.latitude as latitude " +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
+            " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
             " where o.id = ?1" ,nativeQuery = true)
        List<Object[]>  getByOrderId(int orderId);
 
