@@ -40,4 +40,11 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
 
     @Query("select count(t) from Technician t where t.statusCode = 2")
     int totalOfVerified();
+
+
+
+    @Query("select dt from Technician dt where 1 =1 " +
+            " and (?1 is null or dt.phone like ?1) " +
+            " and (?2 is null or dt.name like ?2) ")
+    Page<Technician> find(String phone, String name,  Pageable pageable);
 }

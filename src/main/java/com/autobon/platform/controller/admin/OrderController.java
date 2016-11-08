@@ -3,13 +3,13 @@ package com.autobon.platform.controller.admin;
 import com.autobon.getui.PushService;
 import com.autobon.order.entity.DetailedOrder;
 import com.autobon.order.entity.Order;
-import com.autobon.order.service.CommentService;
-import com.autobon.order.service.DetailedOrderService;
-import com.autobon.order.service.OrderService;
+import com.autobon.order.entity.WorkDetail;
+import com.autobon.order.service.*;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.shared.JsonResult;
 import com.autobon.shared.VerifyCode;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -53,6 +54,10 @@ public class OrderController {
     @Autowired DetailedOrderService detailedOrderService;
     @Autowired ApplicationEventPublisher publisher;
     @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
+    @Autowired
+    WorkDetailService workDetailService;
+    @Autowired
+    ConstructionProjectService constructionProjectService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -234,4 +239,7 @@ public class OrderController {
 //
 //        return new JsonMessage(true, "", "", comment);
     }
+
+
+
 }

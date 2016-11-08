@@ -79,6 +79,19 @@ public class Technician implements UserDetails {
 
     @Column private String pushId; // 个推客户端ID, 由手机端更新
 
+    @Column private String reference; //推荐人号码（注册用户）
+
+    @Column private int filmLevel;
+
+    @Column private int carCoverLevel;
+
+    @Column private int colorModifyLevel;
+
+    @Column private int beautyLevel;
+
+    @Column private String resume;
+
+
     @JsonIgnore
     @Column(name = "status")
     private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
@@ -278,6 +291,55 @@ public class Technician implements UserDetails {
 
     protected void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
+    }
+
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public int getFilmLevel() {
+        return filmLevel;
+    }
+
+    public void setFilmLevel(int filmLevel) {
+        this.filmLevel = filmLevel;
+    }
+
+    public int getCarCoverLevel() {
+        return carCoverLevel;
+    }
+
+    public void setCarCoverLevel(int carCoverLevel) {
+        this.carCoverLevel = carCoverLevel;
+    }
+
+    public int getColorModifyLevel() {
+        return colorModifyLevel;
+    }
+
+    public void setColorModifyLevel(int colorModifyLevel) {
+        this.colorModifyLevel = colorModifyLevel;
+    }
+
+    public int getBeautyLevel() {
+        return beautyLevel;
+    }
+
+    public void setBeautyLevel(int beautyLevel) {
+        this.beautyLevel = beautyLevel;
+    }
+
+    public String getResume() {
+        return resume;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
     }
 
     @JsonIgnore

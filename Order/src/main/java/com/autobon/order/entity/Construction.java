@@ -59,6 +59,26 @@ public class Construction implements Serializable {
     @Column(name = "car_seat",nullable = true, insertable = true, updatable = true)
     private int carSeat;
 
+    @Column(name = "project1")
+    private Integer project1;
+    @Column(name = "position1")
+    private String position1;
+
+    @Column(name = "project2")
+    private Integer project2;
+    @Column(name = "position2")
+    private String position2;
+
+    @Column(name = "project3")
+    private Integer project3;
+    @Column(name = "position3")
+    private String position3;
+
+    @Column(name = "project4")
+    private Integer project4;
+    @Column(name = "position4")
+    private String position4;
+
     public int getId() {
         return id;
     }
@@ -177,5 +197,70 @@ public class Construction implements Serializable {
 
     public void setCarSeat(int carSeat) {
         this.carSeat = carSeat;
+    }
+
+
+    public Integer getProject1() {
+        return project1;
+    }
+
+    public void setProject1(Integer project1) {
+        this.project1 = project1;
+    }
+
+    public String getPosition1() {
+        return position1;
+    }
+
+    public void setPosition1(String position1) {
+        this.position1 = position1;
+    }
+
+    public Integer getProject2() {
+        return project2;
+    }
+
+    public void setProject2(Integer project2) {
+        this.project2 = project2;
+    }
+
+    public String getPosition2() {
+        return position2;
+    }
+
+    public void setPosition2(String position2) {
+        this.position2 = position2;
+    }
+
+    public Integer getProject3() {
+        return project3;
+    }
+
+    public void setProject3(Integer project3) {
+        this.project3 = project3;
+    }
+
+    public String getPosition3() {
+        return position3;
+    }
+
+    public void setPosition3(String position3) {
+        this.position3 = position3;
+    }
+
+    public Integer getProject4() {
+        return project4;
+    }
+
+    public void setProject4(Integer project4) {
+        this.project4 = project4;
+    }
+
+    public String getPosition4() {
+        return position4;
+    }
+
+    public void setPosition4(String position4) {
+        this.position4 = position4;
     }
 }

@@ -42,8 +42,8 @@ spring:
     datasource:
         type: com.mchange.v2.c3p0.ComboPooledDataSource
         url: jdbc:mysql://127.0.0.1:3306/autobondb?characterEncoding=utf8&useSSL=false
-        user: autobon
-        password: autobon
+        user: root
+        password: root
         checkoutTimeout: 6000 # 获取数据库连接等待超时时间,毫秒
         idleConnectionTestPeriod: 600 # 空闲连接检测时间, 秒
         initialPoolSize: 3 # 初始连接池连接数

@@ -23,6 +23,7 @@ public class Order {
         INVITATION_REJECTED(40), // 合作邀请已拒绝
         IN_PROGRESS(50), // 订单进入施工环节中
         SIGNED_IN(55), // 已签到
+        AT_WORK(56),
         FINISHED(60), // 订单已结束
         COMMENTED(70), // 订单已评论
         CANCELED(200), // 订单已撤销
@@ -85,6 +86,22 @@ public class Order {
     @Column private int mainTechId;
 
     @Column private int secondTechId;
+
+    @Column private String beforePhotos;
+
+    @Column private String afterPhotos;
+
+    @Column  private Date signTime;
+
+    @Column private Date startTime;
+
+    @Column private Date endTime;
+
+    @Column private String type;
+
+    @Column private Date AgreedStartTime;
+
+    @Column private Date AgreedEndTime;
 
     public Order() {
         this.orderNum = generateOrderNum();
@@ -247,5 +264,69 @@ public class Order {
 
     public void setStatus(Status status) {
         this.statusCode = status.getStatusCode();
+    }
+
+    public String getBeforePhotos() {
+        return beforePhotos;
+    }
+
+    public void setBeforePhotos(String beforePhotos) {
+        this.beforePhotos = beforePhotos;
+    }
+
+    public String getAfterPhotos() {
+        return afterPhotos;
+    }
+
+    public void setAfterPhotos(String afterPhotos) {
+        this.afterPhotos = afterPhotos;
+    }
+
+    public Date getSignTime() {
+        return signTime;
+    }
+
+    public void setSignTime(Date signTime) {
+        this.signTime = signTime;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Date getAgreedStartTime() {
+        return AgreedStartTime;
+    }
+
+    public void setAgreedStartTime(Date agreedStartTime) {
+        AgreedStartTime = agreedStartTime;
+    }
+
+    public Date getAgreedEndTime() {
+        return AgreedEndTime;
+    }
+
+    public void setAgreedEndTime(Date agreedEndTime) {
+        AgreedEndTime = agreedEndTime;
     }
 }

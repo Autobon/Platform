@@ -1,12 +1,19 @@
 package com.autobon.platform.controller.technician.order;
 
+import com.autobon.order.entity.DetailedOrder;
 import com.autobon.order.entity.Order;
+import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.entity.WorkItem;
 import com.autobon.order.service.*;
+import com.autobon.order.vo.OrderConstructionShow;
+import com.autobon.order.vo.OrderShow;
+import com.autobon.order.vo.ProjectPositionShow;
+import com.autobon.order.vo.WorkDetailShow;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.shared.JsonResult;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
@@ -15,9 +22,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,12 +40,18 @@ public class OrderController {
     @Autowired TechStatService techStatService;
     @Autowired ApplicationEventPublisher publisher;
 
+    @Autowired
+    WorkDetailService workDetailService;
+    @Autowired
+    ConstructionProjectService constructionProjectService;
+
+
     // 获取已完成的主要责任人订单列表
     @RequestMapping(value = "/listMain", method = RequestMethod.GET)
     public JsonMessage listMain(
             HttpServletRequest request,
-             @RequestParam(value = "page", defaultValue = "1") int page,
-             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
         Technician technician = (Technician) request.getAttribute("user");
         return new JsonMessage(true, "", "",
                 new JsonPage<>(detailedOrderService.findFinishedByMainTechId(technician.getId(), page, pageSize)));
@@ -117,7 +128,7 @@ public class OrderController {
         order.setStatus(Order.Status.TAKEN_UP);
         orderService.save(order);
 
-       publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.TAKEN));
+        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.TAKEN));
         return new JsonMessage(true, "", "", order);
     }
 
@@ -139,5 +150,146 @@ public class OrderController {
             return new JsonMessage(false, "OFFEND_ORDER_GIVE_UP_RULE", "只允许接单后半小时内或订单约定时间前5小时撤单");
         }
     }
+
+
+    /**
+     * 技师查询主订单
+     * @param request
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/v2/listMain", method = RequestMethod.GET)
+    public JsonResult getOrderList(
+            HttpServletRequest request,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Technician technician = (Technician) request.getAttribute("user");
+
+        return new JsonResult(true,"");
+    }
+
+
+    /**
+     * 获取订单详情
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/v2/{orderId:\\d+}", method = RequestMethod.GET)
+    public JsonResult getOrder( HttpServletRequest request,
+                                @PathVariable("orderId") int orderId) {
+
+        OrderShow orderShow = orderService.getByOrderId(orderId);
+
+
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        Order order = orderService.get(orderId);
+
+        if (order == null) {
+            return new JsonResult(false,  "没有这个订单");
+        }
+
+
+        List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
+        Map<Integer, String> projectMap = constructionProjectService.getProject();
+        Map<Integer, String> positionMap = constructionProjectService.getPosition();
+
+        List<OrderConstructionShow> constructionShowList = new ArrayList<>();
+        for(WorkDetailShow workDetailShow: workDetailShowList) {
+            OrderConstructionShow orderConstructionShow = new OrderConstructionShow();
+            List<ProjectPositionShow> projectPositionShows = new ArrayList<>();
+            orderConstructionShow.setTechId(workDetailShow.getTechId());
+            orderConstructionShow.setTechName(workDetailShow.getTechName());
+            orderConstructionShow.setIsMainTech(workDetailShow.getTechId() == order.getMainTechId()?1:0);
+            orderConstructionShow.setPayStatus(workDetailShow.getPayStatus());
+            orderConstructionShow.setPayment(workDetailShow.getPayment());
+            if (workDetailShow.getPosition1() != null && workDetailShow.getPosition1() != null) {
+                String projectName = projectMap.get(workDetailShow.getProject1());
+                String position = workDetailShow.getPosition1();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+            if (workDetailShow.getPosition2() != null && workDetailShow.getPosition2() != null) {
+
+                String projectName = projectMap.get(workDetailShow.getProject2());
+
+                String position = workDetailShow.getPosition2();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+            if (workDetailShow.getPosition3() != null && workDetailShow.getPosition3() != null) {
+
+                String projectName = projectMap.get(workDetailShow.getProject3());
+
+                String position = workDetailShow.getPosition3();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+            if (workDetailShow.getPosition4() != null && workDetailShow.getPosition4() != null) {
+
+                String projectName = projectMap.get(workDetailShow.getProject4());
+
+                String position = workDetailShow.getPosition4();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+
+            orderConstructionShow.setProjectPosition(projectPositionShows);
+            constructionShowList.add(orderConstructionShow);
+        }
+        String type = orderShow.getType();
+        String[] projectArr = type.split(",");
+        String projectStr = "";
+        for (String projectId : projectArr) {
+            if (projectStr.length() > 0) {
+                projectStr += "," + projectMap.get(Integer.valueOf(projectId));
+            } else {
+                projectStr += projectMap.get(Integer.valueOf(projectId));
+            }
+        }
+        orderShow.setType(projectStr);
+        orderShow.setOrderConstructionShow(constructionShowList);
+        return new JsonResult(true, orderShow);
+    }
+
 
 }
