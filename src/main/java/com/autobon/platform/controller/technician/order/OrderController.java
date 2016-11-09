@@ -350,15 +350,16 @@ public class OrderController {
         if (order.getMainTechId() != tech.getId()) return new JsonResult(false,   "只有接单人可以进行弃单操作");
 
         if(order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ){
-            return new JsonResult(false,   "订单进入工作状态不能放弃，请申请改派");
-        }
+            order.setStatusCode(Order.Status.REASSIGNMENT.getStatusCode());
+            orderService.save(order);
+            return new JsonResult(false,   "订单进入工作状态不能直接放弃，已申请改派，待后台工作人员处理");
+        }else{
         order.setStatusCode(Order.Status.NEWLY_CREATED.getStatusCode());
         orderService.save(order);
         publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
-
         return new JsonResult(true, "订单已放弃，已重新释放");
+        }
     }
-
 
 
 }

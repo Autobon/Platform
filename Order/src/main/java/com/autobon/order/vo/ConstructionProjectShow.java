@@ -10,7 +10,7 @@ import java.util.List;
 public class ConstructionProjectShow {
 
     private int id;
-    private String name;  //Ãû³Æ
+    private String name;  //åç§°
     private List<ConstructionPosition> constructionPositions;
 
     public int getId() {

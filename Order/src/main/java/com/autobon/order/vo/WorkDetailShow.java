@@ -42,7 +42,7 @@ public class WorkDetailShow {
     private float payment;
 
 
-    private int payStatus; //Ö§¸¶×´Ì¬: 0-Î´³öÕÊ, 1-ÒÑ³öÕË½øÈëÔÂ¶ÈÕËµ¥, 2-ÒÑ×ªÕËÖ§¸¶
+    private int payStatus; //æ”¯ä»˜çŠ¶æ€: 0-æœªå‡ºå¸, 1-å·²å‡ºè´¦è¿›å…¥æœˆåº¦è´¦å•, 2-å·²è½¬è´¦æ”¯ä»˜
 
 
     private Date createDate;

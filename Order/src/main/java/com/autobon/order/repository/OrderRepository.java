@@ -98,5 +98,35 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 
 
 
+
+
+    @Query("from Order o where o.mainTechId = ?1 and o.statusCode >= 60")
+    Page<Order> findFinishedOrder(int techId, Pageable pageable);
+
+    @Query("from Order o where o.mainTechId = ?1 and o.statusCode < 60")
+    Page<Order> findUnfinishedOrder(int techId, Pageable pageable);
+
+    @Query("from Order o where o.mainTechId = ?1")
+    Page<Order> findAllOrder(int techId, Pageable pageable);
+
+
+//    @Query("select o from Order o , WorkDetail wd " +
+//            " where o.id in (select orderId from WorkDetail where techId =1 )  " +
+//            " and o.status >= 60 ")
+//    Page<Order>  findPartnerFinishedOrder(int techId,  Pageable pageable);
+//
+//
+////    @Query(value = "select count(*) from t_order o " +
+////            " left join t_work_detail w on w.order_id = o.id  " +
+////            " where o.main_tech_id != w.tech_id  " +
+////            " and w.tech_id = ?1 and o.status >= 60 " +
+////            " limit ?2,?3",nativeQuery = true)
+////    int  findPartnerFinishedOrderCount(int techId);
+////
+
+
+
+
+
 }
 

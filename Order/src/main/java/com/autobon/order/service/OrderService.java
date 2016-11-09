@@ -46,36 +46,36 @@ public class OrderService {
     }
 
     /**
-     * 通过订单编号获取订单施工项目
+     * 閫氳繃璁㈠崟缂栧彿鑾峰彇璁㈠崟鏂藉伐椤圭洰
      * @return
      */
     public List<ConstructionProjectShow> getAllProject(){
 
-            List<ConstructionProjectShow> constructionProjectShowList = new ArrayList<>();
+        List<ConstructionProjectShow> constructionProjectShowList = new ArrayList<>();
 
-            List<ConstructionProject> constructionProjects = constructionProjectRepository.findAll();
-            for(ConstructionProject constructionProject:constructionProjects){
-                ConstructionProjectShow constructionProjectShow = new ConstructionProjectShow();
-                constructionProjectShow.setId(constructionProject.getId());
-                constructionProjectShow.setName(constructionProject.getName());
-                String position = constructionProject.getIds();
-                String[] positionArr = position.split(",");
-                List<Integer> plist = new ArrayList<>();
-                for(String positionId: positionArr){
-                    plist.add( Integer.valueOf(positionId));
-                }
-
-                List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds(plist);
-                constructionProjectShow.setConstructionPositions(constructionPositions);
-                constructionProjectShowList.add(constructionProjectShow);
+        List<ConstructionProject> constructionProjects = constructionProjectRepository.findAll();
+        for(ConstructionProject constructionProject:constructionProjects){
+            ConstructionProjectShow constructionProjectShow = new ConstructionProjectShow();
+            constructionProjectShow.setId(constructionProject.getId());
+            constructionProjectShow.setName(constructionProject.getName());
+            String position = constructionProject.getIds();
+            String[] positionArr = position.split(",");
+            List<Integer> plist = new ArrayList<>();
+            for(String positionId: positionArr){
+                plist.add( Integer.valueOf(positionId));
             }
-            return constructionProjectShowList;
+
+            List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds(plist);
+            constructionProjectShow.setConstructionPositions(constructionPositions);
+            constructionProjectShowList.add(constructionProjectShow);
+        }
+        return constructionProjectShowList;
 
     }
 
 
     /**
-     * 通过订单编号获取订单施工项目
+     * 閫氳繃璁㈠崟缂栧彿鑾峰彇璁㈠崟鏂藉伐椤圭洰
      * @param orderId
      * @return
      */
@@ -88,7 +88,7 @@ public class OrderService {
             String[] typeArr = type.split(",");
             List<Integer> list = new ArrayList<>();
             for(String projectId: typeArr){
-               list.add( Integer.valueOf(projectId));
+                list.add( Integer.valueOf(projectId));
             }
 
             List<ConstructionProject> constructionProjects = constructionProjectRepository.getByIds(list);
@@ -103,7 +103,7 @@ public class OrderService {
                     plist.add( Integer.valueOf(positionId));
                 }
 
-               List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds(plist);
+                List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds(plist);
                 constructionProjectShow.setConstructionPositions(constructionPositions);
                 constructionProjectShowList.add(constructionProjectShow);
             }
@@ -159,8 +159,30 @@ public class OrderService {
 
         List<Object[]> o = repository.getByOrderId(orderId);
 
-       return new OrderShow(o.get(0));
+        return new OrderShow(o.get(0));
 
+    }
+
+
+
+
+    public Page<Order> findFinishedOrder(int techId, int page, int pageSize){
+        return  repository.findFinishedOrder(techId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+
+    public Page<Order> findUnfinishedOrder(int techId, int page, int pageSize){
+        return  repository.findUnfinishedOrder(techId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+
+
+
+    public Page<Order> findAllOrder(int techId, int page, int pageSize){
+        return  repository.findAllOrder(techId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
     }
 
 
