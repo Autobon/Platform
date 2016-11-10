@@ -87,7 +87,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ca.phone as creatorPhone ," +
             " ct.address as address ," +
             " ct.longitude as longitude ," +
-            " ct.latitude as latitude " +
+            " ct.latitude as latitude ," +
+            " o.remark as remark " +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +

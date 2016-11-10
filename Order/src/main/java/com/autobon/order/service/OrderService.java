@@ -81,33 +81,36 @@ public class OrderService {
      */
     public List<ConstructionProjectShow> getProject(int orderId){
         Order order = repository.findOne(orderId);
-        if(order != null){
+        if(order != null) {
             List<ConstructionProjectShow> constructionProjectShowList = new ArrayList<>();
 
             String type = order.getType();
             String[] typeArr = type.split(",");
             List<Integer> list = new ArrayList<>();
-            for(String projectId: typeArr){
-                list.add( Integer.valueOf(projectId));
+            for (String projectId : typeArr) {
+                list.add(Integer.valueOf(projectId));
             }
 
-            List<ConstructionProject> constructionProjects = constructionProjectRepository.getByIds(list);
-            for(ConstructionProject constructionProject:constructionProjects){
-                ConstructionProjectShow constructionProjectShow = new ConstructionProjectShow();
-                constructionProjectShow.setId(constructionProject.getId());
-                constructionProjectShow.setName(constructionProject.getName());
-                String position = constructionProject.getIds();
-                String[] positionArr = position.split(",");
-                List<Integer> plist = new ArrayList<>();
-                for(String positionId: positionArr){
-                    plist.add( Integer.valueOf(positionId));
+            if (list.size()>0) {
+
+                List<ConstructionProject> constructionProjects = constructionProjectRepository.getByIds(list);
+                for (ConstructionProject constructionProject : constructionProjects) {
+                    ConstructionProjectShow constructionProjectShow = new ConstructionProjectShow();
+                    constructionProjectShow.setId(constructionProject.getId());
+                    constructionProjectShow.setName(constructionProject.getName());
+                    String position = constructionProject.getIds();
+                    String[] positionArr = position.split(",");
+                    List<Integer> plist = new ArrayList<>();
+                    for (String positionId : positionArr) {
+                        plist.add(Integer.valueOf(positionId));
+                    }
+
+                    List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds(plist);
+                    constructionProjectShow.setConstructionPositions(constructionPositions);
+                    constructionProjectShowList.add(constructionProjectShow);
                 }
-
-                List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds(plist);
-                constructionProjectShow.setConstructionPositions(constructionPositions);
-                constructionProjectShowList.add(constructionProjectShow);
+                return constructionProjectShowList;
             }
-            return constructionProjectShowList;
         }
         return null;
     }

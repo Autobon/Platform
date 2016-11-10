@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  */
 
 @RestController
-@RequestMapping("/api/v2/")
+@RequestMapping("/api/mobile/technician")
 public class TechnicianV2Controller {
 
     @Autowired
@@ -85,7 +85,7 @@ public class TechnicianV2Controller {
      * @param request HTTP请求
      * @return JsonResult 对象
      */
-    @RequestMapping(value = "/technician/me", method = RequestMethod.GET)
+    @RequestMapping(value = "/v2/me", method = RequestMethod.GET)
     public JsonResult getTechnicianInfo(HttpServletRequest request) {
         try {
             Technician technician = (Technician) request.getAttribute("user");
@@ -105,7 +105,7 @@ public class TechnicianV2Controller {
      * @param verifySms 验证码
      * @return
      */
-    @RequestMapping(value = "/technician", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/register", method = RequestMethod.POST)
     public JsonResult register(@RequestParam("phone")     String phone,
                                @RequestParam("password")  String password,
                                @RequestParam("verifySms") String verifySms) {
@@ -154,7 +154,7 @@ public class TechnicianV2Controller {
      * @param response HTTP请求
      * @return
      */
-    @RequestMapping(value = "/technician/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/login", method = RequestMethod.POST)
     public JsonResult login(@RequestParam("phone")    String phone,
                             @RequestParam("password") String password,
                             HttpServletRequest request,
@@ -191,7 +191,7 @@ public class TechnicianV2Controller {
      * @param verifySms 验证码
      * @return
      */
-    @RequestMapping(value = "/technician/resetPassword", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v2/resetPassword", method = RequestMethod.PUT)
     public JsonResult resetPassword(@RequestParam("phone")     String phone,
                                     @RequestParam("password")  String password,
                                     @RequestParam("verifySms") String verifySms) {
@@ -226,7 +226,7 @@ public class TechnicianV2Controller {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/technician/changePassword", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v2/changePassword", method = RequestMethod.PUT)
     public JsonResult changePassword(@RequestParam("oldPassword") String oldPassword,
                                      @RequestParam("newPassword") String newPassword,
                                      HttpServletRequest request) {
@@ -256,7 +256,7 @@ public class TechnicianV2Controller {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/technician/avatar", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/avatar", method = RequestMethod.POST)
     public JsonResult uploadAvatarForm(HttpServletRequest request) throws Exception {
         try{
             String path = "/uploads/technician/avatar";
@@ -309,7 +309,7 @@ public class TechnicianV2Controller {
      * @param pushId
      * @return
      */
-    @RequestMapping(value = "/technician/pushId", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/pushId", method = RequestMethod.POST)
     public JsonResult savePushId(HttpServletRequest request,
                                  @RequestParam("pushId") String pushId) {
 
@@ -340,7 +340,7 @@ public class TechnicianV2Controller {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/technician/idPhoto", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/idPhoto", method = RequestMethod.POST)
     public JsonResult uploadIdPhoto(HttpServletRequest request,
                                     @RequestParam("file") MultipartFile file) throws Exception {
         try{
@@ -371,7 +371,7 @@ public class TechnicianV2Controller {
      * @param pageSize 页面大小
      * @return JsonResult对象
      */
-    @RequestMapping(value = "/technician",method = RequestMethod.GET)
+    @RequestMapping(value = "/v2",method = RequestMethod.GET)
     public JsonResult getTechnician(@RequestParam("query") String query,
                                     @RequestParam(value = "page",  defaultValue = "1" )  int page,
                                     @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
@@ -404,7 +404,7 @@ public class TechnicianV2Controller {
      * @param request HTTP请求
      * @return  JsonResult对象
      */
-    @RequestMapping(value="/technician/location", method = RequestMethod.POST)
+    @RequestMapping(value="/v2/location", method = RequestMethod.POST)
     public JsonResult addLocation(@RequestBody LocationShow locationShow,
                                   HttpServletRequest request) {
 
@@ -437,7 +437,7 @@ public class TechnicianV2Controller {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value="/technician/certificate", method = RequestMethod.POST)
+    @RequestMapping(value="/v2/certificate", method = RequestMethod.POST)
     public JsonResult authentication(@RequestBody TechnicianShow technicianShow,
                                      HttpServletRequest request)throws Exception {
 
@@ -486,7 +486,7 @@ public class TechnicianV2Controller {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/technician/order/take", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/order/take", method = RequestMethod.POST)
     public JsonResult takeUpOrder(@RequestParam("orderId") int orderId,
                                   HttpServletRequest request) {
         try{
@@ -523,7 +523,7 @@ public class TechnicianV2Controller {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/technician/order/{orderId:\\d+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/v2/order/{orderId:\\d+}", method = RequestMethod.GET)
     public JsonResult getOrder(@PathVariable("orderId") int orderId,
                                HttpServletRequest request) {
 
@@ -654,7 +654,7 @@ public class TechnicianV2Controller {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/technician/order", method = RequestMethod.GET)
+    @RequestMapping(value = "/v2/order", method = RequestMethod.GET)
     public JsonResult getUnFinishedOrder(
             @RequestParam(value = "status", defaultValue = "1") int status,
             @RequestParam(value = "page", defaultValue = "1") int page,
@@ -690,7 +690,7 @@ public class TechnicianV2Controller {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/technician/order/{orderId:\\d+}/cancel", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v2/order/{orderId:\\d+}/cancel", method = RequestMethod.PUT)
     public JsonResult cancel(@PathVariable("orderId") int orderId,
                              HttpServletRequest request) {
 
@@ -726,7 +726,7 @@ public class TechnicianV2Controller {
      * @param orderId
      * @return
      */
-    @RequestMapping(value = "/technician/order/start", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/order/start", method = RequestMethod.POST)
     public JsonResult start(@RequestParam("orderId") int orderId,
                             HttpServletRequest request)throws Exception{
 
@@ -763,7 +763,7 @@ public class TechnicianV2Controller {
      * @param orderId
      * @return
      */
-    @RequestMapping(value = "/technician/order/signIn", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/order/signIn", method = RequestMethod.POST)
     public JsonResult sign(@RequestParam("positionLon") String positionLon,
                            @RequestParam("positionLat") String positionLat,
                            @RequestParam("orderId") int orderId,
@@ -811,7 +811,7 @@ public class TechnicianV2Controller {
      * @param orderId
      * @return
      */
-    @RequestMapping(value = "/technician/order/working", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v2/order/working", method = RequestMethod.PUT)
     public JsonResult construction(@RequestParam("orderId") int orderId,
                                    HttpServletRequest request){
 
@@ -851,7 +851,7 @@ public class TechnicianV2Controller {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/technician/uploadPhoto", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/uploadPhoto", method = RequestMethod.POST)
     public JsonResult upload(@RequestParam("file")MultipartFile file) {
 
         try{
@@ -882,7 +882,7 @@ public class TechnicianV2Controller {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/technician/order/project/position/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/v2/order/project/position/{orderId}", method = RequestMethod.GET)
     public JsonResult getProject(HttpServletRequest request,
                                  @PathVariable("orderId") int orderId) {
 
@@ -909,7 +909,7 @@ public class TechnicianV2Controller {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/technician/order/project/position", method = RequestMethod.GET)
+    @RequestMapping(value = "/v2/order/project/position", method = RequestMethod.GET)
     public JsonResult getAllProject(HttpServletRequest request) throws IOException {
         Technician tech = (Technician) request.getAttribute("user");
         if(tech == null){
@@ -928,7 +928,7 @@ public class TechnicianV2Controller {
      * @param urls
      * @return
      */
-    @RequestMapping(value = "/technician/order/beforePhoto", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v2/order/beforePhoto", method = RequestMethod.PUT)
     public JsonResult uploadBeforePhoto(HttpServletRequest request,
                                         @RequestParam("orderId") int orderId,
                                         @RequestParam("urls") String urls){
@@ -981,7 +981,7 @@ public class TechnicianV2Controller {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/technician/order/finish", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v2/order/finish", method = RequestMethod.PUT)
     public JsonResult finish(@RequestBody ConstructionShow constructionShow,
                              HttpServletRequest request)  {
         try{

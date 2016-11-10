@@ -2,6 +2,11 @@ package com.autobon.order.vo;
 
 
 
+
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,12 +15,47 @@ import java.util.List;
  */
 public class OrderShow {
 
+    public enum Status {
+        REASSIGNMENT(-20), //申请改派中
+        CREATED_TO_APPOINT(-10), // 已创建待指定技师
+        NEWLY_CREATED(0), // 已创建并推送, 待技师抢单
+        TAKEN_UP(10), // 已有人抢单
+        SEND_INVITATION(20), // 已发送合作邀请并等待结果
+        INVITATION_ACCEPTED(30), // 合作邀请已接受
+        INVITATION_REJECTED(40), // 合作邀请已拒绝
+        IN_PROGRESS(50), // 订单进入施工环节中
+        SIGNED_IN(55), // 已签到
+        AT_WORK(56),
+        FINISHED(60), // 订单已结束
+        COMMENTED(70), // 订单已评论
+        CANCELED(200), // 订单已撤销
+        GIVEN_UP(201), // 订单已被放弃
+        EXPIRED(210); // 订单已超时
+        private int status;
+
+        Status(int status) {
+            this.status = status;
+        }
+
+        public static Status getStatus(int status) {
+            for (Status s : Status.values()) {
+                if (s.getStatusCode() == status) return s;
+            }
+            return null;
+        }
+
+        public int getStatusCode() {
+            return this.status;
+        }
+    }
+
     private Integer id;
     private String orderNum;
     private String photo; //订单照片
     private Date AgreedStartTime; //预约开始时间
     private Date AgreedEndTime;// 最晚交车时间
-    private Integer status;// 订单状态 // 0-新建 10-已接单 20-已发出合作邀请等待结果 30-合作人已接受\n      40-合作人已拒绝 50-工作中 60-已完成 70-已评价 200-已撤销
+    @JsonIgnore
+    private Integer statusCode;// 订单状态 // 0-新建 10-已接单 20-已发出合作邀请等待结果 30-合作人已接受\n      40-合作人已拒绝 50-工作中 60-已完成 70-已评价 200-已撤销
     private Integer creatorType; //下单人类型(1-合作商户 2-后台 3-用户)
     private Integer techId; //接单技师技师ID
     private String techName;//接单技师姓名
@@ -36,6 +76,7 @@ public class OrderShow {
     private Integer creatorId; //下单人ID
     private String creatorName; //下单人姓名
     private String contactPhone; //联系电话
+    private String remark; //订单备注
 
 
 
@@ -50,7 +91,7 @@ public class OrderShow {
         this.photo = (String)objects[2];
         this.AgreedStartTime = (Date)objects[3];
         this.AgreedEndTime = (Date)objects[4];
-        this.status = Integer.valueOf(objects[5].toString());
+        this.statusCode = Integer.valueOf(objects[5].toString());
         this.creatorType =  Integer.valueOf(objects[6].toString());
         this.techId = Integer.valueOf(objects[7].toString());
         this.techName = (String)objects[8];
@@ -71,8 +112,18 @@ public class OrderShow {
         this.address = (String) objects[23];
         this.longitude = (String) objects[24];
         this.latitude = (String) objects[25];
+        this.remark = (String) objects[26];
 
     }
+
+    public Status getStatus() {
+        return Status.getStatus(this.statusCode);
+    }
+
+    public void setStatus(Status status) {
+        this.statusCode = status.getStatusCode();
+    }
+
 
     public Integer getId() {
         return id;
@@ -114,12 +165,12 @@ public class OrderShow {
         AgreedEndTime = agreedEndTime;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getStatusCode() {
+        return statusCode;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 
     public Integer getCreatorType() {
@@ -289,5 +340,13 @@ public class OrderShow {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
