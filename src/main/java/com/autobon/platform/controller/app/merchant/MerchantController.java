@@ -7,21 +7,28 @@ import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.order.entity.Order;
+import com.autobon.order.service.ConstructionProjectService;
 import com.autobon.order.service.OrderService;
+import com.autobon.order.service.WorkDetailService;
+import com.autobon.order.vo.OrderConstructionShow;
+import com.autobon.order.vo.OrderShow;
+import com.autobon.order.vo.ProjectPositionShow;
+import com.autobon.order.vo.WorkDetailShow;
 import com.autobon.platform.listener.CooperatorEventListener;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
+import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
 import com.autobon.shared.RedisCache;
+import com.autobon.technician.entity.LocationStatus;
+import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.LocationStatusService;
+import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.persistence.Column;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,21 +46,24 @@ public class MerchantController {
 
     @Autowired
     RedisCache redisCache;
-
     @Autowired
     CooperatorService cooperatorService;
-
     @Autowired
     CoopAccountService coopAccountService;
-
     @Autowired
     ReviewCooperService reviewCooperService;
-
     @Autowired
     ApplicationEventPublisher publisher;
-
     @Autowired
     OrderService orderService;
+    @Autowired
+    WorkDetailService workDetailService;
+    @Autowired
+    ConstructionProjectService constructionProjectService;
+    @Autowired
+    LocationStatusService locationStatusService;
+    @Autowired
+    TechnicianService technicianService;
 
     /**
      * 商户注册
@@ -149,7 +159,7 @@ public class MerchantController {
 
 
     /**
-     * 技师认证
+     * 商户认证
      * @param request
      * @param enterpriseName
      * @param businessLicensePic
@@ -208,7 +218,38 @@ public class MerchantController {
 
     }
 
+    /**
+     * 查询技师
+     * @param query 查询内容 纯数字则查询手机 反之查询姓名
+     * @param page 页码
+     * @param pageSize 页面大小
+     * @return JsonResult对象
+     */
+    @RequestMapping(value = "/merchant/technician",method = RequestMethod.GET)
+    public JsonResult getTechnician(@RequestParam("query") String query,
+                                    @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                                    @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                                    HttpServletRequest request){
 
+        try {
+            Technician tech = (Technician) request.getAttribute("user");
+            if (tech == null) {
+                return new JsonResult(false, "登陆过期");
+            }
+            Page<Technician> technicians;
+            String query1 = "%" + query + "%";
+            if (Pattern.matches("\\d+", query)) {
+                technicians = technicianService.find(query1, null, page, pageSize);
+
+            } else {
+                technicians = technicianService.find(null, query1, page, pageSize);
+            }
+
+            return new JsonResult(true, new JsonPage<>(technicians));
+        }catch (Exception e){
+            return  new JsonResult(false, e.getMessage());
+        }
+    }
 
     /**
      *
@@ -266,5 +307,154 @@ public class MerchantController {
         publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
         return new JsonResult(true,   order);
     }
+
+
+    /**
+     * 查询订单详情
+     * @param orderId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/merchant/order/{orderId:\\d+}", method = RequestMethod.GET)
+    public JsonResult getOrder(@PathVariable("orderId") int orderId,
+                               HttpServletRequest request) {
+
+        OrderShow orderShow = orderService.getByOrderId(orderId);
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        if(coopAccount == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        Order order = orderService.get(orderId);
+
+        if (order == null||order.getCoopId()!= coopAccount.getCooperatorId()) {
+            return new JsonResult(false,  "没有这个订单");
+        }
+
+        LocationStatus locationStatus =locationStatusService.findByTechId(orderShow.getTechId());
+        if(locationStatus != null){
+            orderShow.setTechLatitude(locationStatus.getLat());
+            orderShow.setTechLongitude(locationStatus.getLng());
+        }
+
+        List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
+        Map<Integer, String> projectMap = constructionProjectService.getProject();
+        Map<Integer, String> positionMap = constructionProjectService.getPosition();
+
+        List<OrderConstructionShow> constructionShowList = new ArrayList<>();
+        for(WorkDetailShow workDetailShow: workDetailShowList) {
+            OrderConstructionShow orderConstructionShow = new OrderConstructionShow();
+            List<ProjectPositionShow> projectPositionShows = new ArrayList<>();
+            orderConstructionShow.setTechId(workDetailShow.getTechId());
+            orderConstructionShow.setTechName(workDetailShow.getTechName());
+            orderConstructionShow.setIsMainTech(workDetailShow.getTechId() == order.getMainTechId()?1:0);
+            orderConstructionShow.setPayStatus(workDetailShow.getPayStatus());
+            orderConstructionShow.setPayment(workDetailShow.getPayment());
+            if (workDetailShow.getPosition1() != null && workDetailShow.getPosition1() != null) {
+                String projectName = projectMap.get(workDetailShow.getProject1());
+                String position = workDetailShow.getPosition1();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+            if (workDetailShow.getPosition2() != null && workDetailShow.getPosition2() != null) {
+
+                String projectName = projectMap.get(workDetailShow.getProject2());
+
+                String position = workDetailShow.getPosition2();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+            if (workDetailShow.getPosition3() != null && workDetailShow.getPosition3() != null) {
+
+                String projectName = projectMap.get(workDetailShow.getProject3());
+
+                String position = workDetailShow.getPosition3();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+            if (workDetailShow.getPosition4() != null && workDetailShow.getPosition4() != null) {
+
+                String projectName = projectMap.get(workDetailShow.getProject4());
+
+                String position = workDetailShow.getPosition4();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+
+            orderConstructionShow.setProjectPosition(projectPositionShows);
+            constructionShowList.add(orderConstructionShow);
+        }
+        String type = orderShow.getType();
+        if(type!=null&& type.length()>0) {
+            String[] projectArr = type.split(",");
+            String projectStr = "";
+            for (String projectId : projectArr) {
+                if (projectStr.length() > 0) {
+                    projectStr += "," + projectMap.get(Integer.valueOf(projectId));
+                } else {
+                    projectStr += projectMap.get(Integer.valueOf(projectId));
+                }
+            }
+            orderShow.setType(projectStr);
+        }
+
+        orderShow.setOrderConstructionShow(constructionShowList);
+        return new JsonResult(true, orderShow);
+    }
+
+
+    /**
+     *
+     * @param longitude
+     * @param latitude
+     * @return
+     */
+    @RequestMapping(value = "/merchant/technician/distance", method = RequestMethod.GET)
+    public JsonResult getDistance(@RequestParam(value = "longitude",required = false) String longitude,
+                                  @RequestParam(value ="latitude",required = false) String latitude,
+                                  @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                                  @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+
+
+
+        return new JsonResult(true,locationStatusService.getTechByDistance(latitude, longitude, page, pageSize));
+
+    }
+
 
 }

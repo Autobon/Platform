@@ -81,6 +81,8 @@ public class OrderShow {
 
 
     private List<OrderConstructionShow> orderConstructionShow;
+    private String techLongitude;
+    private String techLatitude;
 
 
     public OrderShow() {}
@@ -348,5 +350,21 @@ public class OrderShow {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getTechLongitude() {
+        return techLongitude;
+    }
+
+    public void setTechLongitude(String techLongitude) {
+        this.techLongitude = techLongitude;
+    }
+
+    public String getTechLatitude() {
+        return techLatitude;
+    }
+
+    public void setTechLatitude(String techLatitude) {
+        this.techLatitude = techLatitude;
     }
 }
