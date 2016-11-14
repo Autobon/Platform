@@ -1,6 +1,6 @@
 # 通知消息
 
-# 1.补充订单查询
+# 1.通过订单编号获取施工项目及对应的施工部位
 
 ### URL及请求方法
 `GET /api/mobile/technician/order/project/position/{orderId}`
