@@ -8,7 +8,7 @@
 7. [推送消息](doc/1-7-push.md)
 8. [帐单](doc/1-8-bill.md)
 9. [通知消息](doc/1-9-message.md)
-10. [补充订单查询](doc/1-9-message.md)
+10. [补充订单查询](doc/1-10-message.md)
 
 # 合作商户端
 1. [帐户及登录](doc/3-1-account.md)
