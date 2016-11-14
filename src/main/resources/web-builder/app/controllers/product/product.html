@@ -34,22 +34,23 @@
     <div ng-class="$state.is('console.product') ? 'col-sm-12' : 'col-sm-3'">
         <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.product')">
             <table class="table table-striped">
-                <thead><tr><th>序号</th><th>产品类别</th><th>品牌</th><th>编码</th><th>型号</th><th>施工部位(单位:分钟)</th><th>施工提成(单位:元)</th><th>报废扣款(单位:元)</th><th>技师级别(单位:星级)</th><th>质保期间(单位:月)</th><th>订单状态</th><th>操作</th></tr></thead>
+                <thead><tr><th>序号</th><th>产品类别</th><th>品牌</th><th>编码</th><th>型号</th><th>施工部位</th><th>施工提成(单位:元)</th><th>报废扣款(单位:元)</th><th>技师级别(单位:星级)</th><th>质保期间(单位:月)</th><th>操作</th></tr></thead>
                 <tbody>
                 <tr ng-repeat="order in orders">
-                    <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
-                    <td>{{order.orderNum}}</td>
-                    <td>{{Settings.orderTypes[order.orderType]}}</td>
-                    <td>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</td>
-                    <td>{{order.creatorName}}</td>
-                    <td>{{order.addTime | date : 'YYYY-MM-DD HH:mm'}}</td>
-                    <td>{{Settings.orderStatus[order.status]}}</td>
-                    <td><a ui-sref="console.order.detail({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                    <td>1</td>
+                    <td>隐形车衣</td>
+                    <td>安酷</td>
+                    <td>CY-AK-T-001</td>
+                    <td>安酷隐形车衣</td>
+                    <td>前保险杠</td>
+                    <td>65</td>
+                    <td>95</td>
+                    <td><span class="m-l-10"><uib-rating ng-model="order.id" read-only="true" max="5" aria-labelledby="default-rating"></uib-rating><b>{{order.id.toFixed(2)}}</b>&nbsp;星</span><br></td>
+                    <td>60</td>
+                    <td><a ui-sref="console.product.edit({orderNum: order.orderNum})" class="btn btn-xs btn-default">
                         <i class="fa fa-list"></i>&nbsp;详情</a>
-                            <span ng-if="order.status == 'NEWLY_CREATED'" class="btn btn-default btn-xs" popover-placement="left"
-                                  popover-trigger="outsideClick" popover-is-open="techQuery['show' + order.id]" uib-popover-template="'assignProduct.html'">
-                                <i class="fa fa-paper-plane-o"></i>&nbsp;派单
-                            </span>
+                        <a ui-sref="console.product.edit({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                            <i class="fa fa-list"></i>&nbsp;修改</a>
                     </td>
                 </tr>
                 </tbody>
@@ -89,19 +90,3 @@
     </div>
     <div ui-view class="col-sm-9"></div>
 </div>
-<script type="text/ng-template" id="assignProduct.html">
-    <div>
-        <form class="form-inline" ng-submit="searchTech(techQuery.query)">
-            <input type="text" class="form-control input-sm" ng-model="techQuery.query" required style="width: 100%;" placeholder="手机号或姓名">
-        </form>
-        <div class="list-group m-t-10 m-b-0">
-            <a href class="list-group-item p-0" style="height: 44px;" ng-repeat="t in techQuery.techs" ng-click="assign(order, t)">
-                <img ng-src="{{t.avatar}}" style="width: 40px; height: 40px; margin: 1px 5px 1px 1px; border-radius: 4px;" class="pull-left">
-                <span style="display: inline-block;">
-                    <span class="m-l-5">{{t.name}}</span><br>
-                    <i class="glyphicon glyphicon-earphone">{{t.phone}}</i>
-                </span>
-            </a>
-        </div>
-    </div>
-</script>

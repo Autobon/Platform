@@ -14,7 +14,7 @@
         <div class="col-sm-12"><b>备注: </b><span>{{order.remark}}</span></div>
     </div>
     <div class="row m-t-10">
-        <div class="col-sm-4"><image-box ng-if="order.photo" url="{{order.photo}}" style="height: 280px;"></image-box></div>
+        <div class="col-sm-4"><img ng-if="order.photo" url="{{order.photo}}" style="height: 280px;"></div>
         <div class="col-sm-8">
             <div class="form-control" style="cursor: not-allowed;">
                 <span>经度: {{order.position.lng}}, 纬度: {{order.position.lat}}</span>
@@ -33,6 +33,7 @@
             <div class="col-sm-4"><b>施工费用: </b><span>￥{{order.mainConstruct.payment}}</span></div>
             <div class="col-sm-8"><b>施工项目: </b><span>{{order.mainConstruct.workItems}}</span></div>
         </div>
+
         <div class="row m-t-20 clearfix">
             <div style="width: 3%; height: 10px; float: left;"></div>
             <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.beforePhotos.split(',')"><image-box url="{{p}}" style="height: 120px;"></image-box></div>
@@ -58,56 +59,69 @@
             <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.secondConstruct.afterPhotos.split(',')"><image-box url="{{p}}" style="height: 120px;"></image-box></div>
         </div>
     </div>
-    <div class="comment" ng-if="order.comment.id">
+    <div  ng-if="order.status == 'FINISHED'">
         <div class="sub-header">
-            <h3>评论</h3>
+            <h3>材料耗损</h3>
         </div>
-        <div>
-            <label>打分: &nbsp;&nbsp;</label>
-            <uib-rating ng-model="order.comment.star" max="5" read-only="true" aria-labelledby="default-rating"></uib-rating>
+        <div class="row detail-row">
+            <div class="col-sm-4"><b>技师姓名: </b><span>张三</span></div>
+            <div class="col-sm-4"><b>施工项目: </b><span>隔热膜</span></div>
+            <div class="col-sm-4"><b>施工部位: </b><span>前档风</span></div>
         </div>
-        <ul class="list-group pull-left m-t-20">
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.arriveOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时到达</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.completeOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时完工</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.professional ? 'fa-check-square-o' : 'fa-square-o'"></i> 技术专业</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.dressNeatly ? 'fa-check-square-o' : 'fa-square-o'"></i> 着装整洁</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.carProtect ? 'fa-check-square-o' : 'fa-square-o'"></i> 车辆保护超级棒</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.goodAttitude ? 'fa-check-square-o' : 'fa-square-o'"></i> 态度好</li>
-        </ul>
-        <div class="pull-left m-20">
-            <label>评论:</label>
-            <p>{{order.comment.advice}}</p>
+        <div class="row detail-row">
+            <div class="col-sm-4"><b>数量: </b><span>8</span></div>
         </div>
     </div>
-    <form class="form-horizontal" name="form" ng-if="order.creatorType == 2 && order.status == 'FINISHED' && !order.comment.id">
-        <div class="sub-header"><h4>发表评论:</h4></div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">星级</label>
-            <div class="col-sm-10">
-                <uib-rating ng-model="comment.star" required max="5" aria-labelledby="default-rating"></uib-rating>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">评价</label>
-            <div class="col-sm-10">
-                <label><input type="checkbox" ng-model="comment.arriveOnTime"> 准时到达</label><br>
-                <label><input type="checkbox" ng-model="comment.completeOnTime"> 准时完工</label><br>
-                <label><input type="checkbox" ng-model="comment.professional"> 技术专业</label><br>
-                <label><input type="checkbox" ng-model="comment.dressNeatly"> 着装整洁</label><br>
-                <label><input type="checkbox" ng-model="comment.carProtect"> 车辆保护超级棒</label><br>
-                <label><input type="checkbox" ng-model="comment.goodAttitude"> 态度好</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">评论</label>
-            <div class="col-sm-10">
-                <textarea class="form-control" required ng-model="comment.advice"></textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-10 col-sm-offset-2">
-                <button type="submit" class="btn btn-primary p-l-20 p-r-20" ng-disabled="form.$invalid" ng-click="saveComment()">提交</button><span class="m-l-20 text-danger">{{commentResult}}</span>
-            </div>
-        </div>
-    </form>
+    <!--<div class="comment" ng-if="order.comment.id">-->
+        <!--<div class="sub-header">-->
+            <!--<h3>评论</h3>-->
+        <!--</div>-->
+        <!--<div>-->
+            <!--<label>打分: &nbsp;&nbsp;</label>-->
+            <!--<uib-rating ng-model="order.comment.star" max="5" read-only="true" aria-labelledby="default-rating"></uib-rating>-->
+        <!--</div>-->
+        <!--<ul class="list-group pull-left m-t-20">-->
+            <!--<li class="list-group-item"><i class="fa" ng-class="order.comment.arriveOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时到达</li>-->
+            <!--<li class="list-group-item"><i class="fa" ng-class="order.comment.completeOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时完工</li>-->
+            <!--<li class="list-group-item"><i class="fa" ng-class="order.comment.professional ? 'fa-check-square-o' : 'fa-square-o'"></i> 技术专业</li>-->
+            <!--<li class="list-group-item"><i class="fa" ng-class="order.comment.dressNeatly ? 'fa-check-square-o' : 'fa-square-o'"></i> 着装整洁</li>-->
+            <!--<li class="list-group-item"><i class="fa" ng-class="order.comment.carProtect ? 'fa-check-square-o' : 'fa-square-o'"></i> 车辆保护超级棒</li>-->
+            <!--<li class="list-group-item"><i class="fa" ng-class="order.comment.goodAttitude ? 'fa-check-square-o' : 'fa-square-o'"></i> 态度好</li>-->
+        <!--</ul>-->
+        <!--<div class="pull-left m-20">-->
+            <!--<label>评论:</label>-->
+            <!--<p>{{order.comment.advice}}</p>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<form class="form-horizontal" name="form" ng-if="order.creatorType == 2 && order.status == 'FINISHED' && !order.comment.id">-->
+        <!--<div class="sub-header"><h4>发表评论:</h4></div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-2 control-label">星级</label>-->
+            <!--<div class="col-sm-10">-->
+                <!--<uib-rating ng-model="comment.star" required max="5" aria-labelledby="default-rating"></uib-rating>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-2 control-label">评价</label>-->
+            <!--<div class="col-sm-10">-->
+                <!--<label><input type="checkbox" ng-model="comment.arriveOnTime"> 准时到达</label><br>-->
+                <!--<label><input type="checkbox" ng-model="comment.completeOnTime"> 准时完工</label><br>-->
+                <!--<label><input type="checkbox" ng-model="comment.professional"> 技术专业</label><br>-->
+                <!--<label><input type="checkbox" ng-model="comment.dressNeatly"> 着装整洁</label><br>-->
+                <!--<label><input type="checkbox" ng-model="comment.carProtect"> 车辆保护超级棒</label><br>-->
+                <!--<label><input type="checkbox" ng-model="comment.goodAttitude"> 态度好</label>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-2 control-label">评论</label>-->
+            <!--<div class="col-sm-10">-->
+                <!--<textarea class="form-control" required ng-model="comment.advice"></textarea>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<div class="col-sm-10 col-sm-offset-2">-->
+                <!--<button type="submit" class="btn btn-primary p-l-20 p-r-20" ng-disabled="form.$invalid" ng-click="saveComment()">提交</button><span class="m-l-20 text-danger">{{commentResult}}</span>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</form>-->
 </div>
