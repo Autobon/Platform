@@ -1,6 +1,6 @@
 # 通知消息
 
-# 补充订单查询
+# 1.补充订单查询
 
 ### URL及请求方法
 `GET /api/mobile/technician/order/project/position/{orderId}`
@@ -11,7 +11,7 @@
 | ------ | -------- | ---- | --- |
 |  |  |  |  |
 
-# 查询本人订单 
+# 2.查询本人订单 
 
 ### URL及请求方法
 `GET /api/mobile/technician/order`
@@ -24,7 +24,7 @@
 | page |  |  |  |
 | pageSize |  |  |  |
 
-# 技师查询自己信息 
+# 3.技师查询自己信息 
 
 ### URL及请求方法
 `GET /api/mobile/technician/me`
