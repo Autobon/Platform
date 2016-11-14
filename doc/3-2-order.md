@@ -516,3 +516,16 @@ POST /api/mobile/coop/order/uploadPhoto
         "data": null
     }
     ```
+    
+## 8. 查询订单详情
+
+### URL及请求方法
+`POST /api/mobile/coop/merchant/order/{orderId}`
+
+### 请求参数
+
+| 参数名称 | 是否必须 | 说明 | 举例 |
+| ------ | -------- | ---- | --- |
+| orderId | 是 | URL占位符参数, 订单编号  | 1 |
+
+### 返回数据
