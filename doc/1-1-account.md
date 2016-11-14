@@ -13,7 +13,7 @@
 ## 1. 帐户注册
 技师帐户注册.需要手机号,密码,短信验证码完成注册.
 ### URL及请求方法
-POST /api/mobile/technician/register
+POST /api/mobile/technician/v2/register
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
@@ -24,69 +24,96 @@ POST /api/mobile/technician/register
 
 
 ### 返回数据
-1.请求成功
+
+1.通过手机号请求验证码
+```
+{
+  "result": true,
+  "message": "",
+  "error": "",
+  "data": null
+}
+
+```
+
+2.请求成功
 
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
-        "id": 3,
-        "phone": "18827075300",
-        "name": null,
-        "gender": null,
-        "avatar": null,
-        "idNo": null,
-        "idPhoto": null,
-        "bank": null,
-        "bankAddress": null,
-        "bankCardNo": null,
-        "verifyAt": null,
-        "requestVerifyAt": null,
-        "verifyMsg": null,
-        "lastLoginAt": null,
-        "lastLoginIp": null,
-        "createAt": 1457277685096,
-        "star": 0,
-        "voteRate": 0,
-        "skill": null,
-        "pushId": null,
-        "status": "NEWLY_CREATED"
-    }
-}
+  "status": true,
+  "message": {
+    "id": 4,
+    "phone": "18812345675",
+    "name": null,
+    "gender": null,
+    "avatar": null,
+    "idNo": null,
+    "idPhoto": null,
+    "bank": null,
+    "bankAddress": null,
+    "bankCardNo": null,
+    "verifyAt": null,
+    "requestVerifyAt": null,
+    "verifyMsg": null,
+    "lastLoginAt": null,
+    "lastLoginIp": null,
+    "createAt": 1479117834252,
+    "skill": null,
+    "pushId": null,
+    "reference": null,
+    "filmLevel": 0,
+    "filmWorkingSeniority": 0,
+    "carCoverLevel": 0,
+    "carCoverWorkingSeniority": 0,
+    "colorModifyLevel": 0,
+    "colorModifyWorkingSeniority": 0,
+    "beautyLevel": 0,
+    "beautyWorkingSeniority": 0,
+    "resume": null,
+    "status": "NEWLY_CREATED"
+  }
 ```
 
 2.验证码错误
 
 ```
-{"result": false,
-"message": "验证码错误",
-"error": "ILLEGAL_PARAM",
-"data": null}
+{
+  "status": false,
+  "message": "验证码错误"
+}
 ```
 
 3.手机号格式错误
 
 ```
-{"result": false,
-"message": "手机号格式错误,验证码错误",
-"error": "ILLEGAL_PARAM",
-"data": null}
+{
+  "status": false,
+  "message": "手机号格式错误,验证码错误"
+}
 ```
 
 4.密码至少6位
 
 ```
-{"result": false,
-"message": "密码至少6位",
-"error": "ILLEGAL_PARAM",
-"data": null}
+{
+  "status": false,
+  "message": "密码至少6位"
+}
 ```
+
+5.手机号已被注册
+
+```
+{
+  "status": false,
+  "message": "手机号已被注册,验证码错误"
+}
+```
+
 
 ## 2. 帐户登录
 ### URL及请求方法
-POST /api/mobile/technician/login
+POST /api/mobile/technician/v2/login
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
@@ -99,50 +126,56 @@ POST /api/mobile/technician/login
 
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
-        "id": 1,
-        "phone": "18812345678",
-        "name": "tom",
-        "gender": null,
-        "avatar": null,
-        "idNo": "422302198608266313",
-        "idPhoto": "/etc/a.jpg",
-        "bank": "工商银行",
-        "bankAddress": "光谷",
-        "bankCardNo": "88888888888",
-        "verifyAt": null,
-        "requestVerifyAt": 1457277682000,
-        "verifyMsg": null,
-        "lastLoginAt": 1457277685376,
-        "lastLoginIp": "127.0.0.1",
-        "createAt": 1455724800000,
-        "star": 0,
-        "voteRate": 0,
-        "skill": "1,2",
-        "pushId": null,
-        "status": "IN_VERIFICATION"
-    }
+  "status": true,
+  "message": {
+    "id": 1,
+    "phone": "18812345678",
+    "name": "tom",
+    "gender": null,
+    "avatar": "http://photocdn.sohu.com/20110426/Img306452326.jpg",
+    "idNo": "422302198608266313",
+    "idPhoto": null,
+    "bank": "工商银行",
+    "bankAddress": "光谷",
+    "bankCardNo": "88888888888",
+    "verifyAt": null,
+    "requestVerifyAt": null,
+    "verifyMsg": null,
+    "lastLoginAt": 1479115253320,
+    "lastLoginIp": "0:0:0:0:0:0:0:1",
+    "createAt": 1455724800000,
+    "skill": "1",
+    "pushId": null,
+    "reference": null,
+    "filmLevel": 0,
+    "filmWorkingSeniority": 0,
+    "carCoverLevel": 0,
+    "carCoverWorkingSeniority": 0,
+    "colorModifyLevel": 0,
+    "colorModifyWorkingSeniority": 0,
+    "beautyLevel": 0,
+    "beautyWorkingSeniority": 0,
+    "resume": null,
+    "status": "IN_VERIFICATION"
+  }
 }
 ```
 2.未注册手机
 
 ```
-{"result": false,
-"message": "手机号未注册",
-"error": "NO_SUCH_USER",
-"data": null}
+{
+  "status": false,
+  "message": "手机号未注册"
+}
 ```
 
 3.密码错误
 
 ```
-{"result": false,
-"message": "密码错误",
-"error": "PASSWORD_MISMATCH",
-"data": null}
+{
+  "status": false,
+  "message": "密码错误"
+}
 ```
 ## 3. 找回密码
 通过手机号和短信验证码设定新密码.
@@ -206,6 +239,7 @@ POST /api/mobile/technician/changePassword
 1.请求成功
 
 ```
+{"stauts":true,"message":""}
 {
     "result": true,
     "message": null,
