@@ -66,10 +66,10 @@ public class MerchantController {
     TechnicianService technicianService;
 
     /**
-     * ÉÌ»§×¢²á
-     * @param phone ÊÖ»úºÅÂë
-     * @param password ÃÜÂë
-     * @param verifySms ÑéÖ¤Âë
+     * å•†æˆ·æ³¨å†Œ
+     * @param phone æ‰‹æœºå·ç 
+     * @param password å¯†ç 
+     * @param verifySms éªŒè¯ç 
      * @return
      */
     @RequestMapping(value = "/merchant/register", method = RequestMethod.POST)
@@ -81,17 +81,17 @@ public class MerchantController {
         ArrayList<String> messages = new ArrayList<>();
 
         if (!Pattern.matches("^\\d{11}$", phone)) {
-            messages.add("ÊÖ»úºÅ¸ñÊ½´íÎó");
+            messages.add("æ‰‹æœºå·æ ¼å¼é”™è¯¯");
         } else if (coopAccountService.getByPhone(phone) != null) {
-            messages.add("ÊÖ»úºÅÒÑ±»×¢²á");
+            messages.add("æ‰‹æœºå·å·²è¢«æ³¨å†Œ");
         }
 
         if (password.length() < 6) {
-            messages.add("ÃÜÂëÖÁÉÙ6Î»");
+            messages.add("å¯†ç è‡³å°‘6ä½");
         }
         String code = redisCache.get("verifySms:" + phone);
         if (!verifySms.equals(code)) {
-            messages.add("ÑéÖ¤Âë´íÎó");
+            messages.add("éªŒè¯ç é”™è¯¯");
         }
 
         if (messages.size() > 0) {
@@ -109,7 +109,7 @@ public class MerchantController {
 
 
     /**
-     * ÉÌ»§µÇÂ½
+     * å•†æˆ·ç™»é™†
      * @param phone
      * @param password
      * @param request
@@ -126,11 +126,11 @@ public class MerchantController {
         CoopAccount coopAccount = coopAccountService.getByPhone(phone);
 
         if (coopAccount == null) {
-            jsonResult.setMessage("ÊÖ»úºÅÎ´×¢²á");
+            jsonResult.setMessage("æ‰‹æœºå·æœªæ³¨å†Œ");
         } else if (!coopAccount.getPassword().equals(CoopAccount.encryptPassword(password))) {
-            jsonResult.setMessage("ÃÜÂë´íÎó");
+            jsonResult.setMessage("å¯†ç é”™è¯¯");
         } else if(coopAccount.isFired()){
-            jsonResult.setMessage("¸ÃÔ±¹¤ÒÑÀëÖ°");
+            jsonResult.setMessage("è¯¥å‘˜å·¥å·²ç¦»èŒ");
         } else {
             response.addCookie(new Cookie("autoken", CoopAccount.makeToken(coopAccount.getId())));
             coopAccount.setLastLoginTime(new Date());
@@ -159,7 +159,7 @@ public class MerchantController {
 
 
     /**
-     * ÉÌ»§ÈÏÖ¤
+     * å•†æˆ·è®¤è¯
      * @param request
      * @param enterpriseName
      * @param businessLicensePic
@@ -169,15 +169,15 @@ public class MerchantController {
      */
     @RequestMapping(value = "/merchant/certificate",method = RequestMethod.POST)
     public JsonMessage certificate(HttpServletRequest request,
-                             @RequestParam("enterpriseName") String enterpriseName,
-                             @RequestParam("businessLicensePic") String businessLicensePic,
-                             @RequestParam(value = "longitude",required = false) String longitude,
-                             @RequestParam(value ="latitude",required = false) String latitude){
+                                   @RequestParam("enterpriseName") String enterpriseName,
+                                   @RequestParam("businessLicensePic") String businessLicensePic,
+                                   @RequestParam(value = "longitude",required = false) String longitude,
+                                   @RequestParam(value ="latitude",required = false) String latitude){
 
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         int coopId = coopAccount.getCooperatorId();
 
-        //Ã»ÓĞÈÏÖ¤£¬¼ÌĞøÈÏÖ¤
+        //æ²¡æœ‰è®¤è¯ï¼Œç»§ç»­è®¤è¯
         if(coopId == 0){
             Cooperator cooperator = new Cooperator();
             cooperator.setFullname(enterpriseName);
@@ -193,10 +193,10 @@ public class MerchantController {
             publisher.publishEvent(new CooperatorEventListener.CooperatorEvent(cooperator, Event.Action.CREATED));
             return new JsonMessage(true, "", "", cooperator);
         }else {
-            //ÊÇ·ñÈÏÖ¤³É¹¦£¬³É¹¦ÔòÖ¹¡£ÈÏÖ¤Ê§°Ü£¬ÔÙÈÏÖ¤
+            //æ˜¯å¦è®¤è¯æˆåŠŸï¼ŒæˆåŠŸåˆ™æ­¢ã€‚è®¤è¯å¤±è´¥ï¼Œå†è®¤è¯
             Cooperator cooperator = cooperatorService.get(coopId);
             if (cooperator == null) {
-                return new JsonMessage(false, "Ã»ÓĞ´Ë¹ØÁªÉÌ»§");
+                return new JsonMessage(false, "æ²¡æœ‰æ­¤å…³è”å•†æˆ·");
             } else {
                 int statusCode = cooperator.getStatusCode();
                 if (statusCode == 2) {
@@ -207,11 +207,11 @@ public class MerchantController {
                     cooperatorService.save(cooperator);
                     return new JsonMessage(true, "", "", cooperator);
                 } else if (statusCode == 1) {
-                    return new JsonMessage(true, "ÄãÒÑ¾­ÈÏÖ¤³É¹¦");
+                    return new JsonMessage(true, "ä½ å·²ç»è®¤è¯æˆåŠŸ");
                 } else if (statusCode == 0) {
-                    return new JsonMessage(true, "µÈ´ıÉóºË");
+                    return new JsonMessage(true, "ç­‰å¾…å®¡æ ¸");
                 } else {
-                    return new JsonMessage(false, "ÉÌ»§×´Ì¬Âë²»ÕıÈ·");
+                    return new JsonMessage(false, "å•†æˆ·çŠ¶æ€ç ä¸æ­£ç¡®");
                 }
             }
         }
@@ -219,11 +219,11 @@ public class MerchantController {
     }
 
     /**
-     * ²éÑ¯¼¼Ê¦
-     * @param query ²éÑ¯ÄÚÈİ ´¿Êı×ÖÔò²éÑ¯ÊÖ»ú ·´Ö®²éÑ¯ĞÕÃû
-     * @param page Ò³Âë
-     * @param pageSize Ò³Ãæ´óĞ¡
-     * @return JsonResult¶ÔÏó
+     * æŸ¥è¯¢æŠ€å¸ˆ
+     * @param query æŸ¥è¯¢å†…å®¹ çº¯æ•°å­—åˆ™æŸ¥è¯¢æ‰‹æœº åä¹‹æŸ¥è¯¢å§“å
+     * @param page é¡µç 
+     * @param pageSize é¡µé¢å¤§å°
+     * @return JsonResultå¯¹è±¡
      */
     @RequestMapping(value = "/merchant/technician",method = RequestMethod.GET)
     public JsonResult getTechnician(@RequestParam("query") String query,
@@ -234,7 +234,7 @@ public class MerchantController {
         try {
             Technician tech = (Technician) request.getAttribute("user");
             if (tech == null) {
-                return new JsonResult(false, "µÇÂ½¹ıÆÚ");
+                return new JsonResult(false, "ç™»é™†è¿‡æœŸ");
             }
             Page<Technician> technicians;
             String query1 = "%" + query + "%";
@@ -265,12 +265,12 @@ public class MerchantController {
      */
     @RequestMapping(value="/merchant/order",method = RequestMethod.POST)
     public JsonResult createOrder(HttpServletRequest request,
-                                   @RequestParam("photo") String photo,
-                                   @RequestParam("remark") String remark,
-                                   @RequestParam("agreedStartTime") String agreedStartTime,
-                                   @RequestParam("agreedEndTime") String agreedEndTime,
-                                   @RequestParam("type") String type,
-                                   @RequestParam(value = "pushToAll", defaultValue = "true") boolean pushToAll) throws Exception {
+                                  @RequestParam("photo") String photo,
+                                  @RequestParam("remark") String remark,
+                                  @RequestParam("agreedStartTime") String agreedStartTime,
+                                  @RequestParam("agreedEndTime") String agreedEndTime,
+                                  @RequestParam("type") String type,
+                                  @RequestParam(value = "pushToAll", defaultValue = "true") boolean pushToAll) throws Exception {
 
 
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
@@ -278,12 +278,12 @@ public class MerchantController {
         Cooperator cooperator = cooperatorService.get(coopId);
         int statusCode = cooperator.getStatusCode();
         if(statusCode !=1) {
-            return new JsonResult(false,   "ÉÌ»§Î´Í¨¹ıÑéÖ¤");
+            return new JsonResult(false,   "å•†æˆ·æœªé€šè¿‡éªŒè¯");
         }
 
         if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", agreedStartTime)
                 ||!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", agreedEndTime)) {
-            return new JsonResult(false,   "¶©µ¥Ê±¼ä¸ñÊ½²»¶Ô, ÕıÈ·¸ñÊ½: 2016-02-10 09:23");
+            return new JsonResult(false,   "è®¢å•æ—¶é—´æ ¼å¼ä¸å¯¹, æ­£ç¡®æ ¼å¼: 2016-02-10 09:23");
         }
 
         Order order = new Order();
@@ -310,7 +310,7 @@ public class MerchantController {
 
 
     /**
-     * ²éÑ¯¶©µ¥ÏêÇé
+     * æŸ¥è¯¢è®¢å•è¯¦æƒ…
      * @param orderId
      * @param request
      * @return
@@ -322,12 +322,12 @@ public class MerchantController {
         OrderShow orderShow = orderService.getByOrderId(orderId);
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         if(coopAccount == null){
-            return new JsonResult(false, "µÇÂ½¹ıÆÚ");
+            return new JsonResult(false, "ç™»é™†è¿‡æœŸ");
         }
         Order order = orderService.get(orderId);
 
         if (order == null||order.getCoopId()!= coopAccount.getCooperatorId()) {
-            return new JsonResult(false,  "Ã»ÓĞÕâ¸ö¶©µ¥");
+            return new JsonResult(false,  "æ²¡æœ‰è¿™ä¸ªè®¢å•");
         }
 
         LocationStatus locationStatus =locationStatusService.findByTechId(orderShow.getTechId());
