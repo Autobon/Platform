@@ -8,6 +8,11 @@ public class JsonResult {
     private boolean status;
     private Object message;
 
+
+    public JsonResult(){}
+    public JsonResult(boolean status){
+        this.status = status;
+    }
     public JsonResult(boolean status, Object message){
         this.status = status;
         this.message = message;

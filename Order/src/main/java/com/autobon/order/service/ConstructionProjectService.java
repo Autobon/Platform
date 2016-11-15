@@ -56,4 +56,23 @@ public class ConstructionProjectService {
         }
         return map;
     }
+
+    public Map<String, Integer>  getProject1(){
+        Map<String, Integer> map = new HashMap<>();
+        List<ConstructionProject> constructionProjects = constructionProjectRepository.findAll();
+        for(ConstructionProject constructionProject: constructionProjects){
+            map.put(constructionProject.getName(), constructionProject.getId());
+        }
+        return map;
+    }
+
+    public Map<String, Integer>  getPosition1(){
+        Map<String, Integer> map = new HashMap<>();
+        List<ConstructionPosition> constructionPositions = constructionPositionRepository.findAll();
+        for(ConstructionPosition constructionPosition: constructionPositions){
+            map.put(constructionPosition.getName(), constructionPosition.getId());
+        }
+        return map;
+    }
+
 }

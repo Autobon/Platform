@@ -15,6 +15,7 @@ import java.util.Date;
 @Table(name="t_order")
 public class Order {
     public enum Status {
+        REASSIGNMENT(-20), //申请改派中
         CREATED_TO_APPOINT(-10), // 已创建待指定技师
         NEWLY_CREATED(0), // 已创建并推送, 待技师抢单
         TAKEN_UP(10), // 已有人抢单
@@ -113,6 +114,9 @@ public class Order {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHH")) +
                 VerifyCode.generateVerifyCode(6);
     }
+
+
+
 
     public int getId() {
         return id;

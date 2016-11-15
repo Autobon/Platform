@@ -7,4 +7,7 @@ alter table t_technician add car_cover_level   int(1) default 0  COMMENT '车衣
 alter table t_technician add color_modify_level int(1) default 0  COMMENT '改色星级';
 alter table t_technician add beauty_level  int(1) default 0  COMMENT '美容星级';
 
-
+alter table t_technician add film_working_seniority int(2) default 0  COMMENT '隔热膜年限';
+alter table t_technician add car_cover_working_seniority   int(2) default 0  COMMENT '车衣年限';
+alter table t_technician add color_modify_working_seniority int(2) default 0  COMMENT '改色年限';
+alter table t_technician add beauty_working_seniority  int(2) default 0  COMMENT '美容年限';
