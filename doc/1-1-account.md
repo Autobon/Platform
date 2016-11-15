@@ -180,7 +180,7 @@ POST /api/mobile/technician/v2/login
 ## 3. 找回密码
 通过手机号和短信验证码设定新密码.
 ### URL及请求方法
-POST /api/mobile/technician/resetPassword
+PUT /api/mobile/technician/v2/resetPassword
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
@@ -192,39 +192,39 @@ POST /api/mobile/technician/resetPassword
 1.请求成功
 
 ```
-{"result": true,
-"message": "",
-"error": null,
-"data": null}
+{
+  "status": true,
+  "message": null
+}
 ```
 2.验证码错误
 
 ```
-{"result": false,
-"message": "验证码错误",
-"error": "ILLEGAL_PARAM",
-"data": null}
+{
+  "status": false,
+  "message": "验证码错误"
+}
 ```
 3.密码至少6位
 
 ```
-{"result": false,
-"message": "密码至少6位",
-"error": "ILLEGAL_PARAM",
-"data": null}
+{
+  "status": false,
+  "message": "密码至少6位"
+}
 ```
 4.手机号未注册
 
 ```
-{"result": false,
-"message": "手机号未注册",
-"error": "NO_SUCH_USER",
-"data": null}
+{
+  "status": false,
+  "message": "手机号未注册"
+}
 ```
 ## 4. 更改密码
 已登录的情况下,修改密码
 ### URL及请求方法
-POST /api/mobile/technician/changePassword
+PUT /api/mobile/technician/v2/changePassword
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
@@ -239,27 +239,24 @@ POST /api/mobile/technician/changePassword
 1.请求成功
 
 ```
-{"stauts":true,"message":""}
 {
-    "result": true,
-    "message": null,
-    "error": null,
-    "data": null
+  "status": true,
+  "message": "修改密码成功"
 }
 ```
 
 2.密码至少6位
 
 ```
-{"result": false,
-"message": "密码至少6位",
-"error": "ILLEGAL_PARAM",
-"data": null}
+{
+  "status": false,
+  "message": "密码至少6位"
+}
 ```
 
 ## 5. 上传头像
 ### URL及请求方法
-POST /api/mobile/technician/avatar
+POST /api/mobile/technician/v2/avatar
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
@@ -298,7 +295,7 @@ POST /api/mobile/technician/avatar
 
 ## 6. 上传身份证照片
 ### URL及请求方法
-POST /api/mobile/technician/idPhoto
+POST /api/mobile/technician/v2/idPhoto
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
@@ -337,7 +334,7 @@ POST /api/mobile/technician/idPhoto
 
 ## 7. 更新个推ID
 ### URL及请求方法
-POST /api/mobile/technician/pushId
+POST /api/mobile/technician/v2/pushId
 ### 请求参数
 
 | 参数名称 | 说明 | 举例 |
@@ -347,15 +344,15 @@ POST /api/mobile/technician/pushId
 ### 返回数据
 
 ```
-{"result": true,
-"message": null,
-"error": null,
-"data": null}
+{
+  "status": true,
+  "message": null
+}
 ```
 
 ## 8. 获取技师信息
 ### URL及请求方法
-GET /api/mobile/technician
+GET /api/mobile/technician/v2/me
 
 ### 请求参数
 无
@@ -364,35 +361,33 @@ GET /api/mobile/technician
 
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
-        "id": 1,
-        "phone": "18812345678",
-        "name": "tom",
-        "gender": null,
-        "avatar": null,
-        "idNo": "422302198608266313",
-        "idPhoto": "/etc/a.jpg",
-        "bank": "027",
-        "bankAddress": "光谷",
-        "bankCardNo": "88888888888",
-        "verifyAt": null,
-        "requestVerifyAt": null,
-        "verifyMsg": null,
-        "lastLoginAt": 1456195103000,
-        "lastLoginIp": "127.0.0.1",
-        "createAt": 1455724800000,
-        "skill": "1",
-        "pushId": null,
-        "starRate": null,
-        "balance": null,
-        "unpaidOrders": null,
-        "totalOrders": null,
-        "commentCount": null,
-        "status": "NEWLY_CREATED"
-    }
+  "status": true,
+  "message": {
+    "id": 1,
+    "phone": "18812345678",
+    "name": "tom",
+    "gender": null,
+    "avatar": "http://photocdn.sohu.com/20110426/Img306452326.jpg",
+    "idNo": "422302198608266313",
+    "idPhoto": null,
+    "bank": "工商银行",
+    "bankAddress": "光谷",
+    "bankCardNo": "88888888888",
+    "verifyAt": null,
+    "requestVerifyAt": null,
+    "verifyMsg": null,
+    "lastLoginAt": 1479178773000,
+    "lastLoginIp": "0:0:0:0:0:0:0:1",
+    "createAt": 1455724800000,
+    "skill": "1",
+    "pushId": null,
+    "starRate": null,
+    "balance": null,
+    "unpaidOrders": null,
+    "totalOrders": null,
+    "commentCount": null,
+    "status": "IN_VERIFICATION"
+  }
 }
 ```
 
@@ -408,7 +403,7 @@ GET /api/mobile/technician
 
 ## 9. 查询技师
 ### URL及请求方法
-GET /api/mobile/technician/search
+GET /api/mobile/technician/search/v2
 
 ### 请求参数
 
@@ -422,44 +417,15 @@ GET /api/mobile/technician/search
 
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
-        "page": 1,
-        "totalElements": 1,
-        "totalPages": 1,
-        "pageSize": 20,
-        "count": 1,
-        "list": [
-            {
-                "id": 1,
-                "phone": "18812345678",
-                "name": "tom",
-                "gender": null,
-                "avatar": null,
-                "idNo": "422302198608266313",
-                "idPhoto": "/etc/a.jpg",
-                "bank": "027",
-                "bankAddress": "光谷",
-                "bankCardNo": "88888888888",
-                "verifyAt": null,
-                "requestVerifyAt": null,
-                "verifyMsg": null,
-                "lastLoginAt": 1456195103000,
-                "lastLoginIp": "127.0.0.1",
-                "createAt": 1455724800000,
-                "skill": "1",
-                "pushId": null,
-                "starRate": null,
-                "balance": null,
-                "unpaidOrders": null,
-                "totalOrders": null,
-                "commentCount": null,
-                "status": "NEWLY_CREATED"
-            }
-        ]
-    }
+  "status": true,
+  "message": {
+    "page": 1,
+    "totalElements": 0,
+    "totalPages": 0,
+    "pageSize": 20,
+    "count": 0,
+    "list": []
+  }
 }
 ```
 
@@ -478,7 +444,7 @@ GET /api/mobile/technician/search
 
 ## 10. 报告实时位置
 ### URL及请求方法
-POST /api/mobile/technician/reportLocation
+POST /api/mobile/technician/v2/location
 
 ### 请求参数
 
