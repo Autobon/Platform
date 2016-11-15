@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by wh on 2016/11/15.
  */
 @RestController
-@RequestMapping("/api/web/admin/order")
-public class OrderController {
+@RequestMapping("/api/web/admin/order/v2")
+public class OrderV2Controller {
 }
