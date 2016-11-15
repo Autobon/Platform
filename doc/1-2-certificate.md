@@ -3,7 +3,7 @@
 ## 1. 提交认证
 技师提交认证.需要名字,身份证号,技能项数组，身份证照，银行，银行地址，银行卡号
 ### URL及请求方法
-POST /api/mobile/technician/certificate
+POST /api/mobile/technician/v2/certificate
 
 ### 请求参数
 
