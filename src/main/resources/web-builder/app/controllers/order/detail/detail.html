@@ -6,9 +6,14 @@
               popover-trigger="outsideClick" uib-popover-template="'assignOrder.html'"><i class="fa fa-paper-plane-o"></i>&nbsp;派单</span>
     </h3>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>预约时间: </b><span>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>预约开工时间: </b><span>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
         <div class="col-sm-4"><b>联系人: </b><span>{{order.creatorName}}&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-earphone">{{order.contactPhone}}</i></span></div>
         <div class="col-sm-4"><b>下单时间: </b><span>{{order.addTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>开工时间: </b><span>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>结束时间: </b><span>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>最晚交车时间: </b><span>{{order.addTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
     </div>
     <div class="row detail-row">
         <div class="col-sm-12"><b>备注: </b><span>{{order.remark}}</span></div>
@@ -60,9 +65,7 @@
         </div>
     </div>
     <div  ng-if="order.status == 'FINISHED'">
-        <div class="sub-header">
-            <h3>材料耗损</h3>
-        </div>
+            <h4>材料耗损</h4>
         <div class="row detail-row">
             <div class="col-sm-4"><b>技师姓名: </b><span>张三</span></div>
             <div class="col-sm-4"><b>施工项目: </b><span>隔热膜</span></div>
