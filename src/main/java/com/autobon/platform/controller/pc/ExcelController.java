@@ -30,13 +30,13 @@ public class ExcelController {
     @RequestMapping(value = "/project/upload", method = RequestMethod.POST)
     public JsonResult uploadProject(HttpServletRequest request)throws Exception{
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        System.out.println("通过传统方式form表单提交方式导入excel文件！");
+
 
         InputStream in =null;
         List<List<Object>> listob = null;
         MultipartFile file = multipartRequest.getFile("upfile");
         if(file.isEmpty()){
-            throw new Exception("文件不存在！");
+            throw new Exception("锟侥硷拷锟斤拷锟斤拷锟节ｏ拷");
         }
         in = file.getInputStream();
         listob = new ImportExcelUtil().getBankListByExcel(in,file.getOriginalFilename());
@@ -45,7 +45,7 @@ public class ExcelController {
         Map<String, Integer> projectMap = constructionProjectService.getProject1();
         Map<String, Integer> positionMap = constructionProjectService.getPosition1();
 
-        //该处可调用service相应方法进行数据保存到数据库中，现只对数据输出
+
         for (int i = 0; i < listob.size(); i++) {
             List<Object> lo = listob.get(i);
             Product product = new Product();
@@ -64,7 +64,7 @@ public class ExcelController {
 
 
         }
-        return new JsonResult(true, "上传成功");
+        return new JsonResult(true, "锟较达拷锟缴癸拷");
     }
 
 
