@@ -433,7 +433,38 @@ GET /api/mobile/technician/v2
     "totalPages": 0,
     "pageSize": 20,
     "count": 0,
-    "list": []
+    "list": [  
+    {
+        "id": 3,
+        "phone": "13396077412",
+        "name": "1",
+        "gender": null,
+        "avatar": null,
+        "idNo": null,
+        "idPhoto": null,
+        "bank": null,
+        "bankAddress": null,
+        "bankCardNo": null,
+        "verifyAt": null,
+        "requestVerifyAt": null,
+        "verifyMsg": null,
+        "lastLoginAt": 1479194716000,
+        "lastLoginIp": "10.0.12.98",
+        "createAt": 1478591661000,
+        "skill": null,
+        "pushId": null,
+        "reference": null,
+        "filmLevel": 0,
+        "filmWorkingSeniority": 0,
+        "carCoverLevel": 0,
+        "carCoverWorkingSeniority": 0,
+        "colorModifyLevel": 0,
+        "colorModifyWorkingSeniority": 0,
+        "beautyLevel": 0,
+        "beautyWorkingSeniority": 0,
+        "resume": null,
+        "status": "NEWLY_CREATED"
+      }]
   }
 }
 ```
