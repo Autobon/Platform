@@ -15,16 +15,26 @@ POST /api/mobile/technician/v2/certificate
 | idPhoto| 身份证照 | /a/a.jpg |
 | bank| 银行名称 | 工商银行 |
 | bankCardNo| 银行卡号 | 88888888888 |
-
+| bankAddress | 开户行地址 | 南湖路支行 |
+| reference | 推荐人号码 | 13233312121 |
+| filmLevel| 贴膜星级 | 5 |
+| filmWorkingSeniority| 贴膜年限 | 5 |
+| carCoverLevel| 隐形车衣星级 | 4 |
+| carCoverWorkingSeniority| 隐形车衣年限 | 3 |
+| colorModifyLevel| 车色改色星级 | 5 |
+| colorModifyWorkingSeniority| 贴膜年限 | 5 |
+| beautyLevel| 美容清洁星级 | 4 |
+| beautyWorkingSeniority| 美容清洁年限 | 3 |
+| resume| 个人简历 | 从事工作N年 |
 
 ### 返回数据
 
+
+* 返回结果
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
+    "status": true,
+    "message": {
         "id": 1,
         "phone": "18812345678",
         "name": "tom",
@@ -50,10 +60,19 @@ POST /api/mobile/technician/v2/certificate
 }
 ```
 
+
+* 返回结果
+
+```
+{"status":true,"message":"身份证号码有误"
+}
+```
+
+
 ## 2. 修改银行卡
 修改银行卡信息
 ### URL及请求方法
-POST /api/mobile/technician/changeBankCard
+PUT /api/mobile/technician/v2/changeBankCard
 
 ### 请求参数
 
@@ -61,10 +80,11 @@ POST /api/mobile/technician/changeBankCard
 | ------ | ---- | --- |
 | bank | 银行 | 026 |
 | bankCardNo | 银行卡号 | 999999999 |
+| bankAddress | 银行地址 | 南湖支行 |
 
 * 返回结果
     ```
-    {"result":true,"message":"changeBankCard","error":null,"data":null}
+    {"status":true,"message":null}
     ```
 
 ### 请求Cookie
