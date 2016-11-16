@@ -471,7 +471,7 @@ POST /api/mobile/coop/order/uploadPhoto
 }
 ```
 
-## 7. 撤销订单
+## 9. 撤销订单
 商户在发布订单后30分钟内或预约的时间2小时前可以放弃订单
 
 ### URL及请求方法
@@ -517,10 +517,10 @@ POST /api/mobile/coop/order/uploadPhoto
     }
     ```
     
-## 8. 查询订单详情
+## 10. 查询订单详情
 
 ### URL及请求方法
-`POST /api/mobile/coop/merchant/order/{orderId}`
+`POST /api/mobile/coop/merchant/order/{orderId:\\d+}`
 
 ### 请求参数
 
@@ -529,3 +529,45 @@ POST /api/mobile/coop/order/uploadPhoto
 | orderId | 是 | URL占位符参数, 订单编号  | 1 |
 
 ### 返回数据
+
+#### a. 请求成功
+
+ ```
+{
+  "status": true,
+  "message": {
+    "id": 1,
+    "orderNum": "16022313fsd123",
+    "photo": "",
+    "creatorType": 1,
+    "techId": 1,
+    "techName": "tom",
+    "techPhone": "18812345678",
+    "beforePhotos": null,
+    "afterPhotos": null,
+    "startTime": null,
+    "endTime": null,
+    "signTime": null,
+    "takenTime": null,
+    "createTime": 1456196963000,
+    "type": null,
+    "coopId": 1,
+    "coopName": "Tom",
+    "address": "软件园中路",
+    "longitude": "114.287685",
+    "latitude": "30.639203",
+    "creatorId": 1,
+    "creatorName": "超级管理员",
+    "contactPhone": "13072726003",
+    "remark": "bababala",
+    "orderConstructionShow": [],
+    "techLongitude": null,
+    "techLatitude": null,
+    "status": "EXPIRED",
+    "agreedEndTime": null,
+    "agreedStartTime": null
+  }
+}
+
+ ```
+
