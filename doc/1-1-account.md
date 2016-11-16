@@ -267,31 +267,28 @@ POST /api/mobile/technician/v2/avatar
 1.请求成功
 
 ```
-{"result": true,
-"message": "",
-"error": null,
-"data": "/uploads/technician/avatar/20160219162940293084.png"}
+{"status": true,
+"message": "/uploads/technician/avatar/20160219162940293084.png"
+}
 ```
-返回数据中的data字段加上服务器域名及端口就是头像网址.
 
 2.没有上传文件
 
 ```
-{"result": false,
-"message": "没有上传文件",
-"error": "NO_UPLOAD_FILE",
-"data": null}
+{"status": false,
+"message": "没有上传文件"
+}
 ```
 
 3.上传文件大小超过2MB
 返回状态码: 406
 
 ```
-{"result": false,
-"message": "上传文件大小不能超过2MB",
-"error": "UPLOAD_SIZE_EXCEED",
-"data": null}
+{"status": false,
+"message": "上传文件大小不能超过2MB"
+}
 ```
+
 
 ## 6. 上传身份证照片
 ### URL及请求方法
@@ -306,30 +303,27 @@ POST /api/mobile/technician/v2/idPhoto
 1.请求成功
 
 ```
-{"result": true,
-"message": "",
-"error": null,
-"data": "/uploads/technician/idPhoto/20160219162940293084.png"}
+{"status": true,
+"message": "/uploads/technician/idPhoto/20160219162940293084.png"
+}
 ```
-返回数据中的data字段加上服务器域名及端口就是身份证照片网址.
+
 
 2.没有上传文件
 
 ```
-{"result": false,
-"message": "没有上传文件",
-"error": "NO_UPLOAD_FILE",
-"data": null}
+{"status": false,
+"message": "没有上传文件"
+}
 ```
 
 3.上传文件大小超过2MB
 返回状态码: 406
 
 ```
-{"result": false,
-"message": "上传文件大小不能超过2MB",
-"error": "UPLOAD_SIZE_EXCEED",
-"data": null}
+{"status": false,
+"message": "上传文件大小不能超过2MB"
+}
 ```
 
 ## 7. 更新个推ID
@@ -465,10 +459,8 @@ POST /api/mobile/technician/v2/location
 
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": null
+    "status": true,
+    "message": ""
 }
 ```
 
@@ -476,9 +468,7 @@ POST /api/mobile/technician/v2/location
 
 ```
 {
-    "result": true,
-    "message": "请求间隔不得少于1分钟",
-    "error": "TOO_FREQUENT_REQUEST",
-    "data": null
+    "status": true,
+    "message": "请求间隔不得少于1分钟"
 }
 ```
