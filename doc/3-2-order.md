@@ -192,81 +192,10 @@ POST /api/mobile/coop/merchant/order
   }
 }
 
-
-
-
-
-
-## 4.查看订单技师详情
-查看订单技师详情
-
-### URL及请求方法
-GET /api/mobile/coop/merchant/order/{orderId}/technician
-
-### 请求参数
-
-| 参数名称 | 说明 | 举例 |
-| ------ | ---- | --- |
-| orderId | 订单id | 1 |
-
-订单需要有指定主技师。
-
-### 返回结果
-
-````
-{
-  "status": true,
-  "message": {
-    "id": 1,
-    "phone": "18812345678",
-    "name": "tom",
-    "gender": null,
-    "avatar": "http://photocdn.sohu.com/20110426/Img306452326.jpg",
-    "idNo": "422302198608266313",
-    "idPhoto": "",
-    "bank": "工商银行",
-    "bankAddress": "光谷",
-    "bankCardNo": "88888888888",
-    "verifyAt": 1478574012000,
-    "requestVerifyAt": 1478573965000,
-    "verifyMsg": null,
-    "lastLoginAt": 1479286128000,
-    "lastLoginIp": "10.0.12.39",
-    "createAt": 1455724800000,
-    "skill": "1,2,3,4",
-    "pushId": "e4341dfc3768c2c0766353898327d87a",
-    "reference": null,
-    "filmLevel": 0,
-    "filmWorkingSeniority": 0,
-    "carCoverLevel": 0,
-    "carCoverWorkingSeniority": 0,
-    "colorModifyLevel": 0,
-    "colorModifyWorkingSeniority": 0,
-    "beautyLevel": 0,
-    "beautyWorkingSeniority": 0,
-    "resume": null,
-    "status": "VERIFIED"
-  }
-}
-
 ````
 
-#### a.订单id错误
 
-```
-{
-    "status": false,
-    "message": "没有此订单"
-}
-```
-#### b.订单没有关联主技师
 
-```
-{
-    "status": false,
-    "message": "技师不存在"
-}
-```
 
 ## 5.上传订单照片
 上传订单照片
