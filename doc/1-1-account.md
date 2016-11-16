@@ -403,7 +403,7 @@ GET /api/mobile/technician/v2/me
 
 ## 9. 查询技师
 ### URL及请求方法
-GET /api/mobile/technician/search/v2
+GET /api/mobile/technician/v2
 
 ### 请求参数
 
