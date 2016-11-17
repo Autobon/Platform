@@ -331,7 +331,31 @@ public class OrderController {
 
 
     }
+    /**
+     * 车邻邦二期
+     * 查询订单
+     * @param status 1 所有订单  2 未完成  3 已完成
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/v22/order", method = RequestMethod.GET)
+    public JsonResult getOrder(
+            @RequestParam(value = "status", defaultValue = "1") int status,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+            HttpServletRequest request) {
+        Technician technician = (Technician) request.getAttribute("user");
+        if(technician == null){
+            return new JsonResult(false, "请登录");
+        }
+        Page<OrderShow> orders = null;
+        orders = orderService.getOrders(technician.getId(), status, page, pageSize);
+        return new JsonResult(true, orders);
 
+
+    }
 
     /**
      *

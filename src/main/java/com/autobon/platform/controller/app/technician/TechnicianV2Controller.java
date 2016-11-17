@@ -1,10 +1,7 @@
 package com.autobon.platform.controller.app.technician;
 
 import com.autobon.order.entity.Order;
-import com.autobon.order.service.ConstructionProjectService;
-import com.autobon.order.service.ConstructionService;
-import com.autobon.order.service.OrderService;
-import com.autobon.order.service.WorkDetailService;
+import com.autobon.order.service.*;
 import com.autobon.order.vo.*;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
@@ -75,6 +72,10 @@ public class TechnicianV2Controller {
     SmsSender smsSender;
     @Autowired
     MultipartResolver resolver;
+
+    @Autowired
+    DetailedOrderService detailedOrderService;
+
 
     @Value("${com.autobon.gm-path}") String gmPath;
     @Value("${com.autobon.uploadPath}") String uploadPath;
@@ -649,14 +650,14 @@ public class TechnicianV2Controller {
 
     /**
      * 查询本人订单
-     * @param status 1 所有订单  2 未完成  3 已完成
+     * @param status 1 所有订单  2 未完成  3 已完成 4 合作的订单
      * @param page
      * @param pageSize
      * @param request
      * @return
      */
     @RequestMapping(value = "/v2/order", method = RequestMethod.GET)
-    public JsonResult getUnFinishedOrder(
+    public JsonResult getOrders(
             @RequestParam(value = "status", defaultValue = "1") int status,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
@@ -666,18 +667,8 @@ public class TechnicianV2Controller {
             if(technician == null){
                 return new JsonResult(false, "登陆过期");
             }
-            Page<Order> orders = null;
-
-            if(status == 1){
-                orders = orderService.findAllOrder(technician.getId(), page, pageSize);
-            }
-            else if(status == 2){
-                orders = orderService.findUnfinishedOrder(technician.getId(), page, pageSize);
-            }
-            else if(status == 3){
-                orders = orderService.findFinishedOrder(technician.getId(), page, pageSize);
-            }
-
+            Page<OrderShow> orders;
+            orders = orderService.getOrders(technician.getId(), status, page, pageSize);
             return new JsonResult(true, orders);
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
@@ -1134,5 +1125,48 @@ public class TechnicianV2Controller {
         return orderShow;
     }
 
+
+    /**
+     * 技师修改银行卡号
+     * @param request
+     * @param bank
+     * @param bankCardNo
+     * @return
+     */
+    @RequestMapping(value = "/v2/changeBankCard", method = RequestMethod.PUT)
+    public JsonResult changeBankCard(HttpServletRequest request,
+                                      @RequestParam("bank") String bank,
+                                      @RequestParam("bankAddress") String bankAddress,
+                                      @RequestParam("bankCardNo") String bankCardNo) {
+        Technician technician = (Technician) request.getAttribute("user");
+        technician.setBank(bank);
+        technician.setBankAddress(bankAddress);
+        technician.setBankCardNo(bankCardNo);
+        technicianService.save(technician);
+        return new JsonResult(true);
+    }
+
+
+    /**
+     * 获取可抢订单列表
+     * @param request
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/v2/order/listNew", method = RequestMethod.GET)
+    public JsonResult listNew(
+            HttpServletRequest request,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Technician technician = (Technician) request.getAttribute("user");
+        String sSkill = technician.getSkill();
+        if (sSkill == null || "".equals(sSkill)) {
+            return new JsonResult(true,  new JsonPage<>());
+        }
+        List<Integer> skills = Arrays.stream(technician.getSkill().split(",")).map(Integer::parseInt).collect(Collectors.toList());
+
+        return new JsonResult(true, new JsonPage<>(detailedOrderService.findAvailable(skills, page, pageSize)));
+    }
 
 }

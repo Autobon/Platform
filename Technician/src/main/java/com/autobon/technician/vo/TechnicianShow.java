@@ -5,24 +5,24 @@ package com.autobon.technician.vo;
  */
 public class TechnicianShow {
 
-    private String name; // ĞÕÃû
-    private String gender; // ĞÔ±ğ
-    private String avatar; // Í·Ïñ
-    private String idNo; // Éí·İÖ¤±àºÅ
-    private String idPhoto; // Éí·İÖ¤ÕıÃæÕÕÆ¬
-    private String bank; // ÒøĞĞ¿¨¹éÊôÒøĞĞ
-    private String bankAddress; // ¿ª»§ĞĞµØÖ·
-    private String bankCardNo; // ÒøĞĞ¿¨ºÅÂë
-    private String reference; //ÍÆ¼öÈËºÅÂë£¨×¢²áÓÃ»§£©
-    private int filmLevel; //ÌùÄ¤ĞÇ¼¶
-    private int filmWorkingSeniority; //ÌùÄ¤ÄêÏŞ
-    private int carCoverLevel;  //ÒşĞÎ³µÒÂĞÇ¼¶
-    private int carCoverWorkingSeniority; //ÒşĞÎ³µÒÂÄêÏŞ
-    private int colorModifyLevel; //³µÉ«¸ÄÉ«ĞÇ¼¶
-    private int colorModifyWorkingSeniority; //³µÉ«¸ÄÉ«ÄêÏŞ
-    private int beautyLevel; //ÃÀÈİÇå½àĞÇ¼¶
-    private int beautyWorkingSeniority;//ÃÀÈİÇå½àÄêÏŞ
-    private String resume; //¸öÈË¼òÀú
+    private String name; // å§“å
+    private String gender; // æ€§åˆ«
+    private String avatar; // å¤´åƒ
+    private String idNo; // èº«ä»½è¯ç¼–å·
+    private String idPhoto; // èº«ä»½è¯æ­£é¢ç…§ç‰‡
+    private String bank; // é“¶è¡Œå¡å½’å±é“¶è¡Œ
+    private String bankAddress; // å¼€æˆ·è¡Œåœ°å€
+    private String bankCardNo; // é“¶è¡Œå¡å·ç 
+    private String reference; //æ¨èäººå·ç ï¼ˆæ³¨å†Œç”¨æˆ·ï¼‰
+    private int filmLevel; //è´´è†œæ˜Ÿçº§
+    private int filmWorkingSeniority; //è´´è†œå¹´é™
+    private int carCoverLevel;  //éšå½¢è½¦è¡£æ˜Ÿçº§
+    private int carCoverWorkingSeniority; //éšå½¢è½¦è¡£å¹´é™
+    private int colorModifyLevel; //è½¦è‰²æ”¹è‰²æ˜Ÿçº§
+    private int colorModifyWorkingSeniority; //è½¦è‰²æ”¹è‰²å¹´é™
+    private int beautyLevel; //ç¾å®¹æ¸…æ´æ˜Ÿçº§
+    private int beautyWorkingSeniority;//ç¾å®¹æ¸…æ´å¹´é™
+    private String resume; //ä¸ªäººç®€å†
 
 
     public String getName() {
