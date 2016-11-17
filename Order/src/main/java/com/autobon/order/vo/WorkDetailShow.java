@@ -36,6 +36,14 @@ public class WorkDetailShow {
 
     private Integer project4;
 
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
     private String position4;
 
 
