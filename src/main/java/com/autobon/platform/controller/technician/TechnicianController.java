@@ -47,7 +47,7 @@ public class TechnicianController {
             DetailedTechnician t = technicianService.getByPhone(query);
             ArrayList<DetailedTechnician> list = new ArrayList<>();
             if (t != null) {
-                list.add(t);
+                 list.add(t);
                 return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 1, 1, 1, list));
             } else {
                 return new JsonMessage(true, "", "", new JsonPage<>(1, 20, 0, 0, 0, list));
