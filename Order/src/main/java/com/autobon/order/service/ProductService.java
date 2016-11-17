@@ -76,5 +76,11 @@ public class ProductService {
 
 
 
+    public int deleteAll(){
+        productRepository.deleteAll();
+        return 0;
+    }
+
+
 
 }
