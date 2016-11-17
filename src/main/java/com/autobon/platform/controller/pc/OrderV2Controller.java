@@ -74,7 +74,7 @@ public class OrderV2Controller {
                         types, statusCode, sort, Sort.Direction.DESC, page, pageSize)));
     }
 
-    @RequestMapping(value = "/{orderId:[\\d]+}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{orderId}", method = RequestMethod.PUT)
     public JsonMessage update(
             @PathVariable("orderId") int orderId,
             @RequestParam(value = "type", required = false) String type,
@@ -83,7 +83,7 @@ public class OrderV2Controller {
             @RequestParam(value = "remark", required = false)String remark,
             @RequestParam(value = "positionLon", required = false)String positionLon,
             @RequestParam(value = "positionLat", required = false)String positionLat,
-            @RequestBody List<WorkDetailShow> workDetailShowList) {
+            @RequestBody List<WorkDetail> workDetailShowList) {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
         Order order = orderService.getbyOrderId(orderId);
@@ -100,13 +100,13 @@ public class OrderV2Controller {
         order.setPositionLon(positionLon == null ? order.getPositionLon():positionLon);
         order.setPositionLat(positionLat == null ? order.getPositionLat():positionLat);
         orderService.save(order);
-        for(WorkDetailShow workDetailShow : workDetailShowList){
-            WorkDetail workDetail = workDetailService.getByOderIdAndTechId(workDetailShow.getOrderId(),workDetailShow.getTechId());
-            workDetail.setProject1(workDetailShow.getProject1() == null? workDetail.getProject1(): workDetailShow.getProject1());
-            workDetail.setPosition1(workDetailShow.getPosition1() == null? workDetail.getPosition1(): workDetailShow.getPosition1());
-            workDetail.setProject2(workDetailShow.getProject2() == null? workDetail.getProject2(): workDetailShow.getProject2());
-            workDetail.setPosition2(workDetailShow.getPosition2() == null? workDetail.getPosition2(): workDetailShow.getPosition2());
-            workDetailService.save(workDetail);
+        for(WorkDetail workDetailShow : workDetailShowList){
+            WorkDetail curworkDetail = workDetailService.getByOderIdAndTechId(workDetailShow.getOrderId(),workDetailShow.getTechId());
+            curworkDetail.setProject1(workDetailShow.getProject1() == null? curworkDetail.getProject1(): workDetailShow.getProject1());
+            curworkDetail.setPosition1(workDetailShow.getPosition1() == null? curworkDetail.getPosition1(): workDetailShow.getPosition1());
+            curworkDetail.setProject2(workDetailShow.getProject2() == null? curworkDetail.getProject2(): workDetailShow.getProject2());
+            curworkDetail.setPosition2(workDetailShow.getPosition2() == null? curworkDetail.getPosition2(): workDetailShow.getPosition2());
+            workDetailService.save(curworkDetail);
         }
 
 
