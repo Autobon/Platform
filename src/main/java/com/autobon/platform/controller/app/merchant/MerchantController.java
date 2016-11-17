@@ -6,7 +6,9 @@ import com.autobon.cooperators.entity.ReviewCooper;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
+import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
+import com.autobon.order.service.CommentService;
 import com.autobon.order.service.ConstructionProjectService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.WorkDetailService;
@@ -17,22 +19,29 @@ import com.autobon.order.vo.WorkDetailShow;
 import com.autobon.platform.listener.CooperatorEventListener;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
-import com.autobon.shared.JsonMessage;
-import com.autobon.shared.JsonPage;
-import com.autobon.shared.JsonResult;
-import com.autobon.shared.RedisCache;
+import com.autobon.shared.*;
 import com.autobon.technician.entity.LocationStatus;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.LocationStatusService;
+import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -64,6 +73,12 @@ public class MerchantController {
     LocationStatusService locationStatusService;
     @Autowired
     TechnicianService technicianService;
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    TechStatService techStatService;
+    @Value("${com.autobon.uploadPath}") String uploadPath;
+
 
     /**
      * 商户注册
@@ -218,6 +233,78 @@ public class MerchantController {
 
     }
 
+
+    /**
+     * 商户认证上传营业执照图片
+     * @param request
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/merchant/bussinessLicensePic",method = RequestMethod.POST)
+    public JsonResult uploadBussinessLicensePic(HttpServletRequest request,
+                                                 @RequestParam("file") MultipartFile file) throws  Exception{
+        String path ="/uploads/coop/bussinessLicensePic";
+        if (file == null || file.isEmpty()) return new JsonResult(false,  "没有上传文件");
+        JsonResult jsonResult = new JsonResult(true);
+
+        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                + (VerifyCode.generateRandomNumber(6)) + extension;
+
+        if (!dir.exists()) dir.mkdirs();
+        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
+        jsonResult.setMessage(path + "/" + filename);
+        return jsonResult;
+    }
+
+
+    /**
+     * 查看 商户详情信息
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/merchant",method = RequestMethod.GET)
+    public JsonResult getCoop(HttpServletRequest request) throws  Exception{
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        Integer coopId = coopAccount.getCooperatorId();
+        if(coopId != null){
+            Cooperator cooperator = cooperatorService.get(coopId);
+            return new JsonResult(true, cooperator);
+        }
+        return new JsonResult(false,"商户不存在或没有通过认证");
+    }
+
+
+    /**
+     * 商户审核信息
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/merchant/coopCheckResult",method = RequestMethod.GET)
+    public JsonResult coopCheckResult(HttpServletRequest request) throws  Exception{
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        Integer coopId = coopAccount.getCooperatorId();
+        Cooperator cooperator = cooperatorService.get(coopId);
+        List<ReviewCooper> reviewCooperList = reviewCooperService.getByCooperatorId(coopId);
+        if(reviewCooperList.size()>0){
+            dataMap.put("reviewCooper",reviewCooperList.get(0));
+        }else{
+            dataMap.put("reviewCooper",null);
+        }
+
+        dataMap.put("cooperator",cooperator);
+        return new JsonResult(true ,dataMap);
+    }
+
+
+
     /**
      * 查询技师
      * @param query 查询内容 纯数字则查询手机 反之查询姓名
@@ -251,8 +338,60 @@ public class MerchantController {
         }
     }
 
+
+    /**
+     * 合作商户的订单统计
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/merchant/order/orderCount",method = RequestMethod.GET)
+    public JsonResult orderCount(HttpServletRequest request){
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        int coopId = coopAccount.getCooperatorId();
+        int coopAccountId = coopAccount.getId();
+        boolean isMain = coopAccount.isMain();
+
+        if(isMain){
+            Cooperator cooperator = cooperatorService.get(coopId);
+            int orderNum = cooperator.getOrderNum();
+            return new JsonResult(true, orderNum);
+        }else{
+            return new JsonResult(true,  orderService.countOfCoopAccount(coopAccountId));
+        }
+
+    }
+
+
+    /**
+     * 查询订单技师详情
+     * @param orderId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/merchant/order/{orderId}/technician",method = RequestMethod.GET)
+    public JsonResult getTechnician(@PathVariable("orderId") int orderId,
+                                    HttpServletRequest request){
+
+
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+
+        if (order == null||order.getCoopId()!= coopAccount.getCooperatorId()) {
+            return new JsonResult(false,  "没有这个订单");
+        }
+
+        Technician technician = technicianService.get(order.getMainTechId());
+        if(technician != null){
+            return  new JsonResult(true, technician);
+        }
+        return new JsonResult(false, "技师不存在");
+
+
+    }
+
     /**
      *
+     * 商户下单
      * @param request
      * @param photo
      * @param remark
@@ -440,6 +579,85 @@ public class MerchantController {
 
     /**
      *
+     * 商户上传订单图片
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/merchant/order/uploadPhoto",method = RequestMethod.POST)
+    public JsonResult uploadPhoto(@RequestParam("file") MultipartFile file) throws  Exception{
+        String path ="/uploads/order/photo";
+        if (file == null || file.isEmpty()) return new JsonResult(false,  "没有上传文件");
+        JsonResult jsonResult = new JsonResult(true);
+        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+        String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                + (VerifyCode.generateRandomNumber(6)) + extension;
+
+        if (!dir.exists()) dir.mkdirs();
+        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
+        jsonResult.setMessage(path + "/" + filename);
+        return jsonResult;
+    }
+
+
+    /**
+     * 商户指派技师
+     * @param orderId
+     * @param techId
+     * @return
+     */
+    @RequestMapping(value = "/merchant/order/appoint", method = RequestMethod.POST)
+    public JsonResult appointOrder(@RequestParam("orderId") int orderId,
+                                   @RequestParam("techId") int techId) {
+        Order order = orderService.get(orderId);
+        Technician tech = technicianService.get(techId);
+        if (order.getStatus() != Order.Status.CREATED_TO_APPOINT)
+            return new JsonResult(false,  "订单不可指定技师");
+
+        if (tech == null) {
+            return new JsonResult(false,  "技师不存在");
+        }
+
+        order.setMainTechId(techId);
+        order.setTakenTime(new Date());
+        order.setStatus(Order.Status.TAKEN_UP);
+        orderService.save(order);
+        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.APPOINTED));
+        return new JsonResult(true);
+    }
+
+
+    /**
+     * 商户撤销订单
+     * @param request
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/merchant/order/{orderId:\\d+}/cancel", method = RequestMethod.PUT)
+    public JsonResult cancelOrder(HttpServletRequest request,
+                                  @PathVariable("orderId") int orderId) {
+        CoopAccount account = (CoopAccount) request.getAttribute("user");
+        Order order = orderService.get(orderId);
+        if (order == null || order.getCreatorId() != account.getId() || order.getCoopId() != account.getCooperatorId()) {
+            return new JsonResult(false,  "你没有此定单");
+        }
+
+
+        if (order.getStatusCode() < Order.Status.SIGNED_IN.getStatusCode()) {
+            order.setStatus(Order.Status.CANCELED);
+            orderService.save(order);
+            publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CANCELED));
+            return new JsonResult(true);
+        } else {
+            return new JsonResult(false,  "已开始或结束施工订单, 不能撤销");
+        }
+    }
+
+
+    /**
+     *
      * @param longitude
      * @param latitude
      * @return
@@ -448,12 +666,109 @@ public class MerchantController {
     public JsonResult getDistance(@RequestParam(value = "longitude",required = false) String longitude,
                                   @RequestParam(value ="latitude",required = false) String latitude,
                                   @RequestParam(value = "page",  defaultValue = "1" )  int page,
-                                  @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+                                  @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                                  HttpServletRequest request) {
 
+        CoopAccount account = (CoopAccount) request.getAttribute("user");
 
 
         return new JsonResult(true,locationStatusService.getTechByDistance(latitude, longitude, page, pageSize));
 
+    }
+
+
+    /**
+     * 商户查询订单
+     * @param status 1未完成  2 已完成
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/merchant/order", method = RequestMethod.GET)
+    public JsonResult getOdrders( @RequestParam(value = "status", defaultValue = "1") int status,
+                                  @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                                  @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                                  HttpServletRequest request) {
+
+        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+        int coopId = coopAccount.getCooperatorId();
+
+        Page<OrderShow> orders;
+        orders = orderService.getCoopOrders(coopId, status, page, pageSize);
+        return new JsonResult(true,orders);
+
+    }
+
+
+
+    /**
+     * 商户订单评价
+     * @param orderId
+     * @param star
+     * @param arriveOnTime
+     * @param completeOnTime
+     * @param professional
+     * @param dressNeatly
+     * @param carProtect
+     * @param goodAttitude
+     * @param advice
+     * @return
+     */
+    @RequestMapping(value = "/merchant/order/comment", method = RequestMethod.POST)
+    public JsonResult comment(@RequestParam("orderId") int orderId,
+                               @RequestParam("star") int star,
+                               @RequestParam(value = "arriveOnTime", defaultValue = "false") boolean arriveOnTime,
+                               @RequestParam(value = "completeOnTime", defaultValue = "false") boolean completeOnTime,
+                               @RequestParam(value = "professional", defaultValue = "false") boolean professional,
+                               @RequestParam(value = "dressNeatly", defaultValue = "false") boolean dressNeatly,
+                               @RequestParam(value = "carProtect", defaultValue = "false") boolean carProtect,
+                               @RequestParam(value = "goodAttitude", defaultValue = "false") boolean goodAttitude,
+                               @RequestParam("advice") String advice) {
+
+        JsonResult jsonResult = new JsonResult(true, "comment");
+        Order order = orderService.get(orderId);
+        if (order.getStatus() == Order.Status.FINISHED) {
+
+            int mainTechId = order.getMainTechId();
+            if (mainTechId == 0) {
+                return new JsonResult(false, "此订单未指定技师");
+            }
+
+            Comment comment = new Comment();
+            comment.setTechId(mainTechId);
+            comment.setOrderId(orderId);
+            comment.setStar(star);
+            comment.setArriveOnTime(arriveOnTime);
+            comment.setCompleteOnTime(completeOnTime);
+            comment.setProfessional(professional);
+            comment.setDressNeatly(dressNeatly);
+            comment.setCarProtect(carProtect);
+            comment.setGoodAttitude(goodAttitude);
+            comment.setAdvice(advice);
+            commentService.save(comment);
+
+            order.setStatus(Order.Status.COMMENTED);
+            orderService.save(order);
+
+            // 写入技师星级统计
+            TechStat mainStat = techStatService.getByTechId(mainTechId);
+            if (mainStat == null) {
+                mainStat = new TechStat();
+                mainStat.setTechId(mainTechId);
+            }
+            int commentCount = commentService.countByTechId(mainTechId);
+            float starRate = commentService.calcStarRateByTechId(mainTechId,
+                    Date.from(LocalDate.now().minusMonths(12).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            if (commentCount < 100) starRate = ((100 - commentCount) * 3f + commentCount * starRate) / 100f;
+            mainStat.setStarRate(starRate);
+            techStatService.save(mainStat);
+
+            return jsonResult;
+
+        } else {
+            return new JsonResult(false, "订单未完成或已评论");
+        }
     }
 
 

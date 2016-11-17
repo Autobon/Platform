@@ -4,9 +4,7 @@ import com.autobon.order.entity.*;
 import com.autobon.order.repository.*;
 import com.autobon.order.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -248,5 +246,67 @@ public class OrderService {
 
     public int countOfCoopAccount(int accountId) {
         return repository.countOfCoopAccount(accountId);
+    }
+
+
+
+    public Page<OrderShow> getOrders(Integer techId,Integer status, Integer currentPage, Integer pageSize){
+        currentPage = currentPage==null?1:currentPage;
+        currentPage = currentPage<=0?1:currentPage;
+        pageSize = pageSize==null?10:pageSize;
+        pageSize = pageSize<=0?10:pageSize;
+        pageSize = pageSize>20?20:pageSize;
+        Pageable p = new PageRequest(currentPage-1,pageSize);
+        List<Object[]> orderList = new ArrayList<>() ;
+        int count = 0;
+        if(status == 1){
+            orderList = repository.getAllOrder(techId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getAllOrderCount(techId);
+        }else if(status == 2){
+            orderList = repository.getUnfinishOrder(techId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getUnfinishOrderCount(techId);
+        }else if(status == 3) {
+            orderList = repository.getfinishOrder(techId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getfinishOrderCount(techId);
+        }else{
+            orderList = repository.getCooperationOrder(techId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getCooperationOrderCount(techId);
+        }
+
+
+
+        List<OrderShow> orderShows =  new ArrayList<>();
+        for(Object[] objects: orderList){
+            OrderShow orderShow = new OrderShow(objects);
+            orderShows.add(orderShow);
+        }
+        return new PageImpl<>(orderShows,p,count);
+    }
+
+    public Page<OrderShow> getCoopOrders(Integer coopId,Integer status, Integer currentPage, Integer pageSize){
+        currentPage = currentPage==null?1:currentPage;
+        currentPage = currentPage<=0?1:currentPage;
+        pageSize = pageSize==null?10:pageSize;
+        pageSize = pageSize<=0?10:pageSize;
+        pageSize = pageSize>20?20:pageSize;
+        Pageable p = new PageRequest(currentPage-1,pageSize);
+        List<Object[]> orderList = new ArrayList<>() ;
+        int count = 0;
+        if(status == 1){
+            orderList = repository.getCoopUnfinishOrder(coopId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getCoopUnfinishOrderCount(coopId);
+        }else if(status == 2){
+            orderList = repository.getCoopfinishOrder(coopId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getCoopfinishOrderCount(coopId);
+        }
+
+
+
+        List<OrderShow> orderShows =  new ArrayList<>();
+        for(Object[] objects: orderList){
+            OrderShow orderShow = new OrderShow(objects);
+            orderShows.add(orderShow);
+        }
+        return new PageImpl<>(orderShows,p,count);
     }
 }
