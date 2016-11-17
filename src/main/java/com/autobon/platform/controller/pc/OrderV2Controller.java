@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 /**
  * Created by wh on 2016/11/15.
  */
+
 @RestController
 @RequestMapping("/api/web/admin/order/v2")
 public class OrderV2Controller {
@@ -77,7 +78,7 @@ public class OrderV2Controller {
     public JsonMessage update(
             @PathVariable("orderId") int orderId,
             @RequestParam(value = "type", required = false) String type,
-            @RequestParam(value = "status", required = false) int status,
+            @RequestParam(value = "statusCode", required = false) int statusCode,
             @RequestParam(value = "phone", required = false) String phone,
             @RequestParam(value = "remark", required = false)String remark,
             @RequestParam(value = "positionLon", required = false)String positionLon,
@@ -93,6 +94,7 @@ public class OrderV2Controller {
         }
 
         order.setType(type == null ? order.getType():type);
+        order.setStatusCode(Integer.valueOf(statusCode) == null ? order.getStatusCode():statusCode);
         order.setContactPhone(phone == null ? order.getContactPhone():phone);
         order.setRemark(remark == null ? order.getRemark():remark);
         order.setPositionLon(positionLon == null ? order.getPositionLon():positionLon);

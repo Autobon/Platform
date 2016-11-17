@@ -167,7 +167,7 @@ public class OrderService {
     }
     public Order getbyOrderId(int orderId){
 
-        Order order = repository.findbyOrderId(orderId);
+        Order order = repository.findOrderById(orderId);
 
         return order;
 
