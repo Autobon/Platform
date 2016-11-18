@@ -218,6 +218,7 @@ public class MerchantController {
             } else {
                 int statusCode = cooperator.getStatusCode();
                 if (statusCode == 2) {
+                    cooperator.setFullname(enterpriseName);
                     cooperator.setBussinessLicensePic(businessLicensePic);
                     cooperator.setLongitude(longitude);
                     cooperator.setLatitude(latitude);
