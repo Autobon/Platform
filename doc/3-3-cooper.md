@@ -9,7 +9,7 @@ POST /api/mobile/coop/merchant/certificate
 | 参数名称 | 是否必须 | 说明 | 举例 |
 | ------ | -------- | ---- | --- |
 | enterpriseName | 是 | 企业名称 | A汽车美容公司 |
-| bussinessLicensePic | 是 | 营业执照副本照片 | a/a.jpg |
+| businessLicensePic | 是 | 营业执照副本照片 | a/a.jpg |
 | longitude | 是 | 商户位置经度| 120.34 |
 | latitude | 是 | 商户位置纬度| 35.55 |
 ### 返回数据
