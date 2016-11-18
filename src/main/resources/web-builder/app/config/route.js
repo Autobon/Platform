@@ -44,6 +44,12 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'OrderMakeupCtrl',
             template  : templateCache.OrderMakeupCtrl,
         })
+        .state('console.order.modify', {
+            url       : '/modify/{orderNum:\\d+[^/]*}',
+            controller: 'OrderModifyCtrl',
+            template  : templateCache.OrderModifyCtrl,
+        })
+
         .state('console.technician', {
             url       : '/technician',
             controller: 'TechnicianCtrl',
