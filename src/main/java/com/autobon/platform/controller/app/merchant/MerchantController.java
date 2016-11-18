@@ -141,10 +141,13 @@ public class MerchantController {
         CoopAccount coopAccount = coopAccountService.getByPhone(phone);
 
         if (coopAccount == null) {
+            jsonResult.setStatus(false);
             jsonResult.setMessage("手机号未注册");
         } else if (!coopAccount.getPassword().equals(CoopAccount.encryptPassword(password))) {
+            jsonResult.setStatus(false);
             jsonResult.setMessage("密码错误");
         } else if(coopAccount.isFired()){
+            jsonResult.setStatus(false);
             jsonResult.setMessage("该员工已离职");
         } else {
             response.addCookie(new Cookie("autoken", CoopAccount.makeToken(coopAccount.getId())));
@@ -673,6 +676,30 @@ public class MerchantController {
 
 
         return new JsonResult(true,locationStatusService.getTechByDistance(latitude, longitude, page, pageSize));
+
+    }
+
+
+    /**
+     *
+     * @param query
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/merchant/technician/assign", method = RequestMethod.GET)
+    public JsonResult getDistance(@RequestParam(value = "query",  required = true )  String query,
+                                  @RequestParam(value = "longitude",required = false) String longitude,
+                                  @RequestParam(value ="latitude",required = false) String latitude,
+                                  @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                                  @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                                  HttpServletRequest request) {
+
+        CoopAccount account = (CoopAccount) request.getAttribute("user");
+
+
+        return new JsonResult(true,locationStatusService.getTechByName(latitude,longitude,query, page, pageSize));
 
     }
 

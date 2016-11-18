@@ -5,18 +5,18 @@ import javax.persistence.*;
 /**
  * Created by wh on 2016/11/17.
  */
-//@Entity
-//@Table(name="t_order_product")
+@Entity
+@Table(name="t_order_product")
 public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column  private int orderId; //订单ID
-    @Column private int constructionProjectId; //施工项目ID
-    @Column private int constructionPositionId; //施工部位ID
-    @Column private int productId; //产品ID
-    @Column private int constructionCommission;  //'施工提成'
-    @Column private int scrapCost; //'报废扣款'
+    @Column  private int orderId; //璁㈠崟ID
+    @Column private int constructionProjectId; //鏂藉伐椤圭洰ID
+    @Column private int constructionPositionId; //鏂藉伐閮ㄤ綅ID
+    @Column private int productId; //浜у搧ID
+    @Column private int constructionCommission;  //'鏂藉伐鎻愭垚'
+    @Column private int scrapCost; //'鎶ュ簾鎵ｆ'
 
     public int getId() {
         return id;
