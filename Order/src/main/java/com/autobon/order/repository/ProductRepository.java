@@ -23,4 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
             " and (?5 is null or p.constructionPosition =?5)")
     Page<Product> find( Integer type, String brand, String code, String model, Integer constructionPosition, Pageable pageable);
 
+
+
 }

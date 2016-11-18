@@ -19,7 +19,7 @@ public class ProductController {
 
 
     @RequestMapping(value = "/product", method = RequestMethod.GET)
-    public JsonResult list( @RequestParam(value = "status", required=false) Integer type,
+    public JsonResult list( @RequestParam(value = "type", required=false) Integer type,
                             @RequestParam(value = "brand", required=false) String brand,
                             @RequestParam(value = "code", required=false) String code,
                             @RequestParam(value = "model", required= false) String model,

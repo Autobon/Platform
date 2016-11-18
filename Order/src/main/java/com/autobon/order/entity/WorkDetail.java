@@ -51,6 +51,8 @@ public class WorkDetail {
     @Column(name = "create_date")
     private Date createDate;
 
+    public WorkDetail(){}
+
 
     public int getId() {
         return id;
