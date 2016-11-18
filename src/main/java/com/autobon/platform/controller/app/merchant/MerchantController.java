@@ -141,10 +141,13 @@ public class MerchantController {
         CoopAccount coopAccount = coopAccountService.getByPhone(phone);
 
         if (coopAccount == null) {
+            jsonResult.setStatus(false);
             jsonResult.setMessage("手机号未注册");
         } else if (!coopAccount.getPassword().equals(CoopAccount.encryptPassword(password))) {
+            jsonResult.setStatus(false);
             jsonResult.setMessage("密码错误");
         } else if(coopAccount.isFired()){
+            jsonResult.setStatus(false);
             jsonResult.setMessage("该员工已离职");
         } else {
             response.addCookie(new Cookie("autoken", CoopAccount.makeToken(coopAccount.getId())));
@@ -183,7 +186,7 @@ public class MerchantController {
      * @return
      */
     @RequestMapping(value = "/merchant/certificate",method = RequestMethod.POST)
-    public JsonMessage certificate(HttpServletRequest request,
+    public JsonResult certificate(HttpServletRequest request,
                                    @RequestParam("enterpriseName") String enterpriseName,
                                    @RequestParam("businessLicensePic") String businessLicensePic,
                                    @RequestParam(value = "longitude",required = false) String longitude,
@@ -206,12 +209,12 @@ public class MerchantController {
             coopAccount.setIsMain(true);
             coopAccountService.save(coopAccount);
             publisher.publishEvent(new CooperatorEventListener.CooperatorEvent(cooperator, Event.Action.CREATED));
-            return new JsonMessage(true, "", "", cooperator);
+            return new JsonResult(true,  cooperator);
         }else {
             //是否认证成功，成功则止。认证失败，再认证
             Cooperator cooperator = cooperatorService.get(coopId);
             if (cooperator == null) {
-                return new JsonMessage(false, "没有此关联商户");
+                return new JsonResult(false, "没有此关联商户");
             } else {
                 int statusCode = cooperator.getStatusCode();
                 if (statusCode == 2) {
@@ -220,13 +223,13 @@ public class MerchantController {
                     cooperator.setLatitude(latitude);
                     cooperator.setStatusCode(0);
                     cooperatorService.save(cooperator);
-                    return new JsonMessage(true, "", "", cooperator);
+                    return new JsonResult(true,  cooperator);
                 } else if (statusCode == 1) {
-                    return new JsonMessage(true, "你已经认证成功");
+                    return new JsonResult(true, "你已经认证成功");
                 } else if (statusCode == 0) {
-                    return new JsonMessage(true, "等待审核");
+                    return new JsonResult(true, "等待审核");
                 } else {
-                    return new JsonMessage(false, "商户状态码不正确");
+                    return new JsonResult(false, "商户状态码不正确");
                 }
             }
         }
@@ -673,6 +676,30 @@ public class MerchantController {
 
 
         return new JsonResult(true,locationStatusService.getTechByDistance(latitude, longitude, page, pageSize));
+
+    }
+
+
+    /**
+     *
+     * @param query
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/merchant/technician/assign", method = RequestMethod.GET)
+    public JsonResult getDistance(@RequestParam(value = "query",  required = true )  String query,
+                                  @RequestParam(value = "longitude",required = false) String longitude,
+                                  @RequestParam(value ="latitude",required = false) String latitude,
+                                  @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                                  @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                                  HttpServletRequest request) {
+
+        CoopAccount account = (CoopAccount) request.getAttribute("user");
+
+
+        return new JsonResult(true,locationStatusService.getTechByName(latitude,longitude,query, page, pageSize));
 
     }
 
