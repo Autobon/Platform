@@ -5,6 +5,7 @@ package com.autobon.order.vo;
 
 
 
+import com.autobon.order.entity.WorkDetail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
@@ -83,6 +84,10 @@ public class OrderShow {
     private List<OrderConstructionShow> orderConstructionShow;
     private String techLongitude;
     private String techLatitude;
+
+    private List<WorkDetailShow> workDetailShows;
+    private  List<ConstructionWasteShow> constructionWasteShows;
+
 
 
     public OrderShow() {}
@@ -366,5 +371,21 @@ public class OrderShow {
 
     public void setTechLatitude(String techLatitude) {
         this.techLatitude = techLatitude;
+    }
+
+    public List<WorkDetailShow> getWorkDetailShows() {
+        return workDetailShows;
+    }
+
+    public void setWorkDetailShows(List<WorkDetailShow> workDetailShows) {
+        this.workDetailShows = workDetailShows;
+    }
+
+    public List<ConstructionWasteShow> getConstructionWasteShows() {
+        return constructionWasteShows;
+    }
+
+    public void setConstructionWasteShows(List<ConstructionWasteShow> constructionWasteShows) {
+        this.constructionWasteShows = constructionWasteShows;
     }
 }

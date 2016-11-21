@@ -1,23 +1,29 @@
 package com.autobon.platform.controller.pc;
 
+
 import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderProduct;
+import com.autobon.order.entity.WorkDetail;
+import com.autobon.order.service.ConstructionWasteService;
 import com.autobon.order.service.OrderProductService;
 import com.autobon.order.service.OrderService;
-import com.autobon.order.vo.CoopTechnicianLocation;
+import com.autobon.order.service.WorkDetailService;
+import com.autobon.order.vo.*;
 import com.autobon.shared.JsonResult;
-import com.autobon.technician.entity.Technician;
+import com.autobon.technician.entity.LocationStatus;
 import com.autobon.technician.service.LocationStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wh on 2016/11/15.
@@ -39,6 +45,27 @@ public class OrderV2Controller {
 
     @Autowired
     CooperatorService cooperatorService;
+
+    @Autowired
+    WorkDetailService workDetailService;
+
+    @Autowired
+    ConstructionWasteService constructionWasteService;
+
+
+    @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.GET)
+    public JsonResult getById(@PathVariable("orderId") int orderId){
+        OrderShow orderShow = orderService.getByOrderId(orderId);
+        List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
+        List<ConstructionWasteShow> constructionWasteShows = constructionWasteService.getByOrderId(orderId);
+        orderShow.setWorkDetailShows(workDetailShowList);
+        orderShow.setConstructionWasteShows(constructionWasteShows);
+
+        return new JsonResult(true, orderShow);
+    }
+
+
+
 
     /**
      * 通过订单编号获取施工项目及对应的施工部位
@@ -164,6 +191,23 @@ public class OrderV2Controller {
 
         }
         return  new JsonResult(true,  coopTechnicianLocation);
+    }
+
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public void test(){
+
+        List<WorkDetail> list = new ArrayList<>();
+
+        WorkDetail  workDetail = new WorkDetail();
+        workDetail.setOrderId(1);
+        workDetail.setProject1(1);
+        workDetail.setPosition1("1,2");
+        workDetail.setProject2(2);
+        workDetail.setPosition1("3,4");
+
+        list.add(workDetail);
+        workDetailService.balance(list);
     }
 
 }

@@ -66,6 +66,22 @@ public class WorkDetailShow {
         this.techName = (String)objects[14];
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
     public Integer getTechId() {
         return techId;
     }

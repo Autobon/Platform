@@ -20,8 +20,8 @@ public interface WorkDetailRepository extends JpaRepository<WorkDetail, Integer>
             " wd.id as id, wd.order_id as orderId, wd.tech_id as techId, " +
             " wd.project1 as project1 ,wd.position1 as position1," +
             " wd.project2 as project2 ,wd.position2 as position2," +
-            " wd.project1 as project3 ,wd.position3 as position3," +
-            " wd.project1 as project4 ,wd.position4 as position4," +
+            " wd.project3 as project3 ,wd.position3 as position3," +
+            " wd.project4 as project4 ,wd.position4 as position4," +
             " wd.payment as payment, wd.pay_status as payStatus," +
             " wd.create_date as createDate, t.name as techName  from t_order o " +
             " LEFT JOIN t_work_detail wd  on wd.order_id = o.id " +
