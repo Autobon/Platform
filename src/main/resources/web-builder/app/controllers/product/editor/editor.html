@@ -1,0 +1,71 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>添加产品</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <form class="form-horizontal" name="form">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">产品类别</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-model="product.type" class="form-control" style="width: 400px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">品牌</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-pattern="/^[0-9]+$/" class="form-control" style="width: 400px;" ng-model="product.brand">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">编码</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-model="product.code" class="form-control" style="width: 400px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">型号</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-model="product.model" class="form-control" style="width: 400px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">施工部位</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-model="product.position" class="form-control" style="width: 400px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">施工工时(单位:分钟)</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-model="product.hours" class="form-control" style="width: 400px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">施工提成(单位:元)</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-model="product.commission" class="form-control" style="width: 400px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">报废扣款</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-model="product.scrap_cost" class="form-control" style="width: 400px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">技师级别(单位:星)</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-model="product.star_level" class="form-control" style="width: 400px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">保质期间(单位:月)</label>
+            <div class="col-sm-10">
+                <input type="text" required ng-model="product.warranty" class="form-control" style="width: 400px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 col-sm-offset-2">
+                <button type="submit" class="btn btn-primary btn-block" ng-disabled="form.$invalid" ng-click="save()">提 交</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,10 +1,12 @@
 package com.autobon.technician.service;
 
+
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.repository.TechnicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -74,4 +76,13 @@ public class TechnicianService {
     public int totalOfVerified() {
         return repository.totalOfVerified();
     }
+
+
+    public Page<Technician> find(String phone ,String name, Integer currentPage, Integer pageSize){
+
+        Pageable pageable = new PageRequest(currentPage-1, pageSize);
+        Page<Technician> technicians = repository.find(phone, name , pageable);
+        return technicians;
+    }
+
 }

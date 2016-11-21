@@ -39,6 +39,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'OrderEditCtrl',
             template  : templateCache.OrderEditCtrl,
         })
+        .state('console.order.makeup', {
+            url       : '/makeup/{orderNum:\\d+[^/]*}',
+            controller: 'OrderMakeupCtrl',
+            template  : templateCache.OrderMakeupCtrl,
+        })
         .state('console.technician', {
             url       : '/technician',
             controller: 'TechnicianCtrl',
@@ -48,6 +53,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             url       : '/{id:\\d+}',
             controller: 'TechnicianDetailCtrl',
             template  : templateCache.TechnicianDetailCtrl,
+        })
+        .state('console.technician.edit', {
+            url       : '/{id:\\d+}',
+            controller: 'TechnicianEditorCtrl',
+            template  : templateCache.TechnicianEditorCtrl,
         })
         .state('console.cooperator', {
             url       : '/cooperator',
@@ -122,7 +132,23 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
         .state('console.test', {
             url     : '/test',
             template: 'ABDDDD',
-        });
+        })
+        .state('console.product', {
+            url       : '/product',
+            controller: 'ProductCtrl',
+            template  : templateCache.ProductCtrl,
+        })
+        .state('console.product.new', {
+            url       : '/new',
+            controller: 'ProductEditCtrl',
+            template  : templateCache.ProductEditCtrl,
+        })
+        .state('console.product.edit', {
+            url       : '/edit',
+            controller: 'ProductEditCtrl',
+            template  : templateCache.ProductEditCtrl,
+        })
+        ;
 }
 
 routeConfig.$inject = ['$locationProvider', '$urlRouterProvider', '$stateProvider', 'templateProvider'];

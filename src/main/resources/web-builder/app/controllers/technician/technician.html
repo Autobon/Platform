@@ -38,7 +38,10 @@
                     <td>{{Settings.technicianStatus[t.status]}}</td>
                     <td><a ui-sref="console.technician.detail({id: t.id})" class="btn btn-xs btn-default">
                         <i class="fa fa-list"></i>&nbsp;详情</a>
+                        <a ui-sref="console.technician.edit({id: t.id})" class="btn btn-xs btn-default">
+                        <i class="fa fa-list"></i>&nbsp;修改</a>
                     </td>
+
                 </tr>
                 </tbody>
             </table>

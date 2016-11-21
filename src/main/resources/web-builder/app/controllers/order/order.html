@@ -59,6 +59,10 @@
                                  popover-trigger="outsideClick" popover-is-open="techQuery['show' + order.id]" uib-popover-template="'assignOrder.html'">
                                 <i class="fa fa-paper-plane-o"></i>&nbsp;派单
                             </span>
+
+                            <a ng-if="order.status == 'CREATED_TO_APPOINT'" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.makeup({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                                <i class="fa fa-paper-plane-o"></i>&nbsp;订单回填
+                            </a>
                         </td>
                     </tr>
                 </tbody>
