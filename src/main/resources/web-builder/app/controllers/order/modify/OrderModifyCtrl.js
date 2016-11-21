@@ -1,8 +1,45 @@
 import {Injector} from 'ngES6';
 import './modify.scss';
+
 export default class OrderDetailCtrl extends Injector {
     static $inject   = ['$scope', '$state', '$stateParams', 'OrderService', 'Settings'];
     static $template = require('./modify.html');
 
+    constructor(...args) {
+        super(...args);
+        const {$scope, $stateParams, OrderService} = this.$injected;
+        $scope.comment = {
+            arriveOnTime  : true,
+            completeOnTime: true,
+            professional  : true,
+            dressNeatly   : true,
+            carProtect    : true,
+            goodAttitude  : true,
+        };
+        this.attachMethodsTo($scope);
+
+        OrderService.getDetail($stateParams.orderNum).then(res => {
+            if (res.data && res.data.result) {
+                let order = $scope.order = res.data.data;
+
+                order.position         = {lng: order.positionLon, lat: order.positionLat};
+                $scope.comment.orderId = order.id;
+                if (order.mainConstruct) {
+                    OrderService.assembleWorkItemsText(order.mainConstruct.workItems, order.mainConstruct.workPercent, order.orderType).then(d => {
+                        $scope.$apply(() => {
+                            order.mainConstruct.workItems = d;
+                        });
+                    });
+                }
+                if (order.secondConstruct) {
+                    OrderService.assembleWorkItemsText(order.secondConstruct.workItems, order.secondConstruct.workPercent, order.orderType).then(d => {
+                        $scope.$apply(() => {
+                            order.secondConstruct.workItems = d;
+                        });
+                    });
+                }
+            }
+        });
+    }
 
 }
