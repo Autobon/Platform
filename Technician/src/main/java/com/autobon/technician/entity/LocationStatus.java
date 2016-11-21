@@ -51,6 +51,13 @@ public class LocationStatus {
 
     }
 
+    public LocationStatus(Object[] objects){
+        this.techId = (int)objects[0];
+        this.lng =(String)objects[1];
+        this.lat =(String)objects[2];
+        this.status = (int)objects[3];
+    }
+
 
     public int getId() {
         return id;

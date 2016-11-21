@@ -61,4 +61,30 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " where t.name like ?1 or t.phone = ?1",nativeQuery = true)
     int getTechByPhoneOrName(String name);
 
+
+
+
+    @Query(value = "SELECT" +
+            " t.id as id," +
+            " t.name as name," +
+            " t.phone as phone," +
+            " t.film_level as film_level," +
+            " t.car_cover_level as car_cover_level," +
+            " t.color_modify_level as color_modify_level," +
+            " t.beauty_level as beauty_level," +
+            " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) AS distance," +
+            " ls.status as status " +
+            " FROM" +
+            " t_technician t " +
+            " left join t_location_status ls ON ls.tech_id = t.id " +
+            " where truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) <?3"
+            ,nativeQuery = true)
+    List<Object[]> getTechByDistance(String lat, String lng, int kilometre);
+
+
+    @Query(value = "SELECT ls.tech_id, ls.lng, ls.lat, ls.status  from t_location_status ls"+
+            " where truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) <?3"
+            ,nativeQuery = true)
+    List<Object[]> getLocationStatusByDistance(String lat, String lng, int kilometre);
+
 }

@@ -3,42 +3,30 @@ package com.autobon.platform.controller.pc;
 
 import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
-import com.autobon.order.entity.Construction;
+import com.autobon.cooperators.service.CoopAccountService;
+import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.order.entity.Order;
+import com.autobon.order.entity.OrderProduct;
 import com.autobon.order.entity.WorkDetail;
-import com.autobon.order.service.ConstructionService;
-import com.autobon.order.service.OrderService;
-import com.autobon.order.service.WorkDetailService;
+import com.autobon.order.service.*;
 import com.autobon.order.vo.*;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
-import com.autobon.technician.entity.Technician;
+import com.autobon.technician.entity.LocationStatus;
+import com.autobon.technician.service.LocationStatusService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import com.autobon.order.entity.Order;
-import com.autobon.order.entity.OrderProduct;
-import com.autobon.order.service.OrderProductService;
-import com.autobon.order.service.OrderService;
-import com.autobon.shared.JsonResult;
-import com.autobon.technician.entity.Technician;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.List;
 
 
 /**
@@ -131,6 +119,34 @@ public class OrderV2Controller {
      return msg;
     }
 
+    @Autowired
+    LocationStatusService locationStatusService;
+
+    @Autowired
+    CoopAccountService coopAccountService;
+
+    @Autowired
+    CooperatorService cooperatorService;
+
+
+    @Autowired
+    ConstructionWasteService constructionWasteService;
+
+
+    @RequestMapping(value = "/v2/{orderId:\\d+}", method = RequestMethod.GET)
+    public JsonMessage getById(@PathVariable("orderId") int orderId){
+        OrderShow orderShow = orderService.getByOrderId(orderId);
+        List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
+        List<ConstructionWasteShow> constructionWasteShows = constructionWasteService.getByOrderId(orderId);
+        orderShow.setWorkDetailShows(workDetailShowList);
+        orderShow.setConstructionWasteShows(constructionWasteShows);
+
+        return new JsonMessage(true, "","",orderShow);
+    }
+
+
+
+
     /**
      * 通过订单编号获取施工项目及对应的施工部位
      * @param request
@@ -182,6 +198,9 @@ public class OrderV2Controller {
 
 
 
+
+
+
     /**
      *
      * @param orderId
@@ -223,6 +242,52 @@ public class OrderV2Controller {
 
 
         return new JsonResult(true,orderProductService.get(orderId));
+    }
+
+
+    @RequestMapping(value = "/technician/assign/{orderId}", method = RequestMethod.GET)
+    public JsonResult assign(@PathVariable("orderId") int orderId,
+                             @RequestParam(value = "longitude",required = false) String longitude,
+                             @RequestParam(value ="latitude",required = false) String latitude,
+                             @RequestParam(value = "kilometre",required = false) int kilometre){
+
+        Order order = orderService.get(orderId);
+
+        if (order == null  ) {
+            return new JsonResult(false,  "没有这个订单");
+        }
+        Cooperator cooperator =  cooperatorService.get(order.getCoopId());
+        if(cooperator == null){
+            return new JsonResult(false,  "商户不存在");
+        }
+        CoopTechnicianLocation coopTechnicianLocation = new CoopTechnicianLocation();
+        coopTechnicianLocation.setCoopLatitude(cooperator.getLatitude());
+        if(longitude==null && latitude == null){
+            coopTechnicianLocation.setCoopLongitude(cooperator.getLongitude());
+            coopTechnicianLocation.setLocalStatuses(locationStatusService.getTechByDistance(coopTechnicianLocation.getCoopLatitude(), coopTechnicianLocation.getCoopLongitude(), kilometre));
+        }else {
+            coopTechnicianLocation.setCoopLongitude(cooperator.getLongitude());
+            coopTechnicianLocation.setLocalStatuses(locationStatusService.getTechByDistance(latitude, longitude, kilometre));
+
+        }
+        return  new JsonResult(true,  coopTechnicianLocation);
+    }
+
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public void test(){
+
+        List<WorkDetail> list = new ArrayList<>();
+
+        WorkDetail  workDetail = new WorkDetail();
+        workDetail.setOrderId(1);
+        workDetail.setProject1(1);
+        workDetail.setPosition1("1,2");
+        workDetail.setProject2(2);
+        workDetail.setPosition1("3,4");
+
+        list.add(workDetail);
+        workDetailService.balance(list);
     }
 
 }

@@ -55,7 +55,7 @@
                         <td>{{Settings.orderStatus[order.status]}}</td>
                         <td><a ui-sref="console.order.detail({orderNum: order.orderNum})" class="btn btn-xs btn-default">
                             <i class="fa fa-list"></i>&nbsp;详情</a>
-                            <a ui-sref="console.order.modify({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                            <a ui-sref="console.order.modify({id: order.id})" class="btn btn-xs btn-default">
                                 <i class="fa fa-list"></i>&nbsp;修改</a>
                             <span ng-if="order.status == 'NEWLY_CREATED'" class="btn btn-default btn-xs" popover-placement="left"
                                  popover-trigger="outsideClick" popover-is-open="techQuery['show' + order.id]" uib-popover-template="'assignOrder.html'">

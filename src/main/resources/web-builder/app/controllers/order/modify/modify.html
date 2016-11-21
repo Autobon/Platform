@@ -3,14 +3,13 @@
                 <div class="row-search-h40">
                     <div class="form-group">
                         <label>订单编号</label>
-                        <span class="form-control ml10">{{order.orderNum}}</span>
+                        <span class="form-control ml10">{{orderShow.orderNum}}</span>
 
                     </div>
                     <div class="form-group ml40">
                         <label>订单状态</label>
-                        <select class="form-control ml10">
-                            <option>已接单</option>
-                            <option>已完成</option>
+                        <select class="form-control" id="orderStatus" ng-model="orderShow.status"
+                                ng-options="key as value for (key, value) in Settings.orderStatus">
                         </select>
                     </div>
                     <div class="form-group mr10 ml40">
@@ -29,48 +28,48 @@
                 <div class="mt20 row-search-h40">
                     <div class="form-group">
                         <label>预约时间</label>
-                        <span class="form-control ml10">{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</span>
+                        <span class="form-control ml10">{{orderShow.createTime | date : 'YYYY-MM-DD HH:mm'}}</span>
                     </div>
                     <div class="form-group ml40">
                         <label>最晚交车时间</label>
-                        <span class="form-control ml10">{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</span>
+                        <span class="form-control ml10">{{orderShow.createTime | date : 'YYYY-MM-DD HH:mm'}}</span>
                     </div>
                     <div class="form-group ml40">
                         <label>接单技师</label>
-                        <input type="text" class="form-control ml10" ng-model="order.mainTech.name">
+                        <input type="text" class="form-control ml10" ng-model="orderShow.techName">
                     </div>
                     <div class="form-group ml40">
                         <label>联系电话</label>
-                        <input type="text" class="form-control ml10" ng-model="order.mainTech.phone">
+                        <input type="text" class="form-control ml10" ng-model="orderShow.techPhone">
                     </div>
                 </div>
                 <div class="mt20">
                     <div class="form-group">
                         <label>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
-                        <textarea class="form-control" rows="3" style="width: 1060px;margin-left:12px;"> {{order.remark}}</textarea>
+                        <textarea class="form-control" rows="3" style="width: 1060px;margin-left:12px;"> {{orderShow.remark}}</textarea>
                     </div>
                 </div>
 
             </form>
             <div class="form-border pl15 pr15">
                 <div >
-                    <span class="ftbold">经度：</span><span>{{order.position.lng}}</span>
-                    <span class="ml20 ftbold">纬度：</span><span>{{order.position.lat}}</span>
+                    <span class="ftbold">经度：</span><span>{{orderShow.longitude}}</span>
+                    <span class="ml20 ftbold">纬度：</span><span>{{orderShow.longitude}}</span>
                     <div class="modifytitle-map">
-                        <map-location style="height: 250px; border-radius: 4px; border: 1px solid #cabe9c;" position="{{order.position}}"></map-location>
+                        <map-location style="height: 250px; border-radius: 4px; border: 1px solid #cabe9c;" position="{{orderShow.position}}"></map-location>
                     </div>
                 </div>
             </div>
             <div class="principal">
                 <div class="main-principal">
-                    <form class="form-inline form-border">
+                    <form class="form-inline form-border" ng-repeat="vs in orderShow.workDetailShows">
                         <div class="principal-title">
                             <span class="ftbold ml15">主负责人</span>
                         </div>
                         <div class="mt20 row-search-h40">
                             <div class="form-group">
                                 <label>技师姓名</label>
-                                <input type="text" class="form-control ml10">
+                                <input type="text" class="form-control ml10" ng-model="vs.techName">
                             </div>
                             <div class="form-group ml40">
                                 <label>联系电话</label>
@@ -78,14 +77,14 @@
                             </div>
                             <div class="form-group ml40">
                                 <label>施工费用</label>
-                                <input type="text" class="form-control ml10">
+                                <input type="text" class="form-control ml10" ng-model="vs.payment">
                                 <span>(单位：元)</span>
                             </div>
                         </div>
-                        <div class="mt10 row-search-h40">
+                        <div class="mt10 row-search-h40" >
                             <div class="form-group">
                                 <label>施工项目</label>
-                                <input type="text" class="form-control ml10">
+                                <input type="text" class="form-control ml10" ng-model="Settings.orderTypes[vs.project1]">
                             </div>
                             <div class="form-group mr10 ml40">
                                 <label class="mr10">施工部位</label>
@@ -109,7 +108,8 @@
                         <div class="mt10 row-search-h40">
                             <div class="form-group">
                                 <label>施工项目</label>
-                                <input type="text" class="form-control ml10">
+                                <input type="text" class="form-control ml10" ng-model="Settings.orderTypes[vs.project2]">
+
                             </div>
                             <div class="form-group mr10 ml40">
                                 <label class="mr10">施工部位</label>
@@ -130,10 +130,10 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="mt10 row-search-h40">
+                        <div class="mt10 row-search-h40" ng-if="vs.project3">
                             <div class="form-group">
                                 <label>施工项目</label>
-                                <input type="text" class="form-control ml10">
+                                <input type="text" class="form-control ml10" ng-model="Settings.orderTypes[vs.project2]">
                             </div>
                             <div class="form-group mr10 ml40">
                                 <label class="mr10">施工部位</label>
@@ -154,57 +154,57 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="principal-title mt30">
-                            <span class="ftbold ml15">次负责人</span>
-                        </div>
-                        <div class="mt20 row-search-h40">
-                            <div class="form-group">
-                                <label>技师姓名</label>
-                                <input type="text" class="form-control ml10">
-                            </div>
-                            <div class="form-group ml40">
-                                <label>联系电话</label>
-                                <input type="text" class="form-control ml10">
-                            </div>
-                            <div class="form-group ml40">
-                                <label>施工费用</label>
-                                <input type="text" class="form-control ml10">
-                                <span>(单位：元)</span>
-                            </div>
-                        </div>
-                        <div class="mt10 row-search-h40">
-                            <div class="form-group">
-                                <label>施工项目</label>
-                                <input type="text" class="form-control ml10">
-                            </div>
-                            <div class="form-group mr10 ml40">
-                                <label class="mr10">施工部位</label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >前档风
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门+角
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门+角
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >前档风
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门
-                                </label>
-                            </div>
-                        </div>
+                        <!--<div class="principal-title mt30">-->
+                            <!--<span class="ftbold ml15">次负责人</span>-->
+                        <!--</div>-->
+                        <!--<div class="mt20 row-search-h40">-->
+                            <!--<div class="form-group">-->
+                                <!--<label>技师姓名</label>-->
+                                <!--<input type="text" class="form-control ml10">-->
+                            <!--</div>-->
+                            <!--<div class="form-group ml40">-->
+                                <!--<label>联系电话</label>-->
+                                <!--<input type="text" class="form-control ml10">-->
+                            <!--</div>-->
+                            <!--<div class="form-group ml40">-->
+                                <!--<label>施工费用</label>-->
+                                <!--<input type="text" class="form-control ml10">-->
+                                <!--<span>(单位：元)</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="mt10 row-search-h40">-->
+                            <!--<div class="form-group">-->
+                                <!--<label>施工项目</label>-->
+                                <!--<input type="text" class="form-control ml10">-->
+                            <!--</div>-->
+                            <!--<div class="form-group mr10 ml40">-->
+                                <!--<label class="mr10">施工部位</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="checkbox" >前档风-->
+                                <!--</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="checkbox" >左前门-->
+                                <!--</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="checkbox" >右前门-->
+                                <!--</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="checkbox" >左前门+角-->
+                                <!--</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="checkbox" >右前门+角-->
+                                <!--</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="checkbox" >前档风-->
+                                <!--</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="checkbox" >左前门-->
+                                <!--</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="checkbox" >右前门-->
+                                <!--</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </form>
                 </div>
 
@@ -225,45 +225,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>方力达</td>
-                                <td>隔热膜</td>
-                                <td>前档风</td>
+                            <tr ng-repeat="w in orderShow.constructionWasteShows">
+                                <td>{{w.techName}}</td>
+                                <td>{{Settings.orderTypes[w.project]}}</td>
+                                <td>{{Settings.positionTypes[w.position]}}</td>
                                 <td>
                                     <div>
-                                        <select class="wh80">
-                                            <option></option>
-                                            <option></option>
+                                        <select class="wh80" id="totalStatus" ng-model="w.total"
+                                                ng-options="key as value for (key, value) in Settings.totalStatus">
                                         </select>
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>方力达</td>
-                                <td>隔热膜</td>
-                                <td>前档风</td>
-                                <td>
-                                    <div>
-                                        <select class="wh80">
-                                            <option></option>
-                                            <option></option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>方力达</td>
-                                <td>隔热膜</td>
-                                <td>前档风</td>
-                                <td>
-                                    <div>
-                                        <select class="wh80">
-                                            <option></option>
-                                            <option></option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -273,9 +247,6 @@
                 <button class="mr50">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
                 <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
             </div>
-        </div>
-        <div class="console-footer">
-            <span class="text-box">© Copyright 2016 车邻邦</span>
         </div>
     </div>
 </div>

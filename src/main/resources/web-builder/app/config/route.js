@@ -45,7 +45,7 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.OrderMakeupCtrl,
         })
         .state('console.order.modify', {
-            url       : '/modify/{orderNum:\\d+[^/]*}',
+            url       : '/modify/{id:\\d+}',
             controller: 'OrderModifyCtrl',
             template  : templateCache.OrderModifyCtrl,
         })
