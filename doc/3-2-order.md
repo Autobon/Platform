@@ -131,7 +131,7 @@ POST /api/mobile/coop/merchant/order
 商户端订单列表
 
 ### URL及请求方法
-POST /api/mobile/coop/merchant/order
+GET  /api/mobile/coop/merchant/order
 
 ### 请求参数
 
@@ -201,7 +201,7 @@ POST /api/mobile/coop/merchant/order
 上传订单照片
 
 ### URL及请求方法
-POST /api/mobile/coop//merchant/order/uploadPhoto
+POST /api/mobile/coop/merchant/order/uploadPhoto
 
 ### 请求参数
 
