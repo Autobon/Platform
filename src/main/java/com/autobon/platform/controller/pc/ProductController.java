@@ -62,25 +62,82 @@ public class ProductController {
 
     /**
      * 新增产品
-     * @param product
+     * @param type 施工项目
+     * @param brand 品牌
+     * @param code 编码
+     * @param model 型号
+     * @param constructionPosition 施工部位
+     * @param workingHours 工时
+     * @param constructionCommission 施工提成
+     * @param starLevel 星级要求
+     * @param scrapCost 报废扣款
+     * @param warranty 质保
      * @return
      */
     @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public JsonResult add(@RequestBody Product product){
-
+    public JsonResult add(@RequestParam(value = "type", required=false) Integer type,
+                          @RequestParam(value = "brand", required=false) String brand,
+                          @RequestParam(value = "code", required=false) String code,
+                          @RequestParam(value = "model", required= false) String model,
+                          @RequestParam(value = "constructionPosition", required=false) Integer constructionPosition,
+                          @RequestParam(value = "workingHours", required=false) Integer workingHours,
+                          @RequestParam(value = "constructionCommission", required=false) Integer constructionCommission,
+                          @RequestParam(value = "starLevel", required= false) Integer starLevel,
+                          @RequestParam(value = "scrapCost", required=false) Integer scrapCost,
+                          @RequestParam(value = "warranty", required=false) Integer warranty){
+        Product product = new Product();
+        product.setType(type);
+        product.setBrand(brand);
+        product.setCode(code);
+        product.setModel(model);
+        product.setConstructionPosition(constructionPosition);
+        product.setWorkingHours(workingHours);
+        product.setConstructionCommission(constructionCommission);
+        product.setStarLevel(starLevel);
+        product.setScrapCost(scrapCost);
+        product.setWarranty(warranty);
         return new JsonResult(true, productService.save(product));
     }
 
     /**
      * 修改产品
      * @param pid
-     * @param product
+     * @param type 施工项目
+     * @param brand 品牌
+     * @param code 编码
+     * @param model 型号
+     * @param constructionPosition 施工部位
+     * @param workingHours 工时
+     * @param constructionCommission 施工提成
+     * @param starLevel 星级要求
+     * @param scrapCost 报废扣款
+     * @param warranty 质保
      * @return
      */
-    @RequestMapping(value = "/product/{pid}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/product/{pid}", method = RequestMethod.POST)
     public JsonResult modify(@PathVariable("pid") int pid,
-                             @RequestBody Product product){
-        product.setId(pid);
+                             @RequestParam(value = "type", required=false) Integer type,
+                             @RequestParam(value = "brand", required=false) String brand,
+                             @RequestParam(value = "code", required=false) String code,
+                             @RequestParam(value = "model", required= false) String model,
+                             @RequestParam(value = "constructionPosition", required=false) Integer constructionPosition,
+                             @RequestParam(value = "workingHours", required=false) Integer workingHours,
+                             @RequestParam(value = "constructionCommission", required=false) Integer constructionCommission,
+                             @RequestParam(value = "starLevel", required= false) Integer starLevel,
+                             @RequestParam(value = "scrapCost", required=false) Integer scrapCost,
+                             @RequestParam(value = "warranty", required=false) Integer warranty){
+
+        Product product = productService.get(pid);
+        product.setType(type == null? product.getType(): type);
+        product.setBrand(brand == null?product.getBrand(): brand);
+        product.setCode(code == null? product.getCode(): code);
+        product.setModel(model == null?product.getModel():model);
+        product.setConstructionPosition(constructionPosition == null? product.getConstructionPosition(): constructionPosition);
+        product.setWorkingHours(workingHours == null? product.getWorkingHours():workingHours);
+        product.setConstructionCommission(constructionCommission == null?product.getConstructionCommission():constructionCommission);
+        product.setStarLevel(starLevel == null?product.getStarLevel():starLevel);
+        product.setScrapCost(scrapCost == null? product.getScrapCost(): scrapCost);
+        product.setWarranty(warranty == null? product.getWarranty(): warranty);
         return new JsonResult(true, productService.save(product));
     }
 

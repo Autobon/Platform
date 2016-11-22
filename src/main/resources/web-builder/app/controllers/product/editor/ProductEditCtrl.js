@@ -1,96 +1,73 @@
 import {Injector} from 'ngES6';
 import angular from 'angular';
-import $ from 'jquery';
 
 export default class CooperatorEditCtrl extends Injector {
-    static $inject   = ['$scope', '$state', '$stateParams', 'CooperatorService'];
+    static $inject   = ['$scope', '$state', '$stateParams', 'ProductService'];
     static $template = require('./editor.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, CooperatorService} = this.$injected;
+        const {$scope, $stateParams, ProductService} = this.$injected;
         this.attachMethodsTo($scope);
 
+        $scope.starLevelList = [{id:1, name: '1星'}, {id:2, name: '2星'}, {id:3, name: '3星'}, {id:4, name: '4星'}, {id:5, name: '5星'}];
+        $scope.orderTypeList = [{id:1, name:'隔热膜'}, {id:2, name:'隐形车衣'}, {id:3, name:'车身改色'}, {id:4, name:'美容清洁'}];
+        $scope.positionList = [
+            {id:1, name: '前风挡'},
+            {id:2, name: '左前门'},
+            {id:3, name: '右前门'},
+            {id:4, name: '左后门+角'},
+            {id:5, name: '右后门+角'},
+            {id:6, name: '后风挡'},
+            {id:7, name: '前保险杠'},
+            {id:8, name: '引擎盖'},
+            {id:9, name: '左右前叶子板'},
+            {id:10, name: '四门'},
+            {id:11, name: '左右后叶子板'},
+            {id:12, name: '尾盖'},
+            {id:13, name: '后保险杠'},
+            {id:14, name: 'ABC柱套件'},
+            {id:15, name: '车顶'},
+            {id:16, name: '门拉手'},
+            {id:17, name: '反光镜'},
+            {id:18, name: '整车'},
+        ];
         if ($stateParams.id) {
-            CooperatorService.getDetail($stateParams.id).then(res => {
-                if (res.data && res.data.result) {
-                    $scope.coop           = res.data.data.coop;
-                    $scope.coop.shortname = res.data.data.mainAccount.shortname;
-                    $scope.coop.phone     = res.data.data.mainAccount.phone;
-                    $scope.coop.position  = {lng: $scope.coop.longitude, lat: $scope.coop.latitude};
+            ProductService.getDetail($stateParams.id).then(res => {
+                if (res.data.status === true) {
+                    $scope.product = res.data.message;
                 }
             });
         } else {
-            $scope.coop = {};
+            $scope.product = {};
         }
-        $scope.$watch('coop.position', (newVal) => {
-            if (newVal) {
-                let cb = 'geocoder' + Math.random().toString().substr(2);
-                $('body').append($(`<script src="http://api.map.baidu.com/geocoder/v2/?ak=FPzmlgz02SERkbPsRyGOiGfj&output=json&location=${newVal.lat},${newVal.lng}&callback=${cb}"></script>`));
-                window[cb] = data => {
-                    $scope.$apply(() => {
-                        let addr             = data.result.addressComponent;
-                        $scope.coop.province = addr.province;
-                        $scope.coop.city     = addr.city;
-                        $scope.coop.district = addr.district;
-                    });
-                };
-            }
-        });
-        $scope.uploadUrl = CooperatorService.uploadPhotoUrl;
-    }
-
-    onUploadedPhoto(data) {
-        const {$scope, $uibModal} = this.$injected;
-        if (!data.result) {
-            $scope.message = data.message;
-            $uibModal.open({
-                size     : 'sm',
-                scope    : $scope,
-                animation: true,
-                template : `
-                    <div class="modal-header">
-                        <h3 class="modal-title">提示消息</h3>
-                    </div>
-                    <div class="modal-body">
-                        <b>{{message}}</b>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="button" ng-click="$close()">确定</button>
-                    </div>`,
-            });
-        }
-        return data.result ? data.data : '';
     }
 
     save() {
-        const {$scope, $state, CooperatorService} = this.$injected;
-        $scope.coop.longitude = $scope.coop.position.lng;
-        $scope.coop.latitude  = $scope.coop.position.lat;
-        let q, isUpdate       = !!$scope.coop.id;
+        const {$scope, $state, ProductService} = this.$injected;
+        let q, isUpdate       = !!$scope.product.id;
         if (isUpdate) {
-            q = CooperatorService.update($scope.coop);
+            q = ProductService.update($scope.product);
         } else {
-            q = CooperatorService.add($scope.coop);
+            q = ProductService.add($scope.product);
         }
 
         q.then(res => {
             if (res.data) {
-                if (res.data.result) {
+                if (res.data.status === true) {
                     if (isUpdate) {
-                        let pCoop = $scope.$parent.cooperators.find(c => c.id === res.data.data.id);
+                        let pCoop = $scope.$parent.products.find(c => c.id === res.data.message.id);
                         if (pCoop) {
-                            angular.extend(pCoop, res.data.data);
+                            angular.extend(pCoop, res.data.message);
                         }
                     } else if (!isUpdate && $scope.$parent.pagination.page === 1) {
-                        $scope.$parent.cooperators.unshift(res.data.data);
+                        $scope.$parent.products.unshift(res.data.message);
                     }
-                    $state.go('^.detail', {id: res.data.data.id});
+                    $state.go('^.detail', {id: res.data.message.id});
                 } else {
                     $scope.error = res.data.message;
                 }
             }
         });
     }
-
 }

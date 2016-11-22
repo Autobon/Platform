@@ -23,7 +23,7 @@
             <input type="text" class="form-control" id="model" ng-model="filter.model">
         </div>
         <button type="submit" class="btn btn-primary" ng-click="getProduces(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
-        <button type="button" class="btn btn-sm btn-default" ng-click="">批量导入产品</button>
+        <button type="button" class="btn btn-sm btn-default" ui-sref="console.product.import()">批量导入产品</button>
         <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
     <a ui-sref="console.product.new" class="pull-right btn-new">添加产品&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
@@ -55,7 +55,7 @@
                     <td>{{product.brand}}</td>
                     <td>{{product.code}}</td>
                     <td>{{product.model}}</td>
-                    <td>{{Settings.orderTypes[product.constructionPosition]}}</td>
+                    <td>{{Settings.positionTypes[product.constructionPosition]}}</td>
                     <td>{{product.workingHours}}</td>
                     <td>{{product.constructionCommission}}</td>
                     <td><span class="m-l-10"><uib-rating ng-model="product.starLevel" read-only="true" max="5" aria-labelledby="default-rating"></uib-rating><b>{{product.starLevel.toFixed(2)}}</b>&nbsp;星</span><br></td>
@@ -89,7 +89,7 @@
                         <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b> {{Settings.orderTypes[product.type]}}
                         <span class="btn btn-default btn-xs">{{product.brand}}</span>
                         <span class="btn btn-xs btn-success">{{product.code}}</span><br>
-                        型号: {{product.model}}<br>施工部位: {{Settings.orderTypes[product.constructionPosition]}}
+                        型号: {{product.model}}<br>施工部位: {{Settings.positionTypes[product.constructionPosition]}}
                     </a>
                 </li>
             </ul>

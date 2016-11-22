@@ -143,6 +143,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'ProductDetailCtrl',
             template  : templateCache.ProductDetailCtrl,
         })
+        .state('console.product.import', {
+            url       : '/import',
+            controller: 'ProductImportCtrl',
+            template  : templateCache.ProductImportCtrl,
+        })
         .state('console.product.new', {
             url       : '/new',
             controller: 'ProductEditCtrl',

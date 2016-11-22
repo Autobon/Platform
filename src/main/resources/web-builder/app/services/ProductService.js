@@ -20,11 +20,11 @@ export default class ProductService extends Injector {
 
     update(pro) {
         const {$http, Settings} = this.$injected;
-        return $http.put(Settings.domain + '/api/web/admin/order/product/' + pro.id, pro);
+        return $http.post(Settings.domain + '/api/web/admin/order/product/' + pro.id, pro);
     }
 
     delete(pro) {
         const {$http, Settings} = this.$injected;
-        return $http.delete(Settings.domain + '/api/web/admin/order/product/' + pro.id, pro);
+        return $http.delete(Settings.domain + '/api/web/admin/order/product/' + pro.id);
     }
 }
