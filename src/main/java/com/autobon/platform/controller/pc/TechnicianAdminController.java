@@ -52,6 +52,7 @@ public class TechnicianAdminController {
      * @param beautyLevel  美容级别
      * @param beautyWorkingSeniority 美容年限
      * @param resume 简介
+     * @param reference 推荐人
      * @return
      */
     @RequestMapping(value = "/v2/technician/{tid}", method = RequestMethod.PUT)
@@ -72,7 +73,8 @@ public class TechnicianAdminController {
                              @RequestParam(value = "colorModifyWorkingSeniority",required = false) Integer colorModifyWorkingSeniority,
                              @RequestParam(value = "beautyLevel",required = false) Integer beautyLevel,
                              @RequestParam(value = "beautyWorkingSeniority",required = false) Integer beautyWorkingSeniority,
-                             @RequestParam(value = "resume",required = false) String resume){
+                             @RequestParam(value = "resume",required = false) String resume,
+                             @RequestParam(value = "reference",required = false) String reference){
         Technician technician  = technicianService.get(tid);
         if(technician != null){
             technician.setName(name == null ? technician.getName() : name);
@@ -92,6 +94,7 @@ public class TechnicianAdminController {
             technician.setBeautyLevel(beautyLevel == null ? technician.getBeautyLevel() : beautyLevel);
             technician.setBeautyWorkingSeniority(beautyWorkingSeniority == null ? technician.getBeautyWorkingSeniority() : beautyWorkingSeniority);
             technician.setResume(resume == null ? technician.getResume() : resume);
+            technician.setReference(reference == null? technician.getReference(): reference);
             technician = technicianService.save(technician);
             return new JsonResult(true, technician);
         }

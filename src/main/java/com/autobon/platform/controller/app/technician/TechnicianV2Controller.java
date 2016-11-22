@@ -75,6 +75,8 @@ public class TechnicianV2Controller {
 
     @Autowired
     DetailedOrderService detailedOrderService;
+    @Autowired
+    ReassignmentService reassignmentService;
 
 
     @Value("${com.autobon.gm-path}") String gmPath;
@@ -695,7 +697,9 @@ public class TechnicianV2Controller {
             if (order.getMainTechId() != tech.getId()) return new JsonResult(false,   "只有接单人可以进行弃单操作");
 
             if(order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ){
-                return new JsonResult(false,   "订单进入工作状态不能放弃，请申请改派");
+
+                reassignmentService.create(orderId, tech.getId());
+                return new JsonResult(true,   "订单进入工作状态，已发送申请改派");
             }
             order.setStatusCode(Order.Status.NEWLY_CREATED.getStatusCode());
             orderService.save(order);
