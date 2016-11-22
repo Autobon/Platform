@@ -12,8 +12,7 @@ export default class ProductDetailCtrl extends Injector {
 
         ProductService.getDetail($stateParams.id).then(res => {
             if (res.data.status === true) {
-                console.log(JSON.stringify(res.data));
-                $scope.product = res.data.message.content;
+                $scope.product = res.data.message;
             }
         });
     }
