@@ -667,16 +667,14 @@ public class MerchantController {
      * @return
      */
     @RequestMapping(value = "/merchant/technician/distance", method = RequestMethod.GET)
-    public JsonResult getDistance(@RequestParam(value = "longitude",required = false) String longitude,
-                                  @RequestParam(value ="latitude",required = false) String latitude,
-                                  @RequestParam(value = "page",  defaultValue = "1" )  int page,
+    public JsonResult getDistance(@RequestParam(value = "page",  defaultValue = "1" )  int page,
                                   @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
                                   HttpServletRequest request) {
 
         CoopAccount account = (CoopAccount) request.getAttribute("user");
-
-
-        return new JsonResult(true,locationStatusService.getTechByDistance(latitude, longitude, page, pageSize));
+        int coopId =  account.getCooperatorId();
+        Cooperator cooperator =  cooperatorService.get(coopId);
+        return new JsonResult(true,locationStatusService.getTechByDistance(cooperator.getLatitude(), cooperator.getLongitude(), page, pageSize));
 
     }
 
