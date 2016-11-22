@@ -58,8 +58,12 @@ public class ProductService {
     }
 
     public Product get(int pid){
+        Product product = productRepository.findById(pid);
+        if(product != null){
+            return product;
+        }
 
-        return  productRepository.getOne(pid);
+        return null;
     }
 
 

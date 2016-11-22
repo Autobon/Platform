@@ -1,38 +1,58 @@
 package com.autobon.technician.vo;
 
+import java.math.BigInteger;
+
 /**
  * Created by wh on 2016/11/11.
  */
 public class TechnicianLocation {
 
-    private int id;
+    private Integer id;
     private String name;
     private String phone;
-    private int filmLevel;
-    private int carCoverLevel;
-    private int colorModifyLevel;
-    private int beautyLevel;
-    private double distance;
-    private int status;
+    private Integer filmLevel;
+    private Integer carCoverLevel;
+    private Integer colorModifyLevel;
+    private Integer beautyLevel;
+    private Double distance;
+    private Integer status;
+    private BigInteger orderCount;
+    private BigInteger evaluate;
+    private BigInteger cancelCount;
+    private Integer fileWorkingSeniority;
+    private Integer carCoverWorkingSeniority;
+    private Integer colorModifyWorkingSeniority;
+    private Integer beautyWorkingSeniority;
+    private String avatar;
+
 
 
     public TechnicianLocation(Object[] objects){
-        this.id = (int)objects[0];
+        this.id = (Integer)objects[0];
         this.name = (String)objects[1];
         this.phone = (String)objects[2];
-        this.filmLevel = (int)objects[3];
-        this.carCoverLevel = (int)objects[4];
-        this.colorModifyLevel = (int)objects[5];
-        this.beautyLevel = (int)objects[6];
-        this.distance = (double)objects[7];
-        this.status = (int)objects[8];
+        this.filmLevel = (Integer)objects[3];
+        this.carCoverLevel = (Integer)objects[4];
+        this.colorModifyLevel = (Integer)objects[5];
+        this.beautyLevel = (Integer)objects[6];
+        this.distance = (Double)objects[7];
+        this.status = (Integer)objects[8];
+        this.orderCount = (BigInteger)objects[9];
+        this.evaluate = (BigInteger)objects[10];
+        this.cancelCount = (BigInteger)objects[11];
+
+        this.fileWorkingSeniority = (Integer)objects[12];
+        this.carCoverWorkingSeniority = (Integer)objects[13];
+        this.colorModifyWorkingSeniority = (Integer)objects[14];
+        this.beautyWorkingSeniority = (Integer)objects[15];
+        this.avatar = (String)objects[16];
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -52,53 +72,116 @@ public class TechnicianLocation {
         this.phone = phone;
     }
 
-    public int getFilmLevel() {
+    public Integer getFilmLevel() {
         return filmLevel;
     }
 
-    public void setFilmLevel(int filmLevel) {
+    public void setFilmLevel(Integer filmLevel) {
         this.filmLevel = filmLevel;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public int getCarCoverLevel() {
+    public Integer getCarCoverLevel() {
         return carCoverLevel;
     }
 
-    public void setCarCoverLevel(int carCoverLevel) {
+    public void setCarCoverLevel(Integer carCoverLevel) {
         this.carCoverLevel = carCoverLevel;
     }
 
-    public int getColorModifyLevel() {
+    public Integer getColorModifyLevel() {
         return colorModifyLevel;
     }
 
-    public void setColorModifyLevel(int colorModifyLevel) {
+    public void setColorModifyLevel(Integer colorModifyLevel) {
         this.colorModifyLevel = colorModifyLevel;
     }
 
-    public int getBeautyLevel() {
+    public Integer getBeautyLevel() {
         return beautyLevel;
     }
 
-    public void setBeautyLevel(int beautyLevel) {
+    public void setBeautyLevel(Integer beautyLevel) {
         this.beautyLevel = beautyLevel;
     }
 
-    public double getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(double distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
 
+    public BigInteger getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(BigInteger orderCount) {
+        this.orderCount = orderCount;
+    }
+
+    public BigInteger getEvaluate() {
+        return evaluate;
+    }
+
+    public void setEvaluate(BigInteger evaluate) {
+        this.evaluate = evaluate;
+    }
+
+    public BigInteger getCancelCount() {
+        return cancelCount;
+    }
+
+    public void setCancelCount(BigInteger cancelCount) {
+        this.cancelCount = cancelCount;
+    }
+
+    public Integer getFileWorkingSeniority() {
+        return fileWorkingSeniority;
+    }
+
+    public void setFileWorkingSeniority(Integer fileWorkingSeniority) {
+        this.fileWorkingSeniority = fileWorkingSeniority;
+    }
+
+    public Integer getCarCoverWorkingSeniority() {
+        return carCoverWorkingSeniority;
+    }
+
+    public void setCarCoverWorkingSeniority(Integer carCoverWorkingSeniority) {
+        this.carCoverWorkingSeniority = carCoverWorkingSeniority;
+    }
+
+    public Integer getColorModifyWorkingSeniority() {
+        return colorModifyWorkingSeniority;
+    }
+
+    public void setColorModifyWorkingSeniority(Integer colorModifyWorkingSeniority) {
+        this.colorModifyWorkingSeniority = colorModifyWorkingSeniority;
+    }
+
+    public Integer getBeautyWorkingSeniority() {
+        return beautyWorkingSeniority;
+    }
+
+    public void setBeautyWorkingSeniority(Integer beautyWorkingSeniority) {
+        this.beautyWorkingSeniority = beautyWorkingSeniority;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 }

@@ -24,8 +24,16 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.car_cover_level as car_cover_level," +
             " t.color_modify_level as color_modify_level," +
             " t.beauty_level as beauty_level," +
-            " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2)AS distance," +
-            " ls.status as status " +
+            " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) AS distance," +
+            " ls.status as status ," +
+            " 0 as orderCount," +
+            " 0 as evaluate," +
+            " 0 as cancelCount," +
+            " t.film_working_seniority as fileWorkingSeniority ," +
+            " t.car_cover_working_seniority as carCoverWorkingSeniority," +
+            " t.color_modify_working_seniority as colorModifyWorkingSeniority," +
+            " t.beauty_working_seniority as beautyWorkingSeniority," +
+            " t.avatar as avatar" +
             " FROM" +
             " t_technician t " +
             " inner join t_location_status ls ON ls.tech_id = t.id " +
@@ -46,19 +54,53 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.car_cover_level as car_cover_level," +
             " t.color_modify_level as color_modify_level," +
             " t.beauty_level as beauty_level," +
-            " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2)AS distance," +
+            " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) AS distance," +
+            " ls.status as status, " +
+            " 0 as orderCount," +
+            " 0 as evaluate," +
+            " 0 as cancelCount," +
+            " t.film_working_seniority as fileWorkingSeniority, " +
+            " t.car_cover_working_seniority as carCoverWorkingSeniority," +
+            " t.color_modify_working_seniority as colorModifyWorkingSeniority," +
+            " t.beauty_working_seniority as beautyWorkingSeniority," +
+            " t.avatar as avatar" +
+            " FROM" +
+            " t_technician t " +
+            " left join t_location_status ls ON ls.tech_id = t.id " +
+            " where t.name like ?3  or t.phone = ?3 " +
+            " ORDER BY distance limit ?4,?5" ,nativeQuery = true)
+    List<Object[]> getTechByPhoneOrName(String lat, String lng, String name, int begin , int size);
+
+
+    @Query(value = "SELECT  count(*)   FROM t_technician t " +
+            " left join t_location_status ls ON ls.tech_id = t.id " +
+            " where t.name like ?1 or t.phone = ?1",nativeQuery = true)
+    int getTechByPhoneOrName(String name);
+
+
+
+
+    @Query(value = "SELECT" +
+            " t.id as id," +
+            " t.name as name," +
+            " t.phone as phone," +
+            " t.film_level as film_level," +
+            " t.car_cover_level as car_cover_level," +
+            " t.color_modify_level as color_modify_level," +
+            " t.beauty_level as beauty_level," +
+            " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) AS distance," +
             " ls.status as status " +
             " FROM" +
             " t_technician t " +
             " left join t_location_status ls ON ls.tech_id = t.id " +
-            " where t.name like ?1 or t.phone like ?1 " +
-            "ORDER BY distance " ,nativeQuery = true)
-    List<Object[]> getTechByPhoneOrName(String name, int begin , int size);
+            " where truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) <?3"
+            ,nativeQuery = true)
+    List<Object[]> getTechByDistance(String lat, String lng, int kilometre);
 
 
-    @Query(value = "SELECT  count(*)   FROM t_technician t " +
-            "left join t_location_status ls ON ls.tech_id = t.id " +
-            "where t.name like ?1 or t.phone like ?1 ORDER BY distance  ,nativeQuery = true)",nativeQuery = true)
-    int getTechByPhoneOrName(String name);
+    @Query(value = "SELECT ls.tech_id, ls.lng, ls.lat, ls.status  from t_location_status ls"+
+            " where truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) <?3"
+            ,nativeQuery = true)
+    List<Object[]> getLocationStatusByDistance(String lat, String lng, int kilometre);
 
 }

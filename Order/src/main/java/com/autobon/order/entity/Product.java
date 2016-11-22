@@ -1,6 +1,7 @@
 package com.autobon.order.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by wh on 2016/11/1.
@@ -8,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="t_product")
-public class Product {
+public class Product implements Serializable{
 
     private int id;//
     private int type;//'施工项目'
@@ -22,6 +23,8 @@ public class Product {
     private int scrapCost; //'报废扣款'
     private int warranty; //'质保
 
+
+    public Product(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
