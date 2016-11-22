@@ -1153,24 +1153,16 @@ public class TechnicianV2Controller {
 
     /**
      * 获取可抢订单列表
-     * @param request
      * @param page
      * @param pageSize
      * @return
      */
     @RequestMapping(value = "/v2/order/listNew", method = RequestMethod.GET)
-    public JsonResult listNew(
-            HttpServletRequest request,
+    public JsonResult getNewCreateOrder(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        Technician technician = (Technician) request.getAttribute("user");
-        String sSkill = technician.getSkill();
-        if (sSkill == null || "".equals(sSkill)) {
-            return new JsonResult(true,  new JsonPage<>());
-        }
-        List<Integer> skills = Arrays.stream(technician.getSkill().split(",")).map(Integer::parseInt).collect(Collectors.toList());
 
-        return new JsonResult(true, new JsonPage<>(detailedOrderService.findAvailable(skills, page, pageSize)));
+        return new JsonResult(true, new JsonPage<>(orderService.getNewCreateOrder(page, pageSize)));
     }
 
 }

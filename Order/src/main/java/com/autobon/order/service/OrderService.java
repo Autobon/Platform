@@ -303,4 +303,22 @@ public class OrderService {
         }
         return new PageImpl<>(orderShows,p,count);
     }
+
+    public Page<OrderShow> getNewCreateOrder(Integer currentPage, Integer pageSize){
+        currentPage = currentPage==null?1:currentPage;
+        currentPage = currentPage<=0?1:currentPage;
+        pageSize = pageSize==null?10:pageSize;
+        pageSize = pageSize<=0?10:pageSize;
+        pageSize = pageSize>20?20:pageSize;
+        Pageable p = new PageRequest(currentPage-1,pageSize);
+        List<Object[]> orderList = repository.getNewCreateOrder((currentPage - 1) * pageSize, pageSize);
+        int count = repository.getNewCreateCount();
+
+        List<OrderShow> orderShows =  new ArrayList<>();
+        for(Object[] objects: orderList){
+            OrderShow orderShow = new OrderShow(objects);
+            orderShows.add(orderShow);
+        }
+        return new PageImpl<>(orderShows,p,count);
+    }
 }
