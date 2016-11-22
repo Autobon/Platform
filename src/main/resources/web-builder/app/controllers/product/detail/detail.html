@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <h3>{{Settings.orderTypes[product.type]}}
+    </h3>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>施工项目: </b><span>{Settings.orderTypes[product.type]}}</span></div>
+        <div class="col-sm-4"><b>品牌: </b><span>{{product.brand}}</span></div>
+        <div class="col-sm-4"><b>编码: </b><span>{{product.code}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>型号: </b><span>{{product.model}}</span></div>
+        <div class="col-sm-4"><b>施工部位: </b><span>{{Settings.orderTypes[product.constructionPosition]}}</span></div>
+        <div class="col-sm-4"><b>工时: </b><span>{{product.workingHours}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>施工提成(单位:元): </b><span>{{product.constructionCommission}}</span></div>
+        <div class="col-sm-4"><b>星级要求(单位:星级) </b><span><b>{{product.starLevel.toFixed(2)}}</b>&nbsp;星</span></div>
+        <div class="col-sm-4"><b>报废扣款(单位:元) </b><span>{{product.scrapCost}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>质保期间(单位:月) </b><span>{{product.warranty}}</span></div>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>{{$state.is('console.cooperator.new') ? '新建商户' : '编辑商户'}}</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <form class="form-horizontal" name="form">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">公司全称</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.fullname" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">公司简称</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.shortname" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">营业执照编号</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.businessLicense" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">营业执照照片</label>
+            <div class="col-sm-9">
+                <input type="file" file-uploader required ng-model="coop.bussinessLicensePic" name="file"
+                       accept=".jpg,.jpeg,.png,.bmp" callback="onUploadedPhoto(data)" upload-url="{{uploadUrl}}" class="form-control">
+                <img ng-if="coop.bussinessLicensePic" ng-src="{{coop.bussinessLicensePic}}" image-modal resize="100px,100px" class="img-thumbnail m-t-5">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">法人姓名</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.corporationName" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">法人身份证号</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.corporationIdNo" ng-pattern="/^\d{15}(\d{2}[0-9xX])?$/" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">法人身份证正面照</label>
+            <div class="col-sm-9">
+                <input type="file" file-uploader required ng-model="coop.corporationIdPicA" name="file"
+                       accept=".jpg,.jpeg,.png,.bmp" callback="onUploadedPhoto(data)" upload-url="{{uploadUrl}}" class="form-control">
+                <img ng-if="coop.corporationIdPicA" ng-src="{{coop.corporationIdPicA}}" image-modal resize="100px,100px" class="img-thumbnail m-t-5">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">管理员帐户手机号</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.phone" ng-pattern="/^\d{11}$/" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">地理位置</label>
+            <div class="col-sm-9">
+                <div class="form-control" style="cursor: not-allowed;">
+                    <span ng-if="!coop.position">请点击地图选择位置</span>
+                    <span ng-if="coop.position">{{coop.province}}-{{coop.city}}-{{coop.district}}, 经度: {{coop.position.lng}}, 纬度: {{coop.position.lat}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <location-picker required ng-model="coop.position" style="height: 400px; border-radius: 4px; border: 1px solid #cabe9c;"></location-picker>
+            </div>
+        </div>
+        <div class="sub-header"><h4>业务员信息</h4></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">姓名</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.invoiceHeader" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系电话</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.taxIdNo" class="form-control">
+            </div>
+        </div>
+
+        <div class="sub-header"><h4>发票信息</h4></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">发票抬头</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.invoiceHeader" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">纳税识别号</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.taxIdNo" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">邮政编号</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.postcode" ng-pattern="/^\d+$/" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">发票邮寄地址</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.address" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系人姓名</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.contact" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系人电话</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="coop.contactPhone" ng-pattern="/^\d{11}$/" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-3">
+                <button type="submit" class="btn btn-primary btn-block" ng-click="save()">提 交</button>
+            </div>
+        </div>
+    </form>
+</div>

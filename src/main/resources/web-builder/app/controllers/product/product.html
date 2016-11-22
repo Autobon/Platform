@@ -5,27 +5,26 @@
 <div class="row-search">
     <form class="form-inline pull-left">
         <div class="form-group">
-            <label for="orderNum">类别:</label>
-            <input type="text" class="form-control" id="orderNum" ng-model="filter.orderNum">
-        </div>
-        <div class="form-group">
-            <label for="orderCreator">品牌:</label>
-            <input type="text" class="form-control" id="orderCreator" ng-model="filter.orderCreator">
-        </div>
-        <div class="form-group">
-            <label for="orderType">编码:</label>
-            <select class="form-control" id="orderType" ng-model="filter.orderType"
+            <label for="type">施工项目:</label>
+            <select class="form-control" id="type" ng-model="filter.type"
                     ng-options="key as value for (key, value) in Settings.orderTypes">
             </select>
         </div>
         <div class="form-group">
-            <label for="orderStatus">型号:</label>
-            <select class="form-control" id="orderStatus" ng-model="filter.orderStatus"
-                    ng-options="key as value for (key, value) in Settings.orderStatus">
-            </select>
+            <label for="brand">品牌:</label>
+            <input type="text" class="form-control" id="brand" ng-model="filter.brand">
         </div>
-        <button type="submit" class="btn btn-primary" ng-click="getOrders(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
-        <button type="button" class="btn btn-sm btn-default" ng-click="reset()">批量导入产品</button>
+        <div class="form-group">
+            <label for="code">编码:</label>
+            <input type="text" class="form-control" id="code" ng-model="filter.code">
+        </div>
+        <div class="form-group">
+            <label for="model">型号:</label>
+            <input type="text" class="form-control" id="model" ng-model="filter.model">
+        </div>
+        <button type="submit" class="btn btn-primary" ng-click="getProduces(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="">批量导入产品</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
     <a ui-sref="console.product.new" class="pull-right btn-new">添加产品&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
 </div>
@@ -34,22 +33,37 @@
     <div ng-class="$state.is('console.product') ? 'col-sm-12' : 'col-sm-3'">
         <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.product')">
             <table class="table table-striped">
-                <thead><tr><th>序号</th><th>产品类别</th><th>品牌</th><th>编码</th><th>型号</th><th>施工部位</th><th>施工提成(单位:元)</th><th>报废扣款(单位:元)</th><th>技师级别(单位:星级)</th><th>质保期间(单位:月)</th><th>操作</th></tr></thead>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>施工项目</th>
+                    <th>品牌</th>
+                    <th>编码</th>
+                    <th>型号</th>
+                    <th>施工部位</th>
+                    <th>工时</th>
+                    <th>施工提成(单位:元)</th>
+                    <th>星级要求(单位:星级)</th>
+                    <th>报废扣款(单位:元)</th>
+                    <th>质保期间(单位:月)</th>
+                    <th>操作</th></tr>
+                </thead>
                 <tbody>
-                <tr ng-repeat="order in orders">
-                    <td>1</td>
-                    <td>隐形车衣</td>
-                    <td>安酷</td>
-                    <td>CY-AK-T-001</td>
-                    <td>安酷隐形车衣</td>
-                    <td>前保险杠</td>
-                    <td>65</td>
-                    <td>95</td>
-                    <td><span class="m-l-10"><uib-rating ng-model="order.id" read-only="true" max="5" aria-labelledby="default-rating"></uib-rating><b>{{order.id.toFixed(2)}}</b>&nbsp;星</span><br></td>
-                    <td>60</td>
-                    <td><a ui-sref="console.product.edit({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                <tr ng-repeat="product in products">
+                    <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                    <td>{{Settings.orderTypes[product.type]}}</td>
+                    <td>{{product.brand}}</td>
+                    <td>{{product.code}}</td>
+                    <td>{{product.model}}</td>
+                    <td>{{Settings.orderTypes[product.constructionPosition]}}</td>
+                    <td>{{product.workingHours}}</td>
+                    <td>{{product.constructionCommission}}</td>
+                    <td><span class="m-l-10"><uib-rating ng-model="product.starLevel" read-only="true" max="5" aria-labelledby="default-rating"></uib-rating><b>{{product.starLevel.toFixed(2)}}</b>&nbsp;星</span><br></td>
+                    <td>{{product.scrapCost}}</td>
+                    <td>{{product.warranty}}</td>
+                    <td><a ui-sref="console.product.detail({id: product.id})" class="btn btn-xs btn-default">
                         <i class="fa fa-list"></i>&nbsp;详情</a>
-                        <a ui-sref="console.product.edit({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                        <a ui-sref="console.product.edit({id: product.id})" class="btn btn-xs btn-default">
                             <i class="fa fa-list"></i>&nbsp;修改</a>
                     </td>
                 </tr>
@@ -58,7 +72,7 @@
             <footer class="text-right">
                 <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
                 <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
-                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getOrders()"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getProduces()"
                                 previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
             </footer>
         </div>
@@ -70,12 +84,12 @@
                     <i class="fa fa-arrows-h"></i></div>
             </div>
             <ul class="side-nav-list">
-                <li ng-repeat="order in orders" ui-sref-active="active">
-                    <a ui-sref="console.order.detail({orderNum: order.orderNum})">
-                        <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b> {{order.orderNum}}
-                        <span class="btn btn-default btn-xs">{{Settings.orderTypes[order.orderType]}}</span>
-                        <span class="btn btn-xs btn-success">{{Settings.orderStatus[order.status]}}</span><br>
-                        下单人: {{order.creatorName}}<br>预约时间: {{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}
+                <li ng-repeat="product in products" ui-sref-active="active">
+                    <a ui-sref="console.product.detail({id: product.id})">
+                        <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b> {{Settings.orderTypes[product.type]}}
+                        <span class="btn btn-default btn-xs">{{product.brand}}</span>
+                        <span class="btn btn-xs btn-success">{{product.code}}</span><br>
+                        型号: {{product.model}}<br>施工部位: {{Settings.orderTypes[product.constructionPosition]}}
                     </a>
                 </li>
             </ul>
@@ -83,7 +97,7 @@
             <footer class="text-right">
                 <div>第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
                 <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
-                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getOrders()"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getProduces()"
                                 previous-text="←" next-text="→" max-size="3" class="pagination-sm"></uib-pagination>
             </footer>
         </div>
