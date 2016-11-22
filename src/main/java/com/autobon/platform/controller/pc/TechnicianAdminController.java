@@ -55,7 +55,7 @@ public class TechnicianAdminController {
      * @param reference 推荐人
      * @return
      */
-    @RequestMapping(value = "/v2/technician/{tid}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v2/technician/{tid}", method = RequestMethod.POST)
     public JsonResult modify(@PathVariable("tid") int tid,
                              @RequestParam(value = "name",required = false) String name,
                              @RequestParam(value = "gender",required = false) String gender,
