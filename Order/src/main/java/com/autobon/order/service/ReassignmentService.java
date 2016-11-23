@@ -1,11 +1,16 @@
 package com.autobon.order.service;
 
+import com.autobon.order.entity.Order;
 import com.autobon.order.entity.Reassignment;
+import com.autobon.order.repository.OrderRepository;
 import com.autobon.order.repository.ReassignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 
 /**
@@ -17,6 +22,8 @@ public class ReassignmentService {
 
     @Autowired
     ReassignmentRepository reassignmentRepository;
+    @Autowired
+    OrderRepository orderRepository;
 
     /**
      * 申请指派
@@ -24,7 +31,7 @@ public class ReassignmentService {
      * @param applicant 申请人ID
      * @return 0 成功  1 失败
      */
-    public int create(String orderId, int applicant){
+    public int create(Integer orderId, int applicant){
         Reassignment reassignment = new Reassignment();
         reassignment.setOrderId(orderId);
         reassignment.setStatus(0);
@@ -44,6 +51,7 @@ public class ReassignmentService {
      * @param assignedPerson  被指派人ID
      * @return 0 成功 1 失败
      */
+    @Transactional
     public int update(int rid, int assignedPerson){
         Reassignment reassignment = reassignmentRepository.findOne(rid);
         if(reassignment != null){
@@ -51,6 +59,9 @@ public class ReassignmentService {
             reassignment.setModifyDate(new Date());
             reassignment.setStatus(1);
             reassignmentRepository.save(reassignment);
+            Order order = orderRepository.getOne(reassignment.getOrderId());
+            order.setMainTechId(assignedPerson);
+            orderRepository.save(order);
         }
         return 1;
     }
@@ -58,14 +69,22 @@ public class ReassignmentService {
 
     /**
      * 查询指派表列表
-     * @param orderId  订单ID
      * @param applicant 申请人ID
+     * @param assignedPerson 被指派人ID
      * @param status 指派状态 0未指派  1已指派
      * @return
      */
-    public Page<Reassignment> get(String orderId, int applicant ,int status){
+    public Page<Reassignment> get( Integer applicant, Integer assignedPerson,Integer status, Integer currentPage, Integer pageSize){
+        currentPage = currentPage==null?1:currentPage;
+        currentPage = currentPage<=0?1:currentPage;
+        pageSize = pageSize==null?10:pageSize;
+        pageSize = pageSize<=0?10:pageSize;
+        pageSize = pageSize>20?20:pageSize;
+        Pageable p = new PageRequest(currentPage-1,pageSize);
 
-        return null;
+        Page<Reassignment> page = reassignmentRepository.get(applicant, assignedPerson, status, p);
+
+        return page;
     }
 
 }

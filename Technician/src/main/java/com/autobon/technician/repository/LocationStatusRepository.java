@@ -25,7 +25,15 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.color_modify_level as color_modify_level," +
             " t.beauty_level as beauty_level," +
             " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) AS distance," +
-            " ls.status as status " +
+            " ls.status as status ," +
+            " 0 as orderCount," +
+            " 0 as evaluate," +
+            " 0 as cancelCount," +
+            " t.film_working_seniority as fileWorkingSeniority ," +
+            " t.car_cover_working_seniority as carCoverWorkingSeniority," +
+            " t.color_modify_working_seniority as colorModifyWorkingSeniority," +
+            " t.beauty_working_seniority as beautyWorkingSeniority," +
+            " t.avatar as avatar" +
             " FROM" +
             " t_technician t " +
             " inner join t_location_status ls ON ls.tech_id = t.id " +
@@ -47,7 +55,15 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.color_modify_level as color_modify_level," +
             " t.beauty_level as beauty_level," +
             " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) AS distance," +
-            " ls.status as status " +
+            " ls.status as status, " +
+            " 0 as orderCount," +
+            " 0 as evaluate," +
+            " 0 as cancelCount," +
+            " t.film_working_seniority as fileWorkingSeniority, " +
+            " t.car_cover_working_seniority as carCoverWorkingSeniority," +
+            " t.color_modify_working_seniority as colorModifyWorkingSeniority," +
+            " t.beauty_working_seniority as beautyWorkingSeniority," +
+            " t.avatar as avatar" +
             " FROM" +
             " t_technician t " +
             " left join t_location_status ls ON ls.tech_id = t.id " +

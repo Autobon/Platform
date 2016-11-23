@@ -1,5 +1,7 @@
 package com.autobon.technician.vo;
 
+import java.math.BigInteger;
+
 /**
  * Created by wh on 2016/11/11.
  */
@@ -14,6 +16,15 @@ public class TechnicianLocation {
     private Integer beautyLevel;
     private Double distance;
     private Integer status;
+    private BigInteger orderCount;
+    private BigInteger evaluate;
+    private BigInteger cancelCount;
+    private Integer fileWorkingSeniority;
+    private Integer carCoverWorkingSeniority;
+    private Integer colorModifyWorkingSeniority;
+    private Integer beautyWorkingSeniority;
+    private String avatar;
+
 
 
     public TechnicianLocation(Object[] objects){
@@ -26,6 +37,15 @@ public class TechnicianLocation {
         this.beautyLevel = (Integer)objects[6];
         this.distance = (Double)objects[7];
         this.status = (Integer)objects[8];
+        this.orderCount = (BigInteger)objects[9];
+        this.evaluate = (BigInteger)objects[10];
+        this.cancelCount = (BigInteger)objects[11];
+
+        this.fileWorkingSeniority = (Integer)objects[12];
+        this.carCoverWorkingSeniority = (Integer)objects[13];
+        this.colorModifyWorkingSeniority = (Integer)objects[14];
+        this.beautyWorkingSeniority = (Integer)objects[15];
+        this.avatar = (String)objects[16];
     }
 
     public Integer getId() {
@@ -101,4 +121,67 @@ public class TechnicianLocation {
     }
 
 
+    public BigInteger getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(BigInteger orderCount) {
+        this.orderCount = orderCount;
+    }
+
+    public BigInteger getEvaluate() {
+        return evaluate;
+    }
+
+    public void setEvaluate(BigInteger evaluate) {
+        this.evaluate = evaluate;
+    }
+
+    public BigInteger getCancelCount() {
+        return cancelCount;
+    }
+
+    public void setCancelCount(BigInteger cancelCount) {
+        this.cancelCount = cancelCount;
+    }
+
+    public Integer getFileWorkingSeniority() {
+        return fileWorkingSeniority;
+    }
+
+    public void setFileWorkingSeniority(Integer fileWorkingSeniority) {
+        this.fileWorkingSeniority = fileWorkingSeniority;
+    }
+
+    public Integer getCarCoverWorkingSeniority() {
+        return carCoverWorkingSeniority;
+    }
+
+    public void setCarCoverWorkingSeniority(Integer carCoverWorkingSeniority) {
+        this.carCoverWorkingSeniority = carCoverWorkingSeniority;
+    }
+
+    public Integer getColorModifyWorkingSeniority() {
+        return colorModifyWorkingSeniority;
+    }
+
+    public void setColorModifyWorkingSeniority(Integer colorModifyWorkingSeniority) {
+        this.colorModifyWorkingSeniority = colorModifyWorkingSeniority;
+    }
+
+    public Integer getBeautyWorkingSeniority() {
+        return beautyWorkingSeniority;
+    }
+
+    public void setBeautyWorkingSeniority(Integer beautyWorkingSeniority) {
+        this.beautyWorkingSeniority = beautyWorkingSeniority;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 }
