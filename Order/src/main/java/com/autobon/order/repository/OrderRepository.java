@@ -343,7 +343,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.address as address ," +
             " ct.longitude as longitude ," +
             " ct.latitude as latitude ," +
-            " o.remark as remark " +
+            " o.remark as remark ," +
+            " 0 as evaluateStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
@@ -393,12 +394,14 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.address as address ," +
             " ct.longitude as longitude ," +
             " ct.latitude as latitude ," +
-            " o.remark as remark " +
+            " o.remark as remark," +
+            " ifnull(tc.id,0)  as evaluateStatus " +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
+            " LEFT JOIN t_comment tc on tc.order_id = o.id" +
             " where o.coop_id = ?1 and o.status >= 60 limit ?2,?3" ,nativeQuery = true)
     List<Object[]>  getCoopfinishOrder(Integer coopId, Integer begin ,Integer size);
 
@@ -462,5 +465,107 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
         int getNewCreateCount();
 
 
+
+
+
+
+        @Query(value = "SELECT " +
+                " o.id as id, " +
+                " o.order_num as orderNum, " +
+                " o.photo as phone, " +
+                " o.agreed_start_time as agreedStartTime ," +
+                " o.agreed_end_time as agreedEndTime, " +
+                " o.status as status , " +
+                " o.creator_type as creatorType, " +
+                " o.main_tech_id as techId, " +
+                " tech.name as techName, " +
+                " tech.phone as techPhone, " +
+                " o.before_photos as beforePhotos, " +
+                " o.after_photos as afterPhotos, " +
+                " o.start_time as startTime, " +
+                " o.end_time as endTime, " +
+                " o.sign_time as signTime, " +
+                " o.taken_time as takenTime, " +
+                " o.add_time as addTime, " +
+                " o.type as type, " +
+                " o.coop_id as coopId, " +
+                " ca.shortname as coopName," +
+                " o.creator_id as creatorId," +
+                " o.creator_name as creatorName," +
+                " ca.phone as creatorPhone ," +
+                " ct.address as address ," +
+                " ct.longitude as longitude ," +
+                " ct.latitude as latitude ," +
+                " o.remark as remark ," +
+                " 0 as evaluateStatus" +
+                " FROM" +
+                " t_order o" +
+                " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
+                " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
+                " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
+                " where o.coop_id = ?1 and o.status < 70 limit ?2,?3" ,nativeQuery = true)
+        List<Object[]>  getUnEvaluateOrder(Integer coopId, Integer begin ,Integer size);
+
+
+        @Query(value = "SELECT " +
+                " count(*) " +
+                " FROM" +
+                " t_order o" +
+                " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
+                " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
+                " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
+                " where o.coop_id = ?1 and o.status < 70" ,nativeQuery = true)
+        int getCoopUnEvaluateOrderCount(Integer coopId);
+
+
+
+        @Query(value = "SELECT " +
+                " o.id as id, " +
+                " o.order_num as orderNum, " +
+                " o.photo as phone, " +
+                " o.agreed_start_time as agreedStartTime ," +
+                " o.agreed_end_time as agreedEndTime, " +
+                " o.status as status , " +
+                " o.creator_type as creatorType, " +
+                " o.main_tech_id as techId, " +
+                " tech.name as techName, " +
+                " tech.phone as techPhone, " +
+                " o.before_photos as beforePhotos, " +
+                " o.after_photos as afterPhotos, " +
+                " o.start_time as startTime, " +
+                " o.end_time as endTime, " +
+                " o.sign_time as signTime, " +
+                " o.taken_time as takenTime, " +
+                " o.add_time as addTime, " +
+                " o.type as type, " +
+                " o.coop_id as coopId, " +
+                " ca.shortname as coopName," +
+                " o.creator_id as creatorId," +
+                " o.creator_name as creatorName," +
+                " ca.phone as creatorPhone ," +
+                " ct.address as address ," +
+                " ct.longitude as longitude ," +
+                " ct.latitude as latitude ," +
+                " o.remark as remark," +
+                " ifnull(tc.id,0)  as evaluateStatus " +
+                " FROM" +
+                " t_order o" +
+                " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
+                " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
+                " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
+                " LEFT JOIN t_comment tc on tc.order_id = o.id" +
+                " where o.coop_id = ?1  limit ?2,?3" ,nativeQuery = true)
+        List<Object[]>  getCoopAllOrder(Integer coopId, Integer begin ,Integer size);
+
+
+        @Query(value = "SELECT " +
+                " count(*) " +
+                " FROM" +
+                " t_order o" +
+                " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
+                " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
+                " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
+                " where o.coop_id = ?1 " ,nativeQuery = true)
+        int getCoopAllOrderCount(Integer coopId);
 }
 

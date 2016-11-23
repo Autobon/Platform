@@ -38,6 +38,15 @@ public class WorkDetailService {
         return 0;
     }
 
+    public int save(List<WorkDetail> workDetails){
+        if(workDetails!=null&& workDetails.size()>0){
+           for(WorkDetail workDetail:workDetails){
+               workDetailRepository.save(workDetail);
+           }
+        }
+        return 0;
+    }
+
 
 
     public int balance(List<WorkDetail> workDetails){

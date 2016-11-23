@@ -79,20 +79,8 @@
                             </div>
                             <div class="form-group mr10 ml40">
                                 <label class="mr10">施工部位</label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >前档风
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门+角
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门+角
+                                <label class="radio-inline" ng-repeat="po in positionType">
+                                    <input type="checkbox" ng-model="po.state">{{po.name}}
                                 </label>
                             </div>
                         </div>
@@ -104,45 +92,23 @@
                             </div>
                             <div class="form-group mr10 ml40">
                                 <label class="mr10">施工部位</label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >前档风
+                                <label class="radio-inline" ng-repeat="po in positionType">
+                                    <input type="checkbox" ng-model="po.state">{{po.name}}
                                 </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门+角
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门+角
-                                </label>
+
                             </div>
                         </div>
                         <div class="mt10 row-search-h40" ng-if="vs.project3">
                             <div class="form-group">
                                 <label>施工项目</label>
-                                <input type="text" class="form-control ml10" ng-model="Settings.orderTypes[vs.project2]">
+                                <input type="text" class="form-control ml10" ng-model="Settings.orderTypes[vs.project3]">
                             </div>
                             <div class="form-group mr10 ml40">
                                 <label class="mr10">施工部位</label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >前档风
+                                <label class="radio-inline" ng-repeat="po in positionType">
+                                    <input type="checkbox" ng-model="po.state">{{po.name}}
                                 </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门+角
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门+角
-                                </label>
+
                             </div>
                         </div>
                     </div>
@@ -188,6 +154,5 @@
             </div>
      </form>
 </div>
-
 
 

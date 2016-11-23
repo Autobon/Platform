@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -132,9 +133,6 @@ public class OrderV2Controller {
     LocationStatusService locationStatusService;
 
     @Autowired
-    CoopAccountService coopAccountService;
-
-    @Autowired
     CooperatorService cooperatorService;
 
 
@@ -151,6 +149,53 @@ public class OrderV2Controller {
         orderShow.setConstructionWasteShows(constructionWasteShows);
 
         return new JsonMessage(true, "","",orderShow);
+    }
+
+
+    /**
+     * 修改订单
+     * @param orderId
+     * @param type
+     * @param statusCode
+     * @param remark
+     * @param positionLon
+     * @param positionLat
+     * @param agreedStartTime
+     * @param agreedEndTime
+     * @param orderConstructionWasteShow
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.PUT)
+    public JsonResult modifyOrder(@PathVariable("orderId") int orderId,
+                                  @RequestParam(value = "type", required = false) String type,
+                                  @RequestParam(value = "statusCode", required = false) Integer statusCode,
+                                  @RequestParam(value = "remark", required = false)String remark,
+                                  @RequestParam(value = "positionLon", required = false)String positionLon,
+                                  @RequestParam(value = "positionLat", required = false)String positionLat,
+                                  @RequestParam(value = "agreedStartTime", required = false)String agreedStartTime,
+                                  @RequestParam(value = "agreedEndTime", required = false)String agreedEndTime,
+                                  @RequestBody OrderConstructionWasteShow orderConstructionWasteShow)throws Exception{
+
+        Order order = orderService.get(orderId);
+        order.setType(type == null? order.getType():type);
+        order.setStatusCode(statusCode == null ? order.getStatusCode() : statusCode);
+        order.setRemark(remark == null ? order.getRemark() : remark);
+        order.setPositionLat(positionLat == null ? order.getPositionLat() : positionLat);
+        order.setPositionLon(positionLon == null ? order.getPositionLon() : positionLon);
+        order.setAgreedEndTime(agreedEndTime == null ? order.getAgreedEndTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedEndTime));
+        order.setAgreedStartTime(agreedStartTime == null ? order.getStartTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedStartTime));
+
+        orderService.save(order);
+        if(orderConstructionWasteShow != null){
+            List<WorkDetail> workDetailList = orderConstructionWasteShow.getWorkDetailList();
+            workDetailService.save(workDetailList);
+            List<ConstructionWaste> constructionWasteList = orderConstructionWasteShow.getConstructionWasteList();
+            constructionWasteService.save(constructionWasteList);
+
+        }
+
+        return new JsonResult(true, "修改成功");
     }
 
 
