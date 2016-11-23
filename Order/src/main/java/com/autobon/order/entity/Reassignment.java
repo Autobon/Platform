@@ -13,7 +13,7 @@ import java.util.Date;
 public class Reassignment {
 
     private Integer id;
-    private String orderId;  //订单ID
+    private Integer orderId;  //订单ID
     private Integer applicant;  //申请人
     private Integer assignedPerson;  //被指派人
     private Integer status; //指派状态  0 未指派  1已指派
@@ -33,11 +33,11 @@ public class Reassignment {
         this.id = id;
     }
 
-    public String getOrderId() {
+    public Integer getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
 

@@ -205,7 +205,7 @@ public class OrderV2Controller {
         workDetail.setProject1(1);
         workDetail.setPosition1("1,2");
         workDetail.setProject2(2);
-        workDetail.setPosition1("3,4");
+        workDetail.setPosition2("3,4");
 
         list.add(workDetail);
         workDetailService.balance(list);

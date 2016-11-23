@@ -662,8 +662,8 @@ public class MerchantController {
 
     /**
      *
-     * @param longitude
-     * @param latitude
+     * @param page
+     * @param pageSize
      * @return
      */
     @RequestMapping(value = "/merchant/technician/distance", method = RequestMethod.GET)

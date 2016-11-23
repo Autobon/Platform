@@ -75,6 +75,8 @@ public class TechnicianV2Controller {
 
     @Autowired
     DetailedOrderService detailedOrderService;
+    @Autowired
+    ReassignmentService reassignmentService;
 
 
     @Value("${com.autobon.gm-path}") String gmPath;
@@ -695,7 +697,9 @@ public class TechnicianV2Controller {
             if (order.getMainTechId() != tech.getId()) return new JsonResult(false,   "只有接单人可以进行弃单操作");
 
             if(order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ){
-                return new JsonResult(false,   "订单进入工作状态不能放弃，请申请改派");
+
+                reassignmentService.create(orderId, tech.getId());
+                return new JsonResult(true,   "订单进入工作状态，已发送申请改派");
             }
             order.setStatusCode(Order.Status.NEWLY_CREATED.getStatusCode());
             orderService.save(order);
@@ -1149,24 +1153,16 @@ public class TechnicianV2Controller {
 
     /**
      * 获取可抢订单列表
-     * @param request
      * @param page
      * @param pageSize
      * @return
      */
     @RequestMapping(value = "/v2/order/listNew", method = RequestMethod.GET)
-    public JsonResult listNew(
-            HttpServletRequest request,
+    public JsonResult getNewCreateOrder(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
-        Technician technician = (Technician) request.getAttribute("user");
-        String sSkill = technician.getSkill();
-        if (sSkill == null || "".equals(sSkill)) {
-            return new JsonResult(true,  new JsonPage<>());
-        }
-        List<Integer> skills = Arrays.stream(technician.getSkill().split(",")).map(Integer::parseInt).collect(Collectors.toList());
 
-        return new JsonResult(true, new JsonPage<>(detailedOrderService.findAvailable(skills, page, pageSize)));
+        return new JsonResult(true, new JsonPage<>(orderService.getNewCreateOrder(page, pageSize)));
     }
 
 }
