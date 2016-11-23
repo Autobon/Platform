@@ -292,13 +292,19 @@ public class OrderService {
         }else if(status == 2){
             orderList = repository.getCoopfinishOrder(coopId, (currentPage - 1) * pageSize, pageSize);
             count = repository.getCoopfinishOrderCount(coopId);
+        }else if(status == 3){
+            orderList = repository.getUnEvaluateOrder(coopId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getUnfinishOrderCount(coopId);
+        }else if(status == 4){
+            orderList = repository.getCoopAllOrder(coopId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getCoopAllOrderCount(coopId);
         }
 
 
 
         List<OrderShow> orderShows =  new ArrayList<>();
         for(Object[] objects: orderList){
-            OrderShow orderShow = new OrderShow(objects);
+            OrderShow orderShow = new OrderShow(objects,0);
             orderShows.add(orderShow);
         }
         return new PageImpl<>(orderShows,p,count);
