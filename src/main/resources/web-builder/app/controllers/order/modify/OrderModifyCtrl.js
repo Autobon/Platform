@@ -27,7 +27,7 @@ export default class OrderModifyCtrl extends Injector {
         const {$scope, $state, OrderService} = this.$injected;
         let q, isUpdate       = !!$scope.orderShow.id;
         if (isUpdate) {
-            q = OrderService.update($scope.orderShow,$scope.workDetailShows);
+            q = OrderService.update($scope.orderShow, $scope.workDetailShows, $scope.constructionWasteShows);
         } else {
             q = OrderService.add($scope.orderShow);
         }

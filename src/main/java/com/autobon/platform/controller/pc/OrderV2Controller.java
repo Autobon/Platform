@@ -80,11 +80,11 @@ public class OrderV2Controller {
                         types, statusCode, sort, Sort.Direction.DESC, page, pageSize)));
     }
 
-    @RequestMapping(value = "/{orderId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{orderId}", method = RequestMethod.POST)
     public JsonMessage update(
             @PathVariable("orderId") int orderId,
             @RequestParam(value = "type", required = false) String type,
-            @RequestParam(value = "statusCode", required = false) int statusCode,
+            @RequestParam(value = "statusCode", required = false) Integer statusCode,
             @RequestParam(value = "phone", required = false) String phone,
             @RequestParam(value = "remark", required = false)String remark,
             @RequestParam(value = "positionLon", required = false)String positionLon,
@@ -101,7 +101,7 @@ public class OrderV2Controller {
         }
 
         order.setType(type == null ? order.getType():type);
-        order.setStatusCode(Integer.valueOf(statusCode) == null ? order.getStatusCode():statusCode);
+        order.setStatusCode(statusCode == null ? order.getStatusCode():statusCode.intValue());
         order.setContactPhone(phone == null ? order.getContactPhone():phone);
         order.setRemark(remark == null ? order.getRemark():remark);
         order.setPositionLon(positionLon == null ? order.getPositionLon():positionLon);

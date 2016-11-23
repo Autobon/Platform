@@ -33,9 +33,9 @@ export default class OrderService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/order', order);
     }
-    update(orderShow, workDetailShows) {
+    update(orderShow, workDetailShows, constructionWasteShows) {
         const {$http, Settings} = this.$injected;
-        return $http.post(Settings.domain + '/api/web/admin/v2/order/v2/{orderId}' + orderShow.id, orderShow, workDetailShows);
+        return $http.post(Settings.domain + '/api/web/admin/v2/order/' + orderShow.id, orderShow, workDetailShows, constructionWasteShows);
     }
 
     getWorkItems(orderType) {
