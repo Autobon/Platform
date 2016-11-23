@@ -155,19 +155,19 @@ public class OrderV2Controller {
      * @throws IOException
      */
     @RequestMapping(value = "/project/position/{orderId}", method = RequestMethod.GET)
-    public JsonResult getProject(HttpServletRequest request,
+    public JsonMessage getProject(HttpServletRequest request,
                                  @PathVariable("orderId") int orderId) {
 
         try{
             Order order = orderService.get(orderId);
 
             if (order == null  ) {
-                return new JsonResult(false,  "没有这个订单");
+                return new JsonMessage(false,  "没有这个订单");
             }
-            return new JsonResult(true, orderService.getProject(orderId));
+            return new JsonMessage(true,"","",orderService.getProject(orderId));
 
         }catch (Exception e){
-            return new JsonResult(false, e.getMessage());
+            return new JsonMessage(false, e.getMessage());
         }
     }
 
