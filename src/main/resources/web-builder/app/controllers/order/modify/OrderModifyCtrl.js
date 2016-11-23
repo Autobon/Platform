@@ -23,6 +23,7 @@ export default class OrderDetailCtrl extends Injector {
     }
 
     save() {
+    
         const {$scope, $state, OrderService} = this.$injected;
         let q, isUpdate       = !!$scope.order.id;
         if (isUpdate) {
