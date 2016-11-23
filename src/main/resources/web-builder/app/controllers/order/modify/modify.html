@@ -13,8 +13,8 @@
                     </div>
                     <div class="form-group mr10 ml40">
                         <label class="mr10">施工项目</label>
-                        <label class="radio-inline" ng-repeat="acs in positionShow">
-                            <input type="checkbox">{{acs.name}}
+                        <label class="radio-inline" ng-repeat="ot in orderTypeList">
+                            <input type="checkbox" ng-model="ot.state">{{ot.name}}
                         </label>
                     </div>
                 </div>
