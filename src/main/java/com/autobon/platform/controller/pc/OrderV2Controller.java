@@ -5,6 +5,7 @@ import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
+import com.autobon.order.entity.ConstructionWaste;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderProduct;
 import com.autobon.order.entity.WorkDetail;
@@ -88,7 +89,8 @@ public class OrderV2Controller {
             @RequestParam(value = "remark", required = false)String remark,
             @RequestParam(value = "positionLon", required = false)String positionLon,
             @RequestParam(value = "positionLat", required = false)String positionLat,
-            @RequestBody List<WorkDetail> workDetailShowList) {
+            @RequestBody List<WorkDetail> workDetailShowList,
+            @RequestBody List<ConstructionWaste> constructionWasteList) {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
         Order order = orderService.getbyOrderId(orderId);
@@ -112,6 +114,13 @@ public class OrderV2Controller {
             curworkDetail.setProject2(workDetailShow.getProject2() == null? curworkDetail.getProject2(): workDetailShow.getProject2());
             curworkDetail.setPosition2(workDetailShow.getPosition2() == null? curworkDetail.getPosition2(): workDetailShow.getPosition2());
             workDetailService.save(curworkDetail);
+        }
+        for(ConstructionWaste constructionWasteShow : constructionWasteList){
+            ConstructionWaste curconstructionWaste = constructionWasteService.getByOrderIdAndTechId(constructionWasteShow.getOrderId(),constructionWasteShow.getTechId());
+            curconstructionWaste.setProject(Integer.valueOf(constructionWasteShow.getProject()) == null ?curconstructionWaste.getProject(): constructionWasteShow.getProject());
+            curconstructionWaste.setPosition(Integer.valueOf(constructionWasteShow.getPosition()) == null ?curconstructionWaste.getPosition(): constructionWasteShow.getPosition());
+            curconstructionWaste.setTotal(Integer.valueOf(constructionWasteShow.getTotal()) == null ?curconstructionWaste.getTotal(): constructionWasteShow.getTotal());
+            constructionWasteService.save(curconstructionWaste);
         }
 
 

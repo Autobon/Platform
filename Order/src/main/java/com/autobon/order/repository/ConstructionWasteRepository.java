@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface ConstructionWasteRepository extends JpaRepository<ConstructionWaste, Integer> {
 
+    ConstructionWaste findByOrderIdAndTechId(int orderId, int techId);
+
     @Query(value = "select cw.id,cw.order_id,cw.tech_id,cw.construction_project,cw.construction_position,cw.total,tech.name from t_construction_waste cw " +
             " left join  t_technician tech on tech.id = cw.tech_id where cw.order_id = ?1",nativeQuery = true)
     List<Object[]> get(int orderID);

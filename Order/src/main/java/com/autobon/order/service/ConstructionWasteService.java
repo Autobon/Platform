@@ -1,5 +1,6 @@
 package com.autobon.order.service;
 
+import com.autobon.order.entity.ConstructionWaste;
 import com.autobon.order.repository.ConstructionWasteRepository;
 import com.autobon.order.vo.ConstructionWasteShow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,13 @@ public class ConstructionWasteService {
             constructionWasteShows.add(constructionWasteShow);
         }
         return constructionWasteShows;
+    }
+
+    public ConstructionWaste getByOrderIdAndTechId(int orderId, int techId){
+        return constructionWasteRepository.findByOrderIdAndTechId(orderId,techId);
+    }
+    public int save(ConstructionWaste constructionWaste){
+        constructionWasteRepository.save(constructionWaste);
+        return 0;
     }
 }
