@@ -23,13 +23,12 @@ export default class OrderDetailCtrl extends Injector {
     }
 
     save() {
-    
         const {$scope, $state, OrderService} = this.$injected;
         let q, isUpdate       = !!$scope.order.id;
         if (isUpdate) {
-            q = OrderService.update($scope.coop);
+            q = OrderService.update($scope.orderShow);
         } else {
-            q = OrderService.add($scope.coop);
+            q = OrderService.add($scope.orderShow);
         }
         q.then(res => {
             if (res.data) {
