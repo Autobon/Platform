@@ -2,13 +2,14 @@ import {Injector} from 'ngES6';
 import angular from 'angular';
 import './modify.scss';
 
-export default class OrderDetailCtrl extends Injector {
+export default class OrderModifyCtrl extends Injector {
     static $inject   = ['$scope', '$state', '$stateParams', 'OrderService', 'Settings'];
     static $template = require('./modify.html');
 
     constructor(...args) {
         super(...args);
         const {$scope, $stateParams, OrderService} = this.$injected;
+        this.attachMethodsTo($scope);
         OrderService.getDetail2($stateParams.id).then(res => {
             if (res.data && res.data.result) {
                 let orderShow = $scope.orderShow = res.data.data;
@@ -24,9 +25,9 @@ export default class OrderDetailCtrl extends Injector {
 
     save() {
         const {$scope, $state, OrderService} = this.$injected;
-        let q, isUpdate       = !!$scope.order.id;
+        let q, isUpdate       = !!$scope.orderShow.id;
         if (isUpdate) {
-            q = OrderService.update($scope.orderShow);
+            q = OrderService.update($scope.orderShow,$scope.workDetailShows);
         } else {
             q = OrderService.add($scope.orderShow);
         }
