@@ -144,13 +144,23 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'ProductCtrl',
             template  : templateCache.ProductCtrl,
         })
+        .state('console.product.detail', {
+            url       : '/{id:\\d+}',
+            controller: 'ProductDetailCtrl',
+            template  : templateCache.ProductDetailCtrl,
+        })
+        .state('console.product.import', {
+            url       : '/import',
+            controller: 'ProductImportCtrl',
+            template  : templateCache.ProductImportCtrl,
+        })
         .state('console.product.new', {
             url       : '/new',
             controller: 'ProductEditCtrl',
             template  : templateCache.ProductEditCtrl,
         })
         .state('console.product.edit', {
-            url       : '/edit',
+            url       : '/edit/{id:\\d+}',
             controller: 'ProductEditCtrl',
             template  : templateCache.ProductEditCtrl,
         })
