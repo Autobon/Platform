@@ -27,4 +27,14 @@ export default class TechnicianService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/technician/maptrack/' + techId, {params: {page: page, pageSize: pageSize}});
     }
+
+    getV2Detail(id) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/v2/technician/' + id);
+    }
+
+    update(tech) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/v2/technician/' + tech.id, tech);
+    }
 }

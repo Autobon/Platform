@@ -1,40 +1,96 @@
-<div class="container-fluid">
-    <div class="clearfix m-b-20">
-        <img ng-src="{{technician.avatar}}" resize="90,90" image-modal class="img-thumbnail pull-left m-r-10">
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>编辑技师</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <form class="form-inline form-border bb0">
+        <div class="row-search-h40">
+            <div class="form-group">
+                <label>技师姓名</label>
+                <input type="text" class="form-control ml10">
+            </div>
+            <div class="form-group ml40">
+                <label>联系电话</label>
+                <input type="text" class="form-control ml10">
+            </div>
+            <div class="form-group ml40">
+                <label>身份证号</label>
+                <input type="text" class="form-control ml10 wh285">
+            </div>
+        </div>
+        <div class="mt20">
+            <div class="form-group">
+                <label>开户银行</label>
+                <input type="text" class="form-control ml10">
+            </div>
+            <div class="form-group ml40">
+                <label>银行卡号</label>
+                <input type="text" class="form-control ml10">
+            </div>
+            <div class="form-group ml40 por">
+                <label>银行卡号</label>
+                <img class="cardimg img-rounded" src="">
+                <!--  <input type="file" style="position: absolute;left: 180px;top: 195px;"> -->
+                <a href="" class="newidcard">重新上传省份证照片</a>
+            </div>
+        </div>
+        <div class="mt20 row-search-h40">
+            <div class="form-group">
+                <label>申请认证日期</label>
+                <input type="text" class="form-control ml10 wh150">
+            </div>
+            <div class="form-group ml40">
+                <label>认证日期</label>
+                <input type="text" class="form-control ml10">
+            </div>
+        </div>
+        <div class="mt20 Job-skills-top">
+            <div class="form-group">
+                <label>工作技能</label>
+                <input type="text" class="form-control ml10 wh150">
+            </div>
+            <div class="form-group ml40">
+                <label>工作年限</label>
+                <select class="form-control ml10 maxwh87">
+                    <option>1年</option>
+                    <option>2年</option>
+                </select>
+            </div>
+            <div class="form-group ml40">
+                <label>技能星级评价</label>
+                <select class="form-control ml10 maxwh87">
+                    <option>五星</option>
+                </select>
+            </div>
+        </div>
+        <div class="mt20 Job-skills-bottom">
+            <div class="form-group">
+                <label>工作技能</label>
+                <input type="text" class="form-control ml10 wh150">
+            </div>
+            <div class="form-group ml40">
+                <label>工作年限</label>
+                <select class="form-control ml10 maxwh87">
+                    <option>1年</option>
+                    <option>2年</option>
+                </select>
+            </div>
+            <div class="form-group ml40">
+                <label>技能星级评价</label>
+                <select class="form-control ml10 maxwh87">
+                    <option>五星</option>
+                </select>
+            </div>
+        </div>
+        <div class="mt20 referees-top">
+            <div class="form-group">
+                <label>推荐人&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control ml10 wh150">
+                <a href="" class="a-referees">重新选择推荐人</a>
+            </div>
 
-        <h3 style="display: inline-block; margin: 10px 0;">{{technician.name}}
-            <small class="btn btn-success btn-xs">{{Settings.technicianStatus[technician.status]}}</small>&nbsp;&nbsp;
-            <small><i class="glyphicon glyphicon-earphone"></i>{{technician.phone}}</small>
-        </h3>
-        <span class="m-l-10"><uib-rating ng-model="technician.starRate" read-only="true" max="5" aria-labelledby="default-rating"></uib-rating><b>{{technician.starRate.toFixed(2)}}</b>&nbsp;星</span><br>
-        <span ng-repeat="s in technician.skill.split(',')" class="fa fa-tag m-l-5">&nbsp;{{Settings.orderTypes[s]}}</span><br>
-        <span class="m-r-10">{{technician.totalOrders || 0}}条订单</span>|<span class="m-l-10 m-r-10">{{technician.commentCount || 0}}条评论</span>|<span class="m-l-10">余额: ￥{{technician.balance || 0}}</span>
-    </div>
-    <div class="row detail-row">
-        <div class="col-sm-4"><b>开户银行: </b><span>{{technician.bank}}</span></div>
-        <div class="col-sm-4"><b>银行卡号: </b><span>{{technician.bankCardNo}}</span></div>
-        <div class="col-sm-4"><b>身份证号: </b><span>{{technician.idNo}}</span></div>
-    </div>
-    <div class="row detail-row">
-        <div class="col-sm-4"><b>注册时间: </b><span>{{technician.createAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>最后登录时间: </b><span>{{technician.lastLoginAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>最后登录IP: </b><span>{{technician.lastLoginIp}}</span></div>
-    </div>
-    <div class="row detail-row">
-        <div class="col-sm-4"><b>申请认证: </b><span>{{technician.requestVerifyAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>认证日期: </b><span>{{technician.verifyAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-    </div>
-    <div class="row detail-row" ng-if="technician.status == 'REJECTED'">
-        <div class="col-sm-12"><b>认证消息: </b><span>{{technician.verifyMsg}}</span></div>
-    </div>
-    <div class="row m-t-15 m-l-0">
-        <div class="col-sm-4">
-            <b>身份证照:</b><br>
-            <image-box ng-if="technician.idPhoto" url="{{technician.idPhoto}}" style="height: 300px;"></image-box>
         </div>
-        <div class="col-sm-8">
-            <b>位置记录:</b><br>
-            <map-track style="height: 300px; border-radius: 4px; border: 1px solid #cabe9c;" points="technician.locations"></map-track>
-        </div>
+    <div class="pull-right modify-btn">
+        <button class="mr50">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+        <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
     </div>
+    </form>
 </div>

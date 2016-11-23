@@ -61,7 +61,7 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.TechnicianDetailCtrl,
         })
         .state('console.technician.edit', {
-            url       : '/{id:\\d+}',
+            url       : '/edit/{id:\\d+}',
             controller: 'TechnicianEditorCtrl',
             template  : templateCache.TechnicianEditorCtrl,
         })
