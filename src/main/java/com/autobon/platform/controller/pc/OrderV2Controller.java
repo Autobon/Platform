@@ -95,8 +95,8 @@ public class OrderV2Controller {
         order.setRemark(remark == null ? order.getRemark() : remark);
         order.setPositionLat(positionLat == null ? order.getPositionLat() : positionLat);
         order.setPositionLon(positionLon == null ? order.getPositionLon() : positionLon);
-        order.setAgreedEndTime(agreedEndTime == null ? order.getAgreedEndTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(agreedEndTime));
-        order.setAgreedStartTime(agreedStartTime == null ? order.getStartTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(agreedStartTime));
+        order.setAgreedEndTime(agreedEndTime == null ? order.getAgreedEndTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedEndTime));
+        order.setAgreedStartTime(agreedStartTime == null ? order.getStartTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedStartTime));
 
         orderService.save(order);
         if(orderConstructionWasteShow != null){
