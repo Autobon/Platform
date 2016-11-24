@@ -18,6 +18,14 @@ public class ConstructionWasteService {
     @Autowired
     ConstructionWasteRepository constructionWasteRepository;
 
+    public int save(List<ConstructionWaste> constructionWastes){
+        if(constructionWastes!=null&&constructionWastes.size()>0){
+            for(ConstructionWaste constructionWaste:constructionWastes){
+                constructionWasteRepository.save(constructionWaste);
+            }
+        }
+        return 0;
+    }
 
     public List<ConstructionWasteShow> getByOrderId(int orderId){
         List<Object[]> list = constructionWasteRepository.get(orderId);
