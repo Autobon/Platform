@@ -29,7 +29,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " 0 as orderCount," +
             " 0 as evaluate," +
             " 0 as cancelCount," +
-            " t.film_working_seniority as fileWorkingSeniority ," +
+            " t.film_working_seniority as filmWorkingSeniority ," +
             " t.car_cover_working_seniority as carCoverWorkingSeniority," +
             " t.color_modify_working_seniority as colorModifyWorkingSeniority," +
             " t.beauty_working_seniority as beautyWorkingSeniority," +
@@ -59,7 +59,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " 0 as orderCount," +
             " 0 as evaluate," +
             " 0 as cancelCount," +
-            " t.film_working_seniority as fileWorkingSeniority, " +
+            " t.film_working_seniority as filmWorkingSeniority, " +
             " t.car_cover_working_seniority as carCoverWorkingSeniority," +
             " t.color_modify_working_seniority as colorModifyWorkingSeniority," +
             " t.beauty_working_seniority as beautyWorkingSeniority," +

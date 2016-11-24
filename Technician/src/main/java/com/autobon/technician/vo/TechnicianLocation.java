@@ -19,7 +19,7 @@ public class TechnicianLocation {
     private BigInteger orderCount;
     private BigInteger evaluate;
     private BigInteger cancelCount;
-    private Integer fileWorkingSeniority;
+    private Integer filmWorkingSeniority;
     private Integer carCoverWorkingSeniority;
     private Integer colorModifyWorkingSeniority;
     private Integer beautyWorkingSeniority;
@@ -41,7 +41,7 @@ public class TechnicianLocation {
         this.evaluate = (BigInteger)objects[10];
         this.cancelCount = (BigInteger)objects[11];
 
-        this.fileWorkingSeniority = (Integer)objects[12];
+        this.filmWorkingSeniority = (Integer)objects[12];
         this.carCoverWorkingSeniority = (Integer)objects[13];
         this.colorModifyWorkingSeniority = (Integer)objects[14];
         this.beautyWorkingSeniority = (Integer)objects[15];
@@ -145,12 +145,12 @@ public class TechnicianLocation {
         this.cancelCount = cancelCount;
     }
 
-    public Integer getFileWorkingSeniority() {
-        return fileWorkingSeniority;
+    public Integer getFilmWorkingSeniority() {
+        return filmWorkingSeniority;
     }
 
-    public void setFileWorkingSeniority(Integer fileWorkingSeniority) {
-        this.fileWorkingSeniority = fileWorkingSeniority;
+    public void setFilmWorkingSeniority(Integer filmWorkingSeniority) {
+        this.filmWorkingSeniority = filmWorkingSeniority;
     }
 
     public Integer getCarCoverWorkingSeniority() {
