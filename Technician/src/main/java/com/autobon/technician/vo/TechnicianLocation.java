@@ -48,6 +48,24 @@ public class TechnicianLocation {
         this.avatar = (String)objects[16];
     }
 
+    public TechnicianLocation(Object[] objects ,int ag){
+        this.id = (Integer)objects[0];
+        this.name = (String)objects[1];
+        this.phone = (String)objects[2];
+        this.filmLevel = (Integer)objects[3];
+        this.carCoverLevel = (Integer)objects[4];
+        this.colorModifyLevel = (Integer)objects[5];
+        this.beautyLevel = (Integer)objects[6];
+        this.orderCount = (BigInteger)objects[7];
+        this.evaluate = (BigInteger)objects[8];
+        this.cancelCount = (BigInteger)objects[9];
+        this.filmWorkingSeniority = (Integer)objects[10];
+        this.carCoverWorkingSeniority = (Integer)objects[11];
+        this.colorModifyWorkingSeniority = (Integer)objects[12];
+        this.beautyWorkingSeniority = (Integer)objects[13];
+        this.avatar = (String)objects[14];
+    }
+
     public Integer getId() {
         return id;
     }

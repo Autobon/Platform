@@ -2,6 +2,7 @@ package com.autobon.platform.controller.pc;
 
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.Product;
+import com.autobon.order.service.ConstructionProjectService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.ProductService;
 import com.autobon.order.vo.OrderProductShow;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wh on 2016/11/17.
@@ -24,7 +26,8 @@ public class ProductController {
     ProductService productService;
     @Autowired
     OrderService orderService;
-
+    @Autowired
+    ConstructionProjectService constructionProjectService;
 
     @RequestMapping(value = "/{orderId}/product", method = RequestMethod.GET)
     public JsonResult productList(@PathVariable("orderId") int orderId){
@@ -42,7 +45,8 @@ public class ProductController {
         }
 
         List<OrderProductShow> orderProductShows = new ArrayList<>();
-
+        Map<Integer, String> projectMap = constructionProjectService.getProject();
+        Map<Integer, String> positionMap = constructionProjectService.getPosition();
         List<Product> products = productService.getByType(projectList);
         for(Integer projectId: projectList){
             OrderProductShow orderProductShow = new OrderProductShow();
@@ -59,7 +63,7 @@ public class ProductController {
         }
 
 
-        return null;
+        return new JsonResult(true ,orderProductShows);
     }
 
     /**

@@ -341,7 +341,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.longitude as longitude ," +
             " ct.latitude as latitude ," +
             " o.remark as remark ," +
-            " 0 as evaluateStatus" +
+            " 0 as evaluateStatus," +
+            " 0 as orderCount," +
+            " 0 as evaluate," +
+            " 0 as cancelCount," +
+            " tech.avatar" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
@@ -392,7 +396,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.longitude as longitude ," +
             " ct.latitude as latitude ," +
             " o.remark as remark," +
-            " ifnull(tc.id,0)  as evaluateStatus " +
+            " ifnull(tc.id,0)  as evaluateStatus, " +
+            " 0 as orderCount," +
+            " 0 as evaluate," +
+            " 0 as cancelCount," +
+            " tech.avatar" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
@@ -494,13 +502,17 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " ct.longitude as longitude ," +
                 " ct.latitude as latitude ," +
                 " o.remark as remark ," +
-                " 0 as evaluateStatus" +
+                " 0 as evaluateStatus," +
+                " 0 as orderCount," +
+                " 0 as evaluate," +
+                " 0 as cancelCount," +
+                " tech.avatar" +
                 " FROM" +
                 " t_order o" +
                 " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
                 " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
                 " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
-                " where o.coop_id = ?1 and o.status < 70 limit ?2,?3" ,nativeQuery = true)
+                " where o.coop_id = ?1 and o.status>=60 and o.status < 70 limit ?2,?3" ,nativeQuery = true)
         List<Object[]>  getUnEvaluateOrder(Integer coopId, Integer begin ,Integer size);
 
 
@@ -511,7 +523,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
                 " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
                 " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
-                " where o.coop_id = ?1 and o.status < 70" ,nativeQuery = true)
+                " where o.coop_id = ?1 and  o.status>=60 and o.status < 70" ,nativeQuery = true)
         int getCoopUnEvaluateOrderCount(Integer coopId);
 
 
@@ -544,7 +556,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " ct.longitude as longitude ," +
                 " ct.latitude as latitude ," +
                 " o.remark as remark," +
-                " ifnull(tc.id,0)  as evaluateStatus " +
+                " ifnull(tc.id,0)  as evaluateStatus, " +
+                " 0 as orderCount," +
+                " 0 as evaluate," +
+                " 0 as cancelCount," +
+                " tech.avatar" +
                 " FROM" +
                 " t_order o" +
                 " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
