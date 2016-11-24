@@ -44,7 +44,6 @@ export default class TechnicianEditorCtrl extends Injector {
         TechnicianService.getV2Detail($stateParams.id).then(res => {
             if (res.data.status === true) {
                 $scope.technician = res.data.message;
-                console.log(JSON.stringify($scope.technician));
             }
         });
         $scope.uploadUrl = TechnicianService.uploadPhotoUrl;
