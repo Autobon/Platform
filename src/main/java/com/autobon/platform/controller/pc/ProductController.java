@@ -1,10 +1,15 @@
 package com.autobon.platform.controller.pc;
 
+import com.autobon.order.entity.Order;
 import com.autobon.order.entity.Product;
+import com.autobon.order.service.OrderService;
 import com.autobon.order.service.ProductService;
 import com.autobon.shared.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wh on 2016/11/17.
@@ -16,7 +21,29 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+    @Autowired
+    OrderService orderService;
 
+
+    @RequestMapping(value = "/{orderId}/product", method = RequestMethod.GET)
+    public JsonResult productList(@PathVariable("orderId") int orderId){
+
+        Order order = orderService.get(orderId);
+        if(order == null){
+            return new JsonResult(false,"订单不存在");
+        }
+
+        String type = order.getType();
+        String[] typeStr = type.split(",");
+        List<Integer> projectList = new ArrayList<>();
+        for(String projectId: typeStr){
+            projectList.add(Integer.valueOf(projectId));
+        }
+
+
+
+        return null;
+    }
 
     /**
      * 查询产品列表
@@ -151,4 +178,9 @@ public class ProductController {
 
         return new JsonResult(true, productService.delete(pid));
     }
+
+
+
+
+
 }

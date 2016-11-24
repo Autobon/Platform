@@ -137,7 +137,7 @@ public class OrderController {
                                    @RequestParam("file") MultipartFile file) throws Exception {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
-        String path = "/uploads/order";
+        String path = "/uploads/order/photo";
         File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         if (!dir.exists()) dir.mkdirs();
 
@@ -148,17 +148,17 @@ public class OrderController {
 
         InputStream in;
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有选择上传文件");
-        in = file.getInputStream();
-
-        ConvertCmd cmd = new ConvertCmd(true);
-        cmd.setSearchPath(gmPath);
-        cmd.setInputProvider(new Pipe(in, null));
-        IMOperation operation = new IMOperation();
-        operation.addImage("-");
-        operation.resize(1200, 1200, ">");
-        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
-        cmd.run(operation);
-
+//        in = file.getInputStream();
+//
+//        ConvertCmd cmd = new ConvertCmd(true);
+//        cmd.setSearchPath(gmPath);
+//        cmd.setInputProvider(new Pipe(in, null));
+//        IMOperation operation = new IMOperation();
+//        operation.addImage("-");
+//        operation.resize(1200, 1200, ">");
+//        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+//        cmd.run(operation);
+        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
         return new JsonMessage(true, "", "", path + "/" + filename);
     }
 

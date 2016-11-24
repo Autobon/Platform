@@ -9,15 +9,16 @@ import com.autobon.order.entity.ConstructionWaste;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderProduct;
 import com.autobon.order.entity.WorkDetail;
-import com.autobon.order.service.ConstructionWasteService;
-import com.autobon.order.service.OrderProductService;
-import com.autobon.order.service.OrderService;
-import com.autobon.order.service.WorkDetailService;
+import com.autobon.order.service.*;
 import com.autobon.order.vo.*;
+import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
 import com.autobon.technician.entity.LocationStatus;
+import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.LocationStatusService;
+import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by wh on 2016/11/15.
@@ -51,6 +53,12 @@ public class OrderV2Controller {
     @Autowired
     ConstructionWasteService constructionWasteService;
 
+    @Autowired
+    TechnicianService technicianService;
+
+
+    @Autowired
+    ProductService productService;
 
     @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.GET)
     public JsonResult getById(@PathVariable("orderId") int orderId){
@@ -109,6 +117,8 @@ public class OrderV2Controller {
 
         return new JsonResult(true, "修改成功");
     }
+
+
 
 
 
@@ -211,6 +221,14 @@ public class OrderV2Controller {
     }
 
 
+    /**
+     * 后台指派技师 地图展示
+     * @param orderId
+     * @param longitude
+     * @param latitude
+     * @param kilometre
+     * @return
+     */
     @RequestMapping(value = "/technician/assign/{orderId}", method = RequestMethod.GET)
     public JsonResult assign(@PathVariable("orderId") int orderId,
                              @RequestParam(value = "longitude",required = false) String longitude,
@@ -237,6 +255,60 @@ public class OrderV2Controller {
 
         }
         return  new JsonResult(true,  coopTechnicianLocation);
+    }
+
+
+    /**
+     * 查询技师
+     * @param query 查询内容 纯数字则查询手机 反之查询姓名
+     * @param page 页码
+     * @param pageSize 页面大小
+     * @return JsonResult对象
+     */
+    @RequestMapping(value = "/technician/assign",method = RequestMethod.GET)
+    public JsonResult getTechnician(@RequestParam("query") String query,
+                                    @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                                    @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                                    HttpServletRequest request){
+
+        try {
+            Technician tech = (Technician) request.getAttribute("user");
+            if (tech == null) {
+                return new JsonResult(false, "登陆过期");
+            }
+            Page<Technician> technicians;
+            String query1 = "%" + query + "%";
+            if (Pattern.matches("\\d+", query)) {
+                technicians = technicianService.find(query1, null, page, pageSize);
+
+            } else {
+                technicians = technicianService.find(null, query1, page, pageSize);
+            }
+
+            return new JsonResult(true, new JsonPage<>(technicians));
+        }catch (Exception e){
+            return  new JsonResult(false, e.getMessage());
+        }
+    }
+
+
+    /**
+     * 后台指派技师
+     * @param orderId
+     * @param techId
+     * @return
+     */
+    @RequestMapping(value = "/{orderId}/technician/{techId}/assign", method = RequestMethod.POST)
+    public JsonResult assign(@PathVariable("orderId") int orderId,
+                             @PathVariable("techId") int techId){
+
+        Order order = orderService.get(orderId);
+        if (order == null ) {
+            return new JsonResult(false,  "没有这个订单");
+        }
+        order.setMainTechId(techId);
+        orderService.save(order);
+        return  new JsonResult(true,  "指派成功");
     }
 
 
