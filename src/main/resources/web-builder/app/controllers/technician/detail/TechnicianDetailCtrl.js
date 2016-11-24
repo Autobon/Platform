@@ -13,9 +13,9 @@ export default class TechnicianDetailCtrl extends Injector {
         $scope.Settings = Settings;
         this.attachMethodsTo($scope);
 
-        TechnicianService.getDetail($stateParams.id).then(res => {
-            if (res.data && res.data.result) {
-                $scope.technician = res.data.data;
+        TechnicianService.getV2Detail($stateParams.id).then(res => {
+            if (res.data.status === true) {
+                $scope.technician = res.data.message;
                 if (!$scope.technician.starRate) $scope.technician.starRate = 3;
                 TechnicianService.mapTrack($stateParams.id, 1, 60).then(res2 => {
                     if (res2.data && res2.data.result) {

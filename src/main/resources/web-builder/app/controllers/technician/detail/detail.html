@@ -21,13 +21,13 @@
         <div class="col-sm-4"><b>身份证号: </b><span>{{technician.idNo}}</span></div>
     </div>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>注册时间: </b><span>{{technician.createAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>最后登录时间: </b><span>{{technician.lastLoginAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>注册时间: </b><span>{{technician.createAt }}</span></div>
+        <div class="col-sm-4"><b>最后登录时间: </b><span>{{technician.lastLoginAt }}</span></div>
         <div class="col-sm-4"><b>最后登录IP: </b><span>{{technician.lastLoginIp}}</span></div>
     </div>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>申请认证: </b><span>{{technician.requestVerifyAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>认证日期: </b><span>{{technician.verifyAt | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>申请认证: </b><span>{{technician.requestVerifyAt }}</span></div>
+        <div class="col-sm-4"><b>认证日期: </b><span>{{technician.verifyAt }}</span></div>
     </div>
     <div class="row detail-row" ng-if="technician.status == 'REJECTED'">
         <div class="col-sm-12"><b>认证消息: </b><span>{{technician.verifyMsg}}</span></div>
@@ -41,5 +41,29 @@
             <b>位置记录:</b><br>
             <map-track style="height: 300px; border-radius: 4px; border: 1px solid #cabe9c;" points="technician.locations"></map-track>
         </div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>工作技能: </b><span>隔热膜</span></div>
+        <div class="col-sm-4"><b>工作年限: </b><span>{{Settings.yearStatus[technician.filmWorkingSeniority]}}</span></div>
+        <div class="col-sm-4"><b>技能星级评价: </b><span>{{Settings.starStatus[technician.filmLevel]}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>工作技能: </b><span>隐形车衣</span></div>
+        <div class="col-sm-4"><b>工作年限: </b><span>{{Settings.yearStatus[technician.carCoverWorkingSeniority]}}</span></div>
+        <div class="col-sm-4"><b>技能星级评价: </b><span>{{Settings.starStatus[technician.carCoverLevel]}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>工作技能: </b><span>车身改色</span></div>
+        <div class="col-sm-4"><b>工作年限: </b><span>{{Settings.yearStatus[technician.colorModifyWorkingSeniority]}}</span></div>
+        <div class="col-sm-4"><b>技能星级评价: </b><span>{{Settings.starStatus[technician.colorModifyLevel]}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>工作技能: </b><span>美容清洁</span></div>
+        <div class="col-sm-4"><b>工作年限: </b><span>{{Settings.yearStatus[technician.beautyWorkingSeniority]}}</span></div>
+        <div class="col-sm-4"><b>技能星级评价: </b><span>{{Settings.starStatus[technician.beautyLevel]}}</span></div>
+    </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>推荐人: </b><span>{{technician.reference}}</span></div>
+        <div class="col-sm-4"><b>状态: </b><span>{{Settings.technicianType[technician.workStatus]}}</span></div>
     </div>
 </div>

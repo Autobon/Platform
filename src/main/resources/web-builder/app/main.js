@@ -86,6 +86,32 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                         'REJECTED': '认证失败',
                         'BANNED': '帐户禁用',
                     },
+                    yearStatus: {
+                        '0': '无',
+                        '1': '1年',
+                        '2': '2年',
+                        '3': '3年',
+                        '4': '4年',
+                        '5': '5年',
+                        '6': '6年',
+                        '7': '7年',
+                        '8': '8年',
+                        '9': '9年',
+                        '10': '10年',
+                    },
+                    starStatus: {
+                        '0': '无',
+                        '1': '1星',
+                        '2': '2星',
+                        '3': '3星',
+                        '4': '4星',
+                        '5': '5星',
+                    },
+                    technicianType: {
+                        '1': '可接单',
+                        '2': '工作中',
+                        '3': '休息中',
+                    },
                 };
             }])
             .run(['$rootScope', '$state', function($rootScope, $state) {
