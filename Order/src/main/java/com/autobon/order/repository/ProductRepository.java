@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 
 
 /**
@@ -24,6 +25,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
     Page<Product> find( Integer type, String brand, String code, String model, Integer constructionPosition, Pageable pageable);
 
     Product findById(int id);
+
+    @Query("select p from Product p where p.type in ?1")
+    List<Product> getByType(List<Integer> typeIds);
 
 
 

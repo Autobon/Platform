@@ -4,6 +4,7 @@ import com.autobon.order.entity.Order;
 import com.autobon.order.entity.Product;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.ProductService;
+import com.autobon.order.vo.OrderProductShow;
 import com.autobon.shared.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,22 @@ public class ProductController {
             projectList.add(Integer.valueOf(projectId));
         }
 
+        List<OrderProductShow> orderProductShows = new ArrayList<>();
+
+        List<Product> products = productService.getByType(projectList);
+        for(Integer projectId: projectList){
+            OrderProductShow orderProductShow = new OrderProductShow();
+            orderProductShow.setProject(projectId);
+            List<Product> products1  = new ArrayList<>();
+            for(Product product: products){
+                if(product.getType() == projectId){
+                    products1.add(product);
+                }
+            }
+
+            orderProductShow.setProductList(products1);
+            orderProductShows.add(orderProductShow);
+        }
 
 
         return null;
