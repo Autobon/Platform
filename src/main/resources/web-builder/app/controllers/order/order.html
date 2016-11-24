@@ -53,7 +53,7 @@
                         <td>{{order.creatorName}}</td>
                         <td>{{order.addTime | date : 'YYYY-MM-DD HH:mm'}}</td>
                         <td>{{Settings.orderStatus[order.status]}}</td>
-                        <td><a ui-sref="console.order.detail({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                        <td><a ui-sref="console.order.detail({id: order.id})" class="btn btn-xs btn-default">
                             <i class="fa fa-list"></i>&nbsp;详情</a>
                             <a ui-sref="console.order.modify({id: order.id})" class="btn btn-xs btn-default">
                                 <i class="fa fa-list"></i>&nbsp;修改</a>

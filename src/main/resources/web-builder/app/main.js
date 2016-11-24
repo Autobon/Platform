@@ -34,6 +34,7 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                     domain: $location.protocol() + '://' + $location.host() + ':' + $location.port(),
                     baiduMapKey: 'FPzmlgz02SERkbPsRyGOiGfj',
                     orderTypes: {'1': '隔热膜', '2': '隐形车衣', '3': '车身改色', '4': '美容清洁'},
+                    headTypes: {'1': '主负责人', '0': '次负责人'},
                     totalStatus: {
                         '1': '1个',
                         '2': '2个',
