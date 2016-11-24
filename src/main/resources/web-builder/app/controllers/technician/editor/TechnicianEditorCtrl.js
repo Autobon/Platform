@@ -13,6 +13,7 @@ export default class TechnicianEditorCtrl extends Injector {
         this.attachMethodsTo($scope);
 
         $scope.yearList = [
+            {id: 0, name: '无'},
             {id: 1, name: '1年'},
             {id: 2, name: '2年'},
             {id: 3, name: '3年'},
@@ -26,6 +27,7 @@ export default class TechnicianEditorCtrl extends Injector {
         ];
 
         $scope.starList = [
+            {id: 0, name: '无'},
             {id: 1, name: '1星'},
             {id: 2, name: '2星'},
             {id: 3, name: '3星'},

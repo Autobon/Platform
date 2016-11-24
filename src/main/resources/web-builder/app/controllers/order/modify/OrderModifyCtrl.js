@@ -17,8 +17,7 @@ export default class OrderModifyCtrl extends Injector {
                 let orderShow = $scope.orderShow = res.data.data;
                 orderShow.position = {lng: orderShow.longitude, lat: orderShow.latitude};
                 let typeList =  orderShow.type.split(',');
-                let positionType = orderShow.workDetailShows;
-                
+//                let positionType = orderShow.workDetailShows;
                 for (let i = 0; i < typeList.length; i++) {
                     if (typeList[i] === '1') {
 //                        $scope.positionType = [{id: 1, name: '前挡风', state: false}, {id: 2, name: '左前门', state: false}, {id: 3, name: '右前门', state: false}, {id: 4, name: '左后门+角', state: false}, {id: 5, name: '右后门+角', state: false}, {id: 6, name: '后风挡', state: false}];
