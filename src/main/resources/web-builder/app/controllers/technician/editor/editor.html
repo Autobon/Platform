@@ -5,92 +5,135 @@
         <div class="row-search-h40">
             <div class="form-group">
                 <label>技师姓名</label>
-                <input type="text" class="form-control ml10">
+                <input type="text" class="form-control ml10" required ng-model="technician.name">
             </div>
             <div class="form-group ml40">
                 <label>联系电话</label>
-                <input type="text" class="form-control ml10">
+                <input type="text" class="form-control ml10" required ng-model="technician.phone">
             </div>
             <div class="form-group ml40">
                 <label>身份证号</label>
-                <input type="text" class="form-control ml10 wh285">
+                <input type="text" class="form-control ml10 wh285" required ng-model="technician.idNo">
             </div>
         </div>
         <div class="mt20">
             <div class="form-group">
                 <label>开户银行</label>
-                <input type="text" class="form-control ml10">
+                <input type="text" class="form-control ml10" required ng-model="technician.bank">
             </div>
             <div class="form-group ml40">
                 <label>银行卡号</label>
-                <input type="text" class="form-control ml10">
+                <input type="text" class="form-control ml10" required ng-model="technician.bankCardNo">
             </div>
             <div class="form-group ml40 por">
-                <label>银行卡号</label>
+                <label>身份证照</label>
                 <img class="cardimg img-rounded" src="">
                 <!--  <input type="file" style="position: absolute;left: 180px;top: 195px;"> -->
                 <a href="" class="newidcard">重新上传省份证照片</a>
             </div>
         </div>
-        <div class="mt20 row-search-h40">
+       <!-- <div class="mt20 row-search-h40">
             <div class="form-group">
                 <label>申请认证日期</label>
-                <input type="text" class="form-control ml10 wh150">
+                <input type="text" class="form-control ml10 wh150" >
             </div>
             <div class="form-group ml40">
                 <label>认证日期</label>
                 <input type="text" class="form-control ml10">
             </div>
-        </div>
+        </div>-->
         <div class="mt20 Job-skills-top">
             <div class="form-group">
                 <label>工作技能</label>
-                <input type="text" class="form-control ml10 wh150">
+                <span>隔热膜&nbsp;&nbsp;&nbsp;</span>
             </div>
             <div class="form-group ml40">
                 <label>工作年限</label>
-                <select class="form-control ml10 maxwh87">
-                    <option>1年</option>
-                    <option>2年</option>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.filmWorkingSeniority"
+                    ng-options="list.id as list.name for list in yearList">
                 </select>
             </div>
             <div class="form-group ml40">
                 <label>技能星级评价</label>
-                <select class="form-control ml10 maxwh87">
-                    <option>五星</option>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.filmLevel"
+                    ng-options="list.id as list.name for list in starList">
                 </select>
             </div>
         </div>
         <div class="mt20 Job-skills-bottom">
             <div class="form-group">
                 <label>工作技能</label>
-                <input type="text" class="form-control ml10 wh150">
+                <span>隐形车衣</span>
             </div>
             <div class="form-group ml40">
                 <label>工作年限</label>
-                <select class="form-control ml10 maxwh87">
-                    <option>1年</option>
-                    <option>2年</option>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.carCoverWorkingSeniority"
+                    ng-options="list.id as list.name for list in yearList">
                 </select>
             </div>
             <div class="form-group ml40">
                 <label>技能星级评价</label>
-                <select class="form-control ml10 maxwh87">
-                    <option>五星</option>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.carCoverLevel"
+                    ng-options="list.id as list.name for list in starList">
+                </select>
+            </div>
+        </div>
+        <div class="mt20 Job-skills-bottom">
+            <div class="form-group">
+                <label>工作技能</label>
+                <span>车身改色</span>
+            </div>
+            <div class="form-group ml40">
+                <label>工作年限</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.colorModifyWorkingSeniority"
+                    ng-options="list.id as list.name for list in yearList">
+                </select>
+            </div>
+            <div class="form-group ml40">
+                <label>技能星级评价</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.colorModifyLevel"
+                    ng-options="list.id as list.name for list in starList">
+                </select>
+            </div>
+        </div>
+        <div class="mt20 Job-skills-bottom">
+            <div class="form-group">
+                <label>工作技能</label>
+                <span>美容清洁</span>
+            </div>
+            <div class="form-group ml40">
+                <label>工作年限</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.beautyWorkingSeniority"
+                    ng-options="list.id as list.name for list in yearList">
+                </select>
+            </div>
+            <div class="form-group ml40">
+                <label>技能星级评价</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.beautyLevel"
+                    ng-options="list.id as list.name for list in starList">
                 </select>
             </div>
         </div>
         <div class="mt20 referees-top">
             <div class="form-group">
                 <label>推荐人&nbsp;&nbsp;&nbsp;</label>
-                <input type="text" class="form-control ml10 wh150">
-                <a href="" class="a-referees">重新选择推荐人</a>
+                <input type="text" class="form-control ml10 wh150" ng-model="technician.reference">
+                <!--<a href="" class="a-referees">重新选择推荐人</a>-->
             </div>
 
         </div>
-    <div class="pull-right modify-btn">
-        <button class="mr50">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
-        <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
-    </div>
+        <div class="mt20 referees-top">
+            <div class="form-group">
+                <label>状态&nbsp;&nbsp;&nbsp;</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.workStatus"
+                        ng-options="list.id as list.name for list in stateList">
+                </select>
+            </div>
+
+        </div>
+        <div class="pull-right modify-btn">
+            <button class="mr50" type="submit" ng-disabled="form.$invalid" ng-click="save()">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+            <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
+        </div>
     </form>
 </div>
