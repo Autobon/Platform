@@ -26,6 +26,7 @@ import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.LocationStatusService;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
+import com.autobon.technician.vo.TechnicianLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -368,25 +369,20 @@ public class MerchantController {
 
     /**
      * 查询订单技师详情
-     * @param orderId
+     * @param techId
      * @param request
      * @return
      */
-    @RequestMapping(value = "/merchant/order/{orderId}/technician",method = RequestMethod.GET)
-    public JsonResult getTechnician(@PathVariable("orderId") int orderId,
+    @RequestMapping(value = "/merchant/technician/{techId}",method = RequestMethod.GET)
+    public JsonResult getTechnician(@PathVariable("techId") int techId,
                                     HttpServletRequest request){
 
 
-        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
-        Order order = orderService.get(orderId);
 
-        if (order == null||order.getCoopId()!= coopAccount.getCooperatorId()) {
-            return new JsonResult(false,  "没有这个订单");
-        }
 
-        Technician technician = technicianService.get(order.getMainTechId());
-        if(technician != null){
-            return  new JsonResult(true, technician);
+        TechnicianLocation locationStatus = technicianService.getById(techId);
+        if(locationStatus != null){
+            return  new JsonResult(true, locationStatus);
         }
         return new JsonResult(false, "技师不存在");
 

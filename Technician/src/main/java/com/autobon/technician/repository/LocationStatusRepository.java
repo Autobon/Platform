@@ -103,4 +103,6 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             ,nativeQuery = true)
     List<Object[]> getLocationStatusByDistance(String lat, String lng, int kilometre);
 
+
+
 }

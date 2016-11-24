@@ -99,6 +99,8 @@ public class Technician implements UserDetails {
 
     @Column private String resume;
 
+    @Column private int workStatus;
+
 
     @JsonIgnore
     @Column(name = "status")
@@ -348,6 +350,14 @@ public class Technician implements UserDetails {
 
     public void setResume(String resume) {
         this.resume = resume;
+    }
+
+    public int getWorkStatus() {
+        return workStatus;
+    }
+
+    public void setWorkStatus(int workStatus) {
+        this.workStatus = workStatus;
     }
 
     @JsonIgnore

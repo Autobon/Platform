@@ -3,6 +3,7 @@ package com.autobon.technician.service;
 
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.repository.TechnicianRepository;
+import com.autobon.technician.vo.TechnicianLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dave on 16/2/13.
@@ -83,6 +85,16 @@ public class TechnicianService {
         Pageable pageable = new PageRequest(currentPage-1, pageSize);
         Page<Technician> technicians = repository.find(phone, name , pageable);
         return technicians;
+    }
+
+
+    public TechnicianLocation getById(int techId){
+        List<Object[]> list = repository.getByTechId(techId);
+        if(list!=null&&list.size()>0){
+            TechnicianLocation technicianLocation = new TechnicianLocation(list.get(0), 0);
+            return technicianLocation;
+        }
+        return  null;
     }
 
 }

@@ -56,6 +56,7 @@ public class OrderShow {
     private Integer creatorType; //下单人类型(1-合作商户 2-后台 3-用户)
     private Integer techId; //接单技师技师ID
     private String techName;//接单技师姓名
+    private String techAvatar;
     private String techPhone; //接单技师电话
     private String beforePhotos; //施工前照片
     private String afterPhotos; //施工后照片
@@ -75,6 +76,9 @@ public class OrderShow {
     private String contactPhone; //联系电话
     private String remark; //订单备注
     private BigInteger evaluateStatus;
+    private BigInteger orderCount;
+    private BigInteger evaluate;
+    private BigInteger cancelCount;
 
 
 
@@ -119,6 +123,8 @@ public class OrderShow {
         this.remark = (String) objects[26];
 
 
+
+
     }
 
     public OrderShow(Object[] objects, int evaluateStatus) {
@@ -150,7 +156,10 @@ public class OrderShow {
         this.latitude = (String) objects[25];
         this.remark = (String) objects[26];
         this.evaluateStatus = (BigInteger)objects[27];
-
+        this.orderCount = (BigInteger)objects[28];
+        this.evaluate = (BigInteger)objects[29];
+        this.cancelCount = (BigInteger)objects[30];
+        this.techAvatar = (String)objects[31];
     }
 
 
@@ -426,5 +435,37 @@ public class OrderShow {
 
     public void setEvaluateStatus(BigInteger evaluateStatus) {
         this.evaluateStatus = evaluateStatus;
+    }
+
+    public BigInteger getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(BigInteger orderCount) {
+        this.orderCount = orderCount;
+    }
+
+    public BigInteger getEvaluate() {
+        return evaluate;
+    }
+
+    public void setEvaluate(BigInteger evaluate) {
+        this.evaluate = evaluate;
+    }
+
+    public BigInteger getCancelCount() {
+        return cancelCount;
+    }
+
+    public void setCancelCount(BigInteger cancelCount) {
+        this.cancelCount = cancelCount;
+    }
+
+    public String getTechAvatar() {
+        return techAvatar;
+    }
+
+    public void setTechAvatar(String techAvatar) {
+        this.techAvatar = techAvatar;
     }
 }

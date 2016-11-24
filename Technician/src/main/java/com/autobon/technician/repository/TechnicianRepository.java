@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dave on 16/2/13.
@@ -47,4 +48,28 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
             " and (?1 is null or dt.phone like ?1) " +
             " and (?2 is null or dt.name like ?2) ")
     Page<Technician> find(String phone, String name,  Pageable pageable);
+
+
+
+    @Query(value = "SELECT" +
+            " t.id as id," +
+            " t.name as name," +
+            " t.phone as phone," +
+            " t.film_level as film_level," +
+            " t.car_cover_level as car_cover_level," +
+            " t.color_modify_level as color_modify_level," +
+            " t.beauty_level as beauty_level," +
+            " 0 as orderCount," +
+            " 0 as evaluate," +
+            " 0 as cancelCount," +
+            " t.film_working_seniority as filmWorkingSeniority ," +
+            " t.car_cover_working_seniority as carCoverWorkingSeniority," +
+            " t.color_modify_working_seniority as colorModifyWorkingSeniority," +
+            " t.beauty_working_seniority as beautyWorkingSeniority," +
+            " t.avatar as avatar" +
+            " FROM" +
+            " t_technician t " +
+            " where t.id = ?1 " ,nativeQuery = true)
+    List<Object[]> getByTechId(int techId);
+
 }
