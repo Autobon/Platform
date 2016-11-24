@@ -214,15 +214,15 @@ public class CooperatorController {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有选择上传文件");
         in = file.getInputStream();
 
-        ConvertCmd cmd = new ConvertCmd(true);
-        cmd.setSearchPath(gmPath);
-        cmd.setInputProvider(new Pipe(in, null));
-        IMOperation operation = new IMOperation();
-        operation.addImage("-");
-        operation.resize(1200, 1200, ">");
-        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
-        cmd.run(operation);
-
+//        ConvertCmd cmd = new ConvertCmd(true);
+//        cmd.setSearchPath(gmPath);
+//        cmd.setInputProvider(new Pipe(in, null));
+//        IMOperation operation = new IMOperation();
+//        operation.addImage("-");
+//        operation.resize(1200, 1200, ">");
+//        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+//        cmd.run(operation);
+        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
         return new JsonMessage(true, "", "", path + "/" + filename);
     }
 
