@@ -1,26 +1,29 @@
  <div class="container-fluid">
     <h3>订单编号: {{order.orderNum}}&nbsp;&nbsp;
-        <span class="btn btn-sm btn-default"  ng-repeat="s in order.type.split(',')">&nbsp;{{Settings.orderTypes[s]}}</span>
+        <span class="btn btn-sm btn-default"  ng-repeat="s in order.type.split(',')">{{Settings.orderTypes[s]}}&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;
         <!--<span ng-repeat="s in technician.skill.split(',')" class="fa fa-tag m-l-5">&nbsp;{{Settings.orderTypes[s]}}</span><br>-->
         <span class="btn btn-sm btn-success">{{Settings.orderStatus[order.status]}}</span>
         <span class="btn btn-sm btn-default" ng-if="order.status == 'NEWLY_CREATED'" popover-placement="left"
               popover-trigger="outsideClick" uib-popover-template="'assignOrder.html'"><i class="fa fa-paper-plane-o"></i>&nbsp;派单</span>
     </h3>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>预约开工时间: </b><span>{{order.agreedStartTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>联系人: </b><span>{{order.techName}}&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-earphone">{{order.techPhone}}</i></span></div>
+        <div class="col-sm-4"><b>联系人: </b><span>{{order.techName}}&nbsp;&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-earphone">{{order.techPhone}}</i></span></div>
         <div class="col-sm-4"><b>接单时间: </b><span>{{order.takenTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>预约开工时间: </b><span>{{order.agreedStartTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
     </div>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>开工时间: </b><span>{{order.startTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>结束时间: </b><span>{{order.endTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
         <div class="col-sm-4"><b>最晚交车时间: </b><span>{{order.agreedEndTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>订单开工时间: </b><span>{{order.startTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>订单结束时间: </b><span>{{order.endTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
     </div>
+     <div class="row detail-row">
+         <div class="col-sm-12"><b>签到时间: </b><span>{{order.signTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+     </div>
     <div class="row detail-row">
         <div class="col-sm-12"><b>备注: </b><span>{{order.remark}}</span></div>
     </div>
     <div class="row m-t-10">
-        <div class="col-sm-4"><img ng-if="order.photo" url="{{order.photo}}" style="height: 280px;"></div>
+        <div class="col-sm-4"><img ng-if="order.photo" ng-src="{{order.photo}}" style="height: 280px;" image-modal class="img-thumbnail pull-left m-r-10"></div>
         <div class="col-sm-8">
             <div class="form-control" style="cursor: not-allowed;">
                 <span>经度: {{order.longitude}}, 纬度: {{order.latitude}}</span>
@@ -28,7 +31,7 @@
             <map-location style="height: 250px; border-radius: 4px; border: 1px solid #cabe9c;" position="{{order.position}}"></map-location>
         </div>
     </div>
-   <div>
+   <div ng-if="order.status == 'FINISHED'">
     <div ng-repeat="vs in order.workDetailShows">
         <h4>{{Settings.headTypes[vs.isMainTech]}}:</h4>
         <div class="row detail-row">

@@ -1,9 +1,7 @@
 package com.autobon.platform.controller.pc;
 
 
-import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
-import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.order.entity.ConstructionWaste;
 import com.autobon.order.entity.Order;
@@ -11,14 +9,15 @@ import com.autobon.order.entity.OrderProduct;
 import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.service.*;
 import com.autobon.order.vo.*;
+import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
-import com.autobon.technician.entity.LocationStatus;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.LocationStatusService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -46,8 +44,6 @@ public class OrderV2Controller {
     ConstructionService constructionService;
     @Autowired
     OrderProductService orderProductService;
-    @Autowired
-    TechnicianService technicianService;
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
             @RequestParam(value = "orderNum", required = false) String orderNum,
