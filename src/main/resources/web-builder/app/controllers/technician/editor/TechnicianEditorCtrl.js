@@ -47,12 +47,36 @@ export default class TechnicianEditorCtrl extends Injector {
                 console.log(JSON.stringify($scope.technician));
             }
         });
+        $scope.uploadUrl = TechnicianService.uploadPhotoUrl;
+    }
+
+    onUploadedPhoto(data) {
+        const {$scope, $uibModal} = this.$injected;
+        if (!data.result) {
+            $scope.message = data.message;
+            $uibModal.open({
+                size     : 'sm',
+                scope    : $scope,
+                animation: true,
+                template : `
+                    <div class="modal-header">
+                        <h3 class="modal-title">提示消息</h3>
+                    </div>
+                    <div class="modal-body">
+                        <b>{{message}}</b>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" ng-click="$close()">确定</button>
+                    </div>`,
+            });
+        }
+        return data.result ? data.data : '';
     }
 
     save() {
         console.log('提交操作');
         const {$scope, $state, TechnicianService} = this.$injected;
-        TechnicianService.update().then(res => {
+        TechnicianService.update($scope.technician).then(res => {
             if (res.data.status === true) {
                 let pCoop = $scope.$parent.technicians.find(c => c.id === res.data.message.id);
                 if (pCoop) {

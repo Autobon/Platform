@@ -27,9 +27,10 @@
             </div>
             <div class="form-group ml40 por">
                 <label>身份证照</label>
-                <img class="cardimg img-rounded" src="">
+                <input type="file" file-uploader required ng-model="technician.idPhoto" name="file"
+                       accept=".jpg,.jpeg,.png,.bmp" callback="onUploadedPhoto(data)" upload-url="{{uploadUrl}}"  class="form-control ml10">
+                <img class="cardimg img-rounded" ng-if="technician.idPhoto" ng-src="{{technician.idPhoto}}" image-modal style="margin-top:35px;">
                 <!--  <input type="file" style="position: absolute;left: 180px;top: 195px;"> -->
-                <a href="" class="newidcard">重新上传省份证照片</a>
             </div>
         </div>
        <!-- <div class="mt20 row-search-h40">
