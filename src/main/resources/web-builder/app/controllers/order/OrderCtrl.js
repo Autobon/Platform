@@ -23,6 +23,13 @@ export default class OrderCtrl extends Injector {
         OrderService.search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.orders = res.data.data.list;
+                let datatime = new Date().getTime();
+                for (let i = 0; i < $scope.orders.length; i++) {
+                    if ($scope.orders[i].orderTime - datatime < 3600000 && $scope.orders[i].orderTime - datatime > 0) {
+                        $scope.orders[i].style = {'background-color':'#ec9104'};
+                    }
+                }
+
                 $scope.pagination.totalItems = res.data.data.totalElements;
             }
         });
