@@ -19,8 +19,8 @@ export default class OrderDetailCtrl extends Injector {
         this.attachMethodsTo($scope);
 
         OrderService.getDetail2($stateParams.id).then(res => {
-            if (res.data && res.data.result) {
-                let order = $scope.order = res.data.data;
+            if (res.data.status === true) {
+                let order = $scope.order = res.data.message;
 
                 order.position         = {lng: order.longitude, lat: order.latitude};
 //                $scope.comment.orderId = order.id;

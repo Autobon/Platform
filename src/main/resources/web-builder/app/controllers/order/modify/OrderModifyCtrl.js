@@ -13,8 +13,8 @@ export default class OrderModifyCtrl extends Injector {
         this.attachMethodsTo($scope);
         $scope.orderTypeList = [{id: 1, name: '隔热膜', state: false}, {id: 2, name:  '隐形车衣', state: false}, {id: 3, name:  '车身改色', state: false}, {id: 4, name: '美容清洁', state: false}];
         OrderService.getDetail2($stateParams.id).then(res => {
-            if (res.data && res.data.result) {
-                let orderShow = $scope.orderShow = res.data.data;
+            if (res.data.status === true) {
+                let orderShow = $scope.orderShow = res.data.message;
                 orderShow.position = {lng: orderShow.longitude, lat: orderShow.latitude};
                 let typeList =  orderShow.type.split(',');
 
@@ -33,8 +33,8 @@ export default class OrderModifyCtrl extends Injector {
             }
         });
         OrderService.getAllPosition($stateParams.id).then(res => {
-            if (res.data && res.data.result) {
-                $scope.positionShow = res.data.data;
+            if (res.data.status === true) {
+                $scope.positionShow = res.data.message;
             }
         });
     }
@@ -54,20 +54,20 @@ export default class OrderModifyCtrl extends Injector {
         if (isUpdate) {
             q = OrderService.update($scope.orderShow);
         } else {
-            q = OrderService.add($scope.orderShow);
+//            q = OrderService.add($scope.orderShow);
         }
         q.then(res => {
             if (res.data) {
-                if (res.data.result) {
+                if (res.data.status) {
                     if (isUpdate) {
-                        let pOrder = $scope.$parent.orderShows.find(c => c.id === res.data.data.id);
+                        let pOrder = $scope.$parent.orderShows.find(c => c.id === res.data.message.id);
                         if (pOrder) {
-                            angular.extend(pOrder, res.data.data);
+                            angular.extend(pOrder, res.data.message);
                         }
-                    } else if (!isUpdate && $scope.$parent.pagination.page === 1) {
-                        $scope.$parent.orderShows.unshift(res.data.data);
+//                    } else if (!isUpdate && $scope.$parent.pagination.page === 1) {
+//                        $scope.$parent.orderShows.unshift(res.data.data);
                     }
-                    $state.go('^.detail', {id: res.data.data.id});
+                    $state.go('^.detail', {id: res.data.message.id});
                 } else {
                     $scope.error = res.data.message;
                 }

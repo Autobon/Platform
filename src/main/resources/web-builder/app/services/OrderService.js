@@ -18,11 +18,11 @@ export default class OrderService extends Injector {
     }
     getDetail2(orderId) {
         const {$http, Settings} = this.$injected;
-        return $http.get(Settings.domain + '/api/web/admin/v2/order/v2/' + orderId);
+        return $http.get(Settings.domain + '/api/web/admin/order/v2/' + orderId);
     }
     getAllPosition(orderId) {
         const {$http, Settings} = this.$injected;
-        return $http.get(Settings.domain + '/api/web/admin/v2/order/project/position/' + orderId);
+        return $http.get(Settings.domain + '/api/web/admin/order/project/position/' + orderId);
     }
     assign(orderId, techId) {
         const {$http, Settings} = this.$injected;
@@ -35,7 +35,7 @@ export default class OrderService extends Injector {
     }
     update(orderShow) {
         const {$http, Settings} = this.$injected;
-        return $http.post(Settings.domain + '/api/web/admin/v2/order/v2/' + orderShow.id, orderShow);
+        return $http.post(Settings.domain + '/api/web/admin/order/v2/' + orderShow.id, orderShow);
     }
 
     getWorkItems(orderType) {
