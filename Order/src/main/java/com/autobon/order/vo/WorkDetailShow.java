@@ -36,13 +36,6 @@ public class WorkDetailShow {
 
     private Integer project4;
 
-    public Integer getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
-    }
 
     private String position4;
 
@@ -73,6 +66,16 @@ public class WorkDetailShow {
         this.createDate = (Date)objects[13];
         this.techName = (String)objects[14];
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+
 
     public Integer getTechId() {
         return techId;

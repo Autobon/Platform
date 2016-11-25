@@ -218,6 +218,7 @@ public class MerchantController {
             } else {
                 int statusCode = cooperator.getStatusCode();
                 if (statusCode == 2) {
+                    cooperator.setFullname(enterpriseName);
                     cooperator.setBussinessLicensePic(businessLicensePic);
                     cooperator.setLongitude(longitude);
                     cooperator.setLatitude(latitude);
@@ -661,21 +662,19 @@ public class MerchantController {
 
     /**
      *
-     * @param longitude
-     * @param latitude
+     * @param page
+     * @param pageSize
      * @return
      */
     @RequestMapping(value = "/merchant/technician/distance", method = RequestMethod.GET)
-    public JsonResult getDistance(@RequestParam(value = "longitude",required = false) String longitude,
-                                  @RequestParam(value ="latitude",required = false) String latitude,
-                                  @RequestParam(value = "page",  defaultValue = "1" )  int page,
+    public JsonResult getDistance(@RequestParam(value = "page",  defaultValue = "1" )  int page,
                                   @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
                                   HttpServletRequest request) {
 
         CoopAccount account = (CoopAccount) request.getAttribute("user");
-
-
-        return new JsonResult(true,locationStatusService.getTechByDistance(latitude, longitude, page, pageSize));
+        int coopId =  account.getCooperatorId();
+        Cooperator cooperator =  cooperatorService.get(coopId);
+        return new JsonResult(true,locationStatusService.getTechByDistance(cooperator.getLatitude(), cooperator.getLongitude(), page, pageSize));
 
     }
 
@@ -706,7 +705,7 @@ public class MerchantController {
 
     /**
      * 商户查询订单
-     * @param status 1未完成  2 已完成
+     * @param status 1未完成  2 已完成  3未评价 4 全部订单
      * @param page
      * @param pageSize
      * @param request

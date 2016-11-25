@@ -1,12 +1,9 @@
 package com.autobon.order.vo;
 
 
-
-
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -77,12 +74,17 @@ public class OrderShow {
     private String creatorName; //下单人姓名
     private String contactPhone; //联系电话
     private String remark; //订单备注
+    private BigInteger evaluateStatus;
 
 
 
     private List<OrderConstructionShow> orderConstructionShow;
     private String techLongitude;
     private String techLatitude;
+
+    private List<WorkDetailShow> workDetailShows;
+    private  List<ConstructionWasteShow> constructionWasteShows;
+
 
 
     public OrderShow() {}
@@ -116,7 +118,41 @@ public class OrderShow {
         this.latitude = (String) objects[25];
         this.remark = (String) objects[26];
 
+
     }
+
+    public OrderShow(Object[] objects, int evaluateStatus) {
+        this.id = Integer.valueOf(objects[0].toString());
+        this.orderNum = (String)objects[1];
+        this.photo = (String)objects[2];
+        this.AgreedStartTime = (Date)objects[3];
+        this.AgreedEndTime = (Date)objects[4];
+        this.statusCode = Integer.valueOf(objects[5].toString());
+        this.creatorType =  Integer.valueOf(objects[6].toString());
+        this.techId = Integer.valueOf(objects[7].toString());
+        this.techName = (String)objects[8];
+        this.techPhone = (String)objects[9];
+        this.beforePhotos = (String)objects[10];
+        this.afterPhotos = (String)objects[11];
+        this.startTime = (Date)objects[12];
+        this.endTime = (Date)objects[13];
+        this.signTime = (Date)objects[14];
+        this.takenTime = (Date)objects[15];
+        this.createTime = (Date)objects[16];
+        this.type = (String)objects[17];
+        this.coopId = (Integer)objects[18];
+        this.coopName = (String)objects[19];
+        this.creatorId = (Integer)objects[20];
+        this.creatorName = (String)objects[21];
+        this.contactPhone = (String)objects[22];
+        this.address = (String) objects[23];
+        this.longitude = (String) objects[24];
+        this.latitude = (String) objects[25];
+        this.remark = (String) objects[26];
+        this.evaluateStatus = (BigInteger)objects[27];
+
+    }
+
 
     public Status getStatus() {
         return Status.getStatus(this.statusCode);
@@ -366,5 +402,29 @@ public class OrderShow {
 
     public void setTechLatitude(String techLatitude) {
         this.techLatitude = techLatitude;
+    }
+
+    public List<WorkDetailShow> getWorkDetailShows() {
+        return workDetailShows;
+    }
+
+    public void setWorkDetailShows(List<WorkDetailShow> workDetailShows) {
+        this.workDetailShows = workDetailShows;
+    }
+
+    public List<ConstructionWasteShow> getConstructionWasteShows() {
+        return constructionWasteShows;
+    }
+
+    public void setConstructionWasteShows(List<ConstructionWasteShow> constructionWasteShows) {
+        this.constructionWasteShows = constructionWasteShows;
+    }
+
+    public BigInteger getEvaluateStatus() {
+        return evaluateStatus;
+    }
+
+    public void setEvaluateStatus(BigInteger evaluateStatus) {
+        this.evaluateStatus = evaluateStatus;
     }
 }

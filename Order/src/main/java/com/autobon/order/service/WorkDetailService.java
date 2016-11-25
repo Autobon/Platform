@@ -3,6 +3,7 @@ package com.autobon.order.service;
 import com.autobon.order.entity.ConstructionWaste;
 import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.repository.ConstructionWasteRepository;
+import com.autobon.order.repository.OrderProductRepository;
 import com.autobon.order.repository.WorkDetailRepository;
 
 import com.autobon.order.vo.ConstructionDetail;
@@ -27,11 +28,93 @@ public class WorkDetailService {
     WorkDetailRepository workDetailRepository;
     @Autowired
     ConstructionWasteRepository constructionWasteRepository;
+    @Autowired
+    OrderProductRepository orderProductRepository;
+
+
 
     public int save(WorkDetail workDetail){
         workDetailRepository.save(workDetail);
         return 0;
     }
+
+    public int save(List<WorkDetail> workDetails){
+        if(workDetails!=null&& workDetails.size()>0){
+           for(WorkDetail workDetail:workDetails){
+               workDetailRepository.save(workDetail);
+           }
+        }
+        return 0;
+    }
+
+
+
+    public int balance(List<WorkDetail> workDetails){
+        int money = 0;
+        if(workDetails !=null && workDetails.size()> 0){
+            for(WorkDetail workDetail: workDetails){
+                int orderId = workDetail.getOrderId();
+                if(workDetail.getProject1() != null&&workDetail.getPosition1()!=null){
+                    int projectId = workDetail.getProject1();
+                    String positionId = workDetail.getPosition1();
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    int sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    money += sum;
+
+                }
+                if(workDetail.getProject2() != null&&workDetail.getPosition2()!=null){
+                    int projectId = workDetail.getProject2();
+                    String positionId = workDetail.getPosition2();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+
+                    int sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    money += sum;
+                }
+                if(workDetail.getProject3() != null&&workDetail.getPosition3()!=null){
+                    int projectId = workDetail.getProject3();
+                    String positionId = workDetail.getPosition3();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    int sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    money += sum;
+                }
+                if(workDetail.getProject4() != null&&workDetail.getPosition4()!=null){
+                    int projectId = workDetail.getProject4();
+                    String positionId = workDetail.getPosition4();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    int sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+
+                    money += sum;
+                }
+
+                workDetail.setPayment(money);
+                workDetail.setPayStatus(1);
+                workDetail.setCreateDate(new Date());
+                workDetailRepository.save(workDetail);
+            }
+        }
+
+        return 0;
+    }
+
 
 
     public WorkDetail getByOderIdAndTechId(int orderId, int techId){

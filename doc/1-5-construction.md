@@ -3,7 +3,7 @@
 ## 1. 开始工作
 技师抢单成功后或接受合作邀请后, 点选**开始工作**
 ### URL及请求方法
-`POST /api/mobile/technician/construct/start`
+`POST /api/mobile/technician/v2/order/start`
 
 ### 请求参数
 
@@ -98,7 +98,7 @@ data字段是一个施工单对象
 ## 2. 施工签到
 技师到达施工位置后，点选**签到**
 ### URL及请求方法
-`POST /api/mobile/technician/construct/signIn`
+`POST /api/mobile/technician/v2/order/signIn`
 
 ### 请求参数
 
@@ -170,7 +170,7 @@ data字段是一个施工单对象
 上传工作前和工作后图片
 
 ### URL及请求方法
-POST /api/mobile/technician/construct/uploadPhoto
+POST /api/mobile/technician/v2/uploadPhoto
 
 ### 请求参数
 
@@ -205,7 +205,7 @@ POST /api/mobile/technician/construct/uploadPhoto
 ## 4.提交施工前图片地址
 
 ### URL及请求方法
-POST /api/mobile/technician/construct/beforePhoto
+PUT /api/mobile/technician/v2/order/beforePhoto
 
 ### 请求参数
 
@@ -285,7 +285,7 @@ POST /api/mobile/technician/construct/beforePhoto
 ## 5.完成施工
 
 ### URL及请求方法
-POST /api/mobile/technician/construct/finish
+POST /api/mobile/technician/v2/order/finish
 
 ### 请求参数
 

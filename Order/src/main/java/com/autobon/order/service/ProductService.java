@@ -58,8 +58,12 @@ public class ProductService {
     }
 
     public Product get(int pid){
+        Product product = productRepository.findById(pid);
+        if(product != null){
+            return product;
+        }
 
-        return  productRepository.getOne(pid);
+        return null;
     }
 
 
@@ -79,6 +83,12 @@ public class ProductService {
     public int deleteAll(){
         productRepository.deleteAll();
         return 0;
+    }
+
+
+    public List<Product> getByType(List<Integer> type){
+
+        return productRepository.getByType(type);
     }
 
 

@@ -58,7 +58,7 @@ public class LocationStatusService {
         if(query != null){
             query ="%"+query+"%";
         }
-        List<Object[]> techList = locationStatusRepository.getTechByPhoneOrName(lat,lng, query, (currentPage - 1) * pageSize, pageSize);
+        List<Object[]> techList = locationStatusRepository.getTechByPhoneOrName(lat, lng, query, (currentPage - 1) * pageSize, pageSize);
         int count = locationStatusRepository.getTechByPhoneOrName(query);
 
         List<TechnicianLocation> technicianLocations =  new ArrayList<>();
@@ -67,5 +67,15 @@ public class LocationStatusService {
             technicianLocations.add(technicianLocation);
         }
         return new PageImpl<>(technicianLocations,p,count);
+    }
+
+    public List<LocationStatus> getTechByDistance(String lat, String lng, int kilometre){
+        List<Object[]> techList = locationStatusRepository.getLocationStatusByDistance(lat, lng, kilometre);
+        List<LocationStatus> locationStatuses = new ArrayList<>();
+        for(Object[] objects: techList){
+            LocationStatus LocationStatus = new LocationStatus(objects);
+            locationStatuses.add(LocationStatus);
+        }
+        return locationStatuses;
     }
 }

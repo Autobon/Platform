@@ -1,6 +1,7 @@
 package com.autobon.order.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by wh on 2016/11/1.
@@ -8,36 +9,38 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="t_product")
-public class Product {
+public class Product implements Serializable{
 
-    private int id;//
-    private int type;//'施工项目'
+    private Integer id;//
+    private Integer type;//'施工项目'
     private String brand; //'品牌'
     private String code;  //'编码'
     private String model; //'型号'
-    private int constructionPosition;  //'施工部位'
-    private int workingHours;   //'工时'
-    private int constructionCommission;  //'施工提成'
-    private int starLevel;  //'星级要求'
-    private int scrapCost; //'报废扣款'
-    private int warranty; //'质保
+    private Integer constructionPosition;  //'施工部位'
+    private Integer workingHours;   //'工时'
+    private Integer constructionCommission;  //'施工提成'
+    private Integer starLevel;  //'星级要求'
+    private Integer scrapCost; //'报废扣款'
+    private Integer warranty; //'质保
 
+
+    public Product(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -65,51 +68,51 @@ public class Product {
         this.model = model;
     }
 
-    public int getConstructionPosition() {
+    public Integer getConstructionPosition() {
         return constructionPosition;
     }
 
-    public void setConstructionPosition(int constructionPosition) {
+    public void setConstructionPosition(Integer constructionPosition) {
         this.constructionPosition = constructionPosition;
     }
 
-    public int getWorkingHours() {
+    public Integer getWorkingHours() {
         return workingHours;
     }
 
-    public void setWorkingHours(int workingHours) {
+    public void setWorkingHours(Integer workingHours) {
         this.workingHours = workingHours;
     }
 
-    public int getConstructionCommission() {
+    public Integer getConstructionCommission() {
         return constructionCommission;
     }
 
-    public void setConstructionCommission(int constructionCommission) {
+    public void setConstructionCommission(Integer constructionCommission) {
         this.constructionCommission = constructionCommission;
     }
 
-    public int getStarLevel() {
+    public Integer getStarLevel() {
         return starLevel;
     }
 
-    public void setStarLevel(int starLevel) {
+    public void setStarLevel(Integer starLevel) {
         this.starLevel = starLevel;
     }
 
-    public int getScrapCost() {
+    public Integer getScrapCost() {
         return scrapCost;
     }
 
-    public void setScrapCost(int scrapCost) {
+    public void setScrapCost(Integer scrapCost) {
         this.scrapCost = scrapCost;
     }
 
-    public int getWarranty() {
+    public Integer getWarranty() {
         return warranty;
     }
 
-    public void setWarranty(int warranty) {
+    public void setWarranty(Integer warranty) {
         this.warranty = warranty;
     }
 

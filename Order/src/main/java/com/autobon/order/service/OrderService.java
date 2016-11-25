@@ -298,9 +298,33 @@ public class OrderService {
         }else if(status == 2){
             orderList = repository.getCoopfinishOrder(coopId, (currentPage - 1) * pageSize, pageSize);
             count = repository.getCoopfinishOrderCount(coopId);
+        }else if(status == 3){
+            orderList = repository.getUnEvaluateOrder(coopId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getUnfinishOrderCount(coopId);
+        }else if(status == 4){
+            orderList = repository.getCoopAllOrder(coopId, (currentPage - 1) * pageSize, pageSize);
+            count = repository.getCoopAllOrderCount(coopId);
         }
 
 
+
+        List<OrderShow> orderShows =  new ArrayList<>();
+        for(Object[] objects: orderList){
+            OrderShow orderShow = new OrderShow(objects,0);
+            orderShows.add(orderShow);
+        }
+        return new PageImpl<>(orderShows,p,count);
+    }
+
+    public Page<OrderShow> getNewCreateOrder(Integer currentPage, Integer pageSize){
+        currentPage = currentPage==null?1:currentPage;
+        currentPage = currentPage<=0?1:currentPage;
+        pageSize = pageSize==null?10:pageSize;
+        pageSize = pageSize<=0?10:pageSize;
+        pageSize = pageSize>20?20:pageSize;
+        Pageable p = new PageRequest(currentPage-1,pageSize);
+        List<Object[]> orderList = repository.getNewCreateOrder((currentPage - 1) * pageSize, pageSize);
+        int count = repository.getNewCreateCount();
 
         List<OrderShow> orderShows =  new ArrayList<>();
         for(Object[] objects: orderList){
