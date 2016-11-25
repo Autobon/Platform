@@ -3,7 +3,7 @@ alter table t_order add  after_photos varchar(2048) DEFAULT NULL COMMENT '施工
 alter table t_order add   start_time datetime DEFAULT NULL COMMENT '施工开始时间';
 alter table t_order add   end_time datetime DEFAULT NULL COMMENT '施工结束时间';
 alter table t_order add   sign_time datetime DEFAULT NULL COMMENT '签到时间';
-alter table t_order add   agreed_start_time datetime DEFAULT NULL COMMENT '签到时间';
-alter table t_order add   agreed_end_time datetime DEFAULT NULL COMMENT '签到时间';
+alter table t_order add   agreed_start_time datetime DEFAULT NULL COMMENT '预约开始时间';
+alter table t_order add   agreed_end_time datetime DEFAULT NULL COMMENT '最晚交车时间';
 alter table t_order add   type varchar(10) DEFAULT NULL COMMENT '订单类型(1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁) 支持多个施工项目逗号分隔';
 

@@ -76,8 +76,8 @@ public class OrderShow {
     private String contactPhone; //联系电话
     private String remark; //订单备注
     private BigInteger evaluateStatus;
-    private BigInteger orderCount;
-    private BigInteger evaluate;
+    private Integer orderCount;
+    private Float evaluate;
     private BigInteger cancelCount;
 
 
@@ -156,10 +156,12 @@ public class OrderShow {
         this.latitude = (String) objects[25];
         this.remark = (String) objects[26];
         this.evaluateStatus = (BigInteger)objects[27];
-        this.orderCount = (BigInteger)objects[28];
-        this.evaluate = (BigInteger)objects[29];
+        this.orderCount = (Integer)objects[28];
+        this.evaluate = (Float)objects[29];
         this.cancelCount = (BigInteger)objects[30];
         this.techAvatar = (String)objects[31];
+        this.techLongitude =(String)objects[32];
+        this.techLatitude = (String)objects[33];
     }
 
 
@@ -437,19 +439,19 @@ public class OrderShow {
         this.evaluateStatus = evaluateStatus;
     }
 
-    public BigInteger getOrderCount() {
+    public Integer getOrderCount() {
         return orderCount;
     }
 
-    public void setOrderCount(BigInteger orderCount) {
+    public void setOrderCount(Integer orderCount) {
         this.orderCount = orderCount;
     }
 
-    public BigInteger getEvaluate() {
+    public Float getEvaluate() {
         return evaluate;
     }
 
-    public void setEvaluate(BigInteger evaluate) {
+    public void setEvaluate(Float evaluate) {
         this.evaluate = evaluate;
     }
 

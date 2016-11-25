@@ -26,8 +26,29 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 
     Product findById(int id);
 
-    @Query("select p from Product p where p.type in ?1")
-    List<Product> getByType(List<Integer> typeIds);
+    @Query(value = "SELECT" +
+            " p.id as id," +
+            " p.type as type," +
+            " p.brand as brand," +
+            " p.code as code," +
+            " p.model as model," +
+            " p.construction_position as construction_position," +
+            " p.working_hours as working_hours," +
+            " p.construction_commission as construction_commission," +
+            " p.star_level as star_level," +
+            " p.scrap_cost as scrap_cost," +
+            " p.warranty as warranty" +
+            " FROM" +
+            " t_construction_project cp1 " +
+            " INNER JOIN t_construction_position cp2 ON FIND_IN_SET(cp2.id, cp1.ids) " +
+            " INNER JOIN t_product p ON cp1.id = p.type " +
+            " WHERE " +
+            " p.construction_position = cp2.id and " +
+            " p.type IN (?1) " +
+            " ORDER BY " +
+            " p.type, " +
+            " p.construction_position ASC" ,nativeQuery = true)
+    List<Object[]> getByType(List<Integer> typeIds);
 
 
 
