@@ -30,3 +30,17 @@ $color-marker: #EE5D5B;
     overflow: hidden;
   }
 }
+.mv-marker-red{
+  @extend .mv-marker;
+  background-color: #ff3300;
+}
+
+.mv-marker-green{
+  @extend .mv-marker;
+  background-color: #00ff00;
+}
+
+.mv-marker-gray{
+  @extend .mv-marker;
+  background-color: darkgray;
+}
