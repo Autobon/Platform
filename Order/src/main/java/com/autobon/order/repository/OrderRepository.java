@@ -26,6 +26,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     @Query("from Order o where o.mainTechId = ?1")
     Page<Order> findOrderByTechId(int techId, Pageable pageable);
 
+    @Query("select o from Order o where o.id = ?1")
+    Order findOrderById(int orderId);
+
     @Query("from Order o where (o.mainTechId = ?1 or o.secondTechId = ?1) and o.statusCode < 60")
     Page<Order> findUnfinishedOrderByTechId(int techId, Pageable pageable);
 

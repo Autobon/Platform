@@ -163,7 +163,13 @@ public class OrderService {
         return new OrderShow(o.get(0));
 
     }
+    public Order getbyOrderId(int orderId){
 
+        Order order = repository.findOrderById(orderId);
+
+        return order;
+
+    }
 
 
 

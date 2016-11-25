@@ -36,4 +36,12 @@ public class ConstructionWasteService {
         }
         return constructionWasteShows;
     }
+
+    public ConstructionWaste getByOrderIdAndTechId(int orderId, int techId){
+        return constructionWasteRepository.findByOrderIdAndTechId(orderId,techId);
+    }
+    public int save(ConstructionWaste constructionWaste){
+        constructionWasteRepository.save(constructionWaste);
+        return 0;
+    }
 }

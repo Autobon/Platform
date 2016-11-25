@@ -1,0 +1,140 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>编辑技师</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <form class="form-inline form-border bb0">
+        <div class="row-search-h40">
+            <div class="form-group">
+                <label>技师姓名</label>
+                <input type="text" class="form-control ml10" required ng-model="technician.name">
+            </div>
+            <div class="form-group ml40">
+                <label>联系电话</label>
+                <input type="text" class="form-control ml10" required ng-model="technician.phone">
+            </div>
+            <div class="form-group ml40">
+                <label>身份证号</label>
+                <input type="text" class="form-control ml10 wh285" required ng-model="technician.idNo">
+            </div>
+        </div>
+        <div class="mt20">
+            <div class="form-group">
+                <label>开户银行</label>
+                <input type="text" class="form-control ml10" required ng-model="technician.bank">
+            </div>
+            <div class="form-group ml40">
+                <label>银行卡号</label>
+                <input type="text" class="form-control ml10" required ng-model="technician.bankCardNo">
+            </div>
+            <div class="form-group ml40 por">
+                <label>身份证照</label>
+                <input type="file" file-uploader required ng-model="technician.idPhoto" name="file"
+                       accept=".jpg,.jpeg,.png,.bmp" callback="onUploadedPhoto(data)" upload-url="{{uploadUrl}}"  class="form-control ml10">
+                <img class="cardimg img-rounded" ng-if="technician.idPhoto" ng-src="{{technician.idPhoto}}" image-modal style="margin-top:35px;">
+                <!--  <input type="file" style="position: absolute;left: 180px;top: 195px;"> -->
+            </div>
+        </div>
+       <!-- <div class="mt20 row-search-h40">
+            <div class="form-group">
+                <label>申请认证日期</label>
+                <input type="text" class="form-control ml10 wh150" >
+            </div>
+            <div class="form-group ml40">
+                <label>认证日期</label>
+                <input type="text" class="form-control ml10">
+            </div>
+        </div>-->
+        <div class="mt20 Job-skills-top">
+            <div class="form-group">
+                <label>工作技能</label>
+                <span>隔热膜&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            <div class="form-group ml40">
+                <label>工作年限</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.filmWorkingSeniority"
+                    ng-options="list.id as list.name for list in yearList">
+                </select>
+            </div>
+            <div class="form-group ml40">
+                <label>技能星级评价</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.filmLevel"
+                    ng-options="list.id as list.name for list in starList">
+                </select>
+            </div>
+        </div>
+        <div class="mt20 Job-skills-bottom">
+            <div class="form-group">
+                <label>工作技能</label>
+                <span>隐形车衣</span>
+            </div>
+            <div class="form-group ml40">
+                <label>工作年限</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.carCoverWorkingSeniority"
+                    ng-options="list.id as list.name for list in yearList">
+                </select>
+            </div>
+            <div class="form-group ml40">
+                <label>技能星级评价</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.carCoverLevel"
+                    ng-options="list.id as list.name for list in starList">
+                </select>
+            </div>
+        </div>
+        <div class="mt20 Job-skills-bottom">
+            <div class="form-group">
+                <label>工作技能</label>
+                <span>车身改色</span>
+            </div>
+            <div class="form-group ml40">
+                <label>工作年限</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.colorModifyWorkingSeniority"
+                    ng-options="list.id as list.name for list in yearList">
+                </select>
+            </div>
+            <div class="form-group ml40">
+                <label>技能星级评价</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.colorModifyLevel"
+                    ng-options="list.id as list.name for list in starList">
+                </select>
+            </div>
+        </div>
+        <div class="mt20 Job-skills-bottom">
+            <div class="form-group">
+                <label>工作技能</label>
+                <span>美容清洁</span>
+            </div>
+            <div class="form-group ml40">
+                <label>工作年限</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.beautyWorkingSeniority"
+                    ng-options="list.id as list.name for list in yearList">
+                </select>
+            </div>
+            <div class="form-group ml40">
+                <label>技能星级评价</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.beautyLevel"
+                    ng-options="list.id as list.name for list in starList">
+                </select>
+            </div>
+        </div>
+        <div class="mt20 referees-top">
+            <div class="form-group">
+                <label>推荐人&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" class="form-control ml10 wh150" ng-model="technician.reference">
+                <!--<a href="" class="a-referees">重新选择推荐人</a>-->
+            </div>
+
+        </div>
+        <div class="mt20 referees-top">
+            <div class="form-group">
+                <label>状态&nbsp;&nbsp;&nbsp;</label>
+                <select class="form-control ml10 maxwh87" required ng-model="technician.workStatus"
+                        ng-options="list.id as list.name for list in stateList">
+                </select>
+            </div>
+
+        </div>
+        <div class="pull-right modify-btn">
+            <button class="mr50" type="submit" ng-disabled="form.$invalid" ng-click="save()">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+            <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
+        </div>
+    </form>
+</div>

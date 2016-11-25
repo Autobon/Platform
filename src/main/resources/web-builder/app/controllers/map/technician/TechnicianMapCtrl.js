@@ -16,9 +16,20 @@ export default class TechnicianMapCtrl extends Injector {
         TechnicianService.mapLocations().then(res => {
             if (res.data && res.data.result) {
                 $scope.items = res.data.data.list;
+                for (let i = 0; i < $scope.items.length; i++) {
+                    console.log($scope.items[i].technician.workStatus);
+                    if ($scope.items[i].technician.workStatus === 1) {
+                        $scope.items[i].technician.myclass = 'mv-marker-green';
+                    } else if ($scope.items[i].technician.workStatus === 2) {
+                        $scope.items[i].technician.myclass = 'mv-marker-red';
+                    } else if ($scope.items[i].technician.workStatus === 3) {
+                        $scope.items[i].technician.myclass = 'mv-marker-gray';
+                    }
+                }
+                console.log('AA:' + JSON.stringify($scope.items));
             }
         });
-        $scope.itemTemplate = $sce.trustAsHtml(`<div class="mv-marker" style="text-align: center;">
+        $scope.itemTemplate = $sce.trustAsHtml(`<div class="{{data.technician.myclass}}" style="text-align: center;">
                                                     <img src="{{data.technician.avatar}}" style="width: 50px; height: 50px; border: 1px solid rgba(0,0,0,.2); border-radius: 10px;"><br>
                                                     <span>{{data.technician.name}}</span>
                                                     <div class="arrow"></div>
@@ -33,9 +44,12 @@ export default class TechnicianMapCtrl extends Injector {
         const {$compile, $timeout, $sce, $state} = this.$injected;
         let scope   = angular.element(evt.target).scope();
         let element = $(evt.target);
-        if (!element.hasClass('mv-marker')) {
+        if (!element.hasClass('mv-marker') && !element.hasClass('mv-marker-red')  && !element.hasClass('mv-marker-green')  && !element.hasClass('mv-marker-gray')) {
             $timeout(() => {
                 element.closest('.mv-marker').click();
+                element.closest('.mv-marker-red').click();
+                element.closest('.mv-marker-green').click();
+                element.closest('.mv-marker-gray').click();
             });
             return;
         }

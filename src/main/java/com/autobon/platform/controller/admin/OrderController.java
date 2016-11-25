@@ -11,6 +11,7 @@ import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
 import com.autobon.shared.VerifyCode;
+import com.autobon.staff.entity.Staff;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
@@ -31,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -110,26 +112,26 @@ public class OrderController {
             @RequestParam("contact") String contact,
             @RequestParam("photo") String photo,
             @RequestParam(value = "remark", required = false) String remark) throws Exception {
-        return new JsonMessage(false, "DEPRECATED", "后台创建订单功能已关闭");
-//        Staff staff = (Staff) request.getAttribute("user");
-//        if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
-//            return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
-//
-//        Order order = new Order();
-//        order.setCreatorType(2);
-//        order.setCreatorId(staff.getId());
-//        order.setCreatorName(contact);
-//        order.setContactPhone(contactPhone);
-//        order.setPositionLon(positionLon);
-//        order.setPositionLat(positionLat);
-//        order.setOrderType(orderType);
-//        order.setOrderTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(orderTime));
-//        order.setRemark(remark);
-//        order.setPhoto(photo);
-//        orderService.save(order);
-//
-//        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
-//        return new JsonMessage(true, "", "", order);
+
+        Staff staff = (Staff) request.getAttribute("user");
+        if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
+            return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
+
+        Order order = new Order();
+
+        order.setCreatorId(staff.getId());
+        order.setCreatorName(contact);
+        order.setContactPhone(contactPhone);
+        order.setPositionLon(positionLon);
+        order.setPositionLat(positionLat);
+        order.setOrderType(orderType);
+        order.setOrderTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(orderTime));
+        order.setRemark(remark);
+        order.setPhoto(photo);
+        orderService.save(order);
+
+        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
+        return new JsonMessage(true, "", "", order);
     }
 
     @RequestMapping(value = "/photo", method = RequestMethod.POST)

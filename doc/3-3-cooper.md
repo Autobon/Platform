@@ -3,37 +3,21 @@
 ## 1. 商户资料提交认证
 商户资料提交
 ### URL及请求方法
-POST /api/mobile/coop/check
+POST /api/mobile/coop/merchant/certificate
 
 ### 请求参数
 | 参数名称 | 是否必须 | 说明 | 举例 |
 | ------ | -------- | ---- | --- |
-| fullname | 是 | 企业名称 | A汽车美容公司 |
-| businessLicense | 是 | 营业执照号 | 3335555 |
-| corporationName | 是 | 法人姓名 | 张三 |
-| corporationIdNo | 是 | 法人身份证号 | 422365196605050001 |
-| bussinessLicensePic | 是 | 营业执照副本照片 | a/a.jpg |
-| corporationIdPicA | 是 | 法人身份证正面照 | a/b.jpg |
+| enterpriseName | 是 | 企业名称 | A汽车美容公司 |
+| businessLicensePic | 是 | 营业执照副本照片 | a/a.jpg |
 | longitude | 是 | 商户位置经度| 120.34 |
 | latitude | 是 | 商户位置纬度| 35.55 |
-| invoiceHeader | 是 | 发票抬头| 武汉市A科技公司 |
-| taxIdNo | 是 | 纳税识别号| 362362236 |
-| postcode | 是 | 邮政编码| 430000 |
-| province | 是 | 省| 湖北省 |
-| city | 是 | 市| 武汉市 |
-| district | 是 | 区| 光谷 |
-| address | 是 | 详细地址| 中山路3号 |
-| contact | 是 | 联系人姓名|李四 |
-| contactPhone | 是 | 联系人电话| 13025523002 |
-
 ### 返回数据
 
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
+    "status": true,
+    "message": {
         "id": 1,
         "fullname": "A汽车美容公司",
         "businessLicense": "3335555",
@@ -62,73 +46,42 @@ POST /api/mobile/coop/check
 ```
 
 
-#### a.身份证号码有误
+
+#### a.没有此关联商户
 
 ```
 {
-    "result": false,
-    "message": "身份证号码有误",
-    "error": "ILLEGAL_PARAM",
-    "data": null
+    "status": false,
+    "message": "没有此关联商户"
 }
 
 ```
 
-#### b.手机号格式错误
+#### b.你已经认证成功
 
 ```
 {
-    "result": false,
-    "message": "手机号格式错误",
-    "error": "ILLEGAL_PARAM",
-    "data": null
+    "status": true,
+    "message": "你已经认证成功"
 }
 
 ```
 
-#### c.没有此关联商户
+#### c.等待审核
 
 ```
 {
-    "result": false,
-    "message": "没有此关联商户",
-    "error": "",
-    "data": null
+    "status": false,
+    "message": "等待审核"
 }
 
 ```
-
-#### d.你已经认证成功
-
-```
-{
-    "result": true,
-    "message": "你已经认证成功",
-    "error": "",
-    "data": null
-}
-
-```
-
-#### e.等待审核
+#### e.商户状态码不正确
 
 ```
 {
-    "result": false,
-    "message": "等待审核",
-    "error": "",
-    "data": null
-}
-
-```
-#### f.商户状态码不正确
-
-```
-{
-    "result": false,
-    "message": "商户状态码不正确",
-    "error": "",
-    "data": null
+    "status": false,
+    "message": "商户状态码不正确"
 }
 
 ```
@@ -137,7 +90,7 @@ POST /api/mobile/coop/check
 上传营业执照副本照片
 
 ### URL及请求方法
-POST /api/mobile/coop/bussinessLicensePic
+POST /api/mobile/coop/merchant/bussinessLicensePic
 
 ### 请求参数
 
@@ -151,10 +104,8 @@ POST /api/mobile/coop/bussinessLicensePic
 
 ```
 {
-    "result": true,
-    "error": "",
-    "message": "",
-    "date": "/uploads/coop/bussinessLicensePic/20160304165030100001.jpg"
+    "status": true,
+    "message": "/uploads/coop/bussinessLicensePic/20160304165030100001.jpg"
 }
 ```
 
@@ -162,64 +113,25 @@ POST /api/mobile/coop/bussinessLicensePic
 
 ```
 {
-    "result": false,
-    "error": "NO_UPLOAD_FILE",
-    "message": "没有上传文件",
-    "date": null
+    "status": false,
+    "message": "没有上传文件"
 }
 ```
 
-## 3.上传法人身份证正面照
-上传法人身份证正面照
-
-### URL及请求方法
-POST /api/mobile/coop/corporationIdPicA
-
-### 请求参数
-
-| 参数名称 | 说明 | 举例 |
-| ------ | ---- | --- |
-| file | 上传的图片 | |
-
-### 返回数据
-
-#### a.请求成功
-
-```
-{
-    "result": true,
-    "error": "",
-    "message": "",
-    "date": "/uploads/coop/corporationIdPicA/20160304165030100002.jpg"
-}
-```
-
-#### b.没有上传文件
-
-```
-{
-    "result": false,
-    "error": "NO_UPLOAD_FILE",
-    "message": "没有上传文件",
-    "date": null
-}
-```
 
 
 ## 4. 获取商户信息
 获取商户信息
 ### URL及请求方法
-get("/api/mobile/coop/getCoop")
+get("/api/mobile/coop/merchant")
 
 
 ### 返回数据
 
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
+    "status": true,
+    "message": {
         "id": 1,
         "phone": "13072705000",
         "fullname": null,
@@ -253,7 +165,7 @@ get("/api/mobile/coop/getCoop")
 ## 5. 商户审核信息
 商户审核信息
 ### URL及请求方法
-get("/api/mobile/coop/coopCheckResult")
+get("/api/mobile/coop/merchant/coopCheckResult")
 
 商户审核信息可能有多条，取审核时间最新的一条数据。
 
@@ -261,10 +173,8 @@ get("/api/mobile/coop/coopCheckResult")
 
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": {
+    "status": true,
+    "message": {
         "reviewCooper": null,
         "cooperator": {
             "id": 1,
@@ -300,26 +210,22 @@ get("/api/mobile/coop/coopCheckResult")
 ## 6. 合作商户的订单统计
 商户的订单统计
 ### URL及请求方法
-post("/api/mobile/coop/order/orderCount")
+get("/api/mobile/coop/merchant/order/orderCount")
 
 ### 返回数据
 当前账户为管理员时，查询合作商户所有订单数目。
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": 2
+    "status": true,
+    "message": 2
 }
 
 ```
 当前账户为业务员时，查询该业务员下订单数目。
 ```
 {
-    "result": true,
-    "message": "",
-    "error": "",
-    "data": 1
+    "status": true,
+    "message": 1
 }
 
 ```

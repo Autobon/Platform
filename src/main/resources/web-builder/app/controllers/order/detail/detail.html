@@ -1,113 +1,73 @@
-<div class="container-fluid">
+ <div class="container-fluid">
     <h3>订单编号: {{order.orderNum}}&nbsp;&nbsp;
-        <span class="btn btn-sm btn-default">{{Settings.orderTypes[order.orderType]}}</span>
+        <span class="btn btn-sm btn-default"  ng-repeat="s in order.type.split(',')">{{Settings.orderTypes[s]}}&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;
+        <!--<span ng-repeat="s in technician.skill.split(',')" class="fa fa-tag m-l-5">&nbsp;{{Settings.orderTypes[s]}}</span><br>-->
         <span class="btn btn-sm btn-success">{{Settings.orderStatus[order.status]}}</span>
         <span class="btn btn-sm btn-default" ng-if="order.status == 'NEWLY_CREATED'" popover-placement="left"
               popover-trigger="outsideClick" uib-popover-template="'assignOrder.html'"><i class="fa fa-paper-plane-o"></i>&nbsp;派单</span>
     </h3>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>预约时间: </b><span>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
-        <div class="col-sm-4"><b>联系人: </b><span>{{order.creatorName}}&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-earphone">{{order.contactPhone}}</i></span></div>
-        <div class="col-sm-4"><b>下单时间: </b><span>{{order.addTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>联系人: </b><span>{{order.techName}}&nbsp;&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-earphone">{{order.techPhone}}</i></span></div>
+        <div class="col-sm-4"><b>接单时间: </b><span>{{order.takenTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>预约开工时间: </b><span>{{order.agreedStartTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
     </div>
+    <div class="row detail-row">
+        <div class="col-sm-4"><b>最晚交车时间: </b><span>{{order.agreedEndTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>订单开工时间: </b><span>{{order.startTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>订单结束时间: </b><span>{{order.endTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+    </div>
+     <div class="row detail-row">
+         <div class="col-sm-12"><b>签到时间: </b><span>{{order.signTime | date : 'YYYY-MM-DD HH:mm'}}</span></div>
+     </div>
     <div class="row detail-row">
         <div class="col-sm-12"><b>备注: </b><span>{{order.remark}}</span></div>
     </div>
     <div class="row m-t-10">
-        <div class="col-sm-4"><image-box ng-if="order.photo" url="{{order.photo}}" style="height: 280px;"></image-box></div>
+        <div class="col-sm-4"><img ng-if="order.photo" ng-src="{{order.photo}}" style="height: 280px;" image-modal class="img-thumbnail pull-left m-r-10"></div>
         <div class="col-sm-8">
             <div class="form-control" style="cursor: not-allowed;">
-                <span>经度: {{order.position.lng}}, 纬度: {{order.position.lat}}</span>
+                <span>经度: {{order.longitude}}, 纬度: {{order.latitude}}</span>
             </div>
             <map-location style="height: 250px; border-radius: 4px; border: 1px solid #cabe9c;" position="{{order.position}}"></map-location>
         </div>
     </div>
-    <div>
-        <h4>主负责人:</h4>
+   <div ng-if="order.status == 'FINISHED'">
+    <div ng-repeat="vs in order.workDetailShows">
+        <h4>{{Settings.headTypes[vs.isMainTech]}}:</h4>
         <div class="row detail-row">
-            <div class="col-sm-4"><b>技师姓名: </b><a ui-sref="console.technician.detail({id: order.mainTech.id})">{{order.mainTech.name}}</a></div>
-            <div class="col-sm-4"><b>技师电话: </b><span>{{order.mainTech.phone}}</span></div>
-            <div class="col-sm-4"><b>签到时间: </b><span>{{order.mainConstruct.signinTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+            <div class="col-sm-4"><b>技师姓名: </b><span>{{vs.techName}}</span></div>
+            <div class="col-sm-8"><b>施工费用: </b><span>￥{{vs.payment}}</span></div>
         </div>
-        <div class="row detail-row">
-            <div class="col-sm-4"><b>施工费用: </b><span>￥{{order.mainConstruct.payment}}</span></div>
-            <div class="col-sm-8"><b>施工项目: </b><span>{{order.mainConstruct.workItems}}</span></div>
+        <div class="row detail-row" ng-if=" vs.project1">
+            <div class="col-sm-4"><b>施工项目: </b><span>{{Settings.orderTypes[vs.project1]}}</span></div>
+            <div class="col-sm-8"><b>施工部位: </b><span ng-repeat="p1 in vs.position1.split(',')">&nbsp;{{Settings.positionTypes[p1]}}</span></div>
         </div>
-        <div class="row m-t-20 clearfix">
+        <div class="row detail-row" ng-if=" vs.project2">
+            <div class="col-sm-4"><b>施工项目: </b><span>{{Settings.orderTypes[vs.project2]}}</span></div>
+            <div class="col-sm-8"><b>施工部位: </b><span ng-repeat="p2 in vs.position2.split(',')">&nbsp;{{Settings.positionTypes[p2]}}</span></div>
+        </div>
+        <div class="row detail-row" ng-if=" vs.project3">
+            <div class="col-sm-4"><b>施工项目: </b><span>{{Settings.orderTypes[vs.project3]}}</span></div>
+            <div class="col-sm-8"><b>施工部位: </b><span ng-repeat="p3 in vs.position3.split(',')">&nbsp;{{Settings.positionTypes[p3]}}</span></div>
+        </div>
+
+           <div class="row m-t-20 clearfix">
             <div style="width: 3%; height: 10px; float: left;"></div>
             <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.beforePhotos.split(',')"><image-box url="{{p}}" style="height: 120px;"></image-box></div>
             <div style="width: 3%; height: 10px; float: left;"></div>
             <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.mainConstruct.afterPhotos.split(',')"><image-box url="{{p}}" style="height: 120px;"></image-box></div>
+           </div>
+       </div>
+    </div>
+
+    <div  ng-if="order.status == 'FINISHED'">
+            <h4>材料耗损</h4>
+        <div class="row detail-row" ng-repeat="ws in order.constructionWasteShows">
+            <div class="col-sm-3"><b>技师姓名: </b><span>{{ws.techName}}</span></div>
+            <div class="col-sm-3"><b>施工项目: </b><span>{{Settings.orderTypes[ws.project]}}</span></div>
+            <div class="col-sm-3"><b>施工部位: </b><span>{{Settings.positionTypes[ws.position]}}</span></div>
+            <div class="col-sm-3"><b>数量: </b><span>{{ws.total}}</span></div>
         </div>
     </div>
-    <div ng-if="order.secondTech">
-        <h4>次负责人:</h4>
-        <div class="row detail-row">
-            <div class="col-sm-4"><b>技师姓名: </b><a ui-sref="console.technician.detail({id: order.secondTech.id})">{{order.secondTech.name}}</a></div>
-            <div class="col-sm-4"><b>技师电话: </b><span>{{order.secondTech.phone}}</span></div>
-            <div class="col-sm-4"><b>签到时间: </b><span>{{order.secondConstruct.signinTime | date: 'YYYY-MM-DD HH:mm'}}</span></div>
-        </div>
-        <div class="row detail-row">
-            <div class="col-sm-4"><b>施工费用: </b><span>￥{{order.secondConstruct.payment}}</span></div>
-            <div class="col-sm-8"><b>施工项目: </b><span>{{order.secondConstruct.workItems}}</span></div>
-        </div>
-        <div class="row m-t-20 clearfix">
-            <div style="width: 3%; height: 10px; float: left;"></div>
-            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.secondConstruct.beforePhotos.split(',')"><image-box url="{{p}}" style="height: 120px;"></image-box></div>
-            <div style="width: 3%; height: 10px; float: left;"></div>
-            <div style="width: 10%; float: left; padding: 0 2px;" ng-repeat="p in order.secondConstruct.afterPhotos.split(',')"><image-box url="{{p}}" style="height: 120px;"></image-box></div>
-        </div>
-    </div>
-    <div class="comment" ng-if="order.comment.id">
-        <div class="sub-header">
-            <h3>评论</h3>
-        </div>
-        <div>
-            <label>打分: &nbsp;&nbsp;</label>
-            <uib-rating ng-model="order.comment.star" max="5" read-only="true" aria-labelledby="default-rating"></uib-rating>
-        </div>
-        <ul class="list-group pull-left m-t-20">
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.arriveOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时到达</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.completeOnTime ? 'fa-check-square-o' : 'fa-square-o'"></i> 准时完工</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.professional ? 'fa-check-square-o' : 'fa-square-o'"></i> 技术专业</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.dressNeatly ? 'fa-check-square-o' : 'fa-square-o'"></i> 着装整洁</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.carProtect ? 'fa-check-square-o' : 'fa-square-o'"></i> 车辆保护超级棒</li>
-            <li class="list-group-item"><i class="fa" ng-class="order.comment.goodAttitude ? 'fa-check-square-o' : 'fa-square-o'"></i> 态度好</li>
-        </ul>
-        <div class="pull-left m-20">
-            <label>评论:</label>
-            <p>{{order.comment.advice}}</p>
-        </div>
-    </div>
-    <form class="form-horizontal" name="form" ng-if="order.creatorType == 2 && order.status == 'FINISHED' && !order.comment.id">
-        <div class="sub-header"><h4>发表评论:</h4></div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">星级</label>
-            <div class="col-sm-10">
-                <uib-rating ng-model="comment.star" required max="5" aria-labelledby="default-rating"></uib-rating>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">评价</label>
-            <div class="col-sm-10">
-                <label><input type="checkbox" ng-model="comment.arriveOnTime"> 准时到达</label><br>
-                <label><input type="checkbox" ng-model="comment.completeOnTime"> 准时完工</label><br>
-                <label><input type="checkbox" ng-model="comment.professional"> 技术专业</label><br>
-                <label><input type="checkbox" ng-model="comment.dressNeatly"> 着装整洁</label><br>
-                <label><input type="checkbox" ng-model="comment.carProtect"> 车辆保护超级棒</label><br>
-                <label><input type="checkbox" ng-model="comment.goodAttitude"> 态度好</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">评论</label>
-            <div class="col-sm-10">
-                <textarea class="form-control" required ng-model="comment.advice"></textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-10 col-sm-offset-2">
-                <button type="submit" class="btn btn-primary p-l-20 p-r-20" ng-disabled="form.$invalid" ng-click="saveComment()">提交</button><span class="m-l-20 text-danger">{{commentResult}}</span>
-            </div>
-        </div>
-    </form>
+   </div>
 </div>

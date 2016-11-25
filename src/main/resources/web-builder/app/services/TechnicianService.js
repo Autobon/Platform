@@ -3,6 +3,10 @@ import {Injector} from 'ngES6';
 export default class TechnicianService extends Injector {
     static $inject = ['$http', 'Settings'];
 
+    get uploadPhotoUrl() {
+        return '/api/web/admin/cooperator/photo';
+    }
+
     search(params, page, pageSize) {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/technician', {params: {...params, page: page, pageSize: pageSize}});
@@ -26,5 +30,15 @@ export default class TechnicianService extends Injector {
     mapTrack(techId, page, pageSize) {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/technician/maptrack/' + techId, {params: {page: page, pageSize: pageSize}});
+    }
+
+    getV2Detail(id) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/v2/technician/' + id);
+    }
+
+    update(tech) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/v2/technician/' + tech.id, tech);
     }
 }

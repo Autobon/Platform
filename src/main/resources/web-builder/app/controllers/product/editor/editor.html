@@ -1,0 +1,77 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>{{$state.is('console.product.new') ? '新建产品' : '编辑产品'}}</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <form class="form-horizontal" name="form">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">施工项目</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="type" ng-model="product.type"
+                        ng-options="sl.id as sl.name for sl in orderTypeList" required>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">品牌</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="product.brand" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">编码</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="product.code" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">型号</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="product.model" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">施工部位</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="constructionPosition" ng-model="product.constructionPosition"
+                        ng-options="sl.id as sl.name for sl in positionList" required>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">工时</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="product.workingHours" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">施工提成(单位:元)</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="product.constructionCommission" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">星级要求(单位:星级)</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="starLevel" ng-model="product.starLevel"
+                        ng-options="sl.id as sl.name for sl in starLevelList" required>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">报废扣款(单位:元)</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="product.scrapCost" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">质保期间(单位:月)</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="product.warranty" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-3">
+                <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary btn-block" ng-click="save()">提 交</button>
+            </div>
+        </div>
+    </form>
+</div>

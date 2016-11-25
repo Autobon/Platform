@@ -45,10 +45,10 @@
     </div>
     <div class="row detail-row">
         <div class="col-sm-6"><b>营业执照副本照片: </b><br>
-            <image-box ng-if="cooperator.bussinessLicensePic" url="{{cooperator.bussinessLicensePic}}" style="height: 120px;"></image-box>
+            <img ng-if="cooperator.bussinessLicensePic" ng-src="{{cooperator.bussinessLicensePic}}"  style="height: 120px;" image-modal class="img-thumbnail pull-left m-r-10">
         </div>
         <div class="col-sm-6"><b>法人身份证正面照: </b><br>
-            <image-box ng-if="cooperator.corporationIdPicA" url="{{cooperator.corporationIdPicA}}" style="height: 120px;"></image-box>
+            <img ng-if="cooperator.corporationIdPicA" ng-src="{{cooperator.corporationIdPicA}}"  style="height: 120px;" image-modal class="img-thumbnail pull-left m-r-10">
         </div>
     </div>
     <div class="row m-t-15 m-l-0">
