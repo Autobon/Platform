@@ -1,5 +1,6 @@
 import {Injector} from 'ngES6';
 import angular from 'angular';
+import moment from 'moment';
 import './modify.scss';
 
 export default class OrderModifyCtrl extends Injector {
@@ -37,13 +38,21 @@ export default class OrderModifyCtrl extends Injector {
             }
         });
     }
+    beforeRenderDatetimepicker($view, $dates) {
+        const now = moment();
+        for (let i = 0; i < $dates.length; i++) {
+            if ($dates[i].localDateValue() < now.valueOf()) {
+                $dates[i].selectable = false;
+            }
+        }
+    }
 
     save() {
         const {$scope, $state, OrderService} = this.$injected;
-        console.log(JSON.stringify($scope.orderTypeList));
+//        console.log(JSON.stringify($scope.orderTypeList));
         let q, isUpdate       = !!$scope.orderShow.id;
         if (isUpdate) {
-            q = OrderService.update($scope.orderShow, $scope.workDetailShows, $scope.constructionWasteShows);
+            q = OrderService.update($scope.orderShow);
         } else {
             q = OrderService.add($scope.orderShow);
         }
@@ -51,12 +60,12 @@ export default class OrderModifyCtrl extends Injector {
             if (res.data) {
                 if (res.data.result) {
                     if (isUpdate) {
-                        let pOrder = $scope.$parent.orders.find(c => c.id === res.data.data.id);
+                        let pOrder = $scope.$parent.orderShows.find(c => c.id === res.data.data.id);
                         if (pOrder) {
                             angular.extend(pOrder, res.data.data);
                         }
                     } else if (!isUpdate && $scope.$parent.pagination.page === 1) {
-                        $scope.$parent.orders.unshift(res.data.data);
+                        $scope.$parent.orderShows.unshift(res.data.data);
                     }
                     $state.go('^.detail', {id: res.data.data.id});
                 } else {
