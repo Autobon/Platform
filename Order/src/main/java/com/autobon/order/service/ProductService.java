@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -87,8 +88,16 @@ public class ProductService {
 
 
     public List<Product> getByType(List<Integer> type){
+        List<Object[]> list = productRepository.getByType(type);
+        List<Product> products = new ArrayList<>();
+        if(list!=null && list.size()>0){
+            for(Object[] objects: list) {
+                Product product = new Product(objects);
+                products.add(product);
+            }
+        }
 
-        return productRepository.getByType(type);
+        return products;
     }
 
 

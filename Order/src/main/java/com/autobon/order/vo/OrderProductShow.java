@@ -10,7 +10,9 @@ import java.util.List;
 public class OrderProductShow {
 
     private int project;
+    private String projectName;
     private int position;
+    private String positionName;
     private List<Product> productList;
 
     public int getProject() {
@@ -35,5 +37,21 @@ public class OrderProductShow {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
     }
 }

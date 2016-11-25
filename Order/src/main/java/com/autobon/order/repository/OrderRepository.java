@@ -345,16 +345,20 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.latitude as latitude ," +
             " o.remark as remark ," +
             " 0 as evaluateStatus," +
-            " 0 as orderCount," +
-            " 0 as evaluate," +
+            " ts.total_orders as orderCount," +
+            " ts.star_rate as evaluate," +
             " 0 as cancelCount," +
-            " tech.avatar" +
+            " tech.avatar," +
+            " ls.lng as techLng," +
+            " ls.lat as techLat" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
-            " where o.coop_id = ?1 and o.status < 60 limit ?2,?3" ,nativeQuery = true)
+            " LEFT JOIN t_tech_stat ts ON ts.tech_id = tech.id " +
+            " LEFT JOIN t_location_status ls ON ls.tech_id = tech.id " +
+            " where o.coop_id = ?1 and o.status < 60 order by o.add_time desc limit ?2,?3 " ,nativeQuery = true)
     List<Object[]>  getCoopUnfinishOrder(Integer coopId, Integer begin ,Integer size);
 
 
@@ -400,17 +404,21 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.latitude as latitude ," +
             " o.remark as remark," +
             " ifnull(tc.id,0)  as evaluateStatus, " +
-            " 0 as orderCount," +
-            " 0 as evaluate," +
+            " ts.total_orders as orderCount," +
+            " ts.star_rate as evaluate," +
             " 0 as cancelCount," +
-            " tech.avatar" +
+            " tech.avatar," +
+            " ls.lng as techLng," +
+            " ls.lat as techLat" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
             " LEFT JOIN t_comment tc on tc.order_id = o.id" +
-            " where o.coop_id = ?1 and o.status >= 60 limit ?2,?3" ,nativeQuery = true)
+            " LEFT JOIN t_tech_stat ts ON ts.tech_id = tech.id " +
+            " LEFT JOIN t_location_status ls ON ls.tech_id = tech.id " +
+            " where o.coop_id = ?1 and o.status >= 60 order by o.add_time desc limit ?2,?3 " ,nativeQuery = true)
     List<Object[]>  getCoopfinishOrder(Integer coopId, Integer begin ,Integer size);
 
 
@@ -506,16 +514,20 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " ct.latitude as latitude ," +
                 " o.remark as remark ," +
                 " 0 as evaluateStatus," +
-                " 0 as orderCount," +
-                " 0 as evaluate," +
+                " ts.total_orders as orderCount," +
+                " ts.star_rate as evaluate," +
                 " 0 as cancelCount," +
-                " tech.avatar" +
+                " tech.avatar," +
+                " ls.lng as techLng," +
+                " ls.lat as techLat" +
                 " FROM" +
                 " t_order o" +
                 " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
                 " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
                 " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
-                " where o.coop_id = ?1 and o.status>=60 and o.status < 70 limit ?2,?3" ,nativeQuery = true)
+                " LEFT JOIN t_tech_stat ts ON ts.tech_id = tech.id " +
+                " LEFT JOIN t_location_status ls ON ls.tech_id = tech.id " +
+                " where o.coop_id = ?1 and o.status>=60 and o.status < 70  order by o.add_time desc limit ?2,?3" ,nativeQuery = true)
         List<Object[]>  getUnEvaluateOrder(Integer coopId, Integer begin ,Integer size);
 
 
@@ -560,17 +572,21 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " ct.latitude as latitude ," +
                 " o.remark as remark," +
                 " ifnull(tc.id,0)  as evaluateStatus, " +
-                " 0 as orderCount," +
-                " 0 as evaluate," +
+                " ts.total_orders as orderCount," +
+                " ts.star_rate as evaluate," +
                 " 0 as cancelCount," +
-                " tech.avatar" +
+                " tech.avatar," +
+                " ls.lng as techLng," +
+                " ls.lat as techLat" +
                 " FROM" +
                 " t_order o" +
                 " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
                 " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
                 " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
                 " LEFT JOIN t_comment tc on tc.order_id = o.id" +
-                " where o.coop_id = ?1  limit ?2,?3" ,nativeQuery = true)
+                " LEFT JOIN t_tech_stat ts ON ts.tech_id = tech.id " +
+                " LEFT JOIN t_location_status ls ON ls.tech_id = tech.id " +
+                " where o.coop_id = ?1  order by o.add_time desc limit ?2,?3 " ,nativeQuery = true)
         List<Object[]>  getCoopAllOrder(Integer coopId, Integer begin ,Integer size);
 
 

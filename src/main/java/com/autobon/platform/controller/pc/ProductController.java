@@ -48,18 +48,27 @@ public class ProductController {
         Map<Integer, String> projectMap = constructionProjectService.getProject();
         Map<Integer, String> positionMap = constructionProjectService.getPosition();
         List<Product> products = productService.getByType(projectList);
+
         for(Integer projectId: projectList){
-            OrderProductShow orderProductShow = new OrderProductShow();
-            orderProductShow.setProject(projectId);
-            List<Product> products1  = new ArrayList<>();
-            for(Product product: products){
-                if(product.getType() == projectId){
-                    products1.add(product);
+            for(int i = 1; i<= positionMap.size();i++) {
+                OrderProductShow orderProductShow = new OrderProductShow();
+                orderProductShow.setProject(projectId);
+                orderProductShow.setProjectName(projectMap.get(projectId));
+                List<Product> products1  = new ArrayList<>();
+                for (Product product : products) {
+                    if (product.getType() == projectId && product.getConstructionPosition() == i) {
+                        products1.add(product);
+                        orderProductShow.setPosition(i);
+                        orderProductShow.setPositionName(positionMap.get(i));
+                    }
+
+                }
+                orderProductShow.setProductList(products1);
+                if(products1.size() > 0) {
+                    orderProductShows.add(orderProductShow);
                 }
             }
 
-            orderProductShow.setProductList(products1);
-            orderProductShows.add(orderProductShow);
         }
 
 

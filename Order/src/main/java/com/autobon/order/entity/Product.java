@@ -26,6 +26,21 @@ public class Product implements Serializable{
 
     public Product(){}
 
+    public Product(Object[] objects){
+        this.id = (Integer)objects[0];
+        this.type = (Integer)objects[1];
+        this.brand = (String)objects[2];
+        this.code = (String)objects[3];
+        this.model = (String)objects[4];
+        this.constructionPosition = (Integer)objects[5];
+        this.workingHours = (Integer)objects[6];
+        this.constructionCommission = (Integer)objects[7];
+
+        this.starLevel = (Integer)objects[8];
+        this.scrapCost = (Integer)objects[9];
+        this.warranty = (Integer)objects[10];
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {

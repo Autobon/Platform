@@ -74,7 +74,8 @@ public class TechnicianAdminController {
                              @RequestParam(value = "beautyLevel",required = false) Integer beautyLevel,
                              @RequestParam(value = "beautyWorkingSeniority",required = false) Integer beautyWorkingSeniority,
                              @RequestParam(value = "resume",required = false) String resume,
-                             @RequestParam(value = "reference",required = false) String reference){
+                             @RequestParam(value = "reference",required = false) String reference,
+                             @RequestParam(value = "workStatus",required = false) Integer workStatus){
         Technician technician  = technicianService.get(tid);
         if(technician != null){
             technician.setName(name == null ? technician.getName() : name);
@@ -95,6 +96,7 @@ public class TechnicianAdminController {
             technician.setBeautyWorkingSeniority(beautyWorkingSeniority == null ? technician.getBeautyWorkingSeniority() : beautyWorkingSeniority);
             technician.setResume(resume == null ? technician.getResume() : resume);
             technician.setReference(reference == null? technician.getReference(): reference);
+            technician.setWorkStatus(workStatus == null ? technician.getWorkStatus(): workStatus);
             technician = technicianService.save(technician);
             return new JsonResult(true, technician);
         }
