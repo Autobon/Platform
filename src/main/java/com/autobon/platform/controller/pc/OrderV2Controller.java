@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -94,20 +95,35 @@ public class OrderV2Controller {
                                   @RequestParam(value = "remark", required = false)String remark,
                                   @RequestParam(value = "positionLon", required = false)String positionLon,
                                   @RequestParam(value = "positionLat", required = false)String positionLat,
-                                  @RequestParam(value = "agreedStartTime", required = false)String agreedStartTime,
-                                  @RequestParam(value = "agreedEndTime", required = false)String agreedEndTime)throws Exception{
+                                  @RequestParam(value = "agreedStartTime", required = false)Long  agreedStartTime,
+                                  @RequestParam(value = "agreedEndTime", required = false)Long  agreedEndTime)throws Exception{
 
         Order order = orderService.get(orderId);
         if(order == null){
             return new JsonResult(false,"订单不存在");
         }
-        order.setType(type == null? order.getType():type);
+
+        if(agreedStartTime!=null){
+            Date date = new Date(agreedStartTime);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String dateStr = sdf.format(date);
+            order.setAgreedStartTime( new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr));
+        }
+
+        if (agreedEndTime != null) {
+            Date date = new Date(agreedEndTime);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String dateStr = sdf.format(date);
+            order.setAgreedEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr));
+        }
+
+        order.setType(type == null ? order.getType() : type);
         order.setStatusCode(statusCode == null ? order.getStatusCode() : statusCode);
         order.setRemark(remark == null ? order.getRemark() : remark);
         order.setPositionLat(positionLat == null ? order.getPositionLat() : positionLat);
         order.setPositionLon(positionLon == null ? order.getPositionLon() : positionLon);
-        order.setAgreedEndTime(agreedEndTime == null ? order.getAgreedEndTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedEndTime));
-        order.setAgreedStartTime(agreedStartTime == null ? order.getStartTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedStartTime));
+     //   order.setAgreedEndTime(agreedEndTime == null ? order.getAgreedEndTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedEndTime));
+   //     order.setAgreedStartTime(agreedStartTime == null ? order.getStartTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedStartTime));
         orderService.save(order);
         return new JsonResult(true, "修改成功");
     }
