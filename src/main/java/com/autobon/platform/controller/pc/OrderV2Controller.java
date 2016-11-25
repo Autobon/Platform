@@ -1,11 +1,9 @@
 package com.autobon.platform.controller.pc;
 
 
-import com.autobon.cooperators.entity.CoopAccount;
+
 import com.autobon.cooperators.entity.Cooperator;
-import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
-import com.autobon.order.entity.ConstructionWaste;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderProduct;
 import com.autobon.order.entity.WorkDetail;
@@ -13,20 +11,17 @@ import com.autobon.order.service.*;
 import com.autobon.order.vo.*;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
-import com.autobon.technician.entity.LocationStatus;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.LocationStatusService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -57,9 +52,11 @@ public class OrderV2Controller {
     TechnicianService technicianService;
 
 
-    @Autowired
-    ProductService productService;
-
+    /**
+     * 查询订单详情
+     * @param orderId
+     * @return
+     */
     @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.GET)
     public JsonResult getById(@PathVariable("orderId") int orderId){
         OrderShow orderShow = orderService.getByOrderId(orderId);
@@ -79,19 +76,18 @@ public class OrderV2Controller {
 
     /**
      * 修改订单
-     * @param orderId
-     * @param type
-     * @param statusCode
-     * @param remark
-     * @param positionLon
-     * @param positionLat
-     * @param agreedStartTime
-     * @param agreedEndTime
-     * @param orderConstructionWasteShow
+     * @param orderId 订单ID
+     * @param type 施工项目
+     * @param statusCode 订单状态
+     * @param remark 备注
+     * @param positionLon 纬度
+     * @param positionLat 经度
+     * @param agreedStartTime 预约开工时间
+     * @param agreedEndTime 最晚交车时间
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.POST)
     public JsonResult modifyOrder(@PathVariable("orderId") int orderId,
                                   @RequestParam(value = "type", required = false) String type,
                                   @RequestParam(value = "statusCode", required = false) Integer statusCode,
@@ -99,10 +95,12 @@ public class OrderV2Controller {
                                   @RequestParam(value = "positionLon", required = false)String positionLon,
                                   @RequestParam(value = "positionLat", required = false)String positionLat,
                                   @RequestParam(value = "agreedStartTime", required = false)String agreedStartTime,
-                                  @RequestParam(value = "agreedEndTime", required = false)String agreedEndTime,
-                                  @RequestBody OrderConstructionWasteShow orderConstructionWasteShow)throws Exception{
+                                  @RequestParam(value = "agreedEndTime", required = false)String agreedEndTime)throws Exception{
 
         Order order = orderService.get(orderId);
+        if(order == null){
+            return new JsonResult(false,"订单不存在");
+        }
         order.setType(type == null? order.getType():type);
         order.setStatusCode(statusCode == null ? order.getStatusCode() : statusCode);
         order.setRemark(remark == null ? order.getRemark() : remark);
@@ -110,16 +108,7 @@ public class OrderV2Controller {
         order.setPositionLon(positionLon == null ? order.getPositionLon() : positionLon);
         order.setAgreedEndTime(agreedEndTime == null ? order.getAgreedEndTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedEndTime));
         order.setAgreedStartTime(agreedStartTime == null ? order.getStartTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedStartTime));
-
         orderService.save(order);
-        if(orderConstructionWasteShow != null){
-            List<WorkDetail> workDetailList = orderConstructionWasteShow.getWorkDetailList();
-            workDetailService.save(workDetailList);
-            List<ConstructionWaste> constructionWasteList = orderConstructionWasteShow.getConstructionWasteList();
-            constructionWasteService.save(constructionWasteList);
-
-        }
-
         return new JsonResult(true, "修改成功");
     }
 
