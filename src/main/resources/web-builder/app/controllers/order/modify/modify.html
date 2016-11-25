@@ -1,169 +1,72 @@
- <div class="console-content">
-     <form class="form-inline form-border" name="form">
-                <div class="row-search-h40">
-                    <div class="form-group">
-                        <label>订单编号</label>
-                        <span class="form-control ml10">{{orderShow.orderNum}}</span>
-                    </div>
-                    <div class="form-group ml40">
-                        <label>订单状态</label>
-                        <select class="form-control" id="orderStatus" ng-model="orderShow.status"
-                                ng-options="key as value for (key, value) in Settings.orderStatus">
-                        </select>
-                    </div>
-                    <div class="form-group mr10 ml40">
-                        <label class="mr10">施工项目</label>
-                        <label class="radio-inline" ng-repeat="ot in orderTypeList">
-                            <input type="checkbox" ng-model="ot.state">{{ot.name}}
-                        </label>
-                    </div>
-                </div>
-                <div class="mt20 row-search-h40">
-                    <div class="form-group">
-                        <label>预约时间</label>
-                        <span class="form-control ml10">{{orderShow.createTime | date : 'YYYY-MM-DD HH:mm'}}</span>
-                    </div>
-                    <div class="form-group ml40">
-                        <label>最晚交车时间</label>
-                        <span class="form-control ml10">{{orderShow.createTime | date : 'YYYY-MM-DD HH:mm'}}</span>
-                    </div>
-                    <div class="form-group ml40">
-                        <label>接单技师</label>
-                        <input type="text" class="form-control ml10" ng-model="orderShow.techName">
-                    </div>
-                    <div class="form-group ml40">
-                        <label>联系电话</label>
-                        <input type="text" class="form-control ml10" ng-model="orderShow.techPhone">
-                    </div>
-                </div>
-                <div class="mt20">
-                    <div class="form-group">
-                        <label>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
-                        <textarea class="form-control" rows="3" style="width: 1060px;margin-left:12px;"> {{orderShow.remark}}</textarea>
-                    </div>
-                </div>
-            <div class="form-border pl10 pr1">
-                <div >
-                    <span class="ftbold">经度：</span><span>{{orderShow.longitude}}</span>
-                    <span class="ml20 ftbold">纬度：</span><span>{{orderShow.longitude}}</span>
-                    <div class="modifytitle-map">
-                        <map-location style="height: 230px; border-radius: 4px; border: 1px solid #cabe9c;" position="{{orderShow.position}}"></map-location>
-                    </div>
+<div class="console-content">
+    <form class="form-inline form-border" name="form">
+        <div class="row-search-h40">
+            <div class="form-group">
+                <label>订单编号</label>
+                <span class="form-control ml10">{{orderShow.orderNum}}</span>
+            </div>
+            <div class="form-group ml40">
+                <label>订单状态</label>
+                <select class="form-control" id="orderStatus" ng-model="orderShow.status"
+                        ng-options="key as value for (key, value) in Settings.orderStatus">
+                </select>
+            </div>
+            <div class="form-group mr10 ml40">
+                <label class="mr10">施工项目</label>
+                <label class="radio-inline" ng-repeat="ot in orderTypeList">
+                    <input type="checkbox" ng-model="ot.state">{{ot.name}}
+                </label>
+            </div>
+        </div>
+        <div class="mt20 row-search-h40">
+            <div class="form-group">
+                <label >预约时间</label>
+                            <span uib-dropdown is-open="false"><span uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control ml10" >{{orderShow.agreedStartTime | date: 'YYYY-MM-DD HH:mm'}}</span>
+                                <ul uib-dropdown-menu role="menu">
+                                    <datetimepicker ng-model="orderShow.agreedStartTime" required
+                                                    data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm:ss'}"
+                                                    before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                                </ul>
+                            </span>
+            </div>
+            <div class="form-group">
+                <label>最晚交车时间</label>
+                            <span uib-dropdown is-open="false"><span uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control ml10" >{{orderShow.agreedEndTime | date: 'YYYY-MM-DD HH:mm'}}</span>
+                                <ul uib-dropdown-menu role="menu">
+                                    <datetimepicker ng-model="orderShow.agreedEndTime" required
+                                                    data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm:ss'}"
+                                                    before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                                </ul>
+                            </span>
+            </div>
+            <div class="form-group ml40">
+                <label>接单技师</label>
+                <input type="text" class="form-control ml10" ng-model="orderShow.techName">
+            </div>
+            <div class="form-group ml40">
+                <label>联系电话</label>
+                <input type="text" class="form-control ml10" ng-model="orderShow.techPhone">
+            </div>
+        </div>
+        <div class="mt20">
+            <div class="form-group">
+                <label>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
+                <textarea class="form-control" rows="3" style="width: 1060px;margin-left:12px;" ng-model="orderShow.remark"> {{orderShow.remark}}</textarea>
+            </div>
+        </div>
+        <div class="form-border pl10 pr1">
+            <div ng-if="orderShow.position">
+                <span class="ftbold" ng-model="orderShow.positionLon">经度：</span><span>{{orderShow.position.lng}}</span>
+                <span class="ml20 ftbold" ng-model="orderShow.positionLat">纬度：</span><span>{{orderShow.position.lat}}</span>
+                <div class="modifytitle-map">
+                    <location-picker required ng-model="orderShow.position" style="height: 230px; border-radius: 4px; border: 1px solid #cabe9c;"></location-picker>
                 </div>
             </div>
-            <div class="principal">
-                <div class="main-principal">
-                    <div class="form-inline form-border" ng-repeat="vs in orderShow.workDetailShows">
-                        <div class="principal-title">
-                            <span class="ftbold ml15">主负责人</span>
-                        </div>
-                        <div class="mt20 row-search-h40">
-                            <div class="form-group">
-                                <label>技师姓名</label>
-                                <input type="text" class="form-control ml10" ng-model="vs.techName">
-                            </div>
-                            <div class="form-group ml40">
-                                <label>联系电话</label>
-                                <input type="text" class="form-control ml10">
-                            </div>
-                            <div class="form-group ml40">
-                                <label>施工费用</label>
-                                <input type="text" class="form-control ml10" ng-model="vs.payment">
-                                <span>(单位：元)</span>
-                            </div>
-                        </div>
-                        <div class="mt10 row-search-h40" >
-                            <div class="form-group">
-                                <label>施工项目</label>
-                                <input type="text" class="form-control ml10" ng-model="Settings.orderTypes[vs.project1]">
-                            </div>
-                            <div class="form-group mr10 ml40">
-                                <label class="mr10">施工部位</label>
-                                <label class="radio-inline" ng-repeat="po in positionType">
-                                    <input type="checkbox" ng-model="po.state">{{po.name}}
-                                </label>
-                            </div>
-                        </div>
-                        <div class="mt10 row-search-h40">
-                            <div class="form-group">
-                                <label>施工项目</label>
-                                <input type="text" class="form-control ml10" ng-model="Settings.orderTypes[vs.project2]">
+        </div>
 
-                            </div>
-                            <div class="form-group mr10 ml40">
-                                <label class="mr10">施工部位</label>
-                                <label class="radio-inline" ng-repeat="po in positionType">
-                                    <input type="checkbox" ng-model="po.state">{{po.name}}
-                                </label>
-
-                            </div>
-                        </div>
-                        <div class="mt10 row-search-h40" ng-if="vs.project3">
-                            <div class="form-group">
-                                <label>施工项目</label>
-                                <input type="text" class="form-control ml10" ng-model="Settings.orderTypes[vs.project3]">
-                            </div>
-                            <div class="form-group mr10 ml40">
-                                <label class="mr10">施工部位</label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >前档风
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >左前门+角
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="checkbox" >右前门+角
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="Material-loss">
-                <div class="form-inline form-border">
-                    <div class="principal-title">
-                        <span class="ftbold ml15">材料耗损</span>
-                    </div>
-                    <div class="mt10">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>技师姓名</th>
-                                <th>施工项目</th>
-                                <th>施工部位</th>
-                                <th>材料消耗数量</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="w in orderShow.constructionWasteShows">
-                                <td>{{w.techName}}</td>
-                                <td>{{Settings.orderTypes[w.project]}}</td>
-                                <td>{{Settings.positionTypes[w.position]}}</td>
-                                <td>
-                                    <div>
-                                        <select class="wh80" id="totalStatus" ng-model="w.total"
-                                                ng-options="key as value for (key, value) in Settings.totalStatus">
-                                        </select>
-
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="pull-right modify-btn">
-                <button class="mr50" type="submit" ng-click="save()">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
-                <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
-            </div>
-     </form>
+        <div class="pull-right modify-btn">
+            <button class="mr50" type="submit" ng-click="save()">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+            <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
+        </div>
+    </form>
 </div>
-
-

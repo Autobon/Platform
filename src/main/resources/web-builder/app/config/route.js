@@ -25,7 +25,7 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.OrderCtrl,
         })
         .state('console.order.detail', {
-            url       : '/{orderNum:\\d+[^/]*}',
+            url       : '/detail/{id:\\d+}',
             controller: 'OrderDetailCtrl',
             template  : templateCache.OrderDetailCtrl,
         })

@@ -1,9 +1,7 @@
 package com.autobon.platform.controller.pc;
 
 
-import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
-import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.order.entity.ConstructionWaste;
 import com.autobon.order.entity.Order;
@@ -13,7 +11,6 @@ import com.autobon.order.service.*;
 import com.autobon.order.vo.*;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
-import com.autobon.technician.entity.LocationStatus;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.LocationStatusService;
 import com.autobon.technician.service.TechnicianService;
@@ -26,7 +23,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -87,11 +83,10 @@ public class OrderV2Controller {
      * @param positionLat
      * @param agreedStartTime
      * @param agreedEndTime
-     * @param orderConstructionWasteShow
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.POST)
     public JsonResult modifyOrder(@PathVariable("orderId") int orderId,
                                   @RequestParam(value = "type", required = false) String type,
                                   @RequestParam(value = "statusCode", required = false) Integer statusCode,
@@ -99,9 +94,7 @@ public class OrderV2Controller {
                                   @RequestParam(value = "positionLon", required = false)String positionLon,
                                   @RequestParam(value = "positionLat", required = false)String positionLat,
                                   @RequestParam(value = "agreedStartTime", required = false)String agreedStartTime,
-                                  @RequestParam(value = "agreedEndTime", required = false)String agreedEndTime,
-                                  @RequestBody OrderConstructionWasteShow orderConstructionWasteShow)throws Exception{
-
+                                  @RequestParam(value = "agreedEndTime", required = false)String agreedEndTime)throws Exception{
         Order order = orderService.get(orderId);
         order.setType(type == null? order.getType():type);
         order.setStatusCode(statusCode == null ? order.getStatusCode() : statusCode);
@@ -112,13 +105,13 @@ public class OrderV2Controller {
         order.setAgreedStartTime(agreedStartTime == null ? order.getStartTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedStartTime));
 
         orderService.save(order);
-        if(orderConstructionWasteShow != null){
-            List<WorkDetail> workDetailList = orderConstructionWasteShow.getWorkDetailList();
-            workDetailService.save(workDetailList);
-            List<ConstructionWaste> constructionWasteList = orderConstructionWasteShow.getConstructionWasteList();
-            constructionWasteService.save(constructionWasteList);
-
-        }
+//        if(orderConstructionWasteShow != null){
+//            List<WorkDetail> workDetailList = orderConstructionWasteShow.getWorkDetailList();
+//            workDetailService.save(workDetailList);
+//            List<ConstructionWaste> constructionWasteList = orderConstructionWasteShow.getConstructionWasteList();
+//            constructionWasteService.save(constructionWasteList);
+//
+//        }
 
         return new JsonResult(true, "修改成功");
     }
