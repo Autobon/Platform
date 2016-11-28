@@ -26,7 +26,19 @@
     <div ng-class="$state.is('console.technician') ? 'col-sm-12' : 'col-sm-3'">
         <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.technician')">
             <table class="table table-striped align-middle">
-                <thead><tr><th>序号</th><th>手机号</th><th>姓名</th><th>技能项</th><th>身份证号</th><th>认证日期</th><th>帐户状态</th><th>操作</th></tr></thead>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>手机号</th>
+                    <th>姓名</th>
+                    <th>技能项</th>
+                    <th>身份证号</th>
+                    <th>认证日期</th>
+                    <th>帐户状态</th>
+                    <th>工作状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr ng-repeat="t in technicians">
                     <td><b>{{$index+1+pagination.pageSize*(pagination.page-1)}}</b>. <img ng-src="{{t.avatar}}" resize="40,40" image-modal class="img-thumbnail"></td>
@@ -36,6 +48,7 @@
                     <td>{{t.idNo}}</td>
                     <td>{{t.verifyAt | date : 'YYYY-MM-DD HH:mm'}}</td>
                     <td>{{Settings.technicianStatus[t.status]}}</td>
+                    <td>{{Settings.technicianType[t.workStatus]}}</td>
                     <td><a ui-sref="console.technician.detail({id: t.id})" class="btn btn-xs btn-default">
                         <i class="fa fa-list"></i>&nbsp;详情</a>
                         <a ui-sref="console.technician.edit({id: t.id})" class="btn btn-xs btn-default">

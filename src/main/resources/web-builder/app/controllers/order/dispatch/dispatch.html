@@ -1,0 +1,89 @@
+<div class="Mapmode">
+    <div class="Mapmode-one">
+        <label class="radio-inline">
+            <input type="radio" ><span class="ftbold">地图模式指派</span>
+        </label>
+    </div>
+    <div class="form-border pl15 pr15 Mapmode-imp">
+
+        <div class="pl15">
+            <span class="ftbold">经度：</span><span>1</span>
+            <span class="ml20 ftbold">纬度：</span><span>2</span>
+            <span class="pull-right vacation pr20 mr20">休假：</span>
+            <span class="pull-right canorder pr20 mr20">可接单：</span>
+            <span class="pull-right working pr20 mr20">工作中：</span>
+        </div>
+        <div class="technician-map">
+        </div>
+    </div>
+</div>
+<div class="name-phone">
+    <div class="name-phone-one">
+        <label class="radio-inline">
+            <input type="radio" ><span class="ftbold">通过姓名或手机指派</span>
+        </label>
+    </div>
+    <div class="form-border pl15 pr15 name-phone-imp">
+        <form class="form-inline pl0 name-phone-bg">
+            <div class="form-group ml10">
+                <label>技师姓名</label>
+                <input type="text" class="form-control ml10">
+            </div>
+            <div class="form-group ml40">
+                <label>联系电话</label>
+                <input type="text" class="form-control ml10">
+            </div>
+            <div class="form-group ml30">
+                <span class="w-search"></span>
+            </div>
+        </form>
+        <div class="mt10">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>技师姓名</th>
+                    <th>联系电话</th>
+                    <th>技能项</th>
+                    <th>工作状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>方力达</td>
+                    <td>13447858862</td>
+                    <td>隔热膜、隐形车衣</td>
+                    <td>可接单</td>
+                    <td><a href="" class="operation-btn">派单</a></td>
+                </tr>
+                <tr>
+                    <td>方力达</td>
+                    <td>13447858862</td>
+                    <td>隔热膜、隐形车衣</td>
+                    <td>可接单</td>
+                    <td><a href="" class="operation-btn">派单</a></td>
+                </tr>
+                <tr>
+                    <td>方力达</td>
+                    <td>13447858862</td>
+                    <td>隔热膜、隐形车衣</td>
+                    <td>可接单</td>
+                    <td><a href="" class="operation-btn">派单</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <footer class="text-right">
+                <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getOrders()"
+                                previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+            </footer>
+        </div>
+    </div>
+</div>
+<div class="pull-right modify-btn">
+    <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
+</div>
+
+
+

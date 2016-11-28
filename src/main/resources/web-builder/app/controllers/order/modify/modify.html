@@ -22,14 +22,15 @@
             <div class="form-group">
                 <label>预约时间</label>
                             <span uib-dropdown is-open="false"><span uib-dropdown-toggle tooltip-placement="bottom"
-                                                                     tooltip-append-to-body="true"
-                                                                     class="form-control ml10">{{orderShow.agreedStartTime | date: 'YYYY-MM-DD HH:mm'}}</span>
+                                                                 tooltip-append-to-body="true"
+                                                                 class="form-control ml10">{{orderShow.agreedStartTime | date: 'YYYY-MM-DD HH:mm'}}</span>
                                 <ul uib-dropdown-menu role="menu">
                                     <datetimepicker ng-model="orderShow.agreedStartTime" required
                                                     data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm:ss'}"
                                                     before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
                                 </ul>
                             </span>
+
             </div>
             <div class="form-group">
                 <label>最晚交车时间</label>
@@ -45,11 +46,51 @@
             </div>
             <div class="form-group ml40">
                 <label>接单技师</label>
-                <input type="text" class="form-control ml10" ng-model="orderShow.techName">
+                <input type="text" class="form-control ml10" ng-model="orderShow.techName" readonly ng-click="changeView()">
             </div>
             <div class="form-group ml40">
                 <label>联系电话</label>
-                <input type="text" class="form-control ml10" ng-model="orderShow.techPhone">
+                <input type="text" class="form-control ml10" ng-model="orderShow.techPhone" readonly ng-click="changeView()">
+            </div>
+        </div>
+        <div class="form-border pl15 pr15 name-phone-imp" ng-show="technicianShow">
+            <form class="form-inline pl0 name-phone-bg">
+                <div class="form-group ml10">
+                    <label>技师姓名/电话</label>
+                    <input type="text" class="form-control ml10"  ng-model="filter.query">
+                </div>
+                <div class="form-group ml30">
+                    <button type="submit" class="btn btn-primary" ng-click="getTechnician(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+                    <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+                </div>
+            </form>
+            <div class="mt10">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>技师姓名</th>
+                        <th>联系电话</th>
+                        <th>技能项</th>
+                        <th>工作状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="t in technicians">
+                        <td>{{t.name}}</td>
+                        <td>{{t.phone}}</td>
+                        <td><span ng-repeat="s in t.skill.split(',')" class="fa fa-tag m-l-5">{{Settings.orderTypes[s]}}</span></td>
+                        <td>{{Settings.technicianType[t.workStatus]}}</td>
+                        <td><a href="" class="operation-btn" ng-click="dispatchTechnician(t);">派单</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="text-right">
+                    <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                    <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                    items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getOrders()"
+                                    previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+                </footer>
             </div>
         </div>
         <div class="mt20">

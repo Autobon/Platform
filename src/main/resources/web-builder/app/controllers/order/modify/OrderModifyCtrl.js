@@ -4,12 +4,12 @@ import moment from 'moment';
 import './modify.scss';
 
 export default class OrderModifyCtrl extends Injector {
-    static $inject   = ['$scope', '$state', '$stateParams', 'OrderService', 'Settings'];
+    static $inject   = ['$scope', '$state', '$stateParams', 'OrderService', 'Settings', 'TechnicianService'];
     static $template = require('./modify.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, OrderService} = this.$injected;
+        const {$scope, $stateParams, OrderService, Settings} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.orderTypeList = [{id: 1, name: '隔热膜', state: false}, {id: 2, name:  '隐形车衣', state: false}, {id: 3, name:  '车身改色', state: false}, {id: 4, name: '美容清洁', state: false}];
         $scope.orderStatusList = [
@@ -27,6 +27,11 @@ export default class OrderModifyCtrl extends Injector {
             {id:  'CANCELED', name: '已取消'},
             {id:  'EXPIRED', name: '已超时'},
         ];
+        $scope.technicianShow = false; // 技师列表展示
+        $scope.Settings   = Settings;
+        $scope.filter     = {sort: 'id'};
+        $scope.pagination = {page: 1, totalItems: 0, pageSize: 5};
+        this.getTechnician();
         OrderService.getDetail2($stateParams.id).then(res => {
             if (res.data.status === true) {
                 let orderShow = $scope.orderShow = res.data.message;
@@ -66,6 +71,25 @@ export default class OrderModifyCtrl extends Injector {
             }
         });
     }
+
+    // 获取技师列表
+    getTechnician(resetPageNo) {
+        const {$scope, TechnicianService} = this.$injected;
+        const {page, pageSize} = $scope.pagination;
+        TechnicianService.getV2Search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
+            if (res.data.status === true) {
+                $scope.technicians = res.data.message.list;
+                $scope.pagination.totalItems = res.data.message.totalPages;
+            }
+        });
+    }
+
+    // 重置技师列表
+    reset() {
+        const {$scope} = this.$injected;
+        $scope.filter = {};
+    }
+
     beforeRenderDatetimepicker($view, $dates) {
         const now = moment();
         for (let i = 0; i < $dates.length; i++) {
@@ -73,6 +97,21 @@ export default class OrderModifyCtrl extends Injector {
                 $dates[i].selectable = false;
             }
         }
+    }
+
+    // 技师列表展示
+    changeView() {
+        const {$scope} = this.$injected;
+        $scope.technicianShow = !$scope.technicianShow;
+    }
+
+    // 派遣
+    dispatchTechnician(t) {
+        const {$scope} = this.$injected;
+        $scope.orderShow.techName = t.name;
+        $scope.orderShow.techPhone = t.phone;
+        $scope.orderShow.techId = t.id;
+        $scope.technicianShow = !$scope.technicianShow;
     }
 
     save() {
@@ -91,9 +130,13 @@ export default class OrderModifyCtrl extends Injector {
                     }
                 }
             }
-            $scope.orderShow.type = typeOrder;
+            $scope.orderShow.type = typeOrder;  // 订单施工项目
             $scope.orderShow.positionLon = $scope.orderShow.position.lng;
             $scope.orderShow.positionLat = $scope.orderShow.position.lat;
+
+            // 时间转毫秒数
+            $scope.orderShow.agreedStartTime = (new Date($scope.orderShow.agreedStartTime)).getTime();
+            $scope.orderShow.agreedEndTime = (new Date($scope.orderShow.agreedEndTime)).getTime();
             console.log('save----:' + JSON.stringify($scope.orderShow));
             q = OrderService.update($scope.orderShow);
         } else {

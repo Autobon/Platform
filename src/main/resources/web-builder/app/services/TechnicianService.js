@@ -41,4 +41,9 @@ export default class TechnicianService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/v2/technician/' + tech.id, tech);
     }
+
+    getV2Search(params, page, pageSize) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/technician/assign', {params: {...params, page: page, pageSize: pageSize}});
+    }
 }
