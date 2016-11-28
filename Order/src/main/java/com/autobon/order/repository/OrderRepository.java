@@ -89,8 +89,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " o.creator_name as creatorName," +
             " ca.phone as creatorPhone ," +
             " ct.address as address ," +
-            " ct.longitude as longitude ," +
-            " ct.latitude as latitude ," +
+            " o.position_lon as longitude ," +
+            " o.position_lat as latitude ," +
             " o.remark as remark " +
             " FROM" +
             " t_order o" +
