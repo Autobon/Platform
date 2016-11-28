@@ -92,6 +92,7 @@ public class OrderV2Controller {
     public JsonResult modifyOrder(@PathVariable("orderId") int orderId,
                                   @RequestParam(value = "type", required = false) String type,
                                   @RequestParam(value = "statusCode", required = false) Integer statusCode,
+                                  @RequestParam(value = "techId", required = false) Integer techId,
                                   @RequestParam(value = "remark", required = false)String remark,
                                   @RequestParam(value = "positionLon", required = false)String positionLon,
                                   @RequestParam(value = "positionLat", required = false)String positionLat,
@@ -115,6 +116,10 @@ public class OrderV2Controller {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String dateStr = sdf.format(date);
             order.setAgreedEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr));
+        }
+
+        if(techId != null){
+            order.setMainTechId(techId);
         }
 
         order.setType(type == null ? order.getType() : type);
@@ -279,25 +284,26 @@ public class OrderV2Controller {
      * @return JsonResult对象
      */
     @RequestMapping(value = "/technician/assign",method = RequestMethod.GET)
-    public JsonResult getTechnician(@RequestParam("query") String query,
+    public JsonResult getTechnician(@RequestParam(value = "query", required = false) String query,
                                     @RequestParam(value = "page",  defaultValue = "1" )  int page,
-                                    @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
-                                    HttpServletRequest request){
+                                    @RequestParam(value = "pageSize", defaultValue = "20") int pageSize){
 
         try {
-            Technician tech = (Technician) request.getAttribute("user");
-            if (tech == null) {
-                return new JsonResult(false, "登陆过期");
-            }
+
             Page<Technician> technicians;
-            String query1 = "%" + query + "%";
-            if (Pattern.matches("\\d+", query)) {
-                technicians = technicianService.find(query1, null, page, pageSize);
+            String query1;
+            if(query != null) {
+                 query1 = "%" + query + "%";
+                if (Pattern.matches("\\d+", query)) {
+                    technicians = technicianService.find(query1, null, page, pageSize);
 
-            } else {
-                technicians = technicianService.find(null, query1, page, pageSize);
+                } else {
+                    technicians = technicianService.find(null, query1, page, pageSize);
+                }
+            }else{
+                technicians = technicianService.find(null, null, page, pageSize);
             }
-
+            
             return new JsonResult(true, new JsonPage<>(technicians));
         }catch (Exception e){
             return  new JsonResult(false, e.getMessage());
