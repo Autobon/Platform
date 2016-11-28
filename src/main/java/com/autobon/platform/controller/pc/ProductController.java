@@ -6,6 +6,7 @@ import com.autobon.order.service.ConstructionProjectService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.ProductService;
 import com.autobon.order.vo.OrderProductShow;
+import com.autobon.order.vo.OrderProductSuper;
 import com.autobon.shared.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,10 @@ public class ProductController {
             projectList.add(Integer.valueOf(projectId));
         }
 
+        OrderProductSuper orderProductSuper = new OrderProductSuper();
+        orderProductSuper.setOrderId(orderId);
+        orderProductSuper.setOrderNum(order.getOrderNum());
+
         List<OrderProductShow> orderProductShows = new ArrayList<>();
         Map<Integer, String> projectMap = constructionProjectService.getProject();
         Map<Integer, String> positionMap = constructionProjectService.getPosition();
@@ -71,8 +76,9 @@ public class ProductController {
 
         }
 
+        orderProductSuper.setProductShowList(orderProductShows);
 
-        return new JsonResult(true ,orderProductShows);
+        return new JsonResult(true ,orderProductSuper);
     }
 
     /**
