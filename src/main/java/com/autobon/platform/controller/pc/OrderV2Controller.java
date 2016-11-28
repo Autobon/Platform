@@ -125,7 +125,7 @@ public class OrderV2Controller {
      //   order.setAgreedEndTime(agreedEndTime == null ? order.getAgreedEndTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedEndTime));
    //     order.setAgreedStartTime(agreedStartTime == null ? order.getStartTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(agreedStartTime));
         orderService.save(order);
-        return new JsonResult(true, "修改成功");
+        return new JsonResult(true, order);
     }
 
 

@@ -69,8 +69,8 @@ public class OrderShow {
     private Integer coopId;  //商户ID
     private String coopName; //商户名称
     private String address; //商户地址
-    private String longitude; // 商户位置经度
-    private String latitude;// 商户位置纬度
+    private String longitude; // 订单位置经度
+    private String latitude;// 订单位置纬度
     private Integer creatorId; //下单人ID
     private String creatorName; //下单人姓名
     private String contactPhone; //联系电话
