@@ -91,7 +91,7 @@ public class OrderV2Controller {
     @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.POST)
     public JsonResult modifyOrder(@PathVariable("orderId") int orderId,
                                   @RequestParam(value = "type", required = false) String type,
-                                  @RequestParam(value = "statusCode", required = false) Integer statusCode,
+                                  @RequestParam(value = "statusCode", required = false) Order.Status statusCode,
                                   @RequestParam(value = "techId", required = false) Integer techId,
                                   @RequestParam(value = "remark", required = false)String remark,
                                   @RequestParam(value = "positionLon", required = false)String positionLon,
@@ -103,6 +103,9 @@ public class OrderV2Controller {
         if(order == null){
             return new JsonResult(false,"订单不存在");
         }
+
+        order.setStatusCode(statusCode.getStatusCode());
+
 
         if(agreedStartTime!=null){
             Date date = new Date(agreedStartTime);
@@ -123,7 +126,7 @@ public class OrderV2Controller {
         }
 
         order.setType(type == null ? order.getType() : type);
-        order.setStatusCode(statusCode == null ? order.getStatusCode() : statusCode);
+     //   order.setStatusCode(statusCode == null ? order.getStatusCode() : statusCode);
         order.setRemark(remark == null ? order.getRemark() : remark);
         order.setPositionLat(positionLat == null ? order.getPositionLat() : positionLat);
         order.setPositionLon(positionLon == null ? order.getPositionLon() : positionLon);
@@ -303,7 +306,7 @@ public class OrderV2Controller {
             }else{
                 technicians = technicianService.find(null, null, page, pageSize);
             }
-            
+
             return new JsonResult(true, new JsonPage<>(technicians));
         }catch (Exception e){
             return  new JsonResult(false, e.getMessage());
