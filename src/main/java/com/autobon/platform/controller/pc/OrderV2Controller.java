@@ -159,9 +159,9 @@ public class OrderV2Controller {
 
 
     /**
-     *
-     * @param orderId
-     * @param orderProductList
+     * 保存订单产品
+     * @param orderId 订单ID
+     * @param orderProductList 产品列表
      * @return
      */
     @RequestMapping(value = "/project/product/{orderId}", method = RequestMethod.POST)
@@ -189,8 +189,9 @@ public class OrderV2Controller {
 
     /**
      *
-     * @param orderId
-     * @param orderProductList
+     * 修改订单产品
+     * @param orderId 订单ID
+     * @param orderProductList 订单产品列表
      * @return
      */
     @RequestMapping(value = "/project/product/{orderId}", method = RequestMethod.PUT)
@@ -213,7 +214,7 @@ public class OrderV2Controller {
 
 
     /**
-     *
+     * 通过订单编号或者施工项目及施工部位
      * @param orderId
      * @return
      */
@@ -233,7 +234,9 @@ public class OrderV2Controller {
 
     /**
      * 后台指派技师 地图展示
-     * @param orderId
+     * 第一次加载数据时，无需传入经纬度 取商户坐标为中心点，需要传入 千米数
+     * 拖动地图控件时将中心点 传入该API
+     * @param orderId 订单ID
      * @param longitude
      * @param latitude
      * @param kilometre
@@ -304,8 +307,8 @@ public class OrderV2Controller {
 
     /**
      * 后台指派技师
-     * @param orderId
-     * @param techId
+     * @param orderId 订单ID
+     * @param techId 技师ID
      * @return
      */
     @RequestMapping(value = "/{orderId}/technician/{techId}/assign", method = RequestMethod.POST)
@@ -322,6 +325,9 @@ public class OrderV2Controller {
     }
 
 
+    /**
+     * 测试使用
+     */
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public void test(){
 

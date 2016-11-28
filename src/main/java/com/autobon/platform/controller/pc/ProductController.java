@@ -30,6 +30,11 @@ public class ProductController {
     @Autowired
     ConstructionProjectService constructionProjectService;
 
+    /**
+     * 通过订单编号加载所有施工项目 施工部位 及对应的产品
+     * @param orderId
+     * @return
+     */
     @RequestMapping(value = "/{orderId}/product", method = RequestMethod.GET)
     public JsonResult productList(@PathVariable("orderId") int orderId){
 

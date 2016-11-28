@@ -290,17 +290,18 @@ public class TechnicianV2Controller {
                 in = request.getInputStream();
             }
 
-            ConvertCmd cmd = new ConvertCmd(true);
-            cmd.setSearchPath(gmPath);
-            cmd.setInputProvider(new Pipe(in, null));
-            IMOperation operation = new IMOperation();
-            operation.addImage("-");
-            operation.resize(200, 200, "^").gravity("center").extent(200, 200);
-            operation.addImage(dir.getAbsolutePath() + File.separator + filename);
-            cmd.run(operation);
-            in.close();
+//            ConvertCmd cmd = new ConvertCmd(true);
+//            cmd.setSearchPath(gmPath);
+//            cmd.setInputProvider(new Pipe(in, null));
+//            IMOperation operation = new IMOperation();
+//            operation.addImage("-");
+//            operation.resize(200, 200, "^").gravity("center").extent(200, 200);
+//            operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+//            cmd.run(operation);
+//            in.close();
             technician.setAvatar(path + "/" + filename);
             technicianService.save(technician);
+            ((MultipartHttpServletRequest) request).getFile("file").transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
             return new JsonResult(true, technician.getAvatar());
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
