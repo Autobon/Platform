@@ -104,8 +104,9 @@ public class OrderV2Controller {
             return new JsonResult(false,"订单不存在");
         }
 
-        order.setStatusCode(statusCode.getStatusCode());
-
+        if(statusCode != null) {
+            order.setStatusCode(statusCode.getStatusCode());
+        }
 
         if(agreedStartTime!=null){
             Date date = new Date(agreedStartTime);
