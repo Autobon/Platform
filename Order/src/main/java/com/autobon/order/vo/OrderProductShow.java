@@ -9,42 +9,26 @@ import java.util.List;
  */
 public class OrderProductShow {
 
-    private int project;
-    private String projectName;
-    private int position;
+
+    private int positionId;
     private String positionName;
-    private List<Product> productList;
+    private List<ProductShow> productList;
 
-    public int getProject() {
-        return project;
+
+    public int getPositionId() {
+        return positionId;
     }
 
-    public void setProject(int project) {
-        this.project = project;
+    public void setPositionId(int positionId) {
+        this.positionId = positionId;
     }
 
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public List<Product> getProductList() {
+    public List<ProductShow> getProductList() {
         return productList;
     }
 
-    public void setProductList(List<Product> productList) {
+    public void setProductList(List<ProductShow> productList) {
         this.productList = productList;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
     }
 
     public String getPositionName() {

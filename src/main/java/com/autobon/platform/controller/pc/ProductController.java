@@ -7,6 +7,8 @@ import com.autobon.order.service.OrderService;
 import com.autobon.order.service.ProductService;
 import com.autobon.order.vo.OrderProductShow;
 import com.autobon.order.vo.OrderProductSuper;
+import com.autobon.order.vo.ProductShow;
+import com.autobon.order.vo.ProjectShow;
 import com.autobon.shared.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -50,9 +52,13 @@ public class ProductController {
             projectList.add(Integer.valueOf(projectId));
         }
 
+
+
         OrderProductSuper orderProductSuper = new OrderProductSuper();
         orderProductSuper.setOrderId(orderId);
         orderProductSuper.setOrderNum(order.getOrderNum());
+
+        List<ProjectShow> projectShows = new ArrayList<>();
 
         List<OrderProductShow> orderProductShows = new ArrayList<>();
         Map<Integer, String> projectMap = constructionProjectService.getProject();
@@ -60,15 +66,16 @@ public class ProductController {
         List<Product> products = productService.getByType(projectList);
 
         for(Integer projectId: projectList){
+            ProjectShow projectShow = new ProjectShow();
+            projectShow.setProjectId(projectId);
+            projectShow.setProjectName(projectMap.get(projectId));
             for(int i = 1; i<= positionMap.size();i++) {
                 OrderProductShow orderProductShow = new OrderProductShow();
-                orderProductShow.setProject(projectId);
-                orderProductShow.setProjectName(projectMap.get(projectId));
-                List<Product> products1  = new ArrayList<>();
+                List<ProductShow> products1  = new ArrayList<>();
                 for (Product product : products) {
                     if (product.getType() == projectId && product.getConstructionPosition() == i) {
-                        products1.add(product);
-                        orderProductShow.setPosition(i);
+                        products1.add(new ProductShow(product));
+                        orderProductShow.setPositionId(i);
                         orderProductShow.setPositionName(positionMap.get(i));
                     }
 
@@ -78,10 +85,12 @@ public class ProductController {
                     orderProductShows.add(orderProductShow);
                 }
             }
+            projectShow.setProductShowList(orderProductShows);
+            projectShows.add(projectShow);
 
         }
 
-        orderProductSuper.setProductShowList(orderProductShows);
+        orderProductSuper.setProject(projectShows);
 
         return new JsonResult(true ,orderProductSuper);
     }
