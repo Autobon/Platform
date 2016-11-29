@@ -11,7 +11,6 @@ export default class ProductCtrl extends Injector {
         $scope.Settings   = Settings;
         $scope.filter     = {sort: 'id'};
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
-        // $scope.assignTemplate = 'assignProduct.html';
         $scope.techQuery = {};
         this.getProduces();
     }
@@ -30,6 +29,5 @@ export default class ProductCtrl extends Injector {
     reset() {
         const {$scope} = this.$injected;
         $scope.filter = {};
-        // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 }

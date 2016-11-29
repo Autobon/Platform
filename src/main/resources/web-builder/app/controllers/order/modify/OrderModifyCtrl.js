@@ -115,7 +115,6 @@ export default class OrderModifyCtrl extends Injector {
 
     save() {
         const {$scope, $state, OrderService} = this.$injected;
-//        console.log(JSON.stringify($scope.orderTypeList));
         let q, isUpdate       = !!$scope.orderShow.id;
 
         if (isUpdate) {

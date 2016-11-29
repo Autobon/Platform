@@ -12,7 +12,7 @@ export default class OrderDispatchCtrl extends Injector {
         this.attachMethodsTo($scope);
         $scope.Settings   = Settings;
         $scope.filter     = {sort: 'id'};
-        $scope.pagination = {page: 1, totalItems: 0, pageSize: 10};
+        $scope.pagination = {page: 1, totalItems: 0, pageSize: 5};
 
         OrderService.getDetail2($stateParams.id).then(res => {
             if (res.data.status === true) {
@@ -47,7 +47,6 @@ export default class OrderDispatchCtrl extends Injector {
                         }
                     }
                 }
-                console.log('AA:' + JSON.stringify($scope.items));
             }
         });
         $scope.itemTemplate = $sce.trustAsHtml(`<div class="{{data.myclass}}" style="text-align: center;">
@@ -93,7 +92,6 @@ export default class OrderDispatchCtrl extends Injector {
                         $scope.technicians[i].flag = false;
                     }
                 }
-                console.log('tt>>>>' + JSON.stringify(res.data.message));
                 $scope.pagination.totalItems = res.data.message.totalElements;
             }
         });
