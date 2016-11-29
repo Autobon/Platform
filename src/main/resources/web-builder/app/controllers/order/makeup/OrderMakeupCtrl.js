@@ -1,6 +1,6 @@
 import {Injector} from 'ngES6';
 
-export default class OrderEditCtrl extends Injector {
+export default class OrderMakeupCtrl extends Injector {
     static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'ProductService', 'Settings'];
     static $template = require('./makeup.html');
 
@@ -13,6 +13,7 @@ export default class OrderEditCtrl extends Injector {
             ProductService.getOrderProduct($stateParams.id).then(res => {
                 if (res.data.status === true) {
                     $scope.product = res.data.message;
+                    console.log(JSON.stringify($scope.product));
                 }
             });
         } else {

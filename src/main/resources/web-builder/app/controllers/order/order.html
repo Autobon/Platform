@@ -57,7 +57,7 @@
                             <i class="fa fa-list"></i>&nbsp;详情</a>
                             <a ui-sref="console.order.modify({id: order.id})" class="btn btn-xs btn-default">
                                 <i class="fa fa-list"></i>&nbsp;修改</a>
-                            <a ng-if="order.status == 'CREATED_TO_APPOINT'" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.makeup({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                            <a ng-if="order.status == 'CREATED_TO_APPOINT'" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.makeup({id: order.id})" class="btn btn-xs btn-default">
                                 <i class="fa fa-paper-plane-o"></i>&nbsp;回填
                             </a>
                             <a ng-if="order.status == 'NEWLY_CREATED'" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.dispatch({id: order.id})" class="btn btn-xs btn-default">

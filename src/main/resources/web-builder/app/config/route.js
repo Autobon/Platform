@@ -40,7 +40,7 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.OrderEditCtrl,
         })
         .state('console.order.makeup', {
-            url       : '/makeup/{orderNum:\\d+[^/]*}',
+            url       : '/makeup/{id:\\d+[^/]*}',
             controller: 'OrderMakeupCtrl',
             template  : templateCache.OrderMakeupCtrl,
         })
