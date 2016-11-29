@@ -700,7 +700,8 @@ public class TechnicianV2Controller {
 
             if(order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ){
 
-                reassignmentService.create(orderId, tech.getId());
+             //   reassignmentService.create(orderId, tech.getId());
+                order.setReassignmentStatus(1);
                 return new JsonResult(true,   "订单进入工作状态，已发送申请改派");
             }
             order.setStatusCode(Order.Status.NEWLY_CREATED.getStatusCode());
