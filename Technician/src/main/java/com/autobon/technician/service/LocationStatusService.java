@@ -3,6 +3,7 @@ package com.autobon.technician.service;
 
 import com.autobon.technician.entity.LocationStatus;
 import com.autobon.technician.repository.LocationStatusRepository;
+import com.autobon.technician.vo.LocationStatusShow;
 import com.autobon.technician.vo.TechnicianLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,11 +70,11 @@ public class LocationStatusService {
         return new PageImpl<>(technicianLocations,p,count);
     }
 
-    public List<LocationStatus> getTechByDistance(String lat, String lng, int kilometre){
+    public List<LocationStatusShow> getTechByDistance(String lat, String lng, int kilometre){
         List<Object[]> techList = locationStatusRepository.getLocationStatusByDistance(lat, lng, kilometre);
-        List<LocationStatus> locationStatuses = new ArrayList<>();
+        List<LocationStatusShow> locationStatuses = new ArrayList<>();
         for(Object[] objects: techList){
-            LocationStatus LocationStatus = new LocationStatus(objects);
+            LocationStatusShow LocationStatus = new LocationStatusShow(objects);
             locationStatuses.add(LocationStatus);
         }
         return locationStatuses;

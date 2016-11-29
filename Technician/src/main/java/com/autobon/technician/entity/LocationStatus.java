@@ -34,14 +34,6 @@ public class LocationStatus {
 
     @Column private int status; //1 可接单 2 工作中 3 休息中
 
-    private String techName;
-    private String phone;
-    private String avatar;
-    private int filmLevel;
-    private int carCoverLevel;
-    private int colorModifyLevel;
-    private int beautyLevel;
-
 
 
     public LocationStatus(){}
@@ -65,6 +57,9 @@ public class LocationStatus {
         this.lng =(String)objects[1];
         this.lat =(String)objects[2];
         this.status = (int)objects[3];
+
+
+
     }
 
 

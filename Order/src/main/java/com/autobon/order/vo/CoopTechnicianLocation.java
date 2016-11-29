@@ -1,6 +1,7 @@
 package com.autobon.order.vo;
 
 import com.autobon.technician.entity.LocationStatus;
+import com.autobon.technician.vo.LocationStatusShow;
 import org.hibernate.engine.transaction.spi.LocalStatus;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class CoopTechnicianLocation {
 
     private String coopLongitude;
     private String coopLatitude;
-    private List<LocationStatus> localStatuses;
+    private List<LocationStatusShow> localStatuses;
 
     public String getCoopLongitude() {
         return coopLongitude;
@@ -31,11 +32,11 @@ public class CoopTechnicianLocation {
 
     }
 
-    public List<LocationStatus> getLocalStatuses() {
+    public List<LocationStatusShow> getLocalStatuses() {
         return localStatuses;
     }
 
-    public void setLocalStatuses(List<LocationStatus> localStatuses) {
+    public void setLocalStatuses(List<LocationStatusShow> localStatuses) {
         this.localStatuses = localStatuses;
     }
 }
