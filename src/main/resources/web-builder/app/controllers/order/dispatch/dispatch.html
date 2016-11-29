@@ -1,7 +1,7 @@
 <div class="Mapmode">
     <div class="Mapmode-one">
-        <label class="radio-inline">
-            <input type="radio" ><span class="ftbold">地图模式指派</span>
+        <label class="radio-inline" ng-click="changeRadio(1);">
+            <input type="radio"  ng-model="dispatchType" value="1"><span class="ftbold">地图模式指派</span>
         </label>
     </div>
     <div class="form-border pl15 pr15 Mapmode-imp">
@@ -13,28 +13,26 @@
             <span class="pull-right canorder pr20 mr20">可接单：</span>
             <span class="pull-right working pr20 mr20">工作中：</span>
         </div>
-        <div class="technician-map">
+        <div class="">
+            <map-view items="items" center="中国" item-template="{{itemTemplate}}" style="height: 300px; width: 100%; border: 1px solid #cabe9c;"></map-view>
         </div>
     </div>
 </div>
 <div class="name-phone">
     <div class="name-phone-one">
-        <label class="radio-inline">
-            <input type="radio" ><span class="ftbold">通过姓名或手机指派</span>
+        <label class="radio-inline" ng-click="changeRadio(2);">
+            <input type="radio" ng-model="dispatchType" value="2"><span class="ftbold">通过姓名或手机指派</span>
         </label>
     </div>
     <div class="form-border pl15 pr15 name-phone-imp">
         <form class="form-inline pl0 name-phone-bg">
             <div class="form-group ml10">
-                <label>技师姓名</label>
-                <input type="text" class="form-control ml10">
-            </div>
-            <div class="form-group ml40">
-                <label>联系电话</label>
-                <input type="text" class="form-control ml10">
+                <label>技师姓名/电话</label>
+                <input type="text" class="form-control ml10"  ng-model="filter.query">
             </div>
             <div class="form-group ml30">
-                <span class="w-search"></span>
+                <button type="submit" class="btn btn-primary" ng-click="getTechnician(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+                <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
             </div>
         </form>
         <div class="mt10">
@@ -49,41 +47,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>方力达</td>
-                    <td>13447858862</td>
-                    <td>隔热膜、隐形车衣</td>
-                    <td>可接单</td>
-                    <td><a href="" class="operation-btn">派单</a></td>
-                </tr>
-                <tr>
-                    <td>方力达</td>
-                    <td>13447858862</td>
-                    <td>隔热膜、隐形车衣</td>
-                    <td>可接单</td>
-                    <td><a href="" class="operation-btn">派单</a></td>
-                </tr>
-                <tr>
-                    <td>方力达</td>
-                    <td>13447858862</td>
-                    <td>隔热膜、隐形车衣</td>
-                    <td>可接单</td>
-                    <td><a href="" class="operation-btn">派单</a></td>
+                <tr ng-repeat="t in technicians">
+                    <td>{{t.name}}</td>
+                    <td>{{t.phone}}</td>
+                    <td><span ng-repeat="s in t.skill.split(',')" class="fa fa-tag m-l-5">{{Settings.orderTypes[s]}}</span></td>
+                    <td>{{Settings.technicianType[t.workStatus]}}</td>
+                    <td>
+                        <a href="" class="operation-btn" ng-show="!t.flag" ng-click="dispatchTechnician(t);">派单</a>
+                        <a href="" class="operation-btn" style="background-color: #fba828" ng-show="t.flag">当前派单</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
             <footer class="text-right">
                 <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
                 <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
-                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getOrders()"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getTechnician()"
                                 previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
             </footer>
         </div>
     </div>
 </div>
-<div class="pull-right modify-btn">
-    <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
-</div>
+
 
 
 

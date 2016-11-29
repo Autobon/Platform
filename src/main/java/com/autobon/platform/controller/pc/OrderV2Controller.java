@@ -91,7 +91,7 @@ public class OrderV2Controller {
     @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.POST)
     public JsonResult modifyOrder(@PathVariable("orderId") int orderId,
                                   @RequestParam(value = "type", required = false) String type,
-                                  @RequestParam(value = "statusCode", required = false) Order.Status statusCode,
+                                  @RequestParam(value = "status", required = false) Order.Status statusCode,
                                   @RequestParam(value = "techId", required = false) Integer techId,
                                   @RequestParam(value = "remark", required = false)String remark,
                                   @RequestParam(value = "positionLon", required = false)String positionLon,

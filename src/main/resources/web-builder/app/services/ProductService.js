@@ -27,4 +27,9 @@ export default class ProductService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.delete(Settings.domain + '/api/web/admin/order/product/' + pro.id);
     }
+
+    getOrderProduct(orderId) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/' + orderId + '/product');
+    }
 }

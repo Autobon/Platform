@@ -49,6 +49,16 @@ export default class OrderService extends Injector {
         return $http.post(Settings.domain + '/api/web/admin/order/comment', comment);
     }
 
+    dispatch(dis) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/order/' + dis.orderId + '/technician/' + dis.techId + '/assign');
+    }
+
+    mapTechnician(orderId, params) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/technician/assign/' + orderId, {params: {...params}});
+    }
+
     async assembleWorkItemsText(workItems, workPercent, orderType) {
         if (workPercent) return (workPercent * 100).toFixed(0) + '%';
         if (!workItems) return '';

@@ -88,7 +88,7 @@
                 <footer class="text-right">
                     <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
                     <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
-                                    items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getOrders()"
+                                    items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getTechnician()"
                                     previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
                 </footer>
             </div>
@@ -114,7 +114,6 @@
 
         <div class="pull-right modify-btn">
             <button class="mr50" type="submit" ng-click="save()">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
-            <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
         </div>
     </form>
 </div>
