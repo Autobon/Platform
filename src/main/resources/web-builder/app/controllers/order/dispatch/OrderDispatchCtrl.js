@@ -1,6 +1,5 @@
 import {Injector} from 'ngES6';
 import angular from 'angular';
-import moment from 'moment';
 import $ from 'jquery';
 
 export default class OrderDispatchCtrl extends Injector {
@@ -12,14 +11,12 @@ export default class OrderDispatchCtrl extends Injector {
         const {$scope, $stateParams, OrderService, Settings} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.Settings   = Settings;
-        $scope.dispatchType = 1;
         $scope.filter     = {sort: 'id'};
-        $scope.pagination = {page: 1, totalItems: 0, pageSize: 5};
+        $scope.pagination = {page: 1, totalItems: 0, pageSize: 10};
 
         OrderService.getDetail2($stateParams.id).then(res => {
             if (res.data.status === true) {
                 $scope.orderShow = res.data.message;
-                console.log(JSON.stringify($scope.orderShow));
                 this.getTechnician();
                 this.getMapTechnician();
             }
@@ -32,25 +29,31 @@ export default class OrderDispatchCtrl extends Injector {
         // 默认10km
         OrderService.mapTechnician($scope.orderShow.id, {kilometre: 10}).then(res => {
             if (res.data.status === true) {
+                $scope.mapTechnicians = res.data.message;
                 $scope.items = res.data.message.localStatuses;
                 if ($scope.items.length > 0) {
                     for (let i = 0; i < $scope.items.length; i++) {
-                        console.log($scope.items[i].technician.status);
-                        if ($scope.items[i].technician.status === 1) {
-                            $scope.items[i].technician.myclass = 'mv-marker-green';
-                        } else if ($scope.items[i].technician.status === 2) {
-                            $scope.items[i].technician.myclass = 'mv-marker-red';
-                        } else if ($scope.items[i].technician.status === 3) {
-                            $scope.items[i].technician.myclass = 'mv-marker-gray';
+                        if ($scope.items[i].status === 1) {
+                            $scope.items[i].myclass = 'mv-marker-green';
+                        } else if ($scope.items[i].status === 2) {
+                            $scope.items[i].myclass = 'mv-marker-red';
+                        } else if ($scope.items[i].status === 3) {
+                            $scope.items[i].myclass = 'mv-marker-gray';
+                        }
+                        if ($scope.items[i].techId === $scope.orderShow.techId) {
+                            $scope.items[i].flag = true;
+                        } else {
+                            $scope.items[i].flag = false;
                         }
                     }
                 }
                 console.log('AA:' + JSON.stringify($scope.items));
             }
         });
-        $scope.itemTemplate = $sce.trustAsHtml(`<div class="{{data.technician.myclass}}" style="text-align: center;">
-                                                    <img src="{{data.technician.avatar}}" style="width: 50px; height: 50px; border: 1px solid rgba(0,0,0,.2); border-radius: 10px;"><br>
-                                                    <span>{{data.technician.name}}</span>
+        $scope.itemTemplate = $sce.trustAsHtml(`<div class="{{data.myclass}}" style="text-align: center;">
+                                                    <img src="{{data.avatar}}" style="width: 50px; height: 50px; border: 1px solid rgba(0,0,0,.2); border-radius: 10px;"><br>
+                                                    <span>{{data.techName}}</span>
+                                                     <span class="operation-btn" onclick ="">派单</span>
                                                     <div class="arrow"></div>
                                                 </div>`);
         $scope.$on('map.marker.click', (e, evt) => {
@@ -60,7 +63,7 @@ export default class OrderDispatchCtrl extends Injector {
 
     onItemClick(e, evt) {
         e.stopPropagation();
-        const {$compile, $timeout, $sce, $state} = this.$injected;
+        const {$timeout, $scope} = this.$injected;
         let scope   = angular.element(evt.target).scope();
         let element = $(evt.target);
         if (!element.hasClass('mv-marker') && !element.hasClass('mv-marker-red')  && !element.hasClass('mv-marker-green')  && !element.hasClass('mv-marker-gray')) {
@@ -73,26 +76,7 @@ export default class OrderDispatchCtrl extends Injector {
             return;
         }
         if (element.data('has-popover')) return;
-
-        scope.popoverHtml = $sce.trustAsHtml(`
-            <div class="clearfix">
-                <a href="${$state.href('console.technician.detail', {id: scope.data.technician.id})}">
-                    <img src="${scope.data.technician.avatar}" class="img-thumbnail pull-left m-r-10 m-b-10" style="width: 60px; height: 60px;">
-                    <h3>${scope.data.technician.name}<small class="btn btn-success btn-xs m-l-5">${this.$injected.Settings.technicianStatus[scope.data.technician.status]}</small></h3>
-                </a>
-            </div>
-            <ul class="list-group" style="min-width: 250px; max-width: 400px;">
-                <li class="list-group-item"><b>电话:</b> ${scope.data.technician.phone}</li>
-                <li class="list-group-item"><b>定位时间:</b> ${moment(scope.data.createAt).format('YYYY-MM-DD HH:mm')}</li>
-                <li class="list-group-item"><b>位置:</b> ${[scope.data.city, scope.data.district, scope.data.street, scope.data.streetNumber].join('')}</li>
-            </ul>`);
-        element.attr('uib-popover-html', 'popoverHtml');
-        element.attr('popover-append-to-body', false);
-        element.attr('popover-trigger', 'outsideClick');
-        element.attr('popover-placement', 'right');
-        element.attr('popover-is-open', true);
-        $compile(element)(scope);
-        element.data('has-popover', true);
+        $scope.dispatchTechnician(scope.data, 1);
     }
 
     // 获取技师列表
@@ -101,7 +85,7 @@ export default class OrderDispatchCtrl extends Injector {
         const {page, pageSize} = $scope.pagination;
         TechnicianService.getV2Search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data.status === true) {
-                $scope.technicians = res.data.message.list;
+                $scope.technicians = res.data.message.content;
                 for (let i = 0; i < $scope.technicians.length; i++) {
                     if ($scope.technicians[i].id === $scope.orderShow.techId) {
                         $scope.technicians[i].flag = true;
@@ -109,7 +93,8 @@ export default class OrderDispatchCtrl extends Injector {
                         $scope.technicians[i].flag = false;
                     }
                 }
-                $scope.pagination.totalItems = res.data.message.totalPages;
+                console.log('tt>>>>' + JSON.stringify(res.data.message));
+                $scope.pagination.totalItems = res.data.message.totalElements;
             }
         });
     }
@@ -120,32 +105,25 @@ export default class OrderDispatchCtrl extends Injector {
         $scope.filter = {};
     }
 
-    // 选择指派模式
-    changeRadio(num) {
-        const {$scope} = this.$injected;
-        if (num === 1) {
-            $scope.dispatchType = 1;
-        } else if (num === 2) {
-            $scope.dispatchType = 2;
-        }
-    }
-
     // 指派
-    dispatchTechnician(t) {
+    dispatchTechnician(t, num) {
         const {$scope, $state, OrderService} = this.$injected;
-        for (let i = 0; i < $scope.technicians.length; i++) {
-            $scope.technicians[i].flag = false;
+        let techId = '';
+        if (num === 2) {
+            for (let i = 0; i < $scope.technicians.length; i++) {
+                $scope.technicians[i].flag = false;
+            }
+            t.flag = true;
+            techId = t.id;
+        } else {
+            techId = t.techId;
         }
-        t.flag = true;
-        OrderService.dispatch({orderId: $scope.orderShow.id, techId: t.id}).then(res => {
+        OrderService.dispatch({orderId: $scope.orderShow.id, techId: techId}).then(res => {
             if (res.data.status === true) {
-                console.log(res.data.message);
                 $state.go('^');
             } else {
                 $scope.error = res.data.message;
             }
         });
     }
-
-
 }

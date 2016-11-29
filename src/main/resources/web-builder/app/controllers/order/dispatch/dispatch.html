@@ -1,27 +1,27 @@
 <div class="Mapmode">
     <div class="Mapmode-one">
-        <label class="radio-inline" ng-click="changeRadio(1);">
-            <input type="radio"  ng-model="dispatchType" value="1"><span class="ftbold">地图模式指派</span>
+        <label class="radio-inline">
+            <span class="ftbold">地图模式指派</span>
         </label>
     </div>
     <div class="form-border pl15 pr15 Mapmode-imp">
 
         <div class="pl15">
-            <span class="ftbold">经度：</span><span>1</span>
-            <span class="ml20 ftbold">纬度：</span><span>2</span>
+            <span class="ftbold">经度：</span><span>{{mapTechnicians.coopLongitude}}</span>
+            <span class="ml20 ftbold">纬度：</span><span>{{mapTechnicians.coopLatitude}}</span>
             <span class="pull-right vacation pr20 mr20">休假：</span>
             <span class="pull-right canorder pr20 mr20">可接单：</span>
             <span class="pull-right working pr20 mr20">工作中：</span>
         </div>
         <div class="">
-            <map-view items="items" center="中国" item-template="{{itemTemplate}}" style="height: 300px; width: 100%; border: 1px solid #cabe9c;"></map-view>
+            <map-view items="items" center="中国" item-template="{{itemTemplate}}" style="height: 600px; width: 100%; border: 1px solid #cabe9c;"></map-view>
         </div>
     </div>
 </div>
 <div class="name-phone">
     <div class="name-phone-one">
-        <label class="radio-inline" ng-click="changeRadio(2);">
-            <input type="radio" ng-model="dispatchType" value="2"><span class="ftbold">通过姓名或手机指派</span>
+        <label class="radio-inline">
+            <span class="ftbold">通过姓名或手机指派</span>
         </label>
     </div>
     <div class="form-border pl15 pr15 name-phone-imp">
@@ -53,7 +53,7 @@
                     <td><span ng-repeat="s in t.skill.split(',')" class="fa fa-tag m-l-5">{{Settings.orderTypes[s]}}</span></td>
                     <td>{{Settings.technicianType[t.workStatus]}}</td>
                     <td>
-                        <a href="" class="operation-btn" ng-show="!t.flag" ng-click="dispatchTechnician(t);">派单</a>
+                        <a href="" class="operation-btn" ng-show="!t.flag" ng-click="dispatchTechnician(t, 2);">派单</a>
                         <a href="" class="operation-btn" style="background-color: #fba828" ng-show="t.flag">当前派单</a>
                     </td>
                 </tr>

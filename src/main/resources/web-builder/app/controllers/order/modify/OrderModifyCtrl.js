@@ -62,7 +62,6 @@ export default class OrderModifyCtrl extends Injector {
                         }
                     }
                 }
-                console.log(JSON.stringify($scope.orderShow));
             }
         });
         OrderService.getAllPosition($stateParams.id).then(res => {
@@ -78,8 +77,8 @@ export default class OrderModifyCtrl extends Injector {
         const {page, pageSize} = $scope.pagination;
         TechnicianService.getV2Search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data.status === true) {
-                $scope.technicians = res.data.message.list;
-                $scope.pagination.totalItems = res.data.message.totalPages;
+                $scope.technicians = res.data.message.content;
+                $scope.pagination.totalItems = res.data.message.totalElements;
             }
         });
     }
@@ -137,7 +136,6 @@ export default class OrderModifyCtrl extends Injector {
             // 时间转毫秒数
             $scope.orderShow.agreedStartTime = (new Date($scope.orderShow.agreedStartTime)).getTime();
             $scope.orderShow.agreedEndTime = (new Date($scope.orderShow.agreedEndTime)).getTime();
-            console.log('save----:' + JSON.stringify($scope.orderShow));
             q = OrderService.update($scope.orderShow);
         } else {
 //            q = OrderService.add($scope.orderShow);

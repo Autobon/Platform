@@ -22,7 +22,7 @@ export default class ProductCtrl extends Injector {
         ProductService.search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data.status === true) {
                 $scope.products = res.data.message.content;
-                $scope.pagination.totalItems = res.data.message.totalPages;
+                $scope.pagination.totalItems = res.data.message.totalElements;
             }
         });
     }
