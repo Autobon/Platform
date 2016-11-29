@@ -102,7 +102,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " ls.tech_id, " +
             " ls.lng, " +
             " ls.lat, " +
-            " ls.status, " +
+            " t.work_status, " +
             " t.name," +
             " t.phone," +
             " t.avatar," +
