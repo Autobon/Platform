@@ -468,7 +468,7 @@ public class TechnicianV2Controller {
             technician.setBankAddress(technicianShow.getBankAddress());
             technician.setFilmLevel(technicianShow.getFilmLevel());
             technician.setFilmWorkingSeniority(technicianShow.getFilmWorkingSeniority());
-            technician.setCarCoverLevel(technicianShow.getFilmWorkingSeniority());
+            technician.setCarCoverLevel(technicianShow.getCarCoverLevel());
             technician.setCarCoverWorkingSeniority(technicianShow.getCarCoverWorkingSeniority());
             technician.setColorModifyLevel(technicianShow.getColorModifyLevel());
             technician.setColorModifyWorkingSeniority(technicianShow.getColorModifyWorkingSeniority());

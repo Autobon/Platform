@@ -308,7 +308,7 @@ public class OrderV2Controller {
                 technicians = technicianService.find(null, null, page, pageSize);
             }
 
-            return new JsonResult(true, new JsonPage<>(technicians));
+            return new JsonResult(true, technicians);
         }catch (Exception e){
             return  new JsonResult(false, e.getMessage());
         }
