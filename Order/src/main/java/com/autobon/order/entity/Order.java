@@ -104,6 +104,10 @@ public class Order {
 
     @Column private Date AgreedEndTime;
 
+    @Column private int productStatus; //订单补录产品状态 0 未补录,1已补录
+
+    @Column private int reassignmentStatus;  //申请改派状态 0 未申请改派,1已申请改派 2已处理
+
     public Order() {
         this.orderNum = generateOrderNum();
         this.setStatus(Status.NEWLY_CREATED);
@@ -332,5 +336,21 @@ public class Order {
 
     public void setAgreedEndTime(Date agreedEndTime) {
         AgreedEndTime = agreedEndTime;
+    }
+
+    public int getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(int productStatus) {
+        this.productStatus = productStatus;
+    }
+
+    public int getReassignmentStatus() {
+        return reassignmentStatus;
+    }
+
+    public void setReassignmentStatus(int reassignmentStatus) {
+        this.reassignmentStatus = reassignmentStatus;
     }
 }

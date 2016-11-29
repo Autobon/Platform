@@ -1,11 +1,32 @@
 package com.autobon.technician.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
  * Created by wh on 2016/11/29.
  */
 public class LocationStatusShow {
+
+    public enum certificationStatus {
+        NEWLY_CREATED(0), IN_VERIFICATION(1), VERIFIED(2), REJECTED(3), BANNED(4);
+        private int statusCode;
+
+        certificationStatus(int statusCode) {
+            this.statusCode = statusCode;
+        }
+
+        public static certificationStatus getStatus(int statusCode) {
+            for (certificationStatus s : certificationStatus.values()) {
+                if (s.getStatusCode() == statusCode) return s;
+            }
+            return null;
+        }
+        public int getStatusCode() {
+            return this.statusCode;
+        }
+    }
 
 
     private int id;
@@ -37,6 +58,8 @@ public class LocationStatusShow {
     private int carCoverLevel;
     private int colorModifyLevel;
     private int beautyLevel;
+    @JsonIgnore
+    private int statusCode;
 
 
 
@@ -54,6 +77,7 @@ public class LocationStatusShow {
         this.techId =location.getTechId();
 
 
+
     }
 
     public LocationStatusShow(Object[] objects){
@@ -69,8 +93,15 @@ public class LocationStatusShow {
         this.carCoverLevel = (int)objects[8];
         this.colorModifyLevel = (int)objects[9];
         this.beautyLevel = (int)objects[10];
+        this.statusCode = (int)objects[11];
+    }
+    public certificationStatus getCertificationStatus() {
+        return certificationStatus.getStatus(this.getStatusCode());
     }
 
+    public void setCertificationStatus(certificationStatus s) {
+        this.setStatusCode(s.getStatusCode());
+    }
 
     public int getId() {
         return id;
@@ -214,5 +245,13 @@ public class LocationStatusShow {
 
     public void setBeautyLevel(int beautyLevel) {
         this.beautyLevel = beautyLevel;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 }

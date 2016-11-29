@@ -109,7 +109,8 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.film_level," +
             " t.car_cover_level," +
             " t.color_modify_level," +
-            " t.beauty_level " +
+            " t.beauty_level," +
+            " t.status as status1" +
             " from " +
             " t_location_status ls inner join t_technician t on t.id = ls.tech_id "+
             " where truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) <?3"
