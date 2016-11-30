@@ -6,95 +6,31 @@
                 <span>{{product.orderNum}}</span>
             </div>
         </div>
-        <div class="principal" ng-repeat="pro in product.productShowList">
+        <div class="principal" ng-repeat="project in product.project">
             <div class="main-principal">
                 <form class="form-inline form-border">
-                    <div class="row-search-h40">
-                        <div class="form-group">
-                            <label>施工项目</label>
-                            <span>{{pro.}}</span>
-                        </div>
-                    </div>
                     <div class="mt10">
                         <div class="form-group mr10">
+                            <div class="form-group">
+                                <label>施工项目</label>
+                                <span>{{project.projectName}}</span>
+                            </div>
                             <label class="mr10">施工部位以及施工型号</label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >前档风
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V70
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V70S
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V60
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V60S
-                            </label>
-                        </div>
-                        <div class="form-group mr10" style="display:block;margin-left:140px;">
-                            <label class="mr10"></label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >左前门
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V70
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V70S
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V60
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V60S
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V70
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V70S
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V60
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V60S
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V70
-                            </label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >V70S
-                            </label>
-                        </div>
-                        <div class="form-group mr10" style="display:block;margin-left:140px;">
-                            <label class="mr10"></label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >右前门
-                            </label>
-                        </div>
-                        <div class="form-group mr10" style="display:block;margin-left:140px;">
-                            <label class="mr10"></label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >左后门+角
-                            </label>
-                        </div>
-                        <div class="form-group mr10" style="display:block;margin-left:140px;">
-                            <label class="mr10"></label>
-                            <label class="radio-inline">
-                                <input type="checkbox" >右前门+角
-                            </label>
+                            <div ng-repeat="proList in project.productShowList">
+                                <label class="radio-inline">
+                                    <span>{{proList.positionName}}：</span>
+                                </label>
+                                <select ng-model="proList.productId" ng-options="pl.id as pl.model for pl in proList.productList">
+
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
         <div class="pull-right modify-btn">
-            <button class="mr50">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
-            <button>取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
+            <button class="mr50" ng-click="save();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
         </div>
     </form>
 </div>

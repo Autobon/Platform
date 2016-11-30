@@ -32,4 +32,9 @@ export default class ProductService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/order/' + orderId + '/product');
     }
+
+    saveProduct(orderId, productIds) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/order/' + orderId + '/product', productIds);
+    }
 }
