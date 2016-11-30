@@ -1,5 +1,6 @@
 package com.autobon.platform.controller.pc;
 
+import com.autobon.order.entity.ConstructionPosition;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.Product;
 import com.autobon.order.service.ConstructionProjectService;
@@ -52,45 +53,38 @@ public class ProductController {
             projectList.add(Integer.valueOf(projectId));
         }
 
-
-
         OrderProductSuper orderProductSuper = new OrderProductSuper();
         orderProductSuper.setOrderId(orderId);
         orderProductSuper.setOrderNum(order.getOrderNum());
-
         List<ProjectShow> projectShows = new ArrayList<>();
-
-        List<OrderProductShow> orderProductShows = new ArrayList<>();
         Map<Integer, String> projectMap = constructionProjectService.getProject();
         Map<Integer, String> positionMap = constructionProjectService.getPosition();
-        List<Product> products = productService.getByType(projectList);
-
+        List<Product> products = productService.getByTypes(projectList);
         for(Integer projectId: projectList){
             ProjectShow projectShow = new ProjectShow();
             projectShow.setProjectId(projectId);
             projectShow.setProjectName(projectMap.get(projectId));
-            for(int i = 1; i<= positionMap.size();i++) {
-                OrderProductShow orderProductShow = new OrderProductShow();
-                List<ProductShow> products1  = new ArrayList<>();
-                for (Product product : products) {
-                    if (product.getType() == projectId && product.getConstructionPosition() == i) {
-                        products1.add(new ProductShow(product));
-                        orderProductShow.setPositionId(i);
-                        orderProductShow.setPositionName(positionMap.get(i));
+            List<ConstructionPosition> list = constructionProjectService.findByProject(projectId);
+            List<OrderProductShow> orderProductShows = new ArrayList<>();
+            for(ConstructionPosition constructionPosition: list) {
+                    List<ProductShow> products1  = new ArrayList<>();
+                    OrderProductShow orderProductShow = new OrderProductShow();
+                    orderProductShow.setPositionId(constructionPosition.getId());
+                    orderProductShow.setPositionName(positionMap.get(constructionPosition.getId()));
+                    for (Product product : products) {
+                        if (product.getType() == projectId && product.getConstructionPosition() == constructionPosition.getId()) {
+                            products1.add(new ProductShow(product));
+                        }
                     }
+                    orderProductShow.setProductList(products1);
+                    orderProductShows.add(orderProductShow);
 
                 }
-                orderProductShow.setProductList(products1);
-                if(products1.size() > 0) {
-                    orderProductShows.add(orderProductShow);
-                }
-            }
             projectShow.setProductShowList(orderProductShows);
             projectShows.add(projectShow);
-
+            orderProductSuper.setProject(projectShows);
+            System.out.print("");
         }
-
-        orderProductSuper.setProject(projectShows);
 
         return new JsonResult(true ,orderProductSuper);
     }

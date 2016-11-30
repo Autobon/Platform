@@ -101,5 +101,11 @@ public class ProductService {
     }
 
 
+    public List<Product> getByTypes(List<Integer> type){
+        List<Product> list = productRepository.getByTypes(type);
+
+        return list;
+    }
+
 
 }

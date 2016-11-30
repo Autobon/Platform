@@ -6,10 +6,12 @@ import com.autobon.order.repository.ConstructionPositionRepository;
 import com.autobon.order.repository.ConstructionProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by wh on 2016/11/1.
@@ -39,7 +41,22 @@ public class ConstructionProjectService {
     }
 
 
-    public Map<Integer,String>  getProject(){
+    public List<ConstructionPosition> findByProject(int pid){
+        ConstructionProject constructionProject =  constructionProjectRepository.getOne(pid);
+        if(constructionProject!= null){
+            String idsStr = constructionProject.getIds();
+            String[] ids = idsStr.split(",");
+            List<Integer> idList = new ArrayList<>();
+            for(int i=0; i<ids.length;i++){
+                idList.add(Integer.valueOf(ids[i]));
+            }
+            return constructionPositionRepository.getByIds(idList);
+        }
+        return null;
+    }
+
+
+    public Map<Integer,String> getProject(){
         Map<Integer, String> map = new HashMap<>();
         List<ConstructionProject> constructionProjects = constructionProjectRepository.findAll();
         for(ConstructionProject constructionProject: constructionProjects){

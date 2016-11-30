@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface ConstructionPositionRepository extends JpaRepository<ConstructionPosition, Integer> {
 
-    @Query("select p from ConstructionPosition p where p.id in ?1")
+    @Query("select p from ConstructionPosition p where p.id in ?1 order by p.id desc")
     List<ConstructionPosition> getByIds(List<Integer> ids);
+
+
 }
