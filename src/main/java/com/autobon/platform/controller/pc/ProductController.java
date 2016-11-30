@@ -37,6 +37,12 @@ public class ProductController {
     @Autowired
     OrderProductService orderProductService;
 
+    /**
+     * 保存产品
+     * @param orderId
+     * @param orderProductSuper
+     * @return
+     */
     @RequestMapping(value = "/{orderId}/product", method = RequestMethod.POST)
     public JsonResult saveProduct(@PathVariable("orderId") int orderId,
                                   @RequestBody OrderProductSuper orderProductSuper){
