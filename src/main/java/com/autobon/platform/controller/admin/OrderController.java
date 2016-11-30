@@ -67,6 +67,7 @@ public class OrderController {
             @RequestParam(value = "orderCreator", required = false) String orderCreator,
             @RequestParam(value = "orderType", required = false) Integer orderType,
             @RequestParam(value = "orderStatus", required = false) Order.Status orderStatus,
+            @RequestParam(value = "tech", required = false) String tech,
             @RequestParam(value = "sort", defaultValue = "id") String sort,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
