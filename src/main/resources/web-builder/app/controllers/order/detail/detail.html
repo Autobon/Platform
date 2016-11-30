@@ -23,7 +23,9 @@
         <div class="col-sm-12"><b>备注: </b><span>{{order.remark}}</span></div>
     </div>
     <div class="row m-t-10">
-        <div class="col-sm-4"><img ng-if="order.photo" ng-src="{{order.photo}}" style="height: 280px;" image-modal class="img-thumbnail pull-left m-r-10"></div>
+        <div class="col-sm-4" ng-repeat="photo in order.photoList">
+            <img ng-if="photo" ng-src="{{photo}}" style="height: 280px;" image-modal class="img-thumbnail pull-left m-r-10">
+        </div>
         <div class="col-sm-8">
             <div class="form-control" style="cursor: not-allowed;">
                 <span>经度: {{order.longitude}}, 纬度: {{order.latitude}}</span>

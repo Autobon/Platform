@@ -23,21 +23,8 @@ export default class OrderDetailCtrl extends Injector {
                 let order = $scope.order = res.data.message;
 
                 order.position         = {lng: order.longitude, lat: order.latitude};
-//                $scope.comment.orderId = order.id;
-//                if (order.mainConstruct) {
-//                    OrderService.assembleWorkItemsText(order.mainConstruct.workItems, order.mainConstruct.workPercent, order.orderType).then(d => {
-//                        $scope.$apply(() => {
-//                            order.mainConstruct.workItems = d;
-//                        });
-//                    });
-//                }
-//                if (order.secondConstruct) {
-//                    OrderService.assembleWorkItemsText(order.secondConstruct.workItems, order.secondConstruct.workPercent, order.orderType).then(d => {
-//                        $scope.$apply(() => {
-//                            order.secondConstruct.workItems = d;
-//                        });
-//                    });
-//                }
+                $scope.order.photoList = [];
+                $scope.order.photoList = $scope.order.photo.split(',');
             }
         });
     }
