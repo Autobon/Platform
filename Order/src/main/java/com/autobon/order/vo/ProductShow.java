@@ -21,6 +21,8 @@ public class ProductShow {
     private Integer isChecked = 0; // 是否选择 0 为选中 1 已选择
 
 
+    public ProductShow(){}
+
     public ProductShow(Product product){
         this.id = product.getId();
         this.type = product.getType();

@@ -2,8 +2,10 @@ package com.autobon.platform.controller.pc;
 
 import com.autobon.order.entity.ConstructionPosition;
 import com.autobon.order.entity.Order;
+import com.autobon.order.entity.OrderProduct;
 import com.autobon.order.entity.Product;
 import com.autobon.order.service.ConstructionProjectService;
+import com.autobon.order.service.OrderProductService;
 import com.autobon.order.service.OrderService;
 import com.autobon.order.service.ProductService;
 import com.autobon.order.vo.OrderProductShow;
@@ -32,6 +34,42 @@ public class ProductController {
     OrderService orderService;
     @Autowired
     ConstructionProjectService constructionProjectService;
+    @Autowired
+    OrderProductService orderProductService;
+
+    @RequestMapping(value = "/{orderId}/product", method = RequestMethod.POST)
+    public JsonResult saveProduct(@PathVariable("orderId") int orderId,
+                                  @RequestBody OrderProductSuper orderProductSuper){
+        List<ProjectShow> projects = orderProductSuper.getProject();
+        List<Integer> productId = new ArrayList<>();
+        for(ProjectShow projectShow : projects){
+            List<OrderProductShow> productShowList = projectShow.getProductShowList();
+            for(OrderProductShow orderProductShow: productShowList){
+                if(orderProductShow.getProductId()!=0){
+                    productId.add(orderProductShow.getProductId());
+                }
+            }
+        }
+
+        List<OrderProduct> orderProducts = new ArrayList<>();
+        for(Integer pId: productId){
+            Product product = productService.get(pId);
+            OrderProduct orderProduct = new OrderProduct();
+            orderProduct.setOrderId(orderId);
+            orderProduct.setConstructionProjectId(product.getType());
+            orderProduct.setConstructionPositionId(product.getConstructionPosition());
+            orderProduct.setConstructionCommission(product.getConstructionCommission());
+            orderProduct.setProductId(pId);
+            orderProduct.setScrapCost(product.getScrapCost());
+
+            orderProducts.add(orderProduct);
+        }
+
+        orderProductService.batchInsert(orderProducts);
+        return  new JsonResult(true,"保存成功");
+    }
+
+
 
     /**
      * 通过订单编号加载所有施工项目 施工部位 及对应的产品
@@ -46,28 +84,79 @@ public class ProductController {
             return new JsonResult(false,"订单不存在");
         }
 
-        String type = order.getType();
-        String[] typeStr = type.split(",");
-        List<Integer> projectList = new ArrayList<>();
-        for(String projectId: typeStr){
-            projectList.add(Integer.valueOf(projectId));
-        }
 
+        List<OrderProduct> orderProducts = orderProductService.get(orderId);
         OrderProductSuper orderProductSuper = new OrderProductSuper();
-        orderProductSuper.setOrderId(orderId);
-        orderProductSuper.setOrderNum(order.getOrderNum());
-        List<ProjectShow> projectShows = new ArrayList<>();
-        Map<Integer, String> projectMap = constructionProjectService.getProject();
-        Map<Integer, String> positionMap = constructionProjectService.getPosition();
-        List<Product> products = productService.getByTypes(projectList);
-        for(Integer projectId: projectList){
-            ProjectShow projectShow = new ProjectShow();
-            projectShow.setProjectId(projectId);
-            projectShow.setProjectName(projectMap.get(projectId));
-            List<ConstructionPosition> list = constructionProjectService.findByProject(projectId);
-            List<OrderProductShow> orderProductShows = new ArrayList<>();
-            for(ConstructionPosition constructionPosition: list) {
+        if(orderProducts != null&& orderProducts.size()>0){
+            String type = order.getType();
+            String[] typeStr = type.split(",");
+            List<Integer> projectList = new ArrayList<>();
+            for(String projectId: typeStr){
+                projectList.add(Integer.valueOf(projectId));
+            }
+
+
+            orderProductSuper.setOrderId(orderId);
+            orderProductSuper.setOrderNum(order.getOrderNum());
+            List<ProjectShow> projectShows = new ArrayList<>();
+            Map<Integer, String> projectMap = constructionProjectService.getProject();
+            Map<Integer, String> positionMap = constructionProjectService.getPosition();
+            List<Product> products = productService.getByTypes(projectList);
+            for(Integer projectId: projectList){
+                ProjectShow projectShow = new ProjectShow();
+                projectShow.setProjectId(projectId);
+                projectShow.setProjectName(projectMap.get(projectId));
+                List<ConstructionPosition> list = constructionProjectService.findByProject(projectId);
+                List<OrderProductShow> orderProductShows = new ArrayList<>();
+                for(ConstructionPosition constructionPosition: list) {
                     List<ProductShow> products1  = new ArrayList<>();
+                    OrderProductShow orderProductShow = new OrderProductShow();
+                    orderProductShow.setPositionId(constructionPosition.getId());
+                    orderProductShow.setPositionName(positionMap.get(constructionPosition.getId()));
+                    for(OrderProduct orderProduct: orderProducts) {
+                        if(orderProduct.getConstructionProjectId() == projectId && orderProduct.getConstructionPositionId() == constructionPosition.getId()){
+                            orderProductShow.setProductId(orderProduct.getProductId());
+                        }
+
+                    }
+                    for (Product product : products) {
+                        if (product.getType() == projectId && product.getConstructionPosition() == constructionPosition.getId()) {
+                            products1.add(new ProductShow(product));
+                        }
+                    }
+                    orderProductShow.setProductList(products1);
+                    orderProductShows.add(orderProductShow);
+
+                }
+                projectShow.setProductShowList(orderProductShows);
+                projectShows.add(projectShow);
+                orderProductSuper.setProject(projectShows);
+
+
+            }
+
+        }else {
+
+            String type = order.getType();
+            String[] typeStr = type.split(",");
+            List<Integer> projectList = new ArrayList<>();
+            for (String projectId : typeStr) {
+                projectList.add(Integer.valueOf(projectId));
+            }
+            orderProductSuper.setOrderId(orderId);
+            orderProductSuper.setOrderNum(order.getOrderNum());
+            List<ProjectShow> projectShows = new ArrayList<>();
+            Map<Integer, String> projectMap = constructionProjectService.getProject();
+            Map<Integer, String> positionMap = constructionProjectService.getPosition();
+            List<Product> products = productService.getByTypes(projectList);
+            for (Integer projectId : projectList) {
+                ProjectShow projectShow = new ProjectShow();
+                projectShow.setProjectId(projectId);
+                projectShow.setProjectName(projectMap.get(projectId));
+                List<ConstructionPosition> list = constructionProjectService.findByProject(projectId);
+                List<OrderProductShow> orderProductShows = new ArrayList<>();
+                for (ConstructionPosition constructionPosition : list) {
+                    List<ProductShow> products1 = new ArrayList<>();
                     OrderProductShow orderProductShow = new OrderProductShow();
                     orderProductShow.setPositionId(constructionPosition.getId());
                     orderProductShow.setPositionName(positionMap.get(constructionPosition.getId()));
@@ -80,10 +169,11 @@ public class ProductController {
                     orderProductShows.add(orderProductShow);
 
                 }
-            projectShow.setProductShowList(orderProductShows);
-            projectShows.add(projectShow);
-            orderProductSuper.setProject(projectShows);
-            System.out.print("");
+                projectShow.setProductShowList(orderProductShows);
+                projectShows.add(projectShow);
+                orderProductSuper.setProject(projectShows);
+
+            }
         }
 
         return new JsonResult(true ,orderProductSuper);

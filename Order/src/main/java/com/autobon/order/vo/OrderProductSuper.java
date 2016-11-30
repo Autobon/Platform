@@ -8,8 +8,11 @@ import java.util.List;
 public class OrderProductSuper {
     private int orderId;
     private String orderNum;
-
     private List<ProjectShow> project;
+
+    public OrderProductSuper() {
+
+    }
 
     public int getOrderId() {
         return orderId;

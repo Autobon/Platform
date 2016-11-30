@@ -10,6 +10,11 @@ public class ProjectShow {
     private String projectName;
     private List<OrderProductShow> productShowList;
 
+
+    public ProjectShow() {
+
+    }
+
     public List<OrderProductShow> getProductShowList() {
         return productShowList;
     }
@@ -17,6 +22,7 @@ public class ProjectShow {
     public void setProductShowList(List<OrderProductShow> productShowList) {
         this.productShowList = productShowList;
     }
+
 
     public int getProjectId() {
         return projectId;

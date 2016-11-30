@@ -12,8 +12,17 @@ public class OrderProductShow {
 
     private int positionId;
     private String positionName;
+    private int productId;
     private List<ProductShow> productList;
 
+    public OrderProductShow(){}
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
 
     public int getPositionId() {
         return positionId;
