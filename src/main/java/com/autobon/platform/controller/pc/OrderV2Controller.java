@@ -17,12 +17,16 @@ import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -354,4 +358,45 @@ public class OrderV2Controller {
         workDetailService.balance(list);
     }
 
+
+
+    @RequestMapping(value="/excel/download", method = RequestMethod.GET)
+    public void download(@RequestParam(value = "techId", required = false) String techId,
+                         @RequestParam(value = "coopId", required = false) String coopId,
+                         @RequestParam(value = "startTime", required = false)Long  startTime,
+                         @RequestParam(value = "endTime", required = false)Long  endTime,
+                         HttpServletRequest request,
+                         HttpServletResponse response) throws IOException{
+        String fileName="excel文件";
+        //填充projects数据
+        String columnNames[]={"ID","项目名","销售人","负责人","所用技术","备注"};//列名
+        String keys[]    =     {"id","name","saler","principal","technology","remarks"};//map中的key
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        byte[] content = os.toByteArray();
+        InputStream is = new ByteArrayInputStream(content);
+        // 设置response参数，可以打开下载页面
+        response.reset();
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+        ServletOutputStream out = response.getOutputStream();
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        try {
+            bis = new BufferedInputStream(is);
+            bos = new BufferedOutputStream(out);
+            byte[] buff = new byte[2048];
+            int bytesRead;
+            // Simple read/write loop.
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                bos.write(buff, 0, bytesRead);
+            }
+        } catch (final IOException e) {
+            throw e;
+        } finally {
+            if (bis != null)
+                bis.close();
+            if (bos != null)
+                bos.close();
+        }
+    }
 }
