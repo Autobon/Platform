@@ -40,39 +40,41 @@ public class ProductController {
     /**
      * 保存产品
      * @param orderId
-     * @param orderProductSuper
+     * @param productIds
      * @return
      */
     @RequestMapping(value = "/{orderId}/product", method = RequestMethod.POST)
     public JsonResult saveProduct(@PathVariable("orderId") int orderId,
-                                  @RequestBody OrderProductSuper orderProductSuper){
-        List<ProjectShow> projects = orderProductSuper.getProject();
+                                  @RequestParam(value = "productIds", required = true) String productIds){
+
         List<Integer> productId = new ArrayList<>();
-        for(ProjectShow projectShow : projects){
-            List<OrderProductShow> productShowList = projectShow.getProductShowList();
-            for(OrderProductShow orderProductShow: productShowList){
-                if(orderProductShow.getProductId()!=0){
-                    productId.add(orderProductShow.getProductId());
+        if(productIds!=null&&productIds.length()>0) {
+            String[] pids = productIds.split(",");
+            for(String pid: pids){
+                productId.add(Integer.valueOf(pid));
+            }
+
+            List<OrderProduct> orderProducts = new ArrayList<>();
+            for (Integer pId : productId) {
+                Product product = productService.get(pId);
+                if(product!=null) {
+                    OrderProduct orderProduct = new OrderProduct();
+                    orderProduct.setOrderId(orderId);
+                    orderProduct.setConstructionProjectId(product.getType());
+                    orderProduct.setConstructionPositionId(product.getConstructionPosition());
+                    orderProduct.setConstructionCommission(product.getConstructionCommission());
+                    orderProduct.setProductId(pId);
+                    orderProduct.setScrapCost(product.getScrapCost());
+
+                    orderProducts.add(orderProduct);
                 }
             }
+            orderProductService.deleteByOrderId(orderId);
+            orderProductService.batchInsert(orderProducts);
+            return new JsonResult(true, "保存成功");
+        }else{
+            return new JsonResult(false, "没有提交产品");
         }
-
-        List<OrderProduct> orderProducts = new ArrayList<>();
-        for(Integer pId: productId){
-            Product product = productService.get(pId);
-            OrderProduct orderProduct = new OrderProduct();
-            orderProduct.setOrderId(orderId);
-            orderProduct.setConstructionProjectId(product.getType());
-            orderProduct.setConstructionPositionId(product.getConstructionPosition());
-            orderProduct.setConstructionCommission(product.getConstructionCommission());
-            orderProduct.setProductId(pId);
-            orderProduct.setScrapCost(product.getScrapCost());
-
-            orderProducts.add(orderProduct);
-        }
-        orderProductService.deleteByOrderId(orderId);
-        orderProductService.batchInsert(orderProducts);
-        return  new JsonResult(true,"保存成功");
     }
 
 
