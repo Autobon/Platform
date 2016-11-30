@@ -1007,7 +1007,7 @@ public class TechnicianV2Controller {
         if (order.getStatus() != Order.Status.AT_WORK) {
             return new JsonResult(false,  "订单不在工作中，无法完成订单");
         }
-        if (order.getStatus() != Order.Status.FINISHED) {
+        if (order.getStatus() == Order.Status.FINISHED) {
             return new JsonResult(false,  "订单已经提交，不能再次提交");
         }
         if (order.getBeforePhotos() == null || "".equals(order.getBeforePhotos())) {
