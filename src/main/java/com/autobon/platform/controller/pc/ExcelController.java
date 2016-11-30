@@ -39,7 +39,7 @@ public class ExcelController {
     @RequestMapping(value = "/project/upload", method = RequestMethod.POST)
     public JsonResult uploadProject(HttpServletRequest request)throws Exception{
 
-        productService.deleteAll();
+    //    productService.deleteAll();
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 
