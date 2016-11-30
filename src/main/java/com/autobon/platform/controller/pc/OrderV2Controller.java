@@ -375,6 +375,7 @@ public class OrderV2Controller {
                             @RequestParam(value = "orderCreator", required = false) String orderCreator,
                             @RequestParam(value = "orderType", required = false) Integer orderType,
                             @RequestParam(value = "orderStatus", required = false) Order.Status orderStatus,
+                            @RequestParam(value = "sort", defaultValue = "id") String sort,
                             @RequestParam(value = "tech", required = false) String tech,
                             @RequestParam(value = "coopId", required = false) String coopId,
                             @RequestParam(value = "startTime", required = false)Long  startTime,
