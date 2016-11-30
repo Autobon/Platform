@@ -8,17 +8,17 @@ import com.autobon.order.entity.Product;
 public class ProductShow {
 
     private Integer id;//
-    private Integer type;//'施工项目'
-    private String brand; //'品牌'
-    private String code;  //'编码'
-    private String model; //'型号'
-    private Integer constructionPosition;  //'施工部位'
-    private Integer workingHours;   //'工时'
-    private Integer constructionCommission;  //'施工提成'
-    private Integer starLevel;  //'星级要求'
-    private Integer scrapCost; //'报废扣款'
-    private Integer warranty; //'质保
-    private Integer isChecked = 0; // 是否选择 0 为选中 1 已选择
+    private Integer type;//'鏂藉伐椤圭洰'
+    private String brand; //'鍝佺墝'
+    private String code;  //'缂栫爜'
+    private String model; //'鍨嬪彿'
+    private Integer constructionPosition;  //'鏂藉伐閮ㄤ綅'
+    private Integer workingHours;   //'宸ユ椂'
+    private Integer constructionCommission;  //'鏂藉伐鎻愭垚'
+    private Integer starLevel;  //'鏄熺骇瑕佹眰'
+    private Integer scrapCost; //'鎶ュ簾鎵ｆ'
+    private Integer warranty; //'璐ㄤ繚
+    private Integer isChecked = 0; // 鏄惁閫夋嫨 0 涓洪�変腑 1 宸查�夋嫨
 
 
     public ProductShow(){}

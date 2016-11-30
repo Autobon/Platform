@@ -49,6 +49,12 @@ public class OrderProductService {
     public List<OrderProduct> get(int orderId){
 
         return orderProductRepository.findByOrderId(orderId);
+
+    }
+
+    public int deleteByOrderId(int orderId){
+        orderProductRepository.deleteByOrderId(orderId);
+        return 0;
     }
 
 }

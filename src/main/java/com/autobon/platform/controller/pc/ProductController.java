@@ -70,7 +70,7 @@ public class ProductController {
 
             orderProducts.add(orderProduct);
         }
-
+        orderProductService.deleteByOrderId(orderId);
         orderProductService.batchInsert(orderProducts);
         return  new JsonResult(true,"保存成功");
     }
