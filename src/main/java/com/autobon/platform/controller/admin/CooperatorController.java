@@ -71,9 +71,9 @@ public class CooperatorController {
     // 认证商户
     @RequestMapping(value = "/verify/{coopId:\\d+}", method = RequestMethod.POST)
     public JsonMessage verify(HttpServletRequest request,
-            @PathVariable("coopId") int coopId,
-            @RequestParam("verified") boolean verified,
-            @RequestParam(value = "remark", defaultValue = "") String remark) throws IOException {
+                              @PathVariable("coopId") int coopId,
+                              @RequestParam("verified") boolean verified,
+                              @RequestParam(value = "remark", defaultValue = "") String remark) throws IOException {
         Cooperator coop = cooperatorService.get(coopId);
         Staff staff = (Staff) request.getAttribute("user");
 
@@ -114,25 +114,27 @@ public class CooperatorController {
 
     @RequestMapping(value = "/{coopId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("coopId") int coopId,
-            @RequestParam("fullname") String fullname,
-            @RequestParam("businessLicense") String businessLicense,
-            @RequestParam("corporationName") String corporationName,
-            @RequestParam("corporationIdNo") String corporationIdNo,
-            @RequestParam("bussinessLicensePic") String bussinessLicensePic,
-            @RequestParam("corporationIdPicA") String corporationIdPicA,
-            @RequestParam("longitude") String longitude,
-            @RequestParam("latitude") String latitude,
-            @RequestParam("invoiceHeader") String invoiceHeader,
-            @RequestParam("taxIdNo") String taxIdNo,
-            @RequestParam("postcode") String postcode,
-            @RequestParam("province") String province,
-            @RequestParam("city") String city,
-            @RequestParam("district") String district,
-            @RequestParam("address") String address,
-            @RequestParam("contact") String contact,
-            @RequestParam("contactPhone") String contactPhone,
-            @RequestParam("phone") String phone,
-            @RequestParam("shortname") String shortname) {
+                              @RequestParam("fullname") String fullname,
+                              @RequestParam("businessLicense") String businessLicense,
+                              @RequestParam("corporationName") String corporationName,
+                              @RequestParam("corporationIdNo") String corporationIdNo,
+                              @RequestParam("bussinessLicensePic") String bussinessLicensePic,
+                              @RequestParam("corporationIdPicA") String corporationIdPicA,
+                              @RequestParam("longitude") String longitude,
+                              @RequestParam("latitude") String latitude,
+                              @RequestParam("invoiceHeader") String invoiceHeader,
+                              @RequestParam("taxIdNo") String taxIdNo,
+                              @RequestParam("postcode") String postcode,
+                              @RequestParam("province") String province,
+                              @RequestParam("city") String city,
+                              @RequestParam("district") String district,
+                              @RequestParam("address") String address,
+                              @RequestParam("contact") String contact,
+                              @RequestParam("contactPhone") String contactPhone,
+                              @RequestParam("phone") String phone,
+                              @RequestParam("shortname") String shortname,
+                              @RequestParam("salesman") String salesman,
+                              @RequestParam("salesmanPhone") String salesmanPhone) {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
         corporationIdNo = corporationIdNo.toUpperCase();
@@ -186,6 +188,8 @@ public class CooperatorController {
         cooperator.setAddress(address);
         cooperator.setContact(contact);
         cooperator.setContactPhone(contactPhone);
+        cooperator.setSalesman(salesman);
+        cooperator.setSalesmanPhone(salesmanPhone);
         cooperatorService.save(cooperator);
 
         coopAccount.setPhone(phone);
@@ -248,7 +252,9 @@ public class CooperatorController {
             @RequestParam("longitude") String longitude,
             @RequestParam("latitude") String latitude,
             @RequestParam("phone") String phone,
-            @RequestParam("shortname") String shortname) {
+            @RequestParam("shortname") String shortname,
+            @RequestParam("salesman") String salesman,
+            @RequestParam("salesmanPhone") String salesmanPhone) {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
 
@@ -300,6 +306,8 @@ public class CooperatorController {
             cooperator.setDistrict(district);
             cooperator.setLongitude(longitude);
             cooperator.setLatitude(latitude);
+            cooperator.setSalesman(salesman);
+            cooperator.setSalesmanPhone(salesmanPhone);
             cooperatorService.save(cooperator);
             msg.setData(cooperator);
 

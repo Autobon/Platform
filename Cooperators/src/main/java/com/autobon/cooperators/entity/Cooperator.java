@@ -59,6 +59,10 @@ public class Cooperator{
 
     @Column private int orderNum;//商户订单数
 
+    @Column private String salesman;
+
+    @Column private String salesmanPhone;
+
 
     public  Cooperator(){
         this.createTime=new Date();
@@ -238,5 +242,21 @@ public class Cooperator{
 
     public void setOrderNum(int orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public String getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(String salesman) {
+        this.salesman = salesman;
+    }
+
+    public String getSalesmanPhone() {
+        return salesmanPhone;
+    }
+
+    public void setSalesmanPhone(String salesmanPhone) {
+        this.salesmanPhone = salesmanPhone;
     }
 }
