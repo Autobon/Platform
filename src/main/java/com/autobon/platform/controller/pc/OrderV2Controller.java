@@ -361,7 +361,7 @@ public class OrderV2Controller {
 
     /**
      * 导出EXCEL
-     * @param techId 技师ID
+     * @param tech 技师电话或者名字
      * @param coopId 商户ID
      * @param startTime 订单开始时间
      * @param endTime 订单结束时间
@@ -371,11 +371,15 @@ public class OrderV2Controller {
      * @throws IOException
      */
     @RequestMapping(value="/excel/download", method = RequestMethod.GET)
-    public void download(@RequestParam(value = "techId", required = false) String techId,
-                         @RequestParam(value = "coopId", required = false) String coopId,
-                         @RequestParam(value = "startTime", required = false)Long  startTime,
-                         @RequestParam(value = "endTime", required = false)Long  endTime,
-                         @RequestParam(value = "status", required = false) Order.Status status,
+    public void download(   @RequestParam(value = "orderNum", required = false) String orderNum,
+                            @RequestParam(value = "orderCreator", required = false) String orderCreator,
+                            @RequestParam(value = "orderType", required = false) Integer orderType,
+                            @RequestParam(value = "orderStatus", required = false) Order.Status orderStatus,
+                            @RequestParam(value = "tech", required = false) String tech,
+                            @RequestParam(value = "coopId", required = false) String coopId,
+                            @RequestParam(value = "startTime", required = false)Long  startTime,
+                            @RequestParam(value = "endTime", required = false)Long  endTime,
+                            @RequestParam(value = "status", required = false) Order.Status status,
                          HttpServletRequest request,
                          HttpServletResponse response) throws IOException{
         String fileName="excel文件";
