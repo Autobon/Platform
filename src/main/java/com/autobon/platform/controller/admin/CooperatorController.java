@@ -253,8 +253,8 @@ public class CooperatorController {
             @RequestParam("latitude") String latitude,
             @RequestParam("phone") String phone,
             @RequestParam("shortname") String shortname,
-            @RequestParam("salesman") String salesman,
-            @RequestParam("salesmanPhone") String salesmanPhone) {
+            @RequestParam(value = "salesman",required = false) String salesman,
+            @RequestParam(value = "salesmanPhone",required = false) String salesmanPhone) {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
 
