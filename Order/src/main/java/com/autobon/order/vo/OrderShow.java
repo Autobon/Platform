@@ -79,6 +79,8 @@ public class OrderShow {
     private Integer orderCount;
     private Float evaluate;
     private BigInteger cancelCount;
+    private Integer productStatus;
+    private Integer reassignmentStatus;
 
 
 
@@ -121,6 +123,8 @@ public class OrderShow {
         this.longitude = (String) objects[24];
         this.latitude = (String) objects[25];
         this.remark = (String) objects[26];
+        this.productStatus = (Integer) objects[27];
+        this.reassignmentStatus = (Integer)objects[28];
 
 
 
@@ -164,6 +168,22 @@ public class OrderShow {
         this.techLatitude = (String)objects[33];
     }
 
+
+    public Integer getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(Integer productStatus) {
+        this.productStatus = productStatus;
+    }
+
+    public Integer getReassignmentStatus() {
+        return reassignmentStatus;
+    }
+
+    public void setReassignmentStatus(Integer reassignmentStatus) {
+        this.reassignmentStatus = reassignmentStatus;
+    }
 
     public Status getStatus() {
         return Status.getStatus(this.statusCode);
