@@ -14,6 +14,11 @@
                    placeholder="姓名或手机号">
         </div>
         <div class="form-group">
+            <label for="orderCreator">技师:</label>
+            <input type="text" class="form-control" id="tech" ng-model="filter.tech"
+                   placeholder="姓名或手机号">
+        </div>
+        <div class="form-group">
             <label for="orderType">订单类型:</label>
             <select class="form-control" id="orderType" ng-model="filter.orderType"
                     ng-options="key as value for (key, value) in Settings.orderTypes">
@@ -37,6 +42,7 @@
         <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
     <a ui-sref="console.order.new" class="pull-right btn-new">发布订单&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+    <a class="pull-right btn-new" style="cursor:pointer" ng-click="exportExcel();">导出Excel</a>
 </div>
 <br>
 <div class="clearfix">

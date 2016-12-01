@@ -71,4 +71,15 @@ export default class OrderCtrl extends Injector {
             }
         });
     }
+
+    exportExcel() {
+        const {$scope, Settings} = this.$injected;
+        window.location.href = Settings.domain + '/api/web/admin/order/excel/download?id=' + ($scope.filter.id === undefined ? '' : $scope.filter.id)
+                            + '&orderTime=' +  ($scope.filter.orderTime === undefined ? '' : $scope.filter.orderTime)
+                            + '&orderNum=' +  ($scope.filter.orderNum === undefined ? '' : $scope.filter.orderNum)
+                            + '&orderCreator=' +  ($scope.filter.orderCreator === undefined ? '' : $scope.filter.orderCreator)
+                            + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech)
+                            + '&orderType=' +  ($scope.filter.orderType === undefined ? '' : $scope.filter.orderType)
+                            + '&orderStatus=' +  ($scope.filter.orderStatus === undefined ? '' : $scope.filter.orderStatus);
+    }
 }
