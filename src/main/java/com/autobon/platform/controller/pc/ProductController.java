@@ -47,6 +47,13 @@ public class ProductController {
     public JsonResult saveProduct(@PathVariable("orderId") int orderId,
                                   @RequestParam(value = "productIds", required = true) String productIds){
 
+        Order order = orderService.get(orderId);
+        if(order == null){
+            return new JsonResult(false,"订单不存在");
+        }
+
+
+
         List<Integer> productId = new ArrayList<>();
         if(productIds!=null&&productIds.length()>0) {
             String[] pids = productIds.split(",");
@@ -71,6 +78,8 @@ public class ProductController {
             }
             orderProductService.deleteByOrderId(orderId);
             orderProductService.batchInsert(orderProducts);
+            order.setProductStatus(1);
+            orderService.save(order);
             return new JsonResult(true, "保存成功");
         }else{
             return new JsonResult(false, "没有提交产品");
