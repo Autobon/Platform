@@ -24,7 +24,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.car_cover_level as car_cover_level," +
             " t.color_modify_level as color_modify_level," +
             " t.beauty_level as beauty_level," +
-            " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) AS distance," +
+            " truncate((2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * abs((?1 - ls.lat)) / 360),2) + COS(PI() *  ?2 / 180) * abs(COS(ls.lat * PI()) / 180) * POW(SIN(PI() * abs(?2 - ls.lng) / 360),2)))) ,2) AS distance," +
             " ls.status as status ," +
             " 0 as orderCount," +
             " 0 as evaluate," +
@@ -37,6 +37,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " FROM" +
             " t_technician t " +
             " inner join t_location_status ls ON ls.tech_id = t.id " +
+            " where t.status = 2 " +
             " ORDER BY distance limit ?3,?4" ,nativeQuery = true)
     List<Object[]> getTech(String lat, String lng , int begin , int size);
 
@@ -67,7 +68,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " FROM" +
             " t_technician t " +
             " left join t_location_status ls ON ls.tech_id = t.id " +
-            " where t.name like ?3  or t.phone = ?3 " +
+            " where t.status = 2 and (t.name like ?3 or t.phone = ?3)  " +
             " ORDER BY distance limit ?4,?5" ,nativeQuery = true)
     List<Object[]> getTechByPhoneOrName(String lat, String lng, String name, int begin , int size);
 
@@ -113,7 +114,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.status as status1" +
             " from " +
             " t_location_status ls inner join t_technician t on t.id = ls.tech_id "+
-            " where truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) <?3"
+            " where t.status = 2 and truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) <?3"
             ,nativeQuery = true)
     List<Object[]> getLocationStatusByDistance(String lat, String lng, int kilometre);
 

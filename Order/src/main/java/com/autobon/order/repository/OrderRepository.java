@@ -143,7 +143,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.address as address ," +
             " ct.longitude as longitude ," +
             " ct.latitude as latitude ," +
-            " o.remark as remark " +
+            " o.remark as remark, " +
+            " o.product_status as productStatus," +
+            " o.reassignment_status as reassignmentStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
@@ -191,7 +193,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.address as address ," +
             " ct.longitude as longitude ," +
             " ct.latitude as latitude ," +
-            " o.remark as remark " +
+            " o.remark as remark, " +
+            " o.product_status as productStatus," +
+            " o.reassignment_status as reassignmentStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
@@ -242,7 +246,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.address as address ," +
             " ct.longitude as longitude ," +
             " ct.latitude as latitude ," +
-            " o.remark as remark " +
+            " o.remark as remark, " +
+            " o.product_status as productStatus," +
+            " o.reassignment_status as reassignmentStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
@@ -292,7 +298,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.address as address ," +
             " ct.longitude as longitude ," +
             " ct.latitude as latitude ," +
-            " o.remark as remark " +
+            " o.remark as remark, " +
+            " o.product_status as productStatus," +
+            " o.reassignment_status as reassignmentStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
@@ -462,7 +470,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " ct.address as address ," +
                 " ct.longitude as longitude ," +
                 " ct.latitude as latitude ," +
-                " o.remark as remark " +
+                " o.remark as remark, " +
+                " o.product_status as productStatus," +
+                " o.reassignment_status as reassignmentStatus" +
                 " FROM" +
                 " t_order o" +
                 " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +

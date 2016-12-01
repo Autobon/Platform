@@ -333,6 +333,10 @@ public class OrderV2Controller {
         if (order == null ) {
             return new JsonResult(false,  "没有这个订单");
         }
+        if(order.getStatusCode() == -10){
+            order.setStatusCode(Order.Status.TAKEN_UP.getStatusCode());
+        }
+
         order.setMainTechId(techId);
         order.setReassignmentStatus(2);
         orderService.save(order);
