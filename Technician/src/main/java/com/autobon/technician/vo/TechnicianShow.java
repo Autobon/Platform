@@ -14,6 +14,7 @@ public class TechnicianShow {
     private String bankAddress; // 开户行地址
     private String bankCardNo; // 银行卡号码
     private String reference; //推荐人号码（注册用户）
+    private String skill;
     private int filmLevel; //贴膜星级
     private int filmWorkingSeniority; //贴膜年限
     private int carCoverLevel;  //隐形车衣星级
@@ -24,6 +25,14 @@ public class TechnicianShow {
     private int beautyWorkingSeniority;//美容清洁年限
     private String resume; //个人简历
 
+
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
 
     public String getName() {
         return name;

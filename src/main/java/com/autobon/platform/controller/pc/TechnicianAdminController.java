@@ -95,8 +95,39 @@ public class TechnicianAdminController {
             technician.setBeautyLevel(beautyLevel == null ? technician.getBeautyLevel() : beautyLevel);
             technician.setBeautyWorkingSeniority(beautyWorkingSeniority == null ? technician.getBeautyWorkingSeniority() : beautyWorkingSeniority);
             technician.setResume(resume == null ? technician.getResume() : resume);
-            technician.setReference(reference == null? technician.getReference(): reference);
+            technician.setReference(reference == null ? technician.getReference() : reference);
             technician.setWorkStatus(workStatus == null ? technician.getWorkStatus(): workStatus);
+            String skill = "";
+            if(filmLevel!=null&& filmLevel!= 0){
+                skill+="1";
+            }
+
+            if(carCoverLevel!=null&& carCoverLevel!= 0){
+                if(skill.length() == 0) {
+                    skill += "2";
+                }else{
+                    skill +=",2";
+                }
+            }
+
+            if(colorModifyLevel!=null&& colorModifyLevel!= 0) {
+                if (skill.length() == 0) {
+                    skill += "3";
+                } else {
+                    skill += ",3";
+                }
+
+            }
+            if(beautyLevel!=null&& beautyLevel!= 0) {
+                if (skill.length() == 0) {
+                    skill += "4";
+                } else {
+                    skill += ",4";
+                }
+            }
+
+                technician.setSkill(skill);
+
             technician = technicianService.save(technician);
             return new JsonResult(true, technician);
         }

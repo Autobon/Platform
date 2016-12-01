@@ -95,7 +95,7 @@ public class TechnicianV2Controller {
             if (technician == null) {
                 return new JsonResult(false, "登陆超时");
             }
-            return new JsonResult(true, detailedTechnicianService.get(technician.getId()));
+            return new JsonResult(true, technicianService.get(technician.getId()));
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
         }
@@ -467,6 +467,7 @@ public class TechnicianV2Controller {
             technician.setIdNo(idNo);
             technician.setIdPhoto(technicianShow.getIdPhoto());
             technician.setBank(technicianShow.getBank());
+            technician.setSkill(technicianShow.getSkill());
             technician.setBankCardNo(technicianShow.getBankCardNo());
             technician.setReference(technicianShow.getReference());
             technician.setBankAddress(technicianShow.getBankAddress());
