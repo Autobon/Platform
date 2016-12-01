@@ -113,6 +113,15 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                         '2': '工作中',
                         '3': '休息中',
                     },
+                    productStatus: {
+                        '0': '未补录',
+                        '1': '已补录',
+                    },
+                    reassignmentStatus: {
+                        '0': '未申请改派',
+                        '1': '已申请改派',
+                        '2': '已处理',
+                    },
                 };
             }])
             .run(['$rootScope', '$state', function($rootScope, $state) {
