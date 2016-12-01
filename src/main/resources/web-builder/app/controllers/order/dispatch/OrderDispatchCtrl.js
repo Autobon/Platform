@@ -49,10 +49,8 @@ export default class OrderDispatchCtrl extends Injector {
                 }
             }
         });
-        $scope.itemTemplate = $sce.trustAsHtml(`<div class="{{data.myclass}}" style="text-align: center;">
-                                                    <img src="{{data.avatar}}" style="width: 50px; height: 50px; border: 1px solid rgba(0,0,0,.2); border-radius: 10px;"><br>
+        $scope.itemTemplate = $sce.trustAsHtml(`<div class="{{data.myclass}}" style="text-align: center;" onclick="">
                                                     <span>{{data.techName}}</span>
-                                                     <span class="operation-btn" onclick ="">派单</span>
                                                     <div class="arrow"></div>
                                                 </div>`);
         $scope.$on('map.marker.click', (e, evt) => {
