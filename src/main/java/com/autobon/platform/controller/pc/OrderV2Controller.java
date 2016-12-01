@@ -334,6 +334,7 @@ public class OrderV2Controller {
             return new JsonResult(false,  "没有这个订单");
         }
         order.setMainTechId(techId);
+        order.setReassignmentStatus(2);
         orderService.save(order);
         return  new JsonResult(true,  "指派成功");
     }
