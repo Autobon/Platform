@@ -44,3 +44,9 @@ $color-marker: #EE5D5B;
   @extend .mv-marker;
   background-color: darkgray;
 }
+
+.mv-marker-yellow{
+  @extend .mv-marker;
+  color: #BC3B3A;
+  background-color: yellow;
+}

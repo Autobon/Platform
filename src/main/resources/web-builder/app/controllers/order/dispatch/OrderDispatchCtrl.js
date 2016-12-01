@@ -31,6 +31,8 @@ export default class OrderDispatchCtrl extends Injector {
             if (res.data.status === true) {
                 $scope.mapTechnicians = res.data.message;
                 $scope.items = res.data.message.localStatuses;
+                $scope.items.push({techName: '商户', lng: $scope.mapTechnicians.coopLongitude,
+                    lat: $scope.mapTechnicians.coopLatitude, myclass: 'mv-marker-yellow', status: 0});  // 将商户加到技师的列表中，在地图中显示出来，状态默认为0
                 if ($scope.items.length > 0) {
                     for (let i = 0; i < $scope.items.length; i++) {
                         if ($scope.items[i].status === 1) {
@@ -73,6 +75,7 @@ export default class OrderDispatchCtrl extends Injector {
             return;
         }
         if (element.data('has-popover')) return;
+        if (scope.data.status === 0 ) return;  // 默认规定 状态为0的是商户，点击名称不触发派遣。
         $scope.dispatchTechnician(scope.data, 1);
     }
 
