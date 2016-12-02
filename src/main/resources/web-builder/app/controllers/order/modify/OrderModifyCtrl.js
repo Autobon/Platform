@@ -19,8 +19,9 @@ export default class OrderModifyCtrl extends Injector {
             {id:  'SEND_INVITATION', name: '邀请合作'},
             {id:  'INVITATION_ACCEPTED', name: '邀请已接受'},
             {id:  'INVITATION_REJECTED', name: '邀请已拒绝'},
-            {id:  'IN_PROGRESS', name: '施工中'},
+            {id:  'IN_PROGRESS', name: '技师出发'},
             {id:  'SIGNED_IN', name: '已签到'},
+            {id:  'AT_WORK', name: '工作中'},
             {id:  'FINISHED', name: '施工完成'},
             {id:  'COMMENTED', name: '已评论'},
             {id:  'GIVEN_UP', name: '已放弃'},
@@ -49,16 +50,19 @@ export default class OrderModifyCtrl extends Injector {
                         $scope.orderTypeList[3].state = true;
                     }
                 }
+                $scope.orderStatusAvailableList = [];
                 for (let i = 0; i < $scope.orderStatusList.length; i++) {
                     // 当前状态
                     if ($scope.orderStatusList[i].id === $scope.orderShow.status) {
-                        $scope.orderStatusList[i].flag = false;
+                        // $scope.orderStatusList[i].flag = false;
+                        $scope.orderStatusAvailableList.push($scope.orderStatusList[i]);
                     } else {
                         // 取消状态
                         if ($scope.orderStatusList[i].id === 'CANCELED') {
-                            $scope.orderStatusList[i].flag = false;
+                            // $scope.orderStatusList[i].flag = false;
+                            $scope.orderStatusAvailableList.push($scope.orderStatusList[i]);
                         } else {
-                            $scope.orderStatusList[i].flag = true;
+                            // $scope.orderStatusList[i].flag = true;
                         }
                     }
                 }

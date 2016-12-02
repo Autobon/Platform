@@ -80,7 +80,7 @@ public class ProductController {
             orderProductService.batchInsert(orderProducts);
             order.setProductStatus(1);
             orderService.save(order);
-            return new JsonResult(true, "保存成功");
+            return new JsonResult(true, order);
         }else{
             return new JsonResult(false, "没有提交产品");
         }

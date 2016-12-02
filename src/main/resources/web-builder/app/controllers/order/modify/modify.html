@@ -8,7 +8,7 @@
             <div class="form-group ml40">
                 <label>订单状态</label>
                 <select class="form-control" id="orderStatus" ng-model="orderShow.status"
-                        ng-options="status.id as status.name disable when status.flag for status in orderStatusList">
+                        ng-options="status.id as status.name for status in orderStatusAvailableList">
                 </select>
             </div>
             <div class="form-group mr10 ml40">

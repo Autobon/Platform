@@ -365,7 +365,7 @@ public class OrderV2Controller {
         order.setMainTechId(techId);
 
         orderService.save(order);
-        return  new JsonResult(true,  "指派成功");
+        return  new JsonResult(true,  order);
     }
 
 

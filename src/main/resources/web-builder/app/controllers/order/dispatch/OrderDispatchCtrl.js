@@ -119,6 +119,10 @@ export default class OrderDispatchCtrl extends Injector {
         }
         OrderService.dispatch({orderId: $scope.orderShow.id, techId: techId}).then(res => {
             if (res.data.status === true) {
+                let pCoop = $scope.$parent.orders.find(c => c.id === res.data.message.id);
+                if (pCoop) {
+                    angular.extend(pCoop, res.data.message);
+                }
                 $state.go('^');
             } else {
                 $scope.error = res.data.message;

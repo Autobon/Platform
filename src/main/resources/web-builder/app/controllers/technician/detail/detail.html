@@ -21,13 +21,13 @@
         <div class="col-sm-4"><b>身份证号: </b><span>{{technician.idNo}}</span></div>
     </div>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>注册时间: </b><span>{{technician.createAt }}</span></div>
-        <div class="col-sm-4"><b>最后登录时间: </b><span>{{technician.lastLoginAt }}</span></div>
+        <div class="col-sm-4"><b>注册时间: </b><span>{{technician.createAt | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>最后登录时间: </b><span>{{technician.lastLoginAt | date: 'YYYY-MM-DD HH:mm'}}</span></div>
         <div class="col-sm-4"><b>最后登录IP: </b><span>{{technician.lastLoginIp}}</span></div>
     </div>
     <div class="row detail-row">
-        <div class="col-sm-4"><b>申请认证: </b><span>{{technician.requestVerifyAt }}</span></div>
-        <div class="col-sm-4"><b>认证日期: </b><span>{{technician.verifyAt }}</span></div>
+        <div class="col-sm-4"><b>申请认证时间: </b><span>{{technician.requestVerifyAt | date: 'YYYY-MM-DD HH:mm'}}</span></div>
+        <div class="col-sm-4"><b>认证日期: </b><span>{{technician.verifyAt | date: 'YYYY-MM-DD HH:mm'}}</span></div>
     </div>
     <div class="row detail-row" ng-if="technician.status == 'REJECTED'">
         <div class="col-sm-12"><b>认证消息: </b><span>{{technician.verifyMsg}}</span></div>
