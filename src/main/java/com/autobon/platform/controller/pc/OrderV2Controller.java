@@ -56,6 +56,9 @@ public class OrderV2Controller {
     @Autowired
     TechnicianService technicianService;
 
+    @Autowired
+    ConstructionProjectService constructionProjectService;
+
 
     /**
      * 查询订单详情
@@ -165,6 +168,24 @@ public class OrderV2Controller {
             }
             return new JsonResult(true, orderService.getProject(orderId));
 
+        }catch (Exception e){
+            return new JsonResult(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 通过 施工项目查看对应的施工部位
+     * @param request
+     * @param projectId
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/project/{projectId}/position", method = RequestMethod.GET)
+    public JsonResult getPosition(HttpServletRequest request,
+                                 @PathVariable("projectId") int projectId) {
+
+        try{
+            return new JsonResult(true, constructionProjectService.findByProject(projectId));
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
         }

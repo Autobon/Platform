@@ -81,6 +81,8 @@ public class OrderShow {
     private BigInteger cancelCount;
     private Integer productStatus;
     private Integer reassignmentStatus;
+    private Float payment;
+    private BigInteger payStatus;
 
 
 
@@ -125,9 +127,8 @@ public class OrderShow {
         this.remark = (String) objects[26];
         this.productStatus = (Integer) objects[27];
         this.reassignmentStatus = (Integer)objects[28];
-
-
-
+        this.payment = (Float)objects[29];
+        this.payStatus = (BigInteger)objects[30];
 
     }
 
@@ -489,5 +490,21 @@ public class OrderShow {
 
     public void setTechAvatar(String techAvatar) {
         this.techAvatar = techAvatar;
+    }
+
+    public Float getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Float payment) {
+        this.payment = payment;
+    }
+
+    public BigInteger getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(BigInteger payStatus) {
+        this.payStatus = payStatus;
     }
 }

@@ -93,12 +93,15 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " o.position_lat as latitude ," +
             " o.remark as remark ," +
             " o.product_status as productStatus," +
-            " o.reassignment_status as reassignmentStatus" +
+            " o.reassignment_status as reassignmentStatus," +
+            " ifnull(wd.payment,0) as payment," +
+            " ifnull(wd.pay_status,0) as payStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
+            " LEFT JOIN t_work_detail wd ON wd.tech_id = tech.id" +
             " where o.id = ?1" ,nativeQuery = true)
        List<Object[]>  getByOrderId(int orderId);
 
@@ -145,12 +148,15 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.latitude as latitude ," +
             " o.remark as remark, " +
             " o.product_status as productStatus," +
-            " o.reassignment_status as reassignmentStatus" +
+            " o.reassignment_status as reassignmentStatus," +
+            " ifnull(wd.payment,0) as payment," +
+            " ifnull(wd.pay_status,0) as payStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
+            " LEFT JOIN t_work_detail wd ON wd.tech_id = tech.id" +
             " where o.main_tech_id = ?1 and o.status < 60 limit ?2,?3" ,nativeQuery = true)
     List<Object[]>  getUnfinishOrder(Integer techId, Integer begin ,Integer size);
 
@@ -195,12 +201,15 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.latitude as latitude ," +
             " o.remark as remark, " +
             " o.product_status as productStatus," +
-            " o.reassignment_status as reassignmentStatus" +
+            " o.reassignment_status as reassignmentStatus," +
+            " ifnull(wd.payment,0) as payment," +
+            " ifnull(wd.pay_status,0) as payStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
+            " LEFT JOIN t_work_detail wd ON wd.tech_id = tech.id" +
             " where o.main_tech_id = ?1 and o.status >= 60 limit ?2,?3" ,nativeQuery = true)
     List<Object[]>  getfinishOrder(Integer techId, Integer begin ,Integer size);
 
@@ -248,12 +257,15 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.latitude as latitude ," +
             " o.remark as remark, " +
             " o.product_status as productStatus," +
-            " o.reassignment_status as reassignmentStatus" +
+            " o.reassignment_status as reassignmentStatus," +
+            " ifnull(wd.payment,0) as payment," +
+            " ifnull(wd.pay_status,0) as payStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
+            " LEFT JOIN t_work_detail wd ON wd.tech_id = tech.id" +
             " where o.main_tech_id = ?1  limit ?2,?3" ,nativeQuery = true)
     List<Object[]>  getAllOrder(Integer techId, Integer begin ,Integer size);
 
@@ -300,7 +312,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " ct.latitude as latitude ," +
             " o.remark as remark, " +
             " o.product_status as productStatus," +
-            " o.reassignment_status as reassignmentStatus" +
+            " o.reassignment_status as reassignmentStatus," +
+            " ifnull(wd.payment,0) as payment," +
+            " ifnull(wd.pay_status,0) as payStatus" +
             " FROM" +
             " t_order o" +
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
