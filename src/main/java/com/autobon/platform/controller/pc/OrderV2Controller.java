@@ -355,14 +355,15 @@ public class OrderV2Controller {
             return new JsonResult(false,  "没有这个订单");
         }
 
-
+        order.setReassignmentStatus(2);
         if(order.getStatusCode() == -10){
             order.setStatusCode(Order.Status.TAKEN_UP.getStatusCode());
+            order.setReassignmentStatus(0);
             order.setTakenTime(new Date());
         }
 
         order.setMainTechId(techId);
-        order.setReassignmentStatus(2);
+
         orderService.save(order);
         return  new JsonResult(true,  "指派成功");
     }
