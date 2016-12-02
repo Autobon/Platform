@@ -136,7 +136,7 @@ public class TechnicianV2Controller {
             } else {
                 Technician technician = new Technician();
                 technician.setPhone(phone);
-                technician.setWorkStatus(1);
+                technician.setWorkStatus(3);
                 technician.setPassword(Technician.encryptPassword(password));
                 technicianService.save(technician);
                 publisher.publishEvent(new TechnicianEventListener.TechnicianEvent(technician, Event.Action.CREATED));
