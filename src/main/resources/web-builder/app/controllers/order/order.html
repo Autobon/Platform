@@ -104,7 +104,7 @@
             </div>
             <ul class="side-nav-list">
                 <li ng-repeat="order in orders" ui-sref-active="active">
-                    <a ui-sref="console.order.detail({orderNum: order.orderNum})">
+                    <a ui-sref="console.order.detail({id: order.id})">
                         <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b> {{order.orderNum}}
                         <span class="btn btn-default btn-xs" ng-repeat="s in order.type.split(',')">{{Settings.orderTypes[s]}}</span>
                         <span class="btn btn-xs btn-success">{{Settings.orderStatus[order.status]}}</span><br>
