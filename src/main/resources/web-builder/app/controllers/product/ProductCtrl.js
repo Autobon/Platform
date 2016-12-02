@@ -31,9 +31,9 @@ export default class ProductCtrl extends Injector {
         $scope.filter = {};
     }
 
-    delete() {
+    delete(product) {
         const {ProductService} = this.$injected;
-        ProductService.delete().then(res => {
+        ProductService.delete(product.id).then(res => {
             if (res.data.status === true) {
                 this.getProduces();
             }

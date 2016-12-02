@@ -132,6 +132,10 @@ export default class OrderModifyCtrl extends Injector {
                     }
                 }
             }
+            if (typeOrder === '') {
+                $scope.error = '请勾选施工项目';
+                return;
+            }
             $scope.orderShow.type = typeOrder;  // 订单施工项目
             $scope.orderShow.positionLon = $scope.orderShow.position.lng;
             $scope.orderShow.positionLat = $scope.orderShow.position.lat;
