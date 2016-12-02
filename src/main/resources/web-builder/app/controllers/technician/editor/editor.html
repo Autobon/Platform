@@ -1,7 +1,7 @@
 <div class="container-fluid m-l-40 m-r-40">
     <div class="page-header"><h3>编辑技师</h3></div>
     <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
-    <form class="form-inline form-border bb0">
+    <form class="form-inline form-border bb0" name="form">
         <div class="row-search-h40">
             <div class="form-group">
                 <label>技师姓名</label>
@@ -133,7 +133,7 @@
 
         </div>
         <div class="pull-right modify-btn">
-            <button class="mr50" type="submit" ng-disabled="form.$invalid" ng-click="save()">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+            <button class="mr50" type="submit" ng-click="save(form.$invalid)">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
         </div>
     </form>
 </div>

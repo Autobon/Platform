@@ -62,9 +62,11 @@
                     <td>{{product.scrapCost}}</td>
                     <td>{{product.warranty}}</td>
                     <td><a ui-sref="console.product.detail({id: product.id})" class="btn btn-xs btn-default">
-                        <i class="fa fa-list"></i>&nbsp;详情</a>
+                            <i class="fa fa-list"></i>&nbsp;详情</a>
                         <a ui-sref="console.product.edit({id: product.id})" class="btn btn-xs btn-default">
                             <i class="fa fa-list"></i>&nbsp;编辑</a>
+                        <a class="btn btn-xs btn-danger" ng-click="delete();">
+                            <i class="fa fa-list"></i>&nbsp;删除</a>
                     </td>
                 </tr>
                 </tbody>

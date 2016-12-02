@@ -72,7 +72,8 @@ export default class TechnicianEditorCtrl extends Injector {
         return data.result ? data.data : '';
     }
 
-    save() {
+    save(flag) {
+        if (flag) return;
         const {$scope, $state, TechnicianService} = this.$injected;
         TechnicianService.update($scope.technician).then(res => {
             if (res.data.status === true) {

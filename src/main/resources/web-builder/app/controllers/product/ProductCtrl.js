@@ -30,4 +30,13 @@ export default class ProductCtrl extends Injector {
         const {$scope} = this.$injected;
         $scope.filter = {};
     }
+
+    delete() {
+        const {ProductService} = this.$injected;
+        ProductService.delete().then(res => {
+            if (res.data.status === true) {
+                this.getProduces();
+            }
+        });
+    }
 }
