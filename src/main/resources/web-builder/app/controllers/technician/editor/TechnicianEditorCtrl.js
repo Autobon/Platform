@@ -80,7 +80,7 @@ export default class TechnicianEditorCtrl extends Injector {
                 if (pCoop) {
                     angular.extend(pCoop, res.data.message);
                 }
-                $state.go('^', {id: res.data.message.id});
+                $state.go('^.detail', {id: res.data.message.id});
             }
         });
     }
