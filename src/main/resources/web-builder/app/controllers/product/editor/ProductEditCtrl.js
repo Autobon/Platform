@@ -12,36 +12,28 @@ export default class CooperatorEditCtrl extends Injector {
 
         $scope.starLevelList = [{id:1, name: '1星'}, {id:2, name: '2星'}, {id:3, name: '3星'}, {id:4, name: '4星'}, {id:5, name: '5星'}];
         $scope.orderTypeList = [{id:1, name:'隔热膜'}, {id:2, name:'隐形车衣'}, {id:3, name:'车身改色'}, {id:4, name:'美容清洁'}];
-        $scope.positionList = [
-            {id:1, name: '前风挡'},
-            {id:2, name: '左前门'},
-            {id:3, name: '右前门'},
-            {id:4, name: '左后门+角'},
-            {id:5, name: '右后门+角'},
-            {id:6, name: '后风挡'},
-            {id:7, name: '前保险杠'},
-            {id:8, name: '引擎盖'},
-            {id:9, name: '左右前叶子板'},
-            {id:10, name: '四门'},
-            {id:11, name: '左右后叶子板'},
-            {id:12, name: '尾盖'},
-            {id:13, name: '后保险杠'},
-            {id:14, name: 'ABC柱套件'},
-            {id:15, name: '车顶'},
-            {id:16, name: '门拉手'},
-            {id:17, name: '反光镜'},
-            {id:18, name: '整车'},
-        ];
+        $scope.positionList = [];
         if ($stateParams.id) {
             ProductService.getDetail($stateParams.id).then(res => {
                 if (res.data.status === true) {
                     $scope.product = res.data.message;
+                    this.getPosition($scope.product.type);
                 }
             });
         } else {
             $scope.product = {};
         }
     }
+
+    getPosition(pid) {
+        const {$scope, ProductService} = this.$injected;
+        ProductService.getPositionByProject(pid).then(res => {
+            if (res.data.status === true) {
+                $scope.positionList = res.data.message;
+            }
+        });
+    }
+
 
     save() {
         const {$scope, $state, ProductService} = this.$injected;
