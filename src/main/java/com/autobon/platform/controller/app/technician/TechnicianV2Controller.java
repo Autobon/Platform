@@ -549,7 +549,7 @@ public class TechnicianV2Controller {
             return new JsonResult(false,  "没有这个订单");
         }
 
-    //    OrderShow orderShow = orderService.getByOrderId(orderId);
+        //    OrderShow orderShow = orderService.getByOrderId(orderId);
         OrderView orderView = orderViewService.findById(orderId);
         Technician technician = (Technician) request.getAttribute("user");
         if(technician == null){
@@ -715,7 +715,7 @@ public class TechnicianV2Controller {
 
             if(order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ){
 
-             //   reassignmentService.create(orderId, tech.getId());
+                //   reassignmentService.create(orderId, tech.getId());
                 order.setReassignmentStatus(1);
                 return new JsonResult(true,   "订单进入工作状态，已发送申请改派");
             }
@@ -745,25 +745,25 @@ public class TechnicianV2Controller {
                             HttpServletRequest request)throws Exception{
 
         try{
-        Technician tech = (Technician) request.getAttribute("user");
-        if(tech == null){
-            return new JsonResult(false, "登陆过期");
-        }
-        Order order = orderService.get(orderId);
-        if (order == null || (tech.getId() != order.getMainTechId())) {
-            return new JsonResult(false, "你没有这个订单");
-        }
-        if (order.getStatus() == Order.Status.CANCELED) {
-            return new JsonResult(false,  "订单已取消");
-        }
-        if (order.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
-            return new JsonResult(false, "订单已结束");
-        }
+            Technician tech = (Technician) request.getAttribute("user");
+            if(tech == null){
+                return new JsonResult(false, "登陆过期");
+            }
+            Order order = orderService.get(orderId);
+            if (order == null || (tech.getId() != order.getMainTechId())) {
+                return new JsonResult(false, "你没有这个订单");
+            }
+            if (order.getStatus() == Order.Status.CANCELED) {
+                return new JsonResult(false,  "订单已取消");
+            }
+            if (order.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
+                return new JsonResult(false, "订单已结束");
+            }
 
-        order.setStatus(Order.Status.IN_PROGRESS); // 订单状态进入IN_PROGRESS状态; 订单所有技师完成工作时,订单结束
-        orderService.save(order);
-        OrderShow orderShow = orderService.getByOrderId(orderId);
-        return new JsonResult(true, orderShow);
+            order.setStatus(Order.Status.IN_PROGRESS); // 订单状态进入IN_PROGRESS状态; 订单所有技师完成工作时,订单结束
+            orderService.save(order);
+            OrderShow orderShow = orderService.getByOrderId(orderId);
+            return new JsonResult(true, orderShow);
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
         }
@@ -785,35 +785,35 @@ public class TechnicianV2Controller {
                            HttpServletRequest request)throws Exception {
 
         try{
-        Technician tech = (Technician) request.getAttribute("user");
-        if(tech == null){
-            return new JsonResult(false, "登陆过期");
-        }
-        Order order = orderService.get(orderId);
+            Technician tech = (Technician) request.getAttribute("user");
+            if(tech == null){
+                return new JsonResult(false, "登陆过期");
+            }
+            Order order = orderService.get(orderId);
 
-        if (order == null || order.getMainTechId() !=tech.getId() ) {
-            return new JsonResult(false,  "没有这个订单");
-        }
-        if (order.getStatus() == Order.Status.CANCELED) {
-            return new JsonResult(false, "订单已取消");
-        }
-        if (order.getStatus() != Order.Status.IN_PROGRESS) {
-            return new JsonResult(false, "订单还未开始或已结束");
-        }
-        if (order.getSignTime() != null) {
-            return new JsonResult(false, "你已签到, 请不要重复操作");
-        }
-        if (order.getStatusCode() >= Order.Status.SIGNED_IN.getStatusCode()) {
-            return new JsonResult(false, "你已签到, 请不要重复操作");
-        }
-        order.setStatus(Order.Status.SIGNED_IN);
-        order.setSignTime(new Date());
-        orderService.save(order);
-        return new JsonResult(true,"签到成功");
+            if (order == null || order.getMainTechId() !=tech.getId() ) {
+                return new JsonResult(false,  "没有这个订单");
+            }
+            if (order.getStatus() == Order.Status.CANCELED) {
+                return new JsonResult(false, "订单已取消");
+            }
+            if (order.getStatus() != Order.Status.IN_PROGRESS) {
+                return new JsonResult(false, "订单还未开始或已结束");
+            }
+            if (order.getSignTime() != null) {
+                return new JsonResult(false, "你已签到, 请不要重复操作");
+            }
+            if (order.getStatusCode() >= Order.Status.SIGNED_IN.getStatusCode()) {
+                return new JsonResult(false, "你已签到, 请不要重复操作");
+            }
+            order.setStatus(Order.Status.SIGNED_IN);
+            order.setSignTime(new Date());
+            orderService.save(order);
+            return new JsonResult(true,"签到成功");
 
-    }catch (Exception e){
-        return new JsonResult(false, e.getMessage());
-    }
+        }catch (Exception e){
+            return new JsonResult(false, e.getMessage());
+        }
 
     }
 
@@ -873,18 +873,18 @@ public class TechnicianV2Controller {
 
         try{
 
-        if (file.isEmpty()) {
-            return new JsonResult(false, "没有上传文件");
-        }
-        String path = "/uploads/order";
-        File dir = new File(new File(uploadPath).getCanonicalPath() + path);
-        if (!dir.exists()) dir.mkdirs();
-        String originalFilename = file.getOriginalFilename();
-        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
-        String filename = "c-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"))
-                + "-" + VerifyCode.generateVerifyCode(8) + extension;
-        file.transferTo(new File(dir.getAbsoluteFile() + File.separator + filename));
-        return new JsonResult(true,  path + "/" + filename);
+            if (file.isEmpty()) {
+                return new JsonResult(false, "没有上传文件");
+            }
+            String path = "/uploads/order";
+            File dir = new File(new File(uploadPath).getCanonicalPath() + path);
+            if (!dir.exists()) dir.mkdirs();
+            String originalFilename = file.getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
+            String filename = "c-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"))
+                    + "-" + VerifyCode.generateVerifyCode(8) + extension;
+            file.transferTo(new File(dir.getAbsoluteFile() + File.separator + filename));
+            return new JsonResult(true,  path + "/" + filename);
 
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
@@ -904,16 +904,16 @@ public class TechnicianV2Controller {
                                  @PathVariable("orderId") int orderId) {
 
         try{
-        Technician tech = (Technician) request.getAttribute("user");
-        if(tech == null){
-            return new JsonResult(false, "登陆过期");
-        }
-        Order order = orderService.get(orderId);
+            Technician tech = (Technician) request.getAttribute("user");
+            if(tech == null){
+                return new JsonResult(false, "登陆过期");
+            }
+            Order order = orderService.get(orderId);
 
-        if (order == null || order.getMainTechId() !=tech.getId() ) {
-            return new JsonResult(false,  "没有这个订单");
-        }
-        return new JsonResult(true, orderService.getProject(orderId));
+            if (order == null || order.getMainTechId() !=tech.getId() ) {
+                return new JsonResult(false,  "没有这个订单");
+            }
+            return new JsonResult(true, orderService.getProject(orderId));
 
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
@@ -953,37 +953,37 @@ public class TechnicianV2Controller {
         try {
 
 
-        Technician tech = (Technician) request.getAttribute("user");
-        if(tech == null){
-            return new JsonResult(false, "登陆过期");
-        }
-        Order order = orderService.get(orderId);
+            Technician tech = (Technician) request.getAttribute("user");
+            if(tech == null){
+                return new JsonResult(false, "登陆过期");
+            }
+            Order order = orderService.get(orderId);
 
-        if (order == null || order.getMainTechId() !=tech.getId() ) {
-            return new JsonResult(false,  "没有这个订单");
-        }
-        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+)*$", urls)) {
-            return new JsonResult(false,  "图片地址格式错误, 请查阅urls参数说明");
-        }
-        if (urls.split(",").length > 9) {
-            return new JsonResult(false,  "图片数量超出限制, 最多9张");
-        }
+            if (order == null || order.getMainTechId() !=tech.getId() ) {
+                return new JsonResult(false,  "没有这个订单");
+            }
+            if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+)*$", urls)) {
+                return new JsonResult(false,  "图片地址格式错误, 请查阅urls参数说明");
+            }
+            if (urls.split(",").length > 9) {
+                return new JsonResult(false,  "图片数量超出限制, 最多9张");
+            }
 
-        if (order.getStatusCode() != Order.Status.SIGNED_IN.getStatusCode()) {
-            return new JsonResult(false, "签到以后才能施工");
-        }
+            if (order.getStatusCode() != Order.Status.SIGNED_IN.getStatusCode()) {
+                return new JsonResult(false, "签到以后才能施工");
+            }
 
-        if (order.getSignTime() == null) {
-            return new JsonResult(false, "签到前不可上传照片");
-        }
-        if (order.getEndTime() != null) {
-            return new JsonResult(false, "你已完成施工,不可再次上传照片");
-        }
-        order.setStatus(Order.Status.AT_WORK); // 进入工作状态
-        order.setStartTime(new Date());
-        order.setBeforePhotos(urls);
-        orderService.save(order);
-        return new JsonResult(true,"上传施工前照片成功");
+            if (order.getSignTime() == null) {
+                return new JsonResult(false, "签到前不可上传照片");
+            }
+            if (order.getEndTime() != null) {
+                return new JsonResult(false, "你已完成施工,不可再次上传照片");
+            }
+            order.setStatus(Order.Status.AT_WORK); // 进入工作状态
+            order.setStartTime(new Date());
+            order.setBeforePhotos(urls);
+            orderService.save(order);
+            return new JsonResult(true,"上传施工前照片成功");
 
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
@@ -1003,40 +1003,41 @@ public class TechnicianV2Controller {
                              HttpServletRequest request)  {
         try{
 
-        if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+){2,8}$", constructionShow.getAfterPhotos())) {
-            return new JsonResult(false, "afterPhotos参数格式错误, 施工完成后照片应至少3张, 至多9张");
-        }
+            if (!Pattern.matches("^([^,\\s]+)(,[^,\\s]+){2,8}$", constructionShow.getAfterPhotos())) {
+                return new JsonResult(false, "afterPhotos参数格式错误, 施工完成后照片应至少3张, 至多9张");
+            }
 
-        Technician tech = (Technician) request.getAttribute("user");
-        if(tech == null){
-            return new JsonResult(false, "登陆过期");
-        }
-        Order order = orderService.get(constructionShow.getOrderId());
-        if (order == null || order.getMainTechId() !=tech.getId()) {
-            return new JsonResult(false, "没有这个订单");
-        }
-        if (order.getStatus() != Order.Status.AT_WORK) {
-            return new JsonResult(false,  "订单不在工作中，无法完成订单");
-        }
-        if (order.getStatus() == Order.Status.FINISHED) {
-            return new JsonResult(false,  "订单已经提交，不能再次提交");
-        }
-        if (order.getBeforePhotos() == null || "".equals(order.getBeforePhotos())) {
-            return new JsonResult(false,  "没有上传施工前照片");
-        }
-
-
-        order.setStatus(Order.Status.FINISHED);
-        order.setFinishTime(new Date());
-        order.setAfterPhotos(constructionShow.getAfterPhotos());
-        orderService.save(order, constructionShow);
-
-        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
+            Technician tech = (Technician) request.getAttribute("user");
+            if(tech == null){
+                return new JsonResult(false, "登陆过期");
+            }
+            Order order = orderService.get(constructionShow.getOrderId());
+            if (order == null || order.getMainTechId() !=tech.getId()) {
+                return new JsonResult(false, "没有这个订单");
+            }
+            if (order.getStatus() != Order.Status.AT_WORK) {
+                return new JsonResult(false,  "订单不在工作中，无法完成订单");
+            }
+            if (order.getStatus() == Order.Status.FINISHED) {
+                return new JsonResult(false,  "订单已经提交，不能再次提交");
+            }
+            if (order.getBeforePhotos() == null || "".equals(order.getBeforePhotos())) {
+                return new JsonResult(false,  "没有上传施工前照片");
+            }
 
 
-        //合作技师施工部位推送
+            order.setStatus(Order.Status.FINISHED);
+            order.setFinishTime(new Date());
+            order.setEndTime(new Date());
+            order.setAfterPhotos(constructionShow.getAfterPhotos());
+            orderService.save(order, constructionShow);
 
-        return new JsonResult(true, "施工完成");
+            publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
+
+
+            //合作技师施工部位推送
+
+            return new JsonResult(true, "施工完成");
 
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
@@ -1157,9 +1158,9 @@ public class TechnicianV2Controller {
      */
     @RequestMapping(value = "/v2/changeBankCard", method = RequestMethod.PUT)
     public JsonResult changeBankCard(HttpServletRequest request,
-                                      @RequestParam("bank") String bank,
-                                      @RequestParam("bankAddress") String bankAddress,
-                                      @RequestParam("bankCardNo") String bankCardNo) {
+                                     @RequestParam("bank") String bank,
+                                     @RequestParam("bankAddress") String bankAddress,
+                                     @RequestParam("bankCardNo") String bankCardNo) {
         Technician technician = (Technician) request.getAttribute("user");
         technician.setBank(bank);
         technician.setBankAddress(bankAddress);
