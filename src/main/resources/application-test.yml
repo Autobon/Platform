@@ -3,3 +3,7 @@ spring:
         url: jdbc:mysql://121.40.157.200:3306/autobondb_test?characterEncoding=utf8&useSSL=false
         user: test
         password: test
+    redis:
+        host: 120.55.98.235
+        port: 6379
+        password: 193ete0AD2936ac06c09&5307fab776Zcd0fatkf0c4ef

@@ -1,6 +1,7 @@
 package com.autobon.order.vo;
 
 
+import com.autobon.order.entity.Comment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigInteger;
@@ -94,6 +95,7 @@ public class OrderShow {
     private  List<ConstructionWasteShow> constructionWasteShows;
 
 
+    private Comment comment;
 
     public OrderShow() {}
 
@@ -506,5 +508,13 @@ public class OrderShow {
 
     public void setPayStatus(BigInteger payStatus) {
         this.payStatus = payStatus;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
 }

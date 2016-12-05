@@ -77,6 +77,8 @@ public class TechnicianV2Controller {
     DetailedOrderService detailedOrderService;
     @Autowired
     ReassignmentService reassignmentService;
+    @Autowired
+    CommentService commentService;
 
 
     @Value("${com.autobon.gm-path}") String gmPath;
@@ -538,16 +540,20 @@ public class TechnicianV2Controller {
     public JsonResult getOrder(@PathVariable("orderId") int orderId,
                                HttpServletRequest request) {
 
-        OrderShow orderShow = orderService.getByOrderId(orderId);
-        Technician technician = (Technician) request.getAttribute("user");
-        if(technician == null){
-            return new JsonResult(false, "登陆过期");
-        }
         Order order = orderService.get(orderId);
 
         if (order == null) {
             return new JsonResult(false,  "没有这个订单");
         }
+
+        OrderShow orderShow = orderService.getByOrderId(orderId);
+        Technician technician = (Technician) request.getAttribute("user");
+        if(technician == null){
+            return new JsonResult(false, "登陆过期");
+        }
+
+        orderShow.setComment(commentService.getByOrderIdAndTechId(orderId, order.getMainTechId()));
+
 
         if(order.getStatusCode()!= Order.Status.CREATED_TO_APPOINT.getStatusCode()){
             if(order.getMainTechId() != technician.getId()){
