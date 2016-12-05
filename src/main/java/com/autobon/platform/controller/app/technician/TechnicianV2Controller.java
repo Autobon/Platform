@@ -1,6 +1,7 @@
 package com.autobon.platform.controller.app.technician;
 
 import com.autobon.order.entity.Order;
+import com.autobon.order.entity.OrderView;
 import com.autobon.order.service.*;
 import com.autobon.order.vo.*;
 import com.autobon.platform.listener.Event;
@@ -79,6 +80,8 @@ public class TechnicianV2Controller {
     ReassignmentService reassignmentService;
     @Autowired
     CommentService commentService;
+    @Autowired
+    OrderViewService orderViewService;
 
 
     @Value("${com.autobon.gm-path}") String gmPath;
@@ -546,13 +549,14 @@ public class TechnicianV2Controller {
             return new JsonResult(false,  "没有这个订单");
         }
 
-        OrderShow orderShow = orderService.getByOrderId(orderId);
+    //    OrderShow orderShow = orderService.getByOrderId(orderId);
+        OrderView orderView = orderViewService.findById(orderId);
         Technician technician = (Technician) request.getAttribute("user");
         if(technician == null){
             return new JsonResult(false, "登陆过期");
         }
 
-        orderShow.setComment(commentService.getByOrderIdAndTechId(orderId, order.getMainTechId()));
+        orderView.setComment(commentService.getByOrderIdAndTechId(orderId, order.getMainTechId()));
 
 
         if(order.getStatusCode()!= Order.Status.CREATED_TO_APPOINT.getStatusCode()){
@@ -644,7 +648,7 @@ public class TechnicianV2Controller {
             orderConstructionShow.setProjectPosition(projectPositionShows);
             constructionShowList.add(orderConstructionShow);
         }
-        String type = orderShow.getType();
+        String type = orderView.getType();
         if(type!=null&& type.length()>0) {
             String[] projectArr = type.split(",");
             String projectStr = "";
@@ -655,11 +659,11 @@ public class TechnicianV2Controller {
                     projectStr += projectMap.get(Integer.valueOf(projectId));
                 }
             }
-            orderShow.setType(projectStr);
+            orderView.setType(projectStr);
         }
 
-        orderShow.setOrderConstructionShow(constructionShowList);
-        return new JsonResult(true, orderShow);
+        orderView.setOrderConstructionShow(constructionShowList);
+        return new JsonResult(true, orderView);
     }
 
 
@@ -682,8 +686,8 @@ public class TechnicianV2Controller {
             if(technician == null){
                 return new JsonResult(false, "登陆过期");
             }
-            Page<OrderShow> orders;
-            orders = orderService.getOrders(technician.getId(), status, page, pageSize);
+            Page<OrderView> orders;
+            orders = orderViewService.find(technician.getId(), status, page, pageSize);
             return new JsonResult(true, orders);
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
@@ -1176,7 +1180,7 @@ public class TechnicianV2Controller {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
 
-        return new JsonResult(true, new JsonPage<>(orderService.getNewCreateOrder(page, pageSize)));
+        return new JsonResult(true, new JsonPage<>(orderViewService.findByStatusCode(0, page, pageSize)));
     }
 
 }
