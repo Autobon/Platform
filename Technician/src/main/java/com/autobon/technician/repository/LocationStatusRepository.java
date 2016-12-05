@@ -68,14 +68,14 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " FROM" +
             " t_technician t " +
             " left join t_location_status ls ON ls.tech_id = t.id " +
-            " where t.status = 2 and (t.name like ?3 or t.phone = ?3)  " +
+            " where t.status = 2 and (t.name like ?3 or t.phone like ?3)  " +
             " ORDER BY distance limit ?4,?5" ,nativeQuery = true)
     List<Object[]> getTechByPhoneOrName(String lat, String lng, String name, int begin , int size);
 
 
     @Query(value = "SELECT  count(*)   FROM t_technician t " +
             " left join t_location_status ls ON ls.tech_id = t.id " +
-            " where t.name like ?1 or t.phone = ?1",nativeQuery = true)
+            " where t.name like ?1 or t.phone like ?1",nativeQuery = true)
     int getTechByPhoneOrName(String name);
 
 
