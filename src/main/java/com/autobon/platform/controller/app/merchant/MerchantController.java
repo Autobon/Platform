@@ -8,10 +8,8 @@ import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
-import com.autobon.order.service.CommentService;
-import com.autobon.order.service.ConstructionProjectService;
-import com.autobon.order.service.OrderService;
-import com.autobon.order.service.WorkDetailService;
+import com.autobon.order.entity.OrderView;
+import com.autobon.order.service.*;
 import com.autobon.order.vo.OrderConstructionShow;
 import com.autobon.order.vo.OrderShow;
 import com.autobon.order.vo.ProjectPositionShow;
@@ -79,6 +77,9 @@ public class MerchantController {
     @Autowired
     TechStatService techStatService;
     @Value("${com.autobon.uploadPath}") String uploadPath;
+
+    @Autowired
+    OrderViewService orderViewService;
 
 
     /**
@@ -458,7 +459,7 @@ public class MerchantController {
     public JsonResult getOrder(@PathVariable("orderId") int orderId,
                                HttpServletRequest request) {
 
-        OrderShow orderShow = orderService.getByOrderId(orderId);
+
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         if(coopAccount == null){
             return new JsonResult(false, "登陆过期");
@@ -468,6 +469,7 @@ public class MerchantController {
         if (order == null||order.getCoopId()!= coopAccount.getCooperatorId()) {
             return new JsonResult(false,  "没有这个订单");
         }
+        OrderView orderShow = orderViewService.findById(orderId);
 
         LocationStatus locationStatus =locationStatusService.findByTechId(orderShow.getTechId());
         if(locationStatus != null){
@@ -716,8 +718,8 @@ public class MerchantController {
         CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
         int coopId = coopAccount.getCooperatorId();
 
-        Page<OrderShow> orders;
-        orders = orderService.getCoopOrders(coopId, status, page, pageSize);
+        Page<OrderView> orders;
+        orders = orderViewService.findCoopOrder(coopId, status, page, pageSize);
         return new JsonResult(true,orders);
 
     }
