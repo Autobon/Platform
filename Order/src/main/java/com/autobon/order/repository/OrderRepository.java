@@ -156,8 +156,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
-            " LEFT JOIN t_work_detail wd ON wd.tech_id = tech.id" +
-            " where o.main_tech_id = ?1 and o.status < 60 limit ?2,?3" ,nativeQuery = true)
+            " LEFT JOIN t_work_detail wd ON wd.order_id = o.id " +
+            " where o.main_tech_id = ?1 and o.status < 60  GROUP BY o.id  limit ?2,?3" ,nativeQuery = true)
     List<Object[]>  getUnfinishOrder(Integer techId, Integer begin ,Integer size);
 
 
@@ -165,9 +165,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " count(*) " +
             " FROM" +
             " t_order o" +
-            " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
-            " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
-            " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
             " where o.main_tech_id = ?1 and o.status < 60" ,nativeQuery = true)
     int getUnfinishOrderCount(Integer techId);
 
@@ -209,8 +206,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
-            " LEFT JOIN t_work_detail wd ON wd.tech_id = tech.id" +
-            " where o.main_tech_id = ?1 and o.status >= 60 limit ?2,?3" ,nativeQuery = true)
+            " LEFT JOIN t_work_detail wd ON wd.order_id = o.id " +
+            " where o.main_tech_id = ?1 and o.status >56 and o.status<200 GROUP BY o.id limit ?2,?3" ,nativeQuery = true)
     List<Object[]>  getfinishOrder(Integer techId, Integer begin ,Integer size);
 
 
@@ -218,10 +215,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " count(*) " +
             " FROM" +
             " t_order o" +
-            " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
-            " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
-            " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
-            " where o.main_tech_id = ?1 and o.status >= 60" ,nativeQuery = true)
+            " where o.main_tech_id = ?1 and o.status >56 and o.status<200" ,nativeQuery = true)
     int getfinishOrderCount(Integer techId);
 
 
@@ -265,8 +259,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
-            " LEFT JOIN t_work_detail wd ON wd.tech_id = tech.id" +
-            " where o.main_tech_id = ?1  limit ?2,?3" ,nativeQuery = true)
+            " LEFT JOIN t_work_detail wd ON wd.order_id = o.id " +
+            " where o.main_tech_id = ?1  GROUP BY o.id  limit ?2,?3" ,nativeQuery = true)
     List<Object[]>  getAllOrder(Integer techId, Integer begin ,Integer size);
 
 
@@ -274,9 +268,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " count(*) " +
             " FROM" +
             " t_order o" +
-            " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
-            " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
-            " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
             " where o.main_tech_id = ?1 " ,nativeQuery = true)
     int getAllOrderCount(Integer techId);
 
@@ -321,7 +312,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
             " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
             " LEFT JOIN t_work_detail wd on wd.order_id = o.id" +
-            " where o.main_tech_id != ?1 and wd.tech_id = ?1 limit ?2,?3" ,nativeQuery = true)
+            " where o.main_tech_id != ?1 and wd.tech_id = ?1 GROUP BY o.id limit ?2,?3" ,nativeQuery = true)
     List<Object[]>  getCooperationOrder(Integer techId, Integer begin ,Integer size);
 
 
@@ -329,9 +320,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             " count(*) " +
             " FROM" +
             " t_order o" +
-            " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
-            " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
-            " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
             " LEFT JOIN t_work_detail wd on wd.order_id = o.id" +
             " where o.main_tech_id != ?1 and wd.tech_id = ?1" ,nativeQuery = true)
     int getCooperationOrderCount(Integer techId);
@@ -492,7 +480,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
                 " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
                 " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
-                " where o.status = 0 limit ?1,?2" ,nativeQuery = true)
+                " where o.status = 0 group by o.id limit ?1,?2" ,nativeQuery = true)
         List<Object[]>  getNewCreateOrder(Integer begin ,Integer size);
 
 
@@ -500,9 +488,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " count(*) " +
                 " FROM" +
                 " t_order o" +
-                " LEFT JOIN t_technician tech ON tech.id = o.main_tech_id " +
-                " LEFT JOIN t_coop_account ca ON ca.id = o.creator_id " +
-                " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
                 " where o.status = 0" ,nativeQuery = true)
         int getNewCreateCount();
 

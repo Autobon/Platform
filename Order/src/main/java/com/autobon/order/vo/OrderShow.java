@@ -82,7 +82,7 @@ public class OrderShow {
     private BigInteger cancelCount;
     private Integer productStatus;
     private Integer reassignmentStatus;
-    private Float payment;
+    private Double  payment;
     private BigInteger payStatus;
 
 
@@ -129,8 +129,42 @@ public class OrderShow {
         this.remark = (String) objects[26];
         this.productStatus = (Integer) objects[27];
         this.reassignmentStatus = (Integer)objects[28];
-        this.payment = (Float)objects[29];
+        this.payment = (Double)objects[29];
         this.payStatus = (BigInteger)objects[30];
+
+    }
+
+    public OrderShow(Object[] objects, int i ,int j) {
+        this.id = Integer.valueOf(objects[0].toString());
+        this.orderNum = (String)objects[1];
+        this.photo = (String)objects[2];
+        this.AgreedStartTime = (Date)objects[3];
+        this.AgreedEndTime = (Date)objects[4];
+        this.statusCode = Integer.valueOf(objects[5].toString());
+        this.creatorType =  Integer.valueOf(objects[6].toString());
+        this.techId = Integer.valueOf(objects[7].toString());
+        this.techName = (String)objects[8];
+        this.techPhone = (String)objects[9];
+        this.beforePhotos = (String)objects[10];
+        this.afterPhotos = (String)objects[11];
+        this.startTime = (Date)objects[12];
+        this.endTime = (Date)objects[13];
+        this.signTime = (Date)objects[14];
+        this.takenTime = (Date)objects[15];
+        this.createTime = (Date)objects[16];
+        this.type = (String)objects[17];
+        this.coopId = (Integer)objects[18];
+        this.coopName = (String)objects[19];
+        this.creatorId = (Integer)objects[20];
+        this.creatorName = (String)objects[21];
+        this.contactPhone = (String)objects[22];
+        this.address = (String) objects[23];
+        this.longitude = (String) objects[24];
+        this.latitude = (String) objects[25];
+        this.remark = (String) objects[26];
+        this.productStatus = (Integer) objects[27];
+        this.reassignmentStatus = (Integer)objects[28];
+
 
     }
 
@@ -494,11 +528,11 @@ public class OrderShow {
         this.techAvatar = techAvatar;
     }
 
-    public Float getPayment() {
+    public Double  getPayment() {
         return payment;
     }
 
-    public void setPayment(Float payment) {
+    public void setPayment(Double  payment) {
         this.payment = payment;
     }
 

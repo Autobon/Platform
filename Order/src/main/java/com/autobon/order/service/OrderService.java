@@ -328,7 +328,7 @@ public class OrderService {
 
         List<OrderShow> orderShows =  new ArrayList<>();
         for(Object[] objects: orderList){
-            OrderShow orderShow = new OrderShow(objects);
+            OrderShow orderShow = new OrderShow(objects,1,1);
             orderShows.add(orderShow);
         }
         return new PageImpl<>(orderShows,p,count);

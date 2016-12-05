@@ -645,7 +645,7 @@ public class MerchantController {
         }
 
 
-        if (order.getStatusCode() < Order.Status.SIGNED_IN.getStatusCode()) {
+        if (order.getStatusCode() < Order.Status.IN_PROGRESS.getStatusCode()) {
             order.setStatus(Order.Status.CANCELED);
             orderService.save(order);
             publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CANCELED));
