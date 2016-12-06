@@ -75,7 +75,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
 
     @Query(value = "SELECT  count(*)   FROM t_technician t " +
             " left join t_location_status ls ON ls.tech_id = t.id " +
-            " where t.name like ?1 or t.phone like ?1",nativeQuery = true)
+            " where t.status = 2 and  (t.name like ?1 or t.phone like ?1)",nativeQuery = true)
     int getTechByPhoneOrName(String name);
 
 

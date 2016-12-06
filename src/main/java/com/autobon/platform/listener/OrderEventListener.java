@@ -140,6 +140,8 @@ public class OrderEventListener {
         detailedOrder.setRemark("");
         detailedOrder.setPhoto("");
         order.setPhoto("");
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
         map.put("order", order);
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
@@ -156,7 +158,8 @@ public class OrderEventListener {
         techStatService.save(stat);
 
         order.setPhoto("");
-
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
 
         // 向商户推送订单已有人接单消息
         CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
@@ -180,7 +183,8 @@ public class OrderEventListener {
         techStatService.save(stat);
 
         order.setPhoto("");
-
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
         // 推送派单消息
         String msgTitle = "你收到派单消息";
         HashMap<String, Object> map = new HashMap<>();
@@ -196,7 +200,8 @@ public class OrderEventListener {
             Technician mainTech = technicianService.get(order.getMainTechId());
 
             order.setPhoto("");
-
+            order.setBeforePhotos("");
+            order.setAfterPhotos("");
             // 推送撤单消息
             String msgTitle = "你有订单已被商户撤销";
             HashMap<String, Object> map = new HashMap<>();
@@ -219,7 +224,8 @@ public class OrderEventListener {
     private void onOrderGivenUp(Order order) throws IOException {
         CoopAccount account = coopAccountService.getById(order.getCreatorId());
         order.setPhoto("");
-
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
         String msgTitle = "你有订单已被技师放弃";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "ORDER_GIVEN_UP");
@@ -245,7 +251,8 @@ public class OrderEventListener {
                 24*3600, this::increase);
 
         order.setPhoto("");
-
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
         // 向商户推送订单完成消息
         CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
         String msgTitle = "订单: " + order.getOrderNum() + "已完成";
@@ -300,7 +307,8 @@ public class OrderEventListener {
                 24*3600, this::increase);
 
         order.setPhoto("");
-
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
         // 向商户推送订单完成消息
         CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
         String msgTitle = "订单: " + order.getOrderNum() + "已完成";
