@@ -559,7 +559,7 @@ public class TechnicianV2Controller {
         orderView.setComment(commentService.getByOrderIdAndTechId(orderId, order.getMainTechId()));
 
 
-        if(order.getStatusCode()!= Order.Status.CREATED_TO_APPOINT.getStatusCode()){
+        if(order.getStatusCode() != Order.Status.NEWLY_CREATED.getStatusCode() ||order.getStatusCode()!= Order.Status.CREATED_TO_APPOINT.getStatusCode()){
             if(order.getMainTechId() != technician.getId()){
                 return new JsonResult(false, "订单已被其他技师抢单，无法查看别的技师订单信息");
             }
