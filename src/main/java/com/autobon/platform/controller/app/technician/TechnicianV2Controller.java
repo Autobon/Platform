@@ -762,7 +762,7 @@ public class TechnicianV2Controller {
 
             order.setStatus(Order.Status.IN_PROGRESS); // 订单状态进入IN_PROGRESS状态; 订单所有技师完成工作时,订单结束
             orderService.save(order);
-            OrderShow orderShow = orderService.getByOrderId(orderId);
+            OrderView orderShow = orderViewService.findById(orderId);
             return new JsonResult(true, orderShow);
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
