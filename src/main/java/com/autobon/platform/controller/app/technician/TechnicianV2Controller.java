@@ -525,7 +525,7 @@ public class TechnicianV2Controller {
             order.setStatus(Order.Status.TAKEN_UP);
             orderService.save(order);
             publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.TAKEN));
-            OrderShow orderShow = orderService.getByOrderId(orderId);
+            OrderView orderShow = orderViewService.findById(orderId);
             return new JsonResult(true, orderShow);
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
