@@ -40,7 +40,7 @@ public class WorkDetailShow {
     private String position4;
 
 
-    private float payment;
+    private Float payment;
 
 
     private int payStatus; //支付状态: 0-未出帐, 1-已出账进入月度账单, 2-已转账支付
@@ -61,7 +61,7 @@ public class WorkDetailShow {
         this.position3 = (String)objects[8];
         this.project4 = (Integer)objects[9];
         this.position4 = (String)objects[10];
-        this.payment = (float)objects[11];
+        this.payment = (Float)objects[11];
         this.payStatus = (Integer)objects[12];
         this.createDate = (Date)objects[13];
         this.techName = (String)objects[14];
@@ -165,11 +165,11 @@ public class WorkDetailShow {
         this.position4 = position4;
     }
 
-    public float getPayment() {
+    public Float getPayment() {
         return payment;
     }
 
-    public void setPayment(float payment) {
+    public void setPayment(Float payment) {
         this.payment = payment;
     }
 

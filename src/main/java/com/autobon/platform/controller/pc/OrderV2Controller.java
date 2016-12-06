@@ -72,15 +72,17 @@ public class OrderV2Controller {
     public JsonResult getById(@PathVariable("orderId") int orderId){
         OrderView orderShow = orderViewService.findById(orderId);
         List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
-        for(WorkDetailShow workDetailShow: workDetailShowList){
-            if(workDetailShow.getTechId() == orderShow.getTechId()){
-                workDetailShow.setIsMainTech(1);
+        if(workDetailShowList != null) {
+            for (WorkDetailShow workDetailShow : workDetailShowList) {
+                if (workDetailShow.getTechId() == orderShow.getTechId()) {
+                    workDetailShow.setIsMainTech(1);
+                }
             }
-        }
-        List<ConstructionWasteShow> constructionWasteShows = constructionWasteService.getByOrderId(orderId);
-        orderShow.setWorkDetailShows(workDetailShowList);
-        orderShow.setConstructionWasteShows(constructionWasteShows);
+            List<ConstructionWasteShow> constructionWasteShows = constructionWasteService.getByOrderId(orderId);
+            orderShow.setWorkDetailShows(workDetailShowList);
+            orderShow.setConstructionWasteShows(constructionWasteShows);
 
+        }
         return new JsonResult(true, orderShow);
     }
 

@@ -154,6 +154,9 @@ public class OrderEventListener {
         stat.setTotalOrders(stat.getTotalOrders() + 1);
         techStatService.save(stat);
 
+        order.setPhoto("");
+
+
         // 向商户推送订单已有人接单消息
         CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
         String msgTitle = "订单: " + order.getOrderNum() + "已接单";
@@ -175,6 +178,8 @@ public class OrderEventListener {
         stat.setTotalOrders(stat.getTotalOrders() + 1);
         techStatService.save(stat);
 
+        order.setPhoto("");
+
         // 推送派单消息
         String msgTitle = "你收到派单消息";
         HashMap<String, Object> map = new HashMap<>();
@@ -188,6 +193,9 @@ public class OrderEventListener {
     private void onOrderCanceled(Order order) throws IOException {
         if (order.getMainTechId() > 0) {
             Technician mainTech = technicianService.get(order.getMainTechId());
+
+            order.setPhoto("");
+
             // 推送撤单消息
             String msgTitle = "你有订单已被商户撤销";
             HashMap<String, Object> map = new HashMap<>();
@@ -209,6 +217,7 @@ public class OrderEventListener {
 
     private void onOrderGivenUp(Order order) throws IOException {
         CoopAccount account = coopAccountService.getById(order.getCreatorId());
+        order.setPhoto("");
 
         String msgTitle = "你有订单已被技师放弃";
         HashMap<String, Object> map = new HashMap<>();
@@ -233,6 +242,8 @@ public class OrderEventListener {
                 24*3600, this::increase);
         redisCache.getAfterUpdate(totalFinishedKey, () -> String.valueOf(orderService.totalOfFinished() - 1),
                 24*3600, this::increase);
+
+        order.setPhoto("");
 
         // 向商户推送订单完成消息
         CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
@@ -286,6 +297,8 @@ public class OrderEventListener {
                 24*3600, this::increase);
         redisCache.getAfterUpdate(totalFinishedKey, () -> String.valueOf(orderService.totalOfFinished() - 1),
                 24*3600, this::increase);
+
+        order.setPhoto("");
 
         // 向商户推送订单完成消息
         CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
