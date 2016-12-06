@@ -43,7 +43,7 @@ public class WorkDetailShow {
     private Float payment;
 
 
-    private int payStatus; //支付状态: 0-未出帐, 1-已出账进入月度账单, 2-已转账支付
+    private Integer payStatus; //支付状态: 0-未出帐, 1-已出账进入月度账单, 2-已转账支付
 
 
     private Date createDate;
@@ -75,7 +75,13 @@ public class WorkDetailShow {
         this.id = id;
     }
 
+    public Integer getOrderId() {
+        return orderId;
+    }
 
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
 
     public Integer getTechId() {
         return techId;
@@ -173,11 +179,11 @@ public class WorkDetailShow {
         this.payment = payment;
     }
 
-    public int getPayStatus() {
+    public Integer getPayStatus() {
         return payStatus;
     }
 
-    public void setPayStatus(int payStatus) {
+    public void setPayStatus(Integer payStatus) {
         this.payStatus = payStatus;
     }
 
