@@ -392,18 +392,20 @@ public class TechnicianV2Controller {
             if (tech == null) {
                 return new JsonResult(false, "登陆过期");
             }
+            Integer techId = tech.getId();
+
             Page<Technician> technicians;
             if(query != null) {
                 String query1 = "%" + query + "%";
                 if (Pattern.matches("\\d+", query)) {
-                    technicians = technicianService.find(query1, null, page, pageSize);
+                    technicians = technicianService.findTech(query1, null,techId, page, pageSize);
 
                 } else {
-                    technicians = technicianService.find(null, query1, page, pageSize);
+                    technicians = technicianService.findTech(null, query1, techId, page, pageSize);
                 }
 
             }else{
-                technicians = technicianService.find(null, null, page, pageSize);
+                technicians = technicianService.findTech(null, null,techId, page, pageSize);
             }
             return new JsonResult(true, new JsonPage<>(technicians));
         }catch (Exception e){

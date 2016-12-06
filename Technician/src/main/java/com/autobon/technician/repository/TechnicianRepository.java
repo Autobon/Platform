@@ -50,6 +50,12 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
     Page<Technician> find(String phone, String name,  Pageable pageable);
 
 
+    @Query("select dt from Technician dt where dt.statusCode = 2 " +
+            " and (?1 is null or dt.phone like ?1) " +
+            " and (?2 is null or dt.name like ?2)" +
+            " and (?3 is null or dt.id != ?3) ")
+    Page<Technician> findTech(String phone, String name, Integer techId,  Pageable pageable);
+
 
     @Query(value = "SELECT" +
             " t.id as id," +

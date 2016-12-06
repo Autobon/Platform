@@ -87,6 +87,14 @@ public class TechnicianService {
         return technicians;
     }
 
+    public Page<Technician> findTech(String phone ,String name,Integer techId, Integer currentPage, Integer pageSize){
+
+        Pageable pageable = new PageRequest(currentPage-1, pageSize);
+        Page<Technician> technicians = repository.findTech(phone, name , techId, pageable);
+        return technicians;
+    }
+
+
 
     public TechnicianLocation getById(int techId){
         List<Object[]> list = repository.getByTechId(techId);
