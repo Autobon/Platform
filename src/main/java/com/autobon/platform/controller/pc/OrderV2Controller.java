@@ -6,6 +6,7 @@ import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderProduct;
+import com.autobon.order.entity.OrderView;
 import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.service.*;
 import com.autobon.order.vo.*;
@@ -59,6 +60,8 @@ public class OrderV2Controller {
     @Autowired
     ConstructionProjectService constructionProjectService;
 
+    @Autowired
+    OrderViewService orderViewService;
 
     /**
      * 查询订单详情
@@ -67,7 +70,7 @@ public class OrderV2Controller {
      */
     @RequestMapping(value = "/v2/{orderId}", method = RequestMethod.GET)
     public JsonResult getById(@PathVariable("orderId") int orderId){
-        OrderShow orderShow = orderService.getByOrderId(orderId);
+        OrderView orderShow = orderViewService.findById(orderId);
         List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
         for(WorkDetailShow workDetailShow: workDetailShowList){
             if(workDetailShow.getTechId() == orderShow.getTechId()){
