@@ -139,7 +139,7 @@ public class OrderEventListener {
         DetailedOrder detailedOrder = detailedOrderService.get(order.getId());
         detailedOrder.setRemark("");
         detailedOrder.setPhoto("");
-        map.put("order", detailedOrder);
+        map.put("order", "");
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.error("订单: " + order.getOrderNum() + "的推送消息发送失败");
