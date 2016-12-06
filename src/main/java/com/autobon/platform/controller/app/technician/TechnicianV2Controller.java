@@ -561,6 +561,8 @@ public class TechnicianV2Controller {
 
         orderView.setComment(commentService.getByOrderIdAndTechId(orderId, order.getMainTechId()));
         List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
+        Map<Integer, String> projectMap = constructionProjectService.getProject();
+        Map<Integer, String> positionMap = constructionProjectService.getPosition();
 
         if(workDetailShowList != null && workDetailShowList.size()>0) {
             List<OrderConstructionShow> constructionShowList = new ArrayList<>();
@@ -569,10 +571,75 @@ public class TechnicianV2Controller {
                 List<ProjectPositionShow> projectPositionShows = new ArrayList<>();
                 orderConstructionShow.setTechId(workDetailShow.getTechId());
                 orderConstructionShow.setTechName(workDetailShow.getTechName());
-                orderConstructionShow.setIsMainTech(workDetailShow.getTechId() == order.getMainTechId() ? 1 : 0);
+                orderConstructionShow.setIsMainTech(workDetailShow.getTechId() == order.getMainTechId()?1:0);
                 orderConstructionShow.setPayStatus(workDetailShow.getPayStatus());
                 orderConstructionShow.setPayment(workDetailShow.getPayment());
-                orderConstructionShow.setWorkDetailShow(workDetailShow);
+                if (workDetailShow.getPosition1() != null && workDetailShow.getPosition1() != null) {
+                    String projectName = projectMap.get(workDetailShow.getProject1());
+                    String position = workDetailShow.getPosition1();
+                    String[] positionArr = position.split(",");
+                    String positionStr = "";
+                    for (String positionId : positionArr) {
+                        if (positionStr.length() > 0) {
+                            positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                        } else {
+                            positionStr += positionMap.get(Integer.valueOf(positionId));
+                        }
+                    }
+                    ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                    projectPositionShows.add(projectPositionShow);
+                }
+                if (workDetailShow.getPosition2() != null && workDetailShow.getPosition2() != null) {
+
+                    String projectName = projectMap.get(workDetailShow.getProject2());
+
+                    String position = workDetailShow.getPosition2();
+                    String[] positionArr = position.split(",");
+                    String positionStr = "";
+                    for (String positionId : positionArr) {
+                        if (positionStr.length() > 0) {
+                            positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                        } else {
+                            positionStr += positionMap.get(Integer.valueOf(positionId));
+                        }
+                    }
+                    ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                    projectPositionShows.add(projectPositionShow);
+                }
+                if (workDetailShow.getPosition3() != null && workDetailShow.getPosition3() != null) {
+
+                    String projectName = projectMap.get(workDetailShow.getProject3());
+
+                    String position = workDetailShow.getPosition3();
+                    String[] positionArr = position.split(",");
+                    String positionStr = "";
+                    for (String positionId : positionArr) {
+                        if (positionStr.length() > 0) {
+                            positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                        } else {
+                            positionStr += positionMap.get(Integer.valueOf(positionId));
+                        }
+                    }
+                    ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                    projectPositionShows.add(projectPositionShow);
+                }
+                if (workDetailShow.getPosition4() != null && workDetailShow.getPosition4() != null) {
+
+                    String projectName = projectMap.get(workDetailShow.getProject4());
+
+                    String position = workDetailShow.getPosition4();
+                    String[] positionArr = position.split(",");
+                    String positionStr = "";
+                    for (String positionId : positionArr) {
+                        if (positionStr.length() > 0) {
+                            positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                        } else {
+                            positionStr += positionMap.get(Integer.valueOf(positionId));
+                        }
+                    }
+                    ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                    projectPositionShows.add(projectPositionShow);
+                }
 
                 orderConstructionShow.setProjectPosition(projectPositionShows);
                 constructionShowList.add(orderConstructionShow);
