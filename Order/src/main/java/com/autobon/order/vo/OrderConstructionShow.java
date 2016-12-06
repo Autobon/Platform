@@ -13,10 +13,21 @@ public class OrderConstructionShow {
     private Float  payment;
 
     private List<ProjectPositionShow> projectPosition;
+    private WorkDetailShow workDetailShow;
+
+
 
 
     public OrderConstructionShow(){
 
+    }
+
+    public WorkDetailShow getWorkDetailShow() {
+        return workDetailShow;
+    }
+
+    public void setWorkDetailShow(WorkDetailShow workDetailShow) {
+        this.workDetailShow = workDetailShow;
     }
 
     public Integer getTechId() {

@@ -48,6 +48,9 @@ public class WorkDetailService {
     }
 
 
+    public List<WorkDetail> findByOrderId(int orderId){
+        return workDetailRepository.findByOrderId(orderId);
+    }
 
     public int balance(List<WorkDetail> workDetails){
         int money = 0;

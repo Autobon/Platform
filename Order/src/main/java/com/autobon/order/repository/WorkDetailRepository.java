@@ -27,4 +27,6 @@ public interface WorkDetailRepository extends JpaRepository<WorkDetail, Integer>
             " LEFT JOIN t_work_detail wd  on wd.order_id = o.id " +
             " LEFT JOIN t_technician t on t.id = wd.tech_id where o.id= ?1  and o.status >= 60",nativeQuery = true)
     List<Object[]> getByOrderId(int orderId);
+
+    List<WorkDetail> findByOrderId(int orderId);
 }

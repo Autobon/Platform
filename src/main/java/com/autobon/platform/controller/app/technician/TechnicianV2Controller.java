@@ -2,6 +2,7 @@ package com.autobon.platform.controller.app.technician;
 
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderView;
+import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.service.*;
 import com.autobon.order.vo.*;
 import com.autobon.platform.listener.Event;
@@ -551,7 +552,7 @@ public class TechnicianV2Controller {
             return new JsonResult(false,  "没有这个订单");
         }
 
-        //    OrderShow orderShow = orderService.getByOrderId(orderId);
+
         OrderView orderView = orderViewService.findById(orderId);
         Technician technician = (Technician) request.getAttribute("user");
         if(technician == null){
@@ -559,17 +560,7 @@ public class TechnicianV2Controller {
         }
 
         orderView.setComment(commentService.getByOrderIdAndTechId(orderId, order.getMainTechId()));
-
-
-        if(order.getStatusCode() != Order.Status.NEWLY_CREATED.getStatusCode()){
-            if(order.getMainTechId() != technician.getId()){
-                return new JsonResult(false, "订单已被其他技师抢单，无法查看别的技师订单信息");
-            }
-        }
-
         List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
-        Map<Integer, String> projectMap = constructionProjectService.getProject();
-        Map<Integer, String> positionMap = constructionProjectService.getPosition();
 
         List<OrderConstructionShow> constructionShowList = new ArrayList<>();
         for(WorkDetailShow workDetailShow: workDetailShowList) {
@@ -577,95 +568,40 @@ public class TechnicianV2Controller {
             List<ProjectPositionShow> projectPositionShows = new ArrayList<>();
             orderConstructionShow.setTechId(workDetailShow.getTechId());
             orderConstructionShow.setTechName(workDetailShow.getTechName());
-            orderConstructionShow.setIsMainTech(workDetailShow.getTechId() == order.getMainTechId()?1:0);
+            orderConstructionShow.setIsMainTech(workDetailShow.getTechId() == order.getMainTechId() ? 1 : 0);
             orderConstructionShow.setPayStatus(workDetailShow.getPayStatus());
             orderConstructionShow.setPayment(workDetailShow.getPayment());
-            if (workDetailShow.getPosition1() != null && workDetailShow.getPosition1() != null) {
-                String projectName = projectMap.get(workDetailShow.getProject1());
-                String position = workDetailShow.getPosition1();
-                String[] positionArr = position.split(",");
-                String positionStr = "";
-                for (String positionId : positionArr) {
-                    if (positionStr.length() > 0) {
-                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
-                    } else {
-                        positionStr += positionMap.get(Integer.valueOf(positionId));
-                    }
-                }
-                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
-                projectPositionShows.add(projectPositionShow);
-            }
-            if (workDetailShow.getPosition2() != null && workDetailShow.getPosition2() != null) {
-
-                String projectName = projectMap.get(workDetailShow.getProject2());
-
-                String position = workDetailShow.getPosition2();
-                String[] positionArr = position.split(",");
-                String positionStr = "";
-                for (String positionId : positionArr) {
-                    if (positionStr.length() > 0) {
-                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
-                    } else {
-                        positionStr += positionMap.get(Integer.valueOf(positionId));
-                    }
-                }
-                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
-                projectPositionShows.add(projectPositionShow);
-            }
-            if (workDetailShow.getPosition3() != null && workDetailShow.getPosition3() != null) {
-
-                String projectName = projectMap.get(workDetailShow.getProject3());
-
-                String position = workDetailShow.getPosition3();
-                String[] positionArr = position.split(",");
-                String positionStr = "";
-                for (String positionId : positionArr) {
-                    if (positionStr.length() > 0) {
-                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
-                    } else {
-                        positionStr += positionMap.get(Integer.valueOf(positionId));
-                    }
-                }
-                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
-                projectPositionShows.add(projectPositionShow);
-            }
-            if (workDetailShow.getPosition4() != null && workDetailShow.getPosition4() != null) {
-
-                String projectName = projectMap.get(workDetailShow.getProject4());
-
-                String position = workDetailShow.getPosition4();
-                String[] positionArr = position.split(",");
-                String positionStr = "";
-                for (String positionId : positionArr) {
-                    if (positionStr.length() > 0) {
-                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
-                    } else {
-                        positionStr += positionMap.get(Integer.valueOf(positionId));
-                    }
-                }
-                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
-                projectPositionShows.add(projectPositionShow);
-            }
+            orderConstructionShow.setWorkDetailShow(workDetailShow);
 
             orderConstructionShow.setProjectPosition(projectPositionShows);
             constructionShowList.add(orderConstructionShow);
         }
-        String type = orderView.getType();
-        if(type!=null&& type.length()>0) {
-            String[] projectArr = type.split(",");
-            String projectStr = "";
-            for (String projectId : projectArr) {
-                if (projectStr.length() > 0) {
-                    projectStr += "," + projectMap.get(Integer.valueOf(projectId));
-                } else {
-                    projectStr += projectMap.get(Integer.valueOf(projectId));
+        orderView.setOrderConstructionShow(constructionShowList);
+
+
+
+
+        if(order.getStatusCode() <= Order.Status.NEWLY_CREATED.getStatusCode()){
+            return new JsonResult(true, orderView);
+        }
+       else if(order.getStatusCode() > Order.Status.NEWLY_CREATED.getStatusCode()&& order.getStatusCode()< Order.Status.FINISHED.getStatusCode()){
+            if(order.getMainTechId() != technician.getId()){
+                return new JsonResult(false, "订单已被其他技师抢单，无法查看别的技师订单信息");
+            }
+        }
+       else if(order.getStatusCode() >= Order.Status.FINISHED.getStatusCode()){
+            List<WorkDetail> workDetails =  workDetailService.findByOrderId(orderId);
+            if(workDetails != null){
+                for(WorkDetail workDetail: workDetails){
+                    if(workDetail.getTechId() == technician.getId()){
+                        return new JsonResult(true, orderView);
+                    }
                 }
             }
-            orderView.setType(projectStr);
         }
+        return new JsonResult(false, "订单已被其他技师抢单，无法查看别的技师订单信息");
 
-        orderView.setOrderConstructionShow(constructionShowList);
-        return new JsonResult(true, orderView);
+
     }
 
 
