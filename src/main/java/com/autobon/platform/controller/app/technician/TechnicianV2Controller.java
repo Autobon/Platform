@@ -562,43 +562,39 @@ public class TechnicianV2Controller {
         orderView.setComment(commentService.getByOrderIdAndTechId(orderId, order.getMainTechId()));
         List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
 
-        List<OrderConstructionShow> constructionShowList = new ArrayList<>();
-        for(WorkDetailShow workDetailShow: workDetailShowList) {
-            OrderConstructionShow orderConstructionShow = new OrderConstructionShow();
-            List<ProjectPositionShow> projectPositionShows = new ArrayList<>();
-            orderConstructionShow.setTechId(workDetailShow.getTechId());
-            orderConstructionShow.setTechName(workDetailShow.getTechName());
-            orderConstructionShow.setIsMainTech(workDetailShow.getTechId() == order.getMainTechId() ? 1 : 0);
-            orderConstructionShow.setPayStatus(workDetailShow.getPayStatus());
-            orderConstructionShow.setPayment(workDetailShow.getPayment());
-            orderConstructionShow.setWorkDetailShow(workDetailShow);
+        if(workDetailShowList != null && workDetailShowList.size()>0) {
+            List<OrderConstructionShow> constructionShowList = new ArrayList<>();
+            for (WorkDetailShow workDetailShow : workDetailShowList) {
+                OrderConstructionShow orderConstructionShow = new OrderConstructionShow();
+                List<ProjectPositionShow> projectPositionShows = new ArrayList<>();
+                orderConstructionShow.setTechId(workDetailShow.getTechId());
+                orderConstructionShow.setTechName(workDetailShow.getTechName());
+                orderConstructionShow.setIsMainTech(workDetailShow.getTechId() == order.getMainTechId() ? 1 : 0);
+                orderConstructionShow.setPayStatus(workDetailShow.getPayStatus());
+                orderConstructionShow.setPayment(workDetailShow.getPayment());
+                orderConstructionShow.setWorkDetailShow(workDetailShow);
 
-            orderConstructionShow.setProjectPosition(projectPositionShows);
-            constructionShowList.add(orderConstructionShow);
-        }
-        orderView.setOrderConstructionShow(constructionShowList);
-
-
-
-
-        if(order.getStatusCode() <= Order.Status.NEWLY_CREATED.getStatusCode()){
-            return new JsonResult(true, orderView);
-        }
-       else if(order.getStatusCode() > Order.Status.NEWLY_CREATED.getStatusCode()&& order.getStatusCode()< Order.Status.FINISHED.getStatusCode()){
-            if(order.getMainTechId() != technician.getId()){
-                return new JsonResult(false, "订单已被其他技师抢单，无法查看别的技师订单信息");
+                orderConstructionShow.setProjectPosition(projectPositionShows);
+                constructionShowList.add(orderConstructionShow);
             }
+            orderView.setOrderConstructionShow(constructionShowList);
         }
-       else if(order.getStatusCode() >= Order.Status.FINISHED.getStatusCode()){
-            List<WorkDetail> workDetails =  workDetailService.findByOrderId(orderId);
-            if(workDetails != null){
-                for(WorkDetail workDetail: workDetails){
-                    if(workDetail.getTechId() == technician.getId()){
-                        return new JsonResult(true, orderView);
+            if (order.getStatusCode() <= Order.Status.NEWLY_CREATED.getStatusCode()) {
+                return new JsonResult(true, orderView);
+            } else if (order.getStatusCode() > Order.Status.NEWLY_CREATED.getStatusCode() && order.getStatusCode() < Order.Status.FINISHED.getStatusCode()) {
+                if (order.getMainTechId() != technician.getId()) {
+                    return new JsonResult(false, "订单已被其他技师抢单，无法查看别的技师订单信息");
+                }
+            } else if (order.getStatusCode() >= Order.Status.FINISHED.getStatusCode()) {
+                List<WorkDetail> workDetails = workDetailService.findByOrderId(orderId);
+                if (workDetails != null) {
+                    for (WorkDetail workDetail : workDetails) {
+                        if (workDetail.getTechId() == technician.getId()) {
+                            return new JsonResult(true, orderView);
+                        }
                     }
                 }
             }
-        }
         return new JsonResult(false, "订单已被其他技师抢单，无法查看别的技师订单信息");
 
 
