@@ -58,6 +58,15 @@ public class TechnicianService {
     }
 
     public Page<Technician> find(String phone, String name, Technician.Status status, int page, int pageSize) {
+        if(phone != null){
+            phone = "%"+phone+"%";
+        }
+
+        if(name != null){
+            name = "%"+name+"%";
+        }
+
+
         Integer statusCode = status == null ? null : status.getStatusCode();
         return repository.find(phone, name, statusCode, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "lastLoginAt")));

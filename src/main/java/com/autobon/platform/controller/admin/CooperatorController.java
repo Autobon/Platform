@@ -86,6 +86,19 @@ public class CooperatorController {
         reviewCooper.setReviewTime(new Date());
         reviewCooper.setReviewerId(staff.getId());
         if (verified) {
+
+
+            if(coop.getFullname() == null || coop.getCorporationName() == null){
+                return  new JsonMessage(false,"商户名称 企业法人必能为空","商户名称 企业法人必能为空");
+            }
+
+            if(coop.getLatitude() == null || coop.getLongitude() == null){
+                return new JsonMessage(false, "商户经纬度为空 不能认证", "商户经纬度为空 不能认证");
+            }
+
+            if(coop.getBusinessLicense() == null || coop.getBussinessLicensePic() == null){
+                return new JsonMessage(false, "商户名称和营业执照为空 不能认证", "商户名称和营业执照为空 不能认证");
+            }
             coop.setStatusCode(1);
             reviewCooper.setResult(true);
         } else {
@@ -190,6 +203,19 @@ public class CooperatorController {
         cooperator.setContactPhone(contactPhone);
         cooperator.setSalesman(salesman);
         cooperator.setSalesmanPhone(salesmanPhone);
+
+        if(cooperator.getFullname() == null || cooperator.getCorporationName() == null){
+            return  new JsonMessage(false,"商户名称 企业法人必能为空","商户名称 企业法人必能为空");
+        }
+
+        if(cooperator.getLatitude() == null || cooperator.getLongitude() == null){
+            return new JsonMessage(false, "商户经纬度为空 不能认证", "商户经纬度为空 不能认证");
+        }
+
+        if(cooperator.getBusinessLicense() == null || cooperator.getBussinessLicensePic() == null){
+            return new JsonMessage(false, "商户名称和营业执照为空 不能认证", "商户名称和营业执照为空 不能认证");
+        }
+
         cooperatorService.save(cooperator);
 
         coopAccount.setPhone(phone);

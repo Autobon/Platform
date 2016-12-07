@@ -216,7 +216,30 @@ public class OrderService {
 
     public Page<Order> find(String orderNum, String creatorName, String contactPhone,
                             List<Integer> orderType, Integer statusCode, String sort, Sort.Direction direction, int page, int pageSize) {
-        return repository.find(orderNum, creatorName, contactPhone, orderType,
+
+
+        if(orderNum != null){
+            orderNum = "%"+ orderNum+"%";
+        }
+
+        if(creatorName != null){
+            creatorName = "%"+ creatorName+"%";
+        }
+
+        if(contactPhone != null){
+            contactPhone = "%"+ contactPhone+"%";
+        }
+
+        String type = null;
+
+        if(orderType != null && orderType.size()>0){
+            type = "%" +String.valueOf(orderType.get(0)) +"%";
+
+        }
+
+
+
+        return repository.findOrder(orderNum, creatorName, contactPhone, type,
                 statusCode, new PageRequest(page - 1, pageSize, direction, sort));
     }
 
