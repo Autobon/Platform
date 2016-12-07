@@ -670,7 +670,7 @@ public class TechnicianV2Controller {
                     }
                 }
             }
-        return new JsonResult(false, "订单已被其他技师抢单，无法查看别的技师订单信息");
+        return new JsonResult(true, orderView);
 
 
     }
