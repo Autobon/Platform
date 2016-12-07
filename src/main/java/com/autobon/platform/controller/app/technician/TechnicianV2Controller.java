@@ -85,6 +85,8 @@ public class TechnicianV2Controller {
     @Autowired
     OrderViewService orderViewService;
 
+    @Autowired
+    ConstructionWasteService constructionWasteService;
 
     @Value("${com.autobon.gm-path}") String gmPath;
     @Value("${com.autobon.uploadPath}") String uploadPath;
@@ -649,6 +651,8 @@ public class TechnicianV2Controller {
                 constructionShowList.add(orderConstructionShow);
             }
             orderView.setOrderConstructionShow(constructionShowList);
+            List<ConstructionWasteShow> constructionWasteShows = constructionWasteService.getByOrderId(orderId);
+            orderView.setConstructionWasteShows(constructionWasteShows);
         }
             if (order.getStatusCode() <= Order.Status.NEWLY_CREATED.getStatusCode()) {
                 return new JsonResult(true, orderView);
