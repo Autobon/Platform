@@ -16,6 +16,7 @@ import com.autobon.technician.service.LocationService;
 import com.autobon.technician.service.TechnicianService;
 import com.autobon.technician.vo.LocationShow;
 import com.autobon.technician.vo.TechnicianShow;
+import com.autobon.technician.vo.TechnicianSuperShow;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
 import org.im4java.process.Pipe;
@@ -101,7 +102,10 @@ public class TechnicianV2Controller {
             if (technician == null) {
                 return new JsonResult(false, "登陆超时");
             }
-            return new JsonResult(true, technicianService.get(technician.getId()));
+
+            TechnicianSuperShow technicianSuperShow  = new TechnicianSuperShow();
+            technicianSuperShow.setTechnician(technicianService.get(technician.getId()));
+            return new JsonResult(true, technicianSuperShow);
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
         }
