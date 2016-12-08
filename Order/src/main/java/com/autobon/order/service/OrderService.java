@@ -139,9 +139,17 @@ public class OrderService {
                 else if(i+1 ==3){
                     workDetail.setProject3(projectPositions.get(i).getProject());
                     workDetail.setPosition3(projectPositions.get(i).getPosition());
-                }else{
+                }else if(i+1 ==4){
                     workDetail.setProject4(projectPositions.get(i).getProject());
                     workDetail.setPosition4(projectPositions.get(i).getPosition());
+                }
+                else if(i+1 ==5){
+                    workDetail.setProject5(projectPositions.get(i).getProject());
+                    workDetail.setPosition5(projectPositions.get(i).getPosition());
+                }
+                else if(i+1 ==6){
+                    workDetail.setProject6(projectPositions.get(i).getProject());
+                    workDetail.setPosition6(projectPositions.get(i).getPosition());
                 }
             }
             workDetail.setCreateDate(new Date());
@@ -241,6 +249,37 @@ public class OrderService {
 
         return repository.findOrder(orderNum, creatorName, contactPhone, type,
                 statusCode, new PageRequest(page - 1, pageSize, direction, sort));
+    }
+
+
+    public Page<Order> find(String orderNum, String creatorName, String contactPhone, List<Integer> tech,
+                            List<Integer> orderType, Integer statusCode, String sort, Sort.Direction direction, int page, int pageSize) {
+
+
+        if(orderNum != null){
+            orderNum = "%"+ orderNum+"%";
+        }
+
+        if(creatorName != null){
+            creatorName = "%"+ creatorName+"%";
+        }
+
+        if(contactPhone != null){
+            contactPhone = "%"+ contactPhone+"%";
+        }
+
+        String type = null;
+
+        if(orderType != null && orderType.size()>0){
+            type = "%" +String.valueOf(orderType.get(0)) +"%";
+
+        }
+
+
+
+
+        return repository.findOrder(orderNum, creatorName, contactPhone, type,
+                statusCode,tech , new PageRequest(page - 1, pageSize, direction, sort));
     }
 
     public Page<Order> findExpired(Date signInBefore, Date finishBefore,  int page, int pageSize){

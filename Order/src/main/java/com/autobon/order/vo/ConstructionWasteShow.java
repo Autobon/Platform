@@ -13,6 +13,9 @@ public class ConstructionWasteShow {
     private int position;
     private int total;
 
+    private String projectName;
+    private String postitionName;
+
 
     public ConstructionWasteShow(){}
 
@@ -80,5 +83,21 @@ public class ConstructionWasteShow {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getPostitionName() {
+        return postitionName;
+    }
+
+    public void setPostitionName(String postitionName) {
+        this.postitionName = postitionName;
     }
 }

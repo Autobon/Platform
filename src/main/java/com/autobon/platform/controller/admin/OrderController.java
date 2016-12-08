@@ -90,6 +90,14 @@ public class OrderController {
             types = Arrays.asList(orderType);
         }
 
+        if(tech != null){
+            List<Integer> ids = technicianService.find(tech);
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(orderService.find(orderNum, creatorName, contactPhone,
+                            ids, statusCode, sort, Sort.Direction.DESC, page, pageSize)));
+        }
+
+
         return new JsonMessage(true, "", "",
                 new JsonPage<>(orderService.find(orderNum, creatorName, contactPhone,
                         types, statusCode, sort, Sort.Direction.DESC, page, pageSize)));

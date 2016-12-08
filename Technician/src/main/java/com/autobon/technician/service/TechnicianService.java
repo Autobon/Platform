@@ -57,6 +57,14 @@ public class TechnicianService {
                 new Sort(Sort.Direction.DESC, "lastLoginAt")));
     }
 
+    public List<Integer> find(String query){
+
+        query = "%"+query+"%";
+
+        return repository.find(query);
+
+    }
+
     public Page<Technician> find(String phone, String name, Technician.Status status, int page, int pageSize) {
         if(phone != null){
             phone = "%"+phone+"%";

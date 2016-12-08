@@ -652,6 +652,11 @@ public class TechnicianV2Controller {
             }
             orderView.setOrderConstructionShow(constructionShowList);
             List<ConstructionWasteShow> constructionWasteShows = constructionWasteService.getByOrderId(orderId);
+
+            for(ConstructionWasteShow constructionWasteShow: constructionWasteShows){
+                constructionWasteShow.setProjectName(projectMap.get(constructionWasteShow.getProject()));
+                constructionWasteShow.setPostitionName(positionMap.get(constructionWasteShow.getPosition()));
+            }
             orderView.setConstructionWasteShows(constructionWasteShows);
         }
             if (order.getStatusCode() <= Order.Status.NEWLY_CREATED.getStatusCode()) {

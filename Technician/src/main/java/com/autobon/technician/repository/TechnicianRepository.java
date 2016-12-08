@@ -21,6 +21,9 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
 
     Technician getByPushId(String pushId);
 
+    @Query(value = "select t.id from t_technician t where t.name like ?1 or t.phone like ?1", nativeQuery = true)
+    List<Integer> find(String query);
+
     @Query("from Technician t where t.lastLoginAt > ?1")
     Page<Technician> findActivedFrom(Date date, Pageable pageable);
 

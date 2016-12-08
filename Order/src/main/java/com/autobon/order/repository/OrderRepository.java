@@ -51,6 +51,16 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                               String type, Integer statusCode, Pageable pageable);
 
 
+        @Query("select o from Order o " +
+                "where (?1 is null or o.orderNum like ?1) " +
+                "and (?2 is null or o.creatorName like ?2) " +
+                "and (?3 is null or o.contactPhone like ?3) " +
+                "and (?4 is null or o.type like (?4)) " +
+                "and (?5 is null or o.statusCode = ?5)" +
+                "and (?6 is null or o.mainTechId in ?6)")
+        Page<Order> findOrder(String orderNum, String creatorName, String contactPhone,
+                              String type, Integer statusCode,List<Integer> list, Pageable pageable);
+
 
         @Query("select o from Order o where (o.statusCode < 50 and o.orderTime <= ?1) or (o.statusCode = 50 and o.orderTime <= ?2)")
         Page<Order> findExpired(Date signInBefore, Date finishBefore, Pageable pageable);

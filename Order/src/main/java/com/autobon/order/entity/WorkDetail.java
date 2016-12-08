@@ -41,6 +41,16 @@ public class WorkDetail {
     @Column(name = "position4")
     private String position4;
 
+    @Column(name = "project5")
+    private Integer project5;
+    @Column(name = "position5")
+    private String position5;
+
+    @Column(name = "project6")
+    private Integer project6;
+    @Column(name = "position6")
+    private String position6;
+
 
     @Column(name = "payment")
     private float payment;
@@ -164,5 +174,37 @@ public class WorkDetail {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public Integer getProject5() {
+        return project5;
+    }
+
+    public void setProject5(Integer project5) {
+        this.project5 = project5;
+    }
+
+    public String getPosition5() {
+        return position5;
+    }
+
+    public void setPosition5(String position5) {
+        this.position5 = position5;
+    }
+
+    public Integer getProject6() {
+        return project6;
+    }
+
+    public void setProject6(Integer project6) {
+        this.project6 = project6;
+    }
+
+    public String getPosition6() {
+        return position6;
+    }
+
+    public void setPosition6(String position6) {
+        this.position6 = position6;
     }
 }
