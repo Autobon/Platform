@@ -79,7 +79,7 @@ public class OrderController {
         if (!"orderTime".equals(sort) && !"id".equals(sort)) return new JsonMessage(false, "ILLEGAL_SORT_PARAM" , "sort参数只能为id或orderTime");
 
         if (orderCreator != null) {
-            if (Pattern.matches("\\d{11}", orderCreator)) {
+            if (Pattern.matches("\\d+", orderCreator)) {
                 contactPhone = orderCreator;
             } else {
                 creatorName = orderCreator;
