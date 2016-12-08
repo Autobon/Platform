@@ -89,7 +89,7 @@ public class CooperatorController {
 
 
             if(coop.getFullname() == null || coop.getCorporationName() == null){
-                return  new JsonMessage(false,"商户名称 企业法人必能为空","商户名称 企业法人必能为空");
+                return  new JsonMessage(false,"商户名称 企业法人为空","商户名称 企业法人为空");
             }
 
             if(coop.getLatitude() == null || coop.getLongitude() == null){
@@ -205,7 +205,7 @@ public class CooperatorController {
         cooperator.setSalesmanPhone(salesmanPhone);
 
         if(cooperator.getFullname() == null || cooperator.getCorporationName() == null){
-            return  new JsonMessage(false,"商户名称 企业法人必能为空","商户名称 企业法人必能为空");
+            return  new JsonMessage(false,"商户名称 企业法人为空","商户名称 企业法人为空");
         }
 
         if(cooperator.getLatitude() == null || cooperator.getLongitude() == null){
@@ -220,6 +220,7 @@ public class CooperatorController {
 
         coopAccount.setPhone(phone);
         coopAccount.setShortname(shortname);
+        coopAccount.setName(shortname);
         coopAccountService.save(coopAccount);
         coopAccountService.batchUpdateShortname(coopId, shortname);
         msg.setData(cooperator);
@@ -340,6 +341,7 @@ public class CooperatorController {
             //创建商户下属管理员账户
             CoopAccount coopAccount = new CoopAccount();
             coopAccount.setShortname(shortname);
+            coopAccount.setName(shortname);
             coopAccount.setPhone(phone);
             coopAccount.setPassword(coopAccount.encryptPassword("123456"));
             coopAccount.setCooperatorId(cooperator.getId());
