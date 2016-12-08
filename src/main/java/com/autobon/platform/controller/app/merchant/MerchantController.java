@@ -429,7 +429,7 @@ public class MerchantController {
         Order order = new Order();
         order.setCreatorId(coopAccount.getId());
         order.setCoopId(coopId);
-        order.setCreatorName(coopAccount.getShortname());
+        order.setCreatorName(coopAccount.getName());
         order.setPhoto(photo);
         order.setRemark(remark);
         order.setAgreedStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(agreedStartTime));
