@@ -56,9 +56,11 @@ public class WorkDetailService {
 
     public float balance(int oid){
         List<WorkDetail> workDetails =  workDetailRepository.findByOrderId(oid);
-        float money = 0;
+
         if(workDetails !=null && workDetails.size()> 0){
+
             for(WorkDetail workDetail: workDetails){
+                float money = 0;
                 int orderId = workDetail.getOrderId();
                 if(workDetail.getProject1() != null&&workDetail.getPosition1()!=null){
                     int projectId = workDetail.getProject1();
