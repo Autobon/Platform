@@ -390,7 +390,7 @@ public class OrderV2Controller {
         workDetail.setPosition2("3,4");
 
         list.add(workDetail);
-        workDetailService.balance(list);
+        workDetailService.balance(1);
     }
 
 

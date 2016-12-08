@@ -57,9 +57,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 "and (?3 is null or o.contactPhone like ?3) " +
                 "and (?4 is null or o.type like (?4)) " +
                 "and (?5 is null or o.statusCode = ?5)" +
-                "and (?6 is null or o.mainTechId in ?6)")
+                "and  o.mainTechId in ?6")
         Page<Order> findOrder(String orderNum, String creatorName, String contactPhone,
-                              String type, Integer statusCode,List<Integer> list, Pageable pageable);
+                              String type, Integer statusCode, List<Integer> list, Pageable pageable);
 
 
         @Query("select o from Order o where (o.statusCode < 50 and o.orderTime <= ?1) or (o.statusCode = 50 and o.orderTime <= ?2)")

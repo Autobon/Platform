@@ -33,6 +33,7 @@ public class WorkDetailService {
 
 
 
+
     public int save(WorkDetail workDetail){
         workDetailRepository.save(workDetail);
         return 0;
@@ -52,8 +53,10 @@ public class WorkDetailService {
         return workDetailRepository.findByOrderId(orderId);
     }
 
-    public int balance(List<WorkDetail> workDetails){
-        int money = 0;
+
+    public float balance(int oid){
+        List<WorkDetail> workDetails =  workDetailRepository.findByOrderId(oid);
+        float money = 0;
         if(workDetails !=null && workDetails.size()> 0){
             for(WorkDetail workDetail: workDetails){
                 int orderId = workDetail.getOrderId();
@@ -65,7 +68,7 @@ public class WorkDetailService {
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
                     }
-                    int sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
                     money += sum;
 
                 }
@@ -79,7 +82,7 @@ public class WorkDetailService {
                         positionIds.add(Integer.valueOf(id));
                     }
 
-                    int sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
                     money += sum;
                 }
                 if(workDetail.getProject3() != null&&workDetail.getPosition3()!=null){
@@ -91,7 +94,7 @@ public class WorkDetailService {
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
                     }
-                    int sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
                     money += sum;
                 }
                 if(workDetail.getProject4() != null&&workDetail.getPosition4()!=null){
@@ -103,8 +106,33 @@ public class WorkDetailService {
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
                     }
-                    int sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    money += sum;
+                }
 
+                if(workDetail.getProject5() != null&&workDetail.getPosition5()!=null){
+                    int projectId = workDetail.getProject5();
+                    String positionId = workDetail.getPosition5();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    money += sum;
+                }
+
+                if(workDetail.getProject6() != null&&workDetail.getPosition6()!=null){
+                    int projectId = workDetail.getProject6();
+                    String positionId = workDetail.getPosition6();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
                     money += sum;
                 }
 
@@ -114,7 +142,6 @@ public class WorkDetailService {
                 workDetailRepository.save(workDetail);
             }
         }
-
         return 0;
     }
 

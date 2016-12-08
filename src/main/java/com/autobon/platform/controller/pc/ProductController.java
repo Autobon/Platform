@@ -4,10 +4,7 @@ import com.autobon.order.entity.ConstructionPosition;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderProduct;
 import com.autobon.order.entity.Product;
-import com.autobon.order.service.ConstructionProjectService;
-import com.autobon.order.service.OrderProductService;
-import com.autobon.order.service.OrderService;
-import com.autobon.order.service.ProductService;
+import com.autobon.order.service.*;
 import com.autobon.order.vo.OrderProductShow;
 import com.autobon.order.vo.OrderProductSuper;
 import com.autobon.order.vo.ProductShow;
@@ -36,6 +33,9 @@ public class ProductController {
     ConstructionProjectService constructionProjectService;
     @Autowired
     OrderProductService orderProductService;
+    @Autowired
+    WorkDetailService workDetailService;
+
 
     /**
      * 保存产品
@@ -80,6 +80,11 @@ public class ProductController {
             orderProductService.batchInsert(orderProducts);
             order.setProductStatus(1);
             orderService.save(order);
+
+            if(order.getStatusCode()>= Order.Status.FINISHED.getStatusCode()){
+                workDetailService.balance(orderId);
+            }
+
             return new JsonResult(true, order);
         }else{
             return new JsonResult(false, "没有提交产品");

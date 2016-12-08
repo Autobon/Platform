@@ -1049,6 +1049,10 @@ public class TechnicianV2Controller {
             publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
 
 
+            if(order.getProductStatus() == 1){
+                workDetailService.balance(order.getId());
+            }
+
             //合作技师施工部位推送
 
             return new JsonResult(true, "施工完成");

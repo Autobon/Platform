@@ -252,7 +252,7 @@ public class OrderService {
     }
 
 
-    public Page<Order> find(String orderNum, String creatorName, String contactPhone, List<Integer> tech,
+    public Page<Order> findOrder(String orderNum, String creatorName, String contactPhone, List<Integer> tech,
                             List<Integer> orderType, Integer statusCode, String sort, Sort.Direction direction, int page, int pageSize) {
 
 
@@ -279,7 +279,7 @@ public class OrderService {
 
 
         return repository.findOrder(orderNum, creatorName, contactPhone, type,
-                statusCode,tech , new PageRequest(page - 1, pageSize, direction, sort));
+                statusCode, tech , new PageRequest(page - 1, pageSize, direction, sort));
     }
 
     public Page<Order> findExpired(Date signInBefore, Date finishBefore,  int page, int pageSize){
