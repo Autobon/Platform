@@ -68,7 +68,7 @@ public class WorkDetailService {
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
                     }
-                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
                     money += sum;
 
                 }
@@ -82,7 +82,8 @@ public class WorkDetailService {
                         positionIds.add(Integer.valueOf(id));
                     }
 
-                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
+
                     money += sum;
                 }
                 if(workDetail.getProject3() != null&&workDetail.getPosition3()!=null){
@@ -94,7 +95,8 @@ public class WorkDetailService {
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
                     }
-                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
+
                     money += sum;
                 }
                 if(workDetail.getProject4() != null&&workDetail.getPosition4()!=null){
@@ -106,7 +108,8 @@ public class WorkDetailService {
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
                     }
-                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
+
                     money += sum;
                 }
 

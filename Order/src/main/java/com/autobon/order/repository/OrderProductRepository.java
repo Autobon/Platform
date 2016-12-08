@@ -22,7 +22,7 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Inte
             " op.order_id = ?1 " +
             " and op.construction_project_id = ?2 " +
             " and op.construction_position_id in (?3) ", nativeQuery = true )
-    int getMoney(int orderId, int projectId, List<Integer> positionId);
+    Float getMoney(int orderId, int projectId, List<Integer> positionId);
 
 
     @Modifying
