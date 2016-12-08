@@ -1,6 +1,7 @@
 package com.autobon.platform.controller.app.technician;
 
 import com.autobon.order.entity.Order;
+import com.autobon.order.entity.OrderPartnerView;
 import com.autobon.order.entity.OrderView;
 import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.service.*;
@@ -683,7 +684,7 @@ public class TechnicianV2Controller {
 
     /**
      * 查询本人订单
-     * @param status 1 所有订单  2 未完成  3 已完成 4 合作的订单
+     * @param status 1 所有订单  2 未完成  3 已完成
      * @param page
      * @param pageSize
      * @param request
@@ -702,6 +703,32 @@ public class TechnicianV2Controller {
             }
             Page<OrderView> orders;
             orders = orderViewService.find(technician.getId(), status, page, pageSize);
+            return new JsonResult(true, orders);
+        }catch (Exception e){
+            return new JsonResult(false, e.getMessage());
+        }
+    }
+
+
+    /**
+     * 查询作为合作技师订单
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/v2/partner/order", method = RequestMethod.GET)
+    public JsonResult getOrders(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+            HttpServletRequest request) {
+        try{
+            Technician technician = (Technician) request.getAttribute("user");
+            if(technician == null){
+                return new JsonResult(false, "登陆过期");
+            }
+            Page<OrderPartnerView> orders;
+            orders = orderViewService.find(technician.getId(), page, pageSize);
             return new JsonResult(true, orders);
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
