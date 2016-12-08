@@ -204,7 +204,7 @@ public class CoopAccountController {
         }
         if(coopAccountFired!=null){
 
-            int mainId = coopAccount.getId();
+            int mainId = coopAccount.getCooperatorId();
             int coopId = coopAccountFired.getCooperatorId();
             if(mainId != coopId){
                 return new JsonMessage(false,"该账户不是你的下属账户");
