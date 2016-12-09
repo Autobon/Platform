@@ -747,24 +747,21 @@ public class TechnicianV2Controller {
                              HttpServletRequest request) {
 
         try{
-
             Technician tech = (Technician) request.getAttribute("user");
             Order order = orderService.get(orderId);
-
             if (order == null) return new JsonResult(false,   "没有此订单");
             if (order.getMainTechId() != tech.getId()) return new JsonResult(false,   "只有接单人可以进行弃单操作");
 
             if(order.getStatusCode() >= Order.Status.IN_PROGRESS.getStatusCode() ){
-
-                //   reassignmentService.create(orderId, tech.getId());
                 order.setReassignmentStatus(1);
+                orderService.save(order);
                 return new JsonResult(true,   "订单进入工作状态，已发送申请改派");
+            }else {
+                order.setStatusCode(Order.Status.NEWLY_CREATED.getStatusCode());
+                orderService.save(order);
+                publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
+                return new JsonResult(true, "订单已放弃，已重新释放");
             }
-            order.setStatusCode(Order.Status.NEWLY_CREATED.getStatusCode());
-            orderService.save(order);
-            publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
-
-            return new JsonResult(true, "订单已放弃，已重新释放");
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
         }
