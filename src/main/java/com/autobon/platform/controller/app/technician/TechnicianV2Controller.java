@@ -758,6 +758,7 @@ public class TechnicianV2Controller {
                 return new JsonResult(true,   "订单进入工作状态，已发送申请改派");
             }else {
                 order.setStatusCode(Order.Status.NEWLY_CREATED.getStatusCode());
+                order.setMainTechId(0);
                 orderService.save(order);
                 publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
                 return new JsonResult(true, "订单已放弃，已重新释放");
