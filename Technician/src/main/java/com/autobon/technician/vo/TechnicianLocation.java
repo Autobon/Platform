@@ -16,7 +16,7 @@ public class TechnicianLocation {
     private Integer beautyLevel;
     private Double distance;
     private Integer status;
-    private Integer orderCount;
+    private BigInteger orderCount;
     private Float evaluate;
     private BigInteger cancelCount;
     private Integer filmWorkingSeniority;
@@ -37,7 +37,7 @@ public class TechnicianLocation {
         this.beautyLevel = (Integer)objects[6];
         this.distance = (Double)objects[7];
         this.status = (Integer)objects[8];
-        this.orderCount = (Integer)objects[9];
+        this.orderCount = (BigInteger)objects[9];
         this.evaluate = (Float)objects[10];
         this.cancelCount = (BigInteger)objects[11];
 
@@ -56,7 +56,7 @@ public class TechnicianLocation {
         this.carCoverLevel = (Integer)objects[4];
         this.colorModifyLevel = (Integer)objects[5];
         this.beautyLevel = (Integer)objects[6];
-        this.orderCount = (Integer)objects[7];
+        this.orderCount = (BigInteger)objects[7];
         this.evaluate = (Float)objects[8];
         this.cancelCount = (BigInteger)objects[9];
         this.filmWorkingSeniority = (Integer)objects[10];
@@ -139,11 +139,11 @@ public class TechnicianLocation {
     }
 
 
-    public Integer getOrderCount() {
+    public BigInteger getOrderCount() {
         return orderCount;
     }
 
-    public void setOrderCount(Integer orderCount) {
+    public void setOrderCount(BigInteger orderCount) {
         this.orderCount = orderCount;
     }
 
