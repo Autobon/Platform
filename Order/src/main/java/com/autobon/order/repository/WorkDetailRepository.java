@@ -2,9 +2,11 @@ package com.autobon.order.repository;
 
 import com.autobon.order.entity.WorkDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,4 +31,23 @@ public interface WorkDetailRepository extends JpaRepository<WorkDetail, Integer>
     List<Object[]> getByOrderId(int orderId);
 
     List<WorkDetail> findByOrderId(int orderId);
+
+
+
+    @Query("select sum(c.payment) as bill from WorkDetail c where c.techId = ?1 and c.orderId in " +
+            "(select o.id from Order o where o.id  = c.orderId " +
+            "and o.productStatus =1 " +
+            "and o.statusCode >= 60 and o.statusCode < 200 " +
+            "and o.finishTime >= ?2 and o.finishTime < ?3)")
+    Float sumPayment(int techId, Date from, Date to);
+
+
+
+    @Modifying
+    @Query("update WorkDetail c set c.payStatus = 1 where c.techId = ?1 and c.orderId in " +
+            "(select o.id from Order o where o.id  = c.orderId " +
+            "and o.productStatus =1" +
+            "and o.statusCode >= 60 and o.statusCode < 200 " +
+            "and o.finishTime >= ?2 and o.finishTime < ?3)")
+    int settlePayment(int techId, Date from, Date to);
 }

@@ -653,7 +653,7 @@ public class MerchantController {
             publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CANCELED));
             return new JsonResult(true);
         } else {
-            return new JsonResult(false,  "已开始或结束施工订单, 不能撤销");
+            return new JsonResult(false,  "已开始施工的订单不可撤销");
         }
     }
 

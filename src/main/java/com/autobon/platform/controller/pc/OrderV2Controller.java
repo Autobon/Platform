@@ -360,6 +360,11 @@ public class OrderV2Controller {
             return new JsonResult(false,  "没有这个订单");
         }
 
+        Technician technician  = technicianService.get(techId);
+        if(technician!= null && technician.getWorkStatus()== 3){
+            return new JsonResult(false,  "技师未认证或修改状态，不可指派");
+        }
+
         order.setReassignmentStatus(2);
         if(order.getStatusCode() == -10){
             order.setStatusCode(Order.Status.TAKEN_UP.getStatusCode());

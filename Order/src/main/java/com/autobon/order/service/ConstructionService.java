@@ -2,6 +2,7 @@ package com.autobon.order.service;
 
 import com.autobon.order.entity.Construction;
 import com.autobon.order.repository.ConstructionRepository;
+import com.autobon.order.repository.WorkDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ import java.util.Date;
 public class ConstructionService {
     @Autowired
     private ConstructionRepository repository;
+    @Autowired
+    private WorkDetailRepository workDetailRepository;
 
     public Construction save(Construction construction) {
         construction = repository.save(construction);
@@ -33,6 +36,18 @@ public class ConstructionService {
     public Float sumPayment(int techId, Date from, Date to) {
         return repository.sumPayment(techId, from, to);
     }
+
+
+    // 对指定技师在指定订单序号范围内完成的工单进行金额汇总
+    public Float monthlyBill(int techId, Date from, Date to) {
+        return workDetailRepository.sumPayment(techId, from, to);
+    }
+
+    @Transactional
+    public int monthlyBillPayment(int techId, Date from, Date to) {
+        return workDetailRepository.settlePayment(techId, from, to);
+    }
+
 
     // 对指定技师在指定订单序号范围内完成的工单清算出账
     @Transactional
