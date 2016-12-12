@@ -11,9 +11,11 @@ import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.platform.listener.TechnicianEventListener;
 import com.autobon.shared.*;
 import com.autobon.technician.entity.Location;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.LocationService;
+import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import com.autobon.technician.vo.LocationShow;
 import com.autobon.technician.vo.TechnicianShow;
@@ -89,6 +91,9 @@ public class TechnicianV2Controller {
     @Autowired
     ConstructionWasteService constructionWasteService;
 
+    @Autowired
+    TechStatService techStatService;
+
     @Value("${com.autobon.gm-path}") String gmPath;
     @Value("${com.autobon.uploadPath}") String uploadPath;
 
@@ -108,6 +113,12 @@ public class TechnicianV2Controller {
 
             TechnicianSuperShow technicianSuperShow  = new TechnicianSuperShow();
             technicianSuperShow.setTechnician(technicianService.get(technician.getId()));
+            TechStat techStat = techStatService.getByTechId(technician.getId());
+            if(techStat != null){
+                technicianSuperShow.setStarRate(String.valueOf(techStat.getStarRate()));
+                technicianSuperShow.setTotalOrders(String.valueOf(techStat.getTotalOrders()));
+                technicianSuperShow.setBalance(String.valueOf(techStat.getBalance()));
+            }
             return new JsonResult(true, technicianSuperShow);
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
