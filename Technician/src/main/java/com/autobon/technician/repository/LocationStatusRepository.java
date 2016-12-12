@@ -26,8 +26,8 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.beauty_level as beauty_level," +
             " truncate((2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * abs((?1 - ls.lat)) / 360),2) + COS(PI() *  ?2 / 180) * abs(COS(ls.lat * PI()) / 180) * POW(SIN(PI() * abs(?2 - ls.lng) / 360),2)))) ,2) AS distance," +
             " ls.status as status ," +
-            " 0 as orderCount," +
-            " 0 as evaluate," +
+            " ts.total_orders as orderCount," +
+            " ts.star_rate as evaluate," +
             " 0 as cancelCount," +
             " t.film_working_seniority as filmWorkingSeniority ," +
             " t.car_cover_working_seniority as carCoverWorkingSeniority," +
@@ -37,6 +37,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " FROM" +
             " t_technician t " +
             " inner join t_location_status ls ON ls.tech_id = t.id " +
+            " left join t_tech_stat ts on ts.tech_id = t.id" +
             " where t.status = 2 " +
             " ORDER BY distance limit ?3,?4" ,nativeQuery = true)
     List<Object[]> getTech(String lat, String lng , int begin , int size);
@@ -57,8 +58,8 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.beauty_level as beauty_level," +
             " truncate( (2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * (?1 - ls.lat) / 360),2) + COS(PI() * ?2 / 180) * COS(ls.lat * PI() / 180) * POW(SIN(PI() * (?2 - ls.lng) / 360),2)))) ,2) AS distance," +
             " ls.status as status, " +
-            " 0 as orderCount," +
-            " 0 as evaluate," +
+            " ts.total_orders as orderCount," +
+            " ts.star_rate as evaluate," +
             " 0 as cancelCount," +
             " t.film_working_seniority as filmWorkingSeniority, " +
             " t.car_cover_working_seniority as carCoverWorkingSeniority," +
@@ -68,6 +69,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " FROM" +
             " t_technician t " +
             " left join t_location_status ls ON ls.tech_id = t.id " +
+            " left join t_tech_stat ts on ts.tech_id = t.id" +
             " where t.status = 2 and (t.name like ?3 or t.phone like ?3)  " +
             " ORDER BY distance limit ?4,?5" ,nativeQuery = true)
     List<Object[]> getTechByPhoneOrName(String lat, String lng, String name, int begin , int size);

@@ -16,8 +16,8 @@ public class TechnicianLocation {
     private Integer beautyLevel;
     private Double distance;
     private Integer status;
-    private BigInteger orderCount;
-    private BigInteger evaluate;
+    private Integer orderCount;
+    private Float evaluate;
     private BigInteger cancelCount;
     private Integer filmWorkingSeniority;
     private Integer carCoverWorkingSeniority;
@@ -37,8 +37,8 @@ public class TechnicianLocation {
         this.beautyLevel = (Integer)objects[6];
         this.distance = (Double)objects[7];
         this.status = (Integer)objects[8];
-        this.orderCount = (BigInteger)objects[9];
-        this.evaluate = (BigInteger)objects[10];
+        this.orderCount = (Integer)objects[9];
+        this.evaluate = (Float)objects[10];
         this.cancelCount = (BigInteger)objects[11];
 
         this.filmWorkingSeniority = (Integer)objects[12];
@@ -56,8 +56,8 @@ public class TechnicianLocation {
         this.carCoverLevel = (Integer)objects[4];
         this.colorModifyLevel = (Integer)objects[5];
         this.beautyLevel = (Integer)objects[6];
-        this.orderCount = (BigInteger)objects[7];
-        this.evaluate = (BigInteger)objects[8];
+        this.orderCount = (Integer)objects[7];
+        this.evaluate = (Float)objects[8];
         this.cancelCount = (BigInteger)objects[9];
         this.filmWorkingSeniority = (Integer)objects[10];
         this.carCoverWorkingSeniority = (Integer)objects[11];
@@ -139,19 +139,19 @@ public class TechnicianLocation {
     }
 
 
-    public BigInteger getOrderCount() {
+    public Integer getOrderCount() {
         return orderCount;
     }
 
-    public void setOrderCount(BigInteger orderCount) {
+    public void setOrderCount(Integer orderCount) {
         this.orderCount = orderCount;
     }
 
-    public BigInteger getEvaluate() {
+    public Float getEvaluate() {
         return evaluate;
     }
 
-    public void setEvaluate(BigInteger evaluate) {
+    public void setEvaluate(Float evaluate) {
         this.evaluate = evaluate;
     }
 
