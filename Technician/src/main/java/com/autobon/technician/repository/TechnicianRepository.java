@@ -68,8 +68,8 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
             " t.car_cover_level as car_cover_level," +
             " t.color_modify_level as color_modify_level," +
             " t.beauty_level as beauty_level," +
-            " 0 as orderCount," +
-            " 0 as evaluate," +
+            " ts.total_orders as orderCount," +
+            " ts.star_rate as evaluate," +
             " 0 as cancelCount," +
             " t.film_working_seniority as filmWorkingSeniority ," +
             " t.car_cover_working_seniority as carCoverWorkingSeniority," +
@@ -78,6 +78,7 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
             " t.avatar as avatar" +
             " FROM" +
             " t_technician t " +
+            " left join t_tech_stat ts on ts.tech_id = t.id" +
             " where t.id = ?1 " ,nativeQuery = true)
     List<Object[]> getByTechId(int techId);
 
