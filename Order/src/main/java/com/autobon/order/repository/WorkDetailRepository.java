@@ -1,6 +1,8 @@
 package com.autobon.order.repository;
 
 import com.autobon.order.entity.WorkDetail;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,6 +33,10 @@ public interface WorkDetailRepository extends JpaRepository<WorkDetail, Integer>
     List<Object[]> getByOrderId(int orderId);
 
     List<WorkDetail> findByOrderId(int orderId);
+
+
+    @Query("from WorkDetail o where o.techId = ?1 and o.createDate >= ?2 and o.createDate < ?3")
+    Page<WorkDetail> find(int techId, Date start, Date end, Pageable pageable);
 
 
 

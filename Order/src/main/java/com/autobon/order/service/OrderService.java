@@ -126,6 +126,7 @@ public class OrderService {
         for(ConstructionDetail constructionDetail: constructionDetails){
             WorkDetail workDetail = new WorkDetail();
             workDetail.setOrderId(constructionShow.getOrderId());
+            workDetail.setOrderNum(order.getOrderNum());
             workDetail.setTechId(constructionDetail.getTechId());
             List<ProjectPosition> projectPositions = constructionDetail.getProjectPositions();
             for(int i= 0; i<projectPositions.size();i++){

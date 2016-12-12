@@ -11,6 +11,9 @@ import com.autobon.order.vo.ConstructionShow;
 import com.autobon.order.vo.ProjectPosition;
 import com.autobon.order.vo.WorkDetailShow;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,6 +34,14 @@ public class WorkDetailService {
     @Autowired
     OrderProductRepository orderProductRepository;
 
+
+
+
+    public Page<WorkDetail> find(int techId, Date start, Date end, int page, int pageSize){
+
+        return workDetailRepository.find(techId, start, end,
+                new PageRequest(page - 1, pageSize, Sort.Direction.ASC, "id"));
+    }
 
 
 

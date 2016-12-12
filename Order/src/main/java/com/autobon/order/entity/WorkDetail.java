@@ -18,6 +18,9 @@ public class WorkDetail {
     @Column(name = "order_id")
     private int orderId;
 
+    @Column(name = "orderNum")
+    private String orderNum;
+
     @Column(name = "tech_id")
     private int techId;
 
@@ -206,5 +209,13 @@ public class WorkDetail {
 
     public void setPosition6(String position6) {
         this.position6 = position6;
+    }
+
+    public String getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum;
     }
 }
