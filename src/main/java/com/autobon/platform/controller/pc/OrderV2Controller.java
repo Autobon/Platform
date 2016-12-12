@@ -135,6 +135,9 @@ public class OrderV2Controller {
         }
 
         if(techId != null){
+            if(order.getStatusCode()<= Order.Status.NEWLY_CREATED.getStatusCode()){
+                order.setStatusCode(Order.Status.TAKEN_UP.getStatusCode());
+            }
             order.setMainTechId(techId);
         }
 
