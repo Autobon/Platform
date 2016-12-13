@@ -48,7 +48,7 @@ public class OrderViewService {
 
 
     public Page<OrderPartnerView> find(Integer techId, Integer currentPage, Integer pageSize){
-        Pageable p = new PageRequest(currentPage-1,pageSize);
+        Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "endTime"));
         return orderPartnerViewRepository.findByPartnerTechId(techId, p);
     }
 
