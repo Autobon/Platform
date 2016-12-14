@@ -164,6 +164,10 @@ public class TechnicianV2Controller {
                 technician.setPassword(Technician.encryptPassword(password));
                 technicianService.save(technician);
                 publisher.publishEvent(new TechnicianEventListener.TechnicianEvent(technician, Event.Action.CREATED));
+
+                TechStat techStat = new TechStat();
+                techStat.setTechId(technician.getId());
+                techStatService.save(techStat);
                 jsonResult.setStatus(true);
                 jsonResult.setMessage(technician);
             }

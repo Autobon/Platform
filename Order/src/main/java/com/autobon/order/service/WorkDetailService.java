@@ -10,11 +10,14 @@ import com.autobon.order.vo.ConstructionDetail;
 import com.autobon.order.vo.ConstructionShow;
 import com.autobon.order.vo.ProjectPosition;
 import com.autobon.order.vo.WorkDetailShow;
+import com.autobon.technician.entity.TechStat;
+import com.autobon.technician.repository.TechStatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +36,8 @@ public class WorkDetailService {
     ConstructionWasteRepository constructionWasteRepository;
     @Autowired
     OrderProductRepository orderProductRepository;
+    @Autowired
+    TechStatRepository techStatRepository;
 
 
 
@@ -65,12 +70,15 @@ public class WorkDetailService {
     }
 
 
+    @Transactional
     public float balance(int oid){
         List<WorkDetail> workDetails =  workDetailRepository.findByOrderId(oid);
 
         if(workDetails !=null && workDetails.size()> 0){
 
             for(WorkDetail workDetail: workDetails){
+                int techId = workDetail.getTechId();
+
                 float money = 0;
                 int orderId = workDetail.getOrderId();
                 if(workDetail.getProject1() != null&&workDetail.getPosition1()!=null){
@@ -156,6 +164,12 @@ public class WorkDetailService {
                 workDetail.setPayStatus(1);
                 workDetail.setCreateDate(new Date());
                 workDetailRepository.save(workDetail);
+
+
+                TechStat techStat = techStatRepository.getByTechId(techId);
+                techStat.setBalance(money);
+
+                techStatRepository.save(techStat);
             }
         }
         return 0;

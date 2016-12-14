@@ -4,7 +4,9 @@ import com.autobon.order.entity.Bill;
 import com.autobon.order.service.BillService;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.OrderService;
+import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,8 @@ public class BillTask {
     @Autowired ConstructionService constructionService;
     @Autowired BillService billService;
     @Autowired OrderService orderService;
+    @Autowired
+    TechStatService techStatService;
 
     // 每月1号凌晨2点执行月度帐单结算
   //  @Async
@@ -84,6 +88,12 @@ public class BillTask {
                 bill.setCount(constructionService.monthlyBillPayment(t.getId(), from, to));
                 billService.save(bill);
                 billCount++;
+
+                TechStat techStat = techStatService.getByTechId(t.getId());
+                if(techStat != null){
+                    techStat.setUnpaidOrders(techStat.getUnpaidOrders() +1);
+                    techStatService.save(techStat);
+                }
             }
         } while (pageNo < totalPages);
 
