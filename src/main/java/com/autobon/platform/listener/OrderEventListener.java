@@ -302,20 +302,20 @@ public class OrderEventListener {
         redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfFinished(day, new Date()) - 1),
                 24*3600, this::increase);
         redisCache.getAfterUpdate(monthKey, () -> String.valueOf(orderService.countOfFinished(month, new Date()) - 1),
-                24*3600, this::increase);
+                24 * 3600, this::increase);
         redisCache.getAfterUpdate(totalFinishedKey, () -> String.valueOf(orderService.totalOfFinished() - 1),
-                24*3600, this::increase);
+                24 * 3600, this::increase);
 
-        order.setPhoto("");
-        order.setBeforePhotos("");
-        order.setAfterPhotos("");
+        Order  order1 = new Order();
+
+        order1.setId(order.getId());
         // 向商户推送订单完成消息
         CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
         String msgTitle = "订单: " + order.getOrderNum() + "已完成";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "ORDER_COMPLETE");
         map.put("title", msgTitle);
-        map.put("order", order);
+        map.put("order", order1);
         pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
 
 

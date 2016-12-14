@@ -1082,15 +1082,14 @@ public class TechnicianV2Controller {
             order.setAfterPhotos(constructionShow.getAfterPhotos());
             orderService.save(order, constructionShow);
 
-            Order order1 = orderService.get(constructionShow.getOrderId());
+          //  Order order1 = orderService.get(constructionShow.getOrderId());
 
-            publisher.publishEvent(new OrderEventListener.OrderEvent(order1, Event.Action.FINISHED));
+            publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
 
 
             if(order.getProductStatus() == 1){
                 workDetailService.balance(order.getId());
             }
-
             //合作技师施工部位推送
 
             return new JsonResult(true, "施工完成");
