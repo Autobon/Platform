@@ -64,7 +64,7 @@ public class OrderViewService {
         pageSize = pageSize==null?10:pageSize;
         pageSize = pageSize<=0?10:pageSize;
         pageSize = pageSize>20?20:pageSize;
-        Pageable p = new PageRequest(currentPage-1,pageSize);
+        Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
 
         return orderViewRepository.findByStatusCode(statusCode, p);
     }
