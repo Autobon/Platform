@@ -1082,7 +1082,9 @@ public class TechnicianV2Controller {
             order.setAfterPhotos(constructionShow.getAfterPhotos());
             orderService.save(order, constructionShow);
 
-            publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.FINISHED));
+            Order order1 = orderService.get(constructionShow.getOrderId());
+
+            publisher.publishEvent(new OrderEventListener.OrderEvent(order1, Event.Action.FINISHED));
 
 
             if(order.getProductStatus() == 1){

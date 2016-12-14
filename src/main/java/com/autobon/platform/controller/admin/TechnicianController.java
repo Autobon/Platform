@@ -149,6 +149,7 @@ public class TechnicianController {
             tech.setVerifyMsg(verifyMsg);
         }
         tech.setVerifyAt(new Date());
+        tech.setWorkStatus(1);
         technicianService.save(tech);
         publisher.publishEvent(new TechnicianEventListener.TechnicianEvent(tech, Event.Action.VERIFIED));
         return new JsonMessage(true);
@@ -171,6 +172,20 @@ public class TechnicianController {
         return new JsonMessage(true, "", "", new JsonPage<>(locationService.findByTechId(techId, page, pageSize)));
     }
 
+
+    /**
+     * 回扣设置
+     * @param firstAgents
+     * @param secondAgents
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/rebate", method = RequestMethod.POST)
+    public JsonMessage rebate(@PathVariable("firstAgents ") int firstAgents,
+                              @RequestParam("secondAgents") int secondAgents) throws IOException {
+
+        return new JsonMessage(true, "", "" ,"一级代理回扣点数："+firstAgents+" ,二级代理回扣点数："+ secondAgents);
+    }
 
 
 }

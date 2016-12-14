@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -33,6 +34,8 @@ public class BillController {
     @Autowired ConstructionService constructionService;
     @Autowired DetailedBillService detailedBillService;
     @Autowired DetailedOrderService detailedOrderService;
+    @Autowired
+    WorkDetailService workDetailService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -125,5 +128,28 @@ public class BillController {
     public JsonMessage clear() {
         billService.clear();
         return new JsonMessage(true);
+    }
+
+
+
+
+    @RequestMapping(value = "/v2/{billId:\\d+}/order", method = RequestMethod.GET)
+    public JsonMessage getOrders(HttpServletRequest request,
+                                 @PathVariable(value = "billId") int billId,
+                                 @RequestParam(value = "page", defaultValue = "1") int page,
+                                 @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+
+        Bill bill = billService.get(billId);
+
+        if (bill == null) {
+            return new JsonMessage(false, "ILLEGAL_BILL_ID", "没有这个帐单");
+        } else {
+            Date to = Date.from(bill.getBillMonth().toInstant()
+                    .atZone(ZoneId.systemDefault()).toLocalDateTime()
+                    .plusMonths(1).atZone(ZoneId.systemDefault()).toInstant());
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(workDetailService.find(
+                            bill.getTechId(), bill.getBillMonth(), to, page, pageSize)));
+        }
     }
 }

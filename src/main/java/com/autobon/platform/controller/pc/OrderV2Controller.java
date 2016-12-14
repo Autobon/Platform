@@ -365,7 +365,7 @@ public class OrderV2Controller {
 
         Technician technician  = technicianService.get(techId);
         if(technician!= null && technician.getWorkStatus()== 3){
-            return new JsonResult(false,  "技师未认证或修改状态，不可指派");
+            return new JsonResult(false,  "技师未认证或休息状态，不可指派");
         }
 
         order.setReassignmentStatus(2);
