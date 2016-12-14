@@ -21,6 +21,9 @@ public class WorkDetail {
     @Column(name = "orderNum")
     private String orderNum;
 
+    @Column
+    private int source;
+
     @Column(name = "tech_id")
     private int techId;
 
@@ -66,6 +69,13 @@ public class WorkDetail {
 
     public WorkDetail(){}
 
+    public int getSource() {
+        return source;
+    }
+
+    public void setSource(int source) {
+        this.source = source;
+    }
 
     public int getId() {
         return id;
