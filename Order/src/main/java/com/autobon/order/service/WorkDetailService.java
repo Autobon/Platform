@@ -167,7 +167,7 @@ public class WorkDetailService {
 
 
                 TechStat techStat = techStatRepository.getByTechId(techId);
-                techStat.setBalance(money);
+                techStat.setBalance(techStat.getBalance() + money);
 
                 techStatRepository.save(techStat);
             }
