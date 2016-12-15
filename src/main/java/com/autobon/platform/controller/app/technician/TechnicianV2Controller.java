@@ -118,6 +118,7 @@ public class TechnicianV2Controller {
                 technicianSuperShow.setStarRate(String.valueOf(techStat.getStarRate()));
                 technicianSuperShow.setTotalOrders(String.valueOf(techStat.getTotalOrders()));
                 technicianSuperShow.setBalance(String.valueOf(techStat.getBalance()));
+                technicianSuperShow.setUnpaidOrders(String.valueOf(techStat.getUnpaidOrders()));
             }
             return new JsonResult(true, technicianSuperShow);
         }catch (Exception e){
