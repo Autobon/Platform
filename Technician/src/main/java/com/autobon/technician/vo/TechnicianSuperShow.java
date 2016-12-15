@@ -8,10 +8,10 @@ import com.autobon.technician.entity.Technician;
 public class TechnicianSuperShow {
 
     private Technician technician;
-    private String starRate = "4.5" ;
-    private String balance = "234.2";
-    private String unpaidOrders = "6";
-    private String totalOrders = "12";
+    private String starRate;
+    private String balance;
+    private String unpaidOrders;
+    private String totalOrders;
 
     public Technician getTechnician() {
         return technician;

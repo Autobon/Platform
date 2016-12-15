@@ -298,16 +298,16 @@ public class TechnicianV2Controller {
             if (technician == null) {
                 return new JsonResult(false, "登陆超时");
             }
-            String filename = technician.getId() + ".jpg";
+            String filename = UUID.randomUUID() + ".jpg";
 
-            InputStream in;
+      //      InputStream in;
             if (request.getContentLengthLong() >= 2*1024*1024) {
                 throw new MaxUploadSizeExceededException(2*1024*1024);
             }
             if (resolver.isMultipart(request)) {
                 MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
                 if (file == null || file.isEmpty()) return new JsonResult(false, "没有选择上传文件");
-                in = file.getInputStream();
+         //       in = file.getInputStream();
             } else {
                 String ctype = request.getHeader("content-type");
                 if (!ctype.equals("image/jpeg") && !ctype.equals("image/png")) {
@@ -316,7 +316,7 @@ public class TechnicianV2Controller {
                 if (request.getContentLengthLong() <= 0) {
                     return new JsonResult(false, "没有选择上传文件");
                 }
-                in = request.getInputStream();
+           //     in = request.getInputStream();
             }
 
 //            ConvertCmd cmd = new ConvertCmd(true);
