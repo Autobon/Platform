@@ -85,13 +85,14 @@ public class BillTask {
                 if (pay == null) continue;
                 Bill bill = new Bill(t.getId(), from);
                 bill.setSum(pay);
-                bill.setCount(constructionService.monthlyBillPayment(t.getId(), from, to));
+                int count = constructionService.monthlyBillPayment(t.getId(), from, to);
+                bill.setCount(count);
                 billService.save(bill);
                 billCount++;
 
                 TechStat techStat = techStatService.getByTechId(t.getId());
                 if(techStat != null){
-                    techStat.setUnpaidOrders(techStat.getUnpaidOrders() +1);
+                    techStat.setUnpaidOrders(techStat.getUnpaidOrders() + count);
                     techStatService.save(techStat);
                 }
             }
