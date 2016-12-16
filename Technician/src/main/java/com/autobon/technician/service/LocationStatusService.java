@@ -71,7 +71,7 @@ public class LocationStatusService {
     }
 
     public List<LocationStatusShow> getTechByDistance(String lat, String lng, int kilometre){
-        List<Object[]> techList = locationStatusRepository.getLocationStatusByDistance(lat, lng, kilometre);
+        List<Object[]> techList = locationStatusRepository.getLocationStatusByDistance(lat, lng, kilometre*1000);
         List<LocationStatusShow> locationStatuses = new ArrayList<>();
         for(Object[] objects: techList){
             LocationStatusShow LocationStatus = new LocationStatusShow(objects);

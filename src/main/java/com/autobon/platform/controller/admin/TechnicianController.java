@@ -1,5 +1,6 @@
 package com.autobon.platform.controller.admin;
 
+import com.autobon.order.entity.AgentRebate;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.TechnicianEventListener;
 import com.autobon.shared.JsonMessage;
@@ -173,19 +174,6 @@ public class TechnicianController {
     }
 
 
-    /**
-     * 回扣设置
-     * @param firstAgents
-     * @param secondAgents
-     * @return
-     * @throws IOException
-     */
-    @RequestMapping(value = "/rebate", method = RequestMethod.POST)
-    public JsonMessage rebate(@PathVariable("firstAgents ") int firstAgents,
-                              @RequestParam("secondAgents") int secondAgents) throws IOException {
-
-        return new JsonMessage(true, "", "" ,"一级代理回扣点数："+firstAgents+" ,二级代理回扣点数："+ secondAgents);
-    }
 
 
 }

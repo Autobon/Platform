@@ -1,6 +1,7 @@
 package com.autobon.platform.controller.admin;
 
 import com.autobon.getui.PushService;
+import com.autobon.order.entity.AgentRebate;
 import com.autobon.order.entity.DetailedOrder;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.WorkDetail;
@@ -251,6 +252,53 @@ public class OrderController {
 //        return new JsonMessage(true, "", "", comment);
     }
 
+
+    /**
+     * 回扣设置
+     * @param firstAgents
+     * @param secondAgents
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/rebate", method = RequestMethod.POST)
+    public JsonMessage addRebate(@RequestParam("firstAgents ") int firstAgents,
+                                 @RequestParam("secondAgents") int secondAgents) throws IOException {
+
+        List<AgentRebate> agentRebates  = orderService.findAgentRebate();
+        if(agentRebates!= null && agentRebates.size()>0){
+            return  new JsonMessage(false ,"","回扣配置已存在，只允许一条配置规则", "");
+        }
+        AgentRebate agentRebate = new AgentRebate();
+        agentRebate.setPrimaryAgent(firstAgents);
+        agentRebate.setSecondAgent(secondAgents);
+        orderService.saveAgentRebate(agentRebate);
+        return new JsonMessage(true, "", "" ,"一级代理回扣点数："+firstAgents+" ,二级代理回扣点数："+ secondAgents);
+    }
+
+
+
+    /**
+     * 回扣设置
+     * @param firstAgents
+     * @param secondAgents
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/rebate/{rid}", method = RequestMethod.POST)
+    public JsonMessage updateRebate(@PathVariable("rid") int rid,
+                                    @RequestParam("firstAgents ") int firstAgents,
+                                    @RequestParam("secondAgents") int secondAgents) throws IOException {
+
+
+        AgentRebate agentRebate = orderService.getAgentRebate(rid);
+        if(agentRebate != null) {
+            agentRebate.setPrimaryAgent(firstAgents);
+            agentRebate.setSecondAgent(secondAgents);
+            orderService.saveAgentRebate(agentRebate);
+            return new JsonMessage(true, "", "" ,"一级代理回扣点数："+firstAgents+" ,二级代理回扣点数："+ secondAgents);
+        }
+        return new JsonMessage(false, "", "" ,"");
+    }
 
 
 }

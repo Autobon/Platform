@@ -3,12 +3,16 @@ package com.autobon.order.service;
 import com.autobon.order.entity.*;
 import com.autobon.order.repository.*;
 import com.autobon.order.vo.*;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +36,9 @@ public class OrderService {
 
     @Autowired
     private ConstructionPositionRepository constructionPositionRepository;
+
+    @Autowired
+    private AgentRebateRepository agentRebateRepository;
 
 
 
@@ -275,10 +282,6 @@ public class OrderService {
             type = "%" +String.valueOf(orderType.get(0)) +"%";
 
         }
-
-
-
-
         return repository.findOrder(orderNum, creatorName, contactPhone, type,
                 statusCode, tech , new PageRequest(page - 1, pageSize, direction, sort));
     }
@@ -311,6 +314,11 @@ public class OrderService {
         return repository.countOfCoopAccount(accountId);
     }
 
+
+
+    public HSSFWorkbook exportExcel(){
+      return null;
+    }
 
 
     public Page<OrderShow> getOrders(Integer techId,Integer status, Integer currentPage, Integer pageSize){
@@ -395,5 +403,23 @@ public class OrderService {
             orderShows.add(orderShow);
         }
         return new PageImpl<>(orderShows,p,count);
+    }
+
+
+    public int saveAgentRebate(AgentRebate agentRebate){
+
+        agentRebateRepository.save(agentRebate);
+        return 0;
+    }
+
+    public AgentRebate getAgentRebate(int rid){
+
+        return agentRebateRepository.getOne(rid);
+    }
+
+
+    public List<AgentRebate> findAgentRebate(){
+
+        return agentRebateRepository.findAll();
     }
 }

@@ -41,9 +41,9 @@ spring:
 
     datasource:
         type: com.mchange.v2.c3p0.ComboPooledDataSource
-        url: jdbc:mysql://127.0.0.1:3306/autobondb?characterEncoding=utf8&useSSL=false
-        user: root
-        password: root
+        url: jdbc:mysql://121.40.157.200:3306/autobondb_test?characterEncoding=utf8&useSSL=false
+        user: test
+        password: test
         checkoutTimeout: 6000 # 获取数据库连接等待超时时间,毫秒
         idleConnectionTestPeriod: 600 # 空闲连接检测时间, 秒
         initialPoolSize: 3 # 初始连接池连接数
@@ -61,6 +61,6 @@ spring:
         properties:
             hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
     redis:
-        host: 127.0.0.1
-        port: 6379
-        password:
+       host: 120.55.98.235
+       port: 6379
+       password: 193ete0AD2936ac06c09&5307fab776Zcd0fatkf0c4ef
