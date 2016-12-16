@@ -24,7 +24,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.car_cover_level as car_cover_level," +
             " t.color_modify_level as color_modify_level," +
             " t.beauty_level as beauty_level," +
-            " truncate((2 * 6378.137 * ASIN(SQRT(POW(SIN(PI() * abs((?1 - ls.lat)) / 360),2) + COS(PI() *  ?2 / 180) * abs(COS(ls.lat * PI()) / 180) * POW(SIN(PI() * abs(?2 - ls.lng) / 360),2)))) ,2) AS distance," +
+            " truncate(round(6378.138*2*asin(sqrt(pow(sin( (ls.lat*pi()/180-?1*pi()/180)/2),2)+cos(ls.lat*pi()/180)*cos(?1 *pi()/180)* pow(sin( (ls.lng*pi()/180-?2*pi()/180)/2),2)))*1000)/1000,2) AS distance," +
             " ls.status as status ," +
             " ts.total_orders as orderCount," +
             " ts.star_rate as evaluate," +
@@ -56,7 +56,7 @@ public interface LocationStatusRepository extends JpaRepository<LocationStatus,I
             " t.car_cover_level as car_cover_level," +
             " t.color_modify_level as color_modify_level," +
             " t.beauty_level as beauty_level," +
-            " round(6378.138*2*asin(sqrt(pow(sin( (ls.lat*pi()/180-?1*pi()/180)/2),2)+cos(ls.lat*pi()/180)*cos(?1 *pi()/180)* pow(sin( (ls.lng*pi()/180-?2*pi()/180)/2),2)))*1000) AS distance," +
+            " truncate(round(6378.138*2*asin(sqrt(pow(sin( (ls.lat*pi()/180-?1*pi()/180)/2),2)+cos(ls.lat*pi()/180)*cos(?1 *pi()/180)* pow(sin( (ls.lng*pi()/180-?2*pi()/180)/2),2)))*1000)/1000,2) AS distance," +
             " ls.status as status, " +
             " ts.total_orders as orderCount," +
             " ts.star_rate as evaluate," +
