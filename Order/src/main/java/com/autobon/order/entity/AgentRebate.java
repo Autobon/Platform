@@ -14,9 +14,9 @@ public class AgentRebate {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column
-    private int primaryAgent;   //Ò»¼¶´úÀí
+    private int primaryAgent;   //ä¸€çº§ä»£ç†
     @Column
-    private int secondAgent;    //¶ş¼¶´úÀí
+    private int secondAgent;    //äºŒçº§ä»£ç†
 
     public int getId() {
         return id;

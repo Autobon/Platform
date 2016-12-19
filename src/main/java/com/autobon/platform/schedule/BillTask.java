@@ -64,7 +64,7 @@ public class BillTask {
     }
 
     @Async
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0 2 1 * ?")
     public void monthlyBill(){
         log.info("月账清算任务开始");
 
