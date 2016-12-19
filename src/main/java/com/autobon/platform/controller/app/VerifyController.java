@@ -34,15 +34,7 @@ public class VerifyController {
     @RequestMapping(value = "/v2/verifySms", method = RequestMethod.POST)
     public JsonResult getVerifySms(@RequestParam("phone") String phone) throws IOException {
         String code = VerifyCode.generateRandomNumber(6);
-//        if (env.equals("TEST")) {
-//            code = "123456";
-//        }
-//        else {
-//            smsSender.sendVerifyCode(phone, code);
-//        }
-
-        code = "123456";
-
+        smsSender.sendVerifyCode(phone, code);
         redisCache.set("verifySms:" + phone, code, 5 * 60);
         return new JsonResult(true);
     }
