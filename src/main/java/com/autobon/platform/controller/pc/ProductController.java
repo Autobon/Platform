@@ -45,12 +45,22 @@ public class ProductController {
      */
     @RequestMapping(value = "/{orderId}/product", method = RequestMethod.POST)
     public JsonResult saveProduct(@PathVariable("orderId") int orderId,
-                                  @RequestParam(value = "productIds", required = true) String productIds){
+                                  @RequestParam(value = "productIds", required = true) String productIds,
+                                  @RequestParam(value = "productIds", required = false) String vehicleModel,
+                                  @RequestParam(value = "productIds", required = false) String realOrderNum,
+                                  @RequestParam(value = "productIds", required = false) String license,
+                                  @RequestParam(value = "productIds", required = false) String vin){
 
         Order order = orderService.get(orderId);
         if(order == null){
             return new JsonResult(false,"订单不存在");
         }
+
+        order.setVehicleModel(vehicleModel == null ? order.getVehicleModel():vehicleModel);
+        order.setRealOrderNum(realOrderNum == null ? order.getRealOrderNum():realOrderNum);
+        order.setLicense(license == null ? order.getLicense():license);
+        order.setVin(vin == null ? order.getVin():vin);
+
 
 
 

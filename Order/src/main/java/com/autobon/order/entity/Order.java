@@ -108,6 +108,14 @@ public class Order {
 
     @Column private int reassignmentStatus;  //申请改派状态 0 未申请改派,1已申请改派 2已处理
 
+    @Column private String vehicleModel;
+
+    @Column private String realOrderNum;
+
+    @Column private String license;
+
+    @Column private String vin;
+
     public Order() {
         this.orderNum = generateOrderNum();
         this.setStatus(Status.NEWLY_CREATED);
@@ -352,5 +360,37 @@ public class Order {
 
     public void setReassignmentStatus(int reassignmentStatus) {
         this.reassignmentStatus = reassignmentStatus;
+    }
+
+    public String getVehicleModel() {
+        return vehicleModel;
+    }
+
+    public void setVehicleModel(String vehicleModel) {
+        this.vehicleModel = vehicleModel;
+    }
+
+    public String getRealOrderNum() {
+        return realOrderNum;
+    }
+
+    public void setRealOrderNum(String realOrderNum) {
+        this.realOrderNum = realOrderNum;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
+    public String getVin() {
+        return vin;
+    }
+
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 }

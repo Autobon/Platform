@@ -5,6 +5,7 @@ import com.autobon.order.entity.ConstructionProject;
 import com.autobon.order.repository.ConstructionPositionRepository;
 import com.autobon.order.repository.ConstructionProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,7 +59,8 @@ public class ConstructionProjectService {
 
     public Map<Integer,String> getProject(){
         Map<Integer, String> map = new HashMap<>();
-        List<ConstructionProject> constructionProjects = constructionProjectRepository.findAll();
+        Sort s=new Sort(Sort.Direction.ASC, "id");
+        List<ConstructionProject> constructionProjects = constructionProjectRepository.findAll(s);
         for(ConstructionProject constructionProject: constructionProjects){
             map.put(constructionProject.getId(), constructionProject.getName());
         }
@@ -67,7 +69,8 @@ public class ConstructionProjectService {
 
     public Map<Integer,String>  getPosition(){
         Map<Integer, String> map = new HashMap<>();
-        List<ConstructionPosition> constructionPositions = constructionPositionRepository.findAll();
+        Sort s=new Sort(Sort.Direction.ASC, "id");
+        List<ConstructionPosition> constructionPositions = constructionPositionRepository.findAll(s);
         for(ConstructionPosition constructionPosition: constructionPositions){
             map.put(constructionPosition.getId(), constructionPosition.getName());
         }
@@ -76,7 +79,8 @@ public class ConstructionProjectService {
 
     public Map<String, Integer>  getProject1(){
         Map<String, Integer> map = new HashMap<>();
-        List<ConstructionProject> constructionProjects = constructionProjectRepository.findAll();
+        Sort s=new Sort(Sort.Direction.ASC, "id");
+        List<ConstructionProject> constructionProjects = constructionProjectRepository.findAll(s);
         for(ConstructionProject constructionProject: constructionProjects){
             map.put(constructionProject.getName(), constructionProject.getId());
         }
@@ -85,7 +89,8 @@ public class ConstructionProjectService {
 
     public Map<String, Integer>  getPosition1(){
         Map<String, Integer> map = new HashMap<>();
-        List<ConstructionPosition> constructionPositions = constructionPositionRepository.findAll();
+        Sort s=new Sort(Sort.Direction.ASC, "id");
+        List<ConstructionPosition> constructionPositions = constructionPositionRepository.findAll(s);
         for(ConstructionPosition constructionPosition: constructionPositions){
             map.put(constructionPosition.getName(), constructionPosition.getId());
         }
