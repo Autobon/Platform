@@ -129,6 +129,7 @@ public class ProductController {
 
 
             orderProductSuper.setOrderId(orderId);
+            orderProductSuper.setPhoto(order.getPhoto());
             orderProductSuper.setOrderNum(order.getOrderNum());
             List<ProjectShow> projectShows = new ArrayList<>();
             Map<Integer, String> projectMap = constructionProjectService.getProject();

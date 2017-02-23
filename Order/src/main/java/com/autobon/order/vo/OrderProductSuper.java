@@ -8,6 +8,7 @@ import java.util.List;
 public class OrderProductSuper {
     private int orderId;
     private String orderNum;
+    private String photo;
     private List<ProjectShow> project;
 
     public OrderProductSuper() {
@@ -37,5 +38,13 @@ public class OrderProductSuper {
 
     public void setProject(List<ProjectShow> project) {
         this.project = project;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
