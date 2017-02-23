@@ -88,6 +88,18 @@ public class OrderV2Controller {
 
 
     /**
+     * 查询订单产品列表
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/v2/{orderId}/product", method = RequestMethod.GET)
+    public JsonResult getProduct(@PathVariable("orderId") int orderId){
+
+        return new JsonResult(true, orderProductService.findByOrderId(orderId));
+    }
+
+
+    /**
      * 修改订单
      * @param orderId 订单ID
      * @param type 施工项目
@@ -464,4 +476,7 @@ public class OrderV2Controller {
                 bos.close();
         }
     }
+
+
+
 }

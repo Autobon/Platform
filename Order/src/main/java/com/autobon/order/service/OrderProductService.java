@@ -1,8 +1,10 @@
 package com.autobon.order.service;
 
 import com.autobon.order.entity.OrderProduct;
+import com.autobon.order.entity.OrderProductView;
 import com.autobon.order.entity.Product;
 import com.autobon.order.repository.OrderProductRepository;
+import com.autobon.order.repository.OrderProductViewRepository;
 import com.autobon.order.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ public class OrderProductService {
 
     @Autowired
     OrderProductRepository orderProductRepository;
+    @Autowired
+    OrderProductViewRepository orderProductViewRepository;
 
 
     @PersistenceContext
@@ -55,6 +59,11 @@ public class OrderProductService {
     public int deleteByOrderId(int orderId){
         orderProductRepository.deleteByOrderId(orderId);
         return 0;
+    }
+
+    public List<OrderProductView> findByOrderId(int orderId){
+
+        return orderProductViewRepository.findByOrderId(orderId);
     }
 
 }
