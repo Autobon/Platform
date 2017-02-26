@@ -86,6 +86,15 @@ public class OrderV2Controller {
         return new JsonResult(true, orderShow);
     }
 
+    /**
+     * 查询订单
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/v2/{orderId}/info", method = RequestMethod.GET)
+    public JsonResult getByOrderId(@PathVariable("orderId") int orderId){
+        return new JsonResult(true, orderService.get(orderId));
+    }
 
     /**
      * 查询订单产品列表

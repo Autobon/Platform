@@ -25,8 +25,27 @@ export default class OrderDetailCtrl extends Injector {
                 order.position         = {lng: order.longitude, lat: order.latitude};
                 $scope.order.photoList = [];
                 $scope.order.photoList = $scope.order.photo.split(',');
+                console.log($scope.order.beforePhotos);
+                $scope.order.startPhotoList = [];
+                $scope.order.startPhotoList = $scope.order.beforePhotos.split(',');
+                console.log(JSON.stringify($scope.order.startPhotoList));
+
+                $scope.order.afterPhotoList = [];
+                $scope.order.afterPhotoList = $scope.order.afterPhotos.split(',');
             }
         });
+        OrderService.getOrder($stateParams.id).then(res => {
+            if (res.data.status === true) {
+                $scope.or = res.data.message;
+            }
+        });
+
+        OrderService.getOrderProduct($stateParams.id).then(res => {
+            if (res.data.status === true) {
+                $scope.products = res.data.message;
+            }
+
+        })
     }
 
     saveComment() {

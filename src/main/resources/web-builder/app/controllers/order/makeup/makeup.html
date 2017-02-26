@@ -6,6 +6,27 @@
                 <span>{{product.orderNum}}</span>
             </div>
         </div>
+        <div class="row-search-h40">
+            <div class="form-group ml10">
+                <label>真实编号</label>
+                <input type="text" class="form-control ml10" ng-model="realOrderNum">
+            </div>
+            <div class="form-group ml10">
+                <label>车型</label>
+                <input type="text" class="form-control ml10" ng-model="vehicleModel">
+            </div>
+            <div class="form-group ml10">
+                <label>车牌</label>
+                <input type="text" class="form-control ml10" ng-model="license">
+            </div>
+            <div class="form-group ml10">
+                <label>车架号</label>
+                <input type="text" class="form-control ml10" ng-model="vin">
+            </div>
+            <div ng-repeat="photo in photoList">
+                <img ng-if="photo" ng-src="{{photo}}" style="height: 280px;width: 300px;" image-modal class="img-thumbnail pull-left m-r-10">
+            </div>
+        </div>
         <div class="principal" ng-repeat="project in product.project">
             <div class="main-principal">
                 <form class="form-inline form-border">

@@ -20,6 +20,14 @@ export default class OrderService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/order/v2/' + orderId);
     }
+    getOrder(orderId) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/v2/' + orderId + '/info');
+    }
+    getOrderProduct(orderId) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/v2/' + orderId + '/product');
+    }
     getAllPosition(orderId) {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/order/project/position/' + orderId);

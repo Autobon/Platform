@@ -2,14 +2,23 @@ import {Injector} from 'ngES6';
 import angular from 'angular';
 
 export default class OrderMakeupCtrl extends Injector {
-    static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'ProductService', 'Settings'];
+    static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'ProductService', 'OrderService', 'Settings'];
     static $template = require('./makeup.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, ProductService} = this.$injected;
+        const {$scope, $stateParams, ProductService, OrderService} = this.$injected;
         this.attachMethodsTo($scope);
 
+        OrderService.getDetail2($stateParams.id).then(res => {
+            if (res.data.status === true) {
+                let order = $scope.order = res.data.message;
+
+                order.position         = {lng: order.longitude, lat: order.latitude};
+                $scope.photoList = [];
+                $scope.photoList = $scope.order.photo.split(',');
+            }
+        });
         ProductService.getOrderProduct($stateParams.id).then(res => {
             if (res.data.status === true) {
                 $scope.product = res.data.message;
@@ -34,7 +43,7 @@ export default class OrderMakeupCtrl extends Injector {
                 }
             }
         }
-        ProductService.saveProduct($scope.product.orderId, {productIds: productIdStr}).then(res => {
+        ProductService.saveProduct($scope.product.orderId, {productIds: productIdStr, vehicleModel: $scope.vehicleModel, license: $scope.license, vin: $scope.vin, realOrderNum: $scope.realOrderNum}).then(res => {
             if (res.data.status === true) {
                 let pCoop = $scope.$parent.orders.find(c => c.id === res.data.message.id);
                 if (pCoop) {

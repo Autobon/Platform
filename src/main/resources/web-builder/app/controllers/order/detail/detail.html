@@ -4,7 +4,7 @@
         <!--<span ng-repeat="s in technician.skill.split(',')" class="fa fa-tag m-l-5">&nbsp;{{Settings.orderTypes[s]}}</span><br>-->
         <span class="btn btn-sm btn-success">{{Settings.orderStatus[order.status]}}</span>
         <span class="btn btn-sm btn-default" ng-if="order.status == 'NEWLY_CREATED'" popover-placement="left"
-              popover-trigger="outsideClick" uib-popover-template="'assignOrder.html'"><i class="fa fa-paper-plane-o"></i>&nbsp;派单</span>
+              popover-trigger="outsideClick" ui-sref="console.order.dispatch({id: order.id})"><i class="fa fa-paper-plane-o"></i>&nbsp;派单</span>
     </h3>
     <div class="row detail-row">
         <div class="col-sm-4"><b>联系人: </b><span>{{order.techName}}&nbsp;&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-earphone">{{order.techPhone}}</i></span></div>
@@ -21,14 +21,38 @@
          <div class="col-sm-4"><b>补录状态: </b><span>{{Settings.productStatus[order.productStatus]}}</span></div>
          <div class="col-sm-4"><b>改派状态: </b><span>{{Settings.reassignmentStatus[order.reassignmentStatus]}}</span></div>
      </div>
+     <div class="row detail-row">
+         <div class="col-sm-3"><b>真实编号: </b><span>{{or.realOrderNum}}</span></div>
+         <div class="col-sm-3"><b>车型: </b><span>{{or.vehicleModel}}</span></div>
+         <div class="col-sm-3"><b>车牌: </b><span>{{or.license}}</span></div>
+         <div class="col-sm-3"><b>车架号: </b><span>{{or.vin}}</span></div>
+     </div>
     <div class="row detail-row">
         <div class="col-sm-12"><b>备注: </b><span>{{order.remark}}</span></div>
     </div>
+
+     <div>
+         <div class="row m-t-10">
+             <div class="col-sm-2"><b>订单照片: </b></div>
+             <div class="col-sm-3" ng-repeat="photo in order.photoList">
+                 <img ng-if="photo" ng-src="{{photo}}" style="height: 280px;width: 300px;" image-modal class="img-thumbnail pull-left m-r-10">
+             </div>
+         </div>
+         <div class="row m-t-10">
+             <div class="col-sm-2"><b>施工前: </b></div>
+             <div class="col-sm-3" ng-repeat="startPhoto in order.startPhotoList">
+                 <img ng-if="startPhoto" ng-src="{{startPhoto}}" style="height: 280px;width: 300px;" image-modal class="img-thumbnail pull-left m-r-10">
+             </div>
+         </div>
+         <div class="row m-t-10">
+             <div class="col-sm-2"><b>施工后: </b></div>
+             <div class="col-sm-3" ng-repeat="afterPhoto in order.afterPhotoList">
+                 <img ng-if="afterPhoto" ng-src="{{afterPhoto}}" style="height: 280px;width: 300px;" image-modal class="img-thumbnail pull-left m-r-10">
+             </div>
+         </div>
+     </div>
     <div class="row m-t-10">
-        <div class="col-sm-4" ng-repeat="photo in order.photoList">
-            <img ng-if="photo" ng-src="{{photo}}" style="height: 280px;" image-modal class="img-thumbnail pull-left m-r-10">
-        </div>
-        <div class="col-sm-8">
+        <div class="col-sm-12">
             <div class="form-control" style="cursor: not-allowed;">
                 <span>经度: {{order.longitude}}, 纬度: {{order.latitude}}</span>
             </div>
@@ -73,5 +97,44 @@
             <div class="col-sm-3"><b>数量: </b><span>{{ws.total}}</span></div>
         </div>
     </div>
+     <div>
+         <h4>施工项目信息:</h4>
+         <div class="table-responsive m-l-20 m-r-20">
+             <table class="table table-striped">
+                 <thead>
+                 <tr>
+                     <th>序号</th>
+                     <th>施工项目</th>
+                     <th>施工部位</th>
+                     <th>品牌</th>
+                     <th>编码</th>
+                     <th>型号</th>
+                     <th>施工部位</th>
+                     <th>工时</th>
+                     <th>施工提成</th>
+                     <th>星级要求</th>
+                     <th>报废扣款</th>
+                     <th>质保</th>
+                 </tr>
+                 </thead>
+                 <tbody>
+                 <tr ng-repeat="product in products" ng-style="product.style">
+                     <td>{{product.id}}</td>
+                     <td>{{Settings.orderTypes[product.constructionProjectId]}}</td>
+                     <td>{{Settings.positionTypes[product.constructionPositionId]}}</span></td>
+                     <td>{{product.brand}}</td>
+                     <td>{{product.code}}</td>
+                     <td>{{product.model}}</td>
+                     <td>{{product.constructionPosition}}</td>
+                     <td>{{product.workingHours}}</td>
+                     <td>{{product.constructionCommission}}</td>
+                     <td>{{product.starLevel}}</td>
+                     <td>{{product.scrapCost}}</td>
+                     <td>{{product.warranty}}</td>
+                 </tr>
+                 </tbody>
+             </table>
+         </div>
+     </div>
    </div>
 </div>
