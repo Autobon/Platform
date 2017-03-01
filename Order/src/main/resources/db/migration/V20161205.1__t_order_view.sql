@@ -46,4 +46,4 @@ CREATE VIEW t_order_view as  SELECT   o.id ,
                                           LEFT JOIN t_tech_stat ts ON ts.tech_id = o.main_tech_id
                                           LEFT JOIN t_comment t ON t.order_id = o.id
                                           LEFT JOIN t_location_status ls ON ls.tech_id = o.main_tech_id
-                                          GROUP BY o.id
+                                          order by o.agreed_start_time
