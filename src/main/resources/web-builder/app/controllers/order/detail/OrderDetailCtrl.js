@@ -44,8 +44,7 @@ export default class OrderDetailCtrl extends Injector {
             if (res.data.status === true) {
                 $scope.products = res.data.message;
             }
-
-        })
+        });
     }
 
     saveComment() {
