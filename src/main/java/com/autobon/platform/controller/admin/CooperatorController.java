@@ -71,9 +71,9 @@ public class CooperatorController {
     // 认证商户
     @RequestMapping(value = "/verify/{coopId:\\d+}", method = RequestMethod.POST)
     public JsonMessage verify(HttpServletRequest request,
-            @PathVariable("coopId") int coopId,
-            @RequestParam("verified") boolean verified,
-            @RequestParam(value = "remark", defaultValue = "") String remark) throws IOException {
+                              @PathVariable("coopId") int coopId,
+                              @RequestParam("verified") boolean verified,
+                              @RequestParam(value = "remark", defaultValue = "") String remark) throws IOException {
         Cooperator coop = cooperatorService.get(coopId);
         Staff staff = (Staff) request.getAttribute("user");
 
@@ -86,6 +86,19 @@ public class CooperatorController {
         reviewCooper.setReviewTime(new Date());
         reviewCooper.setReviewerId(staff.getId());
         if (verified) {
+
+
+            if(coop.getFullname() == null || coop.getCorporationName() == null){
+                return  new JsonMessage(false,"商户名称 企业法人为空","商户名称 企业法人为空");
+            }
+
+            if(coop.getLatitude() == null || coop.getLongitude() == null){
+                return new JsonMessage(false, "商户经纬度为空 不能认证", "商户经纬度为空 不能认证");
+            }
+
+            if(coop.getBusinessLicense() == null || coop.getBussinessLicensePic() == null){
+                return new JsonMessage(false, "商户名称和营业执照为空 不能认证", "商户名称和营业执照为空 不能认证");
+            }
             coop.setStatusCode(1);
             reviewCooper.setResult(true);
         } else {
@@ -114,25 +127,27 @@ public class CooperatorController {
 
     @RequestMapping(value = "/{coopId:[\\d]+}", method = RequestMethod.POST)
     public JsonMessage update(@PathVariable("coopId") int coopId,
-            @RequestParam("fullname") String fullname,
-            @RequestParam("businessLicense") String businessLicense,
-            @RequestParam("corporationName") String corporationName,
-            @RequestParam("corporationIdNo") String corporationIdNo,
-            @RequestParam("bussinessLicensePic") String bussinessLicensePic,
-            @RequestParam("corporationIdPicA") String corporationIdPicA,
-            @RequestParam("longitude") String longitude,
-            @RequestParam("latitude") String latitude,
-            @RequestParam("invoiceHeader") String invoiceHeader,
-            @RequestParam("taxIdNo") String taxIdNo,
-            @RequestParam("postcode") String postcode,
-            @RequestParam("province") String province,
-            @RequestParam("city") String city,
-            @RequestParam("district") String district,
-            @RequestParam("address") String address,
-            @RequestParam("contact") String contact,
-            @RequestParam("contactPhone") String contactPhone,
-            @RequestParam("phone") String phone,
-            @RequestParam("shortname") String shortname) {
+                              @RequestParam("fullname") String fullname,
+                              @RequestParam("businessLicense") String businessLicense,
+                              @RequestParam("corporationName") String corporationName,
+                              @RequestParam("corporationIdNo") String corporationIdNo,
+                              @RequestParam("bussinessLicensePic") String bussinessLicensePic,
+                              @RequestParam("corporationIdPicA") String corporationIdPicA,
+                              @RequestParam("longitude") String longitude,
+                              @RequestParam("latitude") String latitude,
+                              @RequestParam("invoiceHeader") String invoiceHeader,
+                              @RequestParam("taxIdNo") String taxIdNo,
+                              @RequestParam("postcode") String postcode,
+                              @RequestParam("province") String province,
+                              @RequestParam("city") String city,
+                              @RequestParam("district") String district,
+                              @RequestParam("address") String address,
+                              @RequestParam("contact") String contact,
+                              @RequestParam("contactPhone") String contactPhone,
+                              @RequestParam("phone") String phone,
+                              @RequestParam("shortname") String shortname,
+                              @RequestParam(value = "salesman",required = false) String salesman,
+                              @RequestParam(value = "salesmanPhone",required = false) String salesmanPhone) {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
         corporationIdNo = corporationIdNo.toUpperCase();
@@ -186,10 +201,26 @@ public class CooperatorController {
         cooperator.setAddress(address);
         cooperator.setContact(contact);
         cooperator.setContactPhone(contactPhone);
+        cooperator.setSalesman(salesman);
+        cooperator.setSalesmanPhone(salesmanPhone);
+
+        if(cooperator.getFullname() == null || cooperator.getCorporationName() == null){
+            return  new JsonMessage(false,"商户名称 企业法人为空","商户名称 企业法人为空");
+        }
+
+        if(cooperator.getLatitude() == null || cooperator.getLongitude() == null){
+            return new JsonMessage(false, "商户经纬度为空 不能认证", "商户经纬度为空 不能认证");
+        }
+
+        if(cooperator.getBusinessLicense() == null || cooperator.getBussinessLicensePic() == null){
+            return new JsonMessage(false, "商户名称和营业执照为空 不能认证", "商户名称和营业执照为空 不能认证");
+        }
+
         cooperatorService.save(cooperator);
 
         coopAccount.setPhone(phone);
         coopAccount.setShortname(shortname);
+        coopAccount.setName(shortname);
         coopAccountService.save(coopAccount);
         coopAccountService.batchUpdateShortname(coopId, shortname);
         msg.setData(cooperator);
@@ -214,15 +245,15 @@ public class CooperatorController {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有选择上传文件");
         in = file.getInputStream();
 
-        ConvertCmd cmd = new ConvertCmd(true);
-        cmd.setSearchPath(gmPath);
-        cmd.setInputProvider(new Pipe(in, null));
-        IMOperation operation = new IMOperation();
-        operation.addImage("-");
-        operation.resize(1200, 1200, ">");
-        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
-        cmd.run(operation);
-
+//        ConvertCmd cmd = new ConvertCmd(true);
+//        cmd.setSearchPath(gmPath);
+//        cmd.setInputProvider(new Pipe(in, null));
+//        IMOperation operation = new IMOperation();
+//        operation.addImage("-");
+//        operation.resize(1200, 1200, ">");
+//        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+//        cmd.run(operation);
+        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
         return new JsonMessage(true, "", "", path + "/" + filename);
     }
 
@@ -248,7 +279,9 @@ public class CooperatorController {
             @RequestParam("longitude") String longitude,
             @RequestParam("latitude") String latitude,
             @RequestParam("phone") String phone,
-            @RequestParam("shortname") String shortname) {
+            @RequestParam("shortname") String shortname,
+            @RequestParam(value = "salesman",required = false) String salesman,
+            @RequestParam(value = "salesmanPhone",required = false) String salesmanPhone) {
         JsonMessage msg = new JsonMessage(true);
         ArrayList<String> messages = new ArrayList<>();
 
@@ -300,12 +333,15 @@ public class CooperatorController {
             cooperator.setDistrict(district);
             cooperator.setLongitude(longitude);
             cooperator.setLatitude(latitude);
+            cooperator.setSalesman(salesman);
+            cooperator.setSalesmanPhone(salesmanPhone);
             cooperatorService.save(cooperator);
             msg.setData(cooperator);
 
             //创建商户下属管理员账户
             CoopAccount coopAccount = new CoopAccount();
             coopAccount.setShortname(shortname);
+            coopAccount.setName(shortname);
             coopAccount.setPhone(phone);
             coopAccount.setPassword(coopAccount.encryptPassword("123456"));
             coopAccount.setCooperatorId(cooperator.getId());

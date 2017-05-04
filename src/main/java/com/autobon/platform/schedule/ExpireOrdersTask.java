@@ -24,8 +24,8 @@ public class ExpireOrdersTask {
     @Autowired
     OrderService orderService;
 
-    @Async
-    @Scheduled(fixedRate = 3600*1000, initialDelay = 300*1000)
+  //  @Async
+  //  @Scheduled(fixedRate = 3600*1000, initialDelay = 300*1000)
     public void expireOrders() {
         log.info("订单超时清理任务开始");
         Date signInBefore = Date.from(LocalDateTime.now().minusHours(3).atZone(ZoneId.systemDefault()).toInstant());

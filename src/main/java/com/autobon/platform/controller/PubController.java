@@ -61,11 +61,9 @@ public class PubController {
     @RequestMapping(value = "/api/pub/verifySms", method = RequestMethod.GET)
     public JsonMessage getVerifySms(@RequestParam("phone") String phone) throws IOException {
         String code = VerifyCode.generateRandomNumber(6);
-        if (env.equals("TEST")) {
-            code = "123456";
-        } else {
-            smsSender.sendVerifyCode(phone, code);
-        }
+
+        smsSender.sendVerifyCode(phone, code);
+
         redisCache.set("verifySms:" + phone, code, 5 * 60);
         return new JsonMessage(true);
     }

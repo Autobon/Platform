@@ -5,6 +5,7 @@ import com.autobon.technician.repository.DetailedTechnicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,8 @@ public class DetailedTechnicianService {
         return repository.findAll(new PageRequest(page - 1, pageSize,
                 Sort.Direction.DESC, "lastLoginAt"));
     }
+
+
 
 
 }

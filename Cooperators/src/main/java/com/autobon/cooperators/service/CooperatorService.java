@@ -26,6 +26,12 @@ public class CooperatorService {
     }
 
     public Page<Cooperator> find(String fullname, String corporationName, Integer statusCode, int page, int pageSize) {
+        if(fullname != null){
+            fullname = "%"+fullname+"%";
+        }
+        if(corporationName != null){
+            corporationName = "%"+corporationName+"%";
+        }
         return repository.find(fullname, corporationName, statusCode,
                 new PageRequest(page - 1, pageSize, Sort.Direction.DESC, "id"));
     }

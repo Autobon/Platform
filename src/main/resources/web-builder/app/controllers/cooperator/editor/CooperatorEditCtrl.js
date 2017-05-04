@@ -21,7 +21,9 @@ export default class CooperatorEditCtrl extends Injector {
                 }
             });
         } else {
-            $scope.coop = {};
+            $scope.coop = {
+                position : {lng: null, lat: null},
+            };
         }
         $scope.$watch('coop.position', (newVal) => {
             if (newVal) {
@@ -65,6 +67,11 @@ export default class CooperatorEditCtrl extends Injector {
 
     save() {
         const {$scope, $state, CooperatorService} = this.$injected;
+        if ($scope.coop.position.lng === undefined || $scope.coop.position.lat === undefined
+            || $scope.coop.position.lng === null || $scope.coop.position.lat === null) {
+            $scope.error = '请选择商户的地理位置';
+            return;
+        }
         $scope.coop.longitude = $scope.coop.position.lng;
         $scope.coop.latitude  = $scope.coop.position.lat;
         let q, isUpdate       = !!$scope.coop.id;
@@ -87,7 +94,9 @@ export default class CooperatorEditCtrl extends Injector {
                     }
                     $state.go('^.detail', {id: res.data.data.id});
                 } else {
-                    $scope.error = res.data.message;
+                    if (res.data.result === false) {
+                        $scope.error = res.data.message;
+                    }
                 }
             }
         });

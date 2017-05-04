@@ -1,5 +1,7 @@
 package com.autobon.technician.entity;
 
+import com.autobon.technician.vo.LocationShow;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -110,5 +112,17 @@ public class Location {
 
     public void setTechId(int techId) {
         this.techId = techId;
+    }
+
+    public Location(){}
+    public Location(int techId, LocationShow locationShow){
+        this.id = techId;
+        this.lng = locationShow.getPositionLon();
+        this.lat = locationShow.getPositionLat();
+        this.province = locationShow.getProvince();
+        this.city = locationShow.getCity();
+        this.district = locationShow.getDistrict();
+        this.street = locationShow.getStreet();
+        this.streetNumber = locationShow.getStreetNumber();
     }
 }
