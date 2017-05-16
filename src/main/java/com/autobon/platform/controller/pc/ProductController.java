@@ -13,6 +13,7 @@ import com.autobon.shared.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,17 +50,31 @@ public class ProductController {
                                   @RequestParam(value = "vehicleModel", required = false) String vehicleModel,
                                   @RequestParam(value = "realOrderNum", required = false) String realOrderNum,
                                   @RequestParam(value = "license", required = false) String license,
-                                  @RequestParam(value = "vin", required = false) String vin){
+                                  @RequestParam(value = "vin", required = false) String vin,
+                                  @RequestParam(value = "customerName", required = false) String customerName ,
+                                  @RequestParam(value = "customerPhone", required = false) String customerPhone ,
+                                  @RequestParam(value = "turnover", required = false) BigDecimal turnover ,
+                                  @RequestParam(value = "salesman", required = false) String salesman){
 
         Order order = orderService.get(orderId);
         if(order == null){
             return new JsonResult(false,"订单不存在");
         }
 
+
+        if(order.getProductStatus() == 1){
+            return new JsonResult(false,"已经录入过产品，不能重复补录");
+        }
+
         order.setVehicleModel(vehicleModel == null ? order.getVehicleModel():vehicleModel);
         order.setRealOrderNum(realOrderNum == null ? order.getRealOrderNum() : realOrderNum);
         order.setLicense(license == null ? order.getLicense() : license);
         order.setVin(vin == null ? order.getVin():vin);
+
+        order.setCustomerName(customerName == null ? order.getCreatorName(): customerName);
+        order.setCustomerPhone(customerPhone == null ? order.getContactPhone(): customerPhone);
+        order.setTurnover(turnover == null ? order.getTurnover(): turnover);
+        order.setSalesman(salesman == null ? order.getSalesman() : salesman);
 
 
 
