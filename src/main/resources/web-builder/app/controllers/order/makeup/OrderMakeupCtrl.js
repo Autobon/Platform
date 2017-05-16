@@ -37,11 +37,14 @@ export default class OrderMakeupCtrl extends Injector {
                 if (project[i].productShowList[j].productId > 0) {
                     if (productIdStr === '') {
                         productIdStr = project[i].productShowList[j].productId;
+                        alert("1111111111" + productIdStr);
                     } else {
                         productIdStr = productIdStr + ',' + project[i].productShowList[j].productId;
+                        alert("1111111111" + productIdStr);
                     }
                 }
             }
+            alert("1111111111" + productIdStr);
         }
         ProductService.saveProduct($scope.product.orderId, {productIds: productIdStr, vehicleModel: $scope.vehicleModel, license: $scope.license, vin: $scope.vin, realOrderNum: $scope.realOrderNum}).then(res => {
             if (res.data.status === true) {

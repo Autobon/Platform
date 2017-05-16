@@ -5,32 +5,34 @@
         <div class="row-search-h40">
             <div class="form-group">
                 <label>技师姓名</label>
-                <input type="text" class="form-control ml10" required ng-model="technician.name">
+                <input type="text" class="form-control ml10" required ng-model="technician.name" style="width: 90px">
             </div>
-            <div class="form-group ml40">
+            <div class="form-group ml10">
                 <label>联系电话</label>
-                <input type="text" class="form-control ml10" required ng-model="technician.phone">
+                <input type="text" class="form-control ml10" required ng-model="technician.phone" style="width: 120px">
             </div>
-            <div class="form-group ml40">
+            <div class="form-group ml10">
                 <label>身份证号</label>
-                <input type="text" class="form-control ml10 wh285" required ng-model="technician.idNo">
+                <input type="text" class="form-control ml10" required ng-model="technician.idNo"  style="width: 160px">
+            </div>
+            <div class="form-group ml10">
+                <label>开户银行</label>
+                <input type="text" class="form-control ml10" required ng-model="technician.bank" style="width: 90px">
             </div>
         </div>
         <div class="mt20">
             <div class="form-group">
-                <label>开户银行</label>
-                <input type="text" class="form-control ml10" required ng-model="technician.bank">
-            </div>
-            <div class="form-group ml40">
                 <label>银行卡号</label>
-                <input type="text" class="form-control ml10" required ng-model="technician.bankCardNo">
+                <input type="text" class="form-control ml10" required ng-model="technician.bankCardNo" style="width: 190px">
             </div>
-            <div class="form-group ml40 por">
-                <label>身份证照</label>
+            <div class="form-group ml10 por">
+                <label>身份1证照</label>
                 <input type="file" file-uploader required ng-model="technician.idPhoto" name="file"
-                       accept=".jpg,.jpeg,.png,.bmp" callback="onUploadedPhoto(data)" upload-url="{{uploadUrl}}"  class="form-control ml10">
-                <img class="cardimg img-rounded" ng-if="technician.idPhoto" ng-src="{{technician.idPhoto}}" image-modal style="margin-top:35px;">
+                       accept=".jpg,.jpeg,.png,.bmp" callback="onUploadedPhoto(data)" upload-url="{{uploadUrl}}"  class="form-control ml10" style="width: 400px">
                 <!--  <input type="file" style="position: absolute;left: 180px;top: 195px;"> -->
+            </div>
+            <div>
+                <img class="cardimg img-rounded" ng-if="technician.idPhoto" ng-src="{{technician.idPhoto}}" image-modal style="margin-top:210px;margin-left: 632px;">
             </div>
         </div>
        <!-- <div class="mt20 row-search-h40">

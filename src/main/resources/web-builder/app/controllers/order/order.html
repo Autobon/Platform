@@ -6,31 +6,31 @@
     <form class="form-inline pull-left">
         <div class="form-group">
             <label for="orderNum">订单编号:</label>
-            <input type="text" class="form-control" id="orderNum" ng-model="filter.orderNum">
+            <input type="text" class="form-control" id="orderNum" ng-model="filter.orderNum" style="width: 145px;">
         </div>
         <div class="form-group">
             <label for="orderCreator">下单人:</label>
             <input type="text" class="form-control" id="orderCreator" ng-model="filter.orderCreator"
-                   placeholder="姓名或手机号">
+                   placeholder="姓名或手机号" style="width: 120px;">
         </div>
         <div class="form-group">
             <label for="orderCreator">技师:</label>
             <input type="text" class="form-control" id="tech" ng-model="filter.tech"
-                   placeholder="姓名或手机号">
+                   placeholder="姓名或手机号" style="width: 120px;">
         </div>
         <div class="form-group">
             <label for="orderType">订单类型:</label>
             <select class="form-control" id="orderType" ng-model="filter.orderType"
-                    ng-options="key as value for (key, value) in Settings.orderTypes">
+                    ng-options="key as value for (key, value) in Settings.orderTypes" style="width: 105px;">
             </select>
         </div>
         <div class="form-group">
             <label for="orderStatus">订单状态:</label>
             <select class="form-control" id="orderStatus" ng-model="filter.orderStatus"
-                    ng-options="key as value for (key, value) in Settings.orderStatus">
+                    ng-options="key as value for (key, value) in Settings.orderStatus" style="width: 145px;">
             </select>
         </div>
-        <div class="form-group m-l-10 m-r-10">
+        <div class="form-group m-l-5 m-r-5">
             <label class="radio-inline">
                 <input type="radio" name="paid" ng-model="filter.sort" value="id"> 按下单时间
             </label>

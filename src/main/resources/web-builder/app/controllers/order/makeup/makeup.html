@@ -7,47 +7,60 @@
             </div>
         </div>
         <div class="row-search-h40">
-            <div class="form-group ml10">
+            <div class="form-group">
                 <label>真实编号</label>
-                <input type="text" class="form-control ml10" ng-model="realOrderNum">
+                <input type="text" class="form-control ml10" ng-model="realOrderNum" style="width: 150px;">
             </div>
             <div class="form-group ml10">
                 <label>车型</label>
-                <input type="text" class="form-control ml10" ng-model="vehicleModel">
+                <input type="text" class="form-control ml10" ng-model="vehicleModel" style="width: 150px;">
             </div>
             <div class="form-group ml10">
                 <label>车牌</label>
-                <input type="text" class="form-control ml10" ng-model="license">
+                <input type="text" class="form-control ml10" ng-model="license" style="width: 150px;">
             </div>
             <div class="form-group ml10">
                 <label>车架号</label>
-                <input type="text" class="form-control ml10" ng-model="vin">
+                <input type="text" class="form-control ml10" ng-model="vin" style="width: 150px;">
             </div>
+        </div>
+
+        <div class="row">
             <div ng-repeat="photo in photoList">
                 <img ng-if="photo" ng-src="{{photo}}" style="height: 280px;width: 300px;" image-modal class="img-thumbnail pull-left m-r-10">
             </div>
         </div>
-        <div class="principal" ng-repeat="project in product.project">
-            <div class="main-principal">
-                <form class="form-inline form-border">
-                    <div class="mt10">
-                        <div class="form-group mr10">
-                            <div class="form-group">
-                                <label>施工项目</label>
-                                <span>{{project.projectName}}</span>
-                            </div>
-                            <label class="mr10">施工部位以及施工型号</label>
-                            <div ng-repeat="proList in project.productShowList">
-                                <label class="radio-inline">
-                                    <span>{{proList.positionName}}：</span>
-                                </label>
-                                <select ng-model="proList.productId" ng-options="pl.id as pl.model for pl in proList.productList">
 
-                                </select>
+        <div class="form-group" style="width: 40%;" ng-repeat="project in product.project">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="main-principal">
+                        <form class="form-inline form-border">
+                            <div class="mt10">
+                                <div class="form-group mr10">
+                                    <div class="form-group">
+                                        <label >施工项目</label>
+                                        <span>{{project.projectName}}</span>
+                                    </div>
+                                    <label class="mr10">施工部位以及施工型号</label>
+                                    <div ng-repeat="proList in project.productShowList">
+                                        <div class="row m-b-10">
+                                            <label class="col-lg-6 control-label text-right" style="padding:0 !important;">
+                                                <span>{{proList.positionName}}：</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <select ng-model="proList.productId" style="width: 130px;">
+                                                    <option ng-repeat="pl in proList.productList" value="{{pl.id}}">{{pl.model}}</option>
+                                                    <option value="">--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
         <div class="pull-right modify-btn">
