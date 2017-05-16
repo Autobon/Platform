@@ -4,6 +4,7 @@ import com.autobon.shared.VerifyCode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -116,6 +117,14 @@ public class Order {
 
     @Column private String vin;
 
+    @Column private String customerName;
+
+    @Column private String customerPhone;
+
+    @Column private BigDecimal turnover ;
+
+    @Column private String salesman;
+
     public Order() {
         this.orderNum = generateOrderNum();
         this.setStatus(Status.NEWLY_CREATED);
@@ -128,7 +137,37 @@ public class Order {
     }
 
 
+    public String getCustomerName() {
+        return customerName;
+    }
 
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+
+    public BigDecimal getTurnover() {
+        return turnover;
+    }
+
+    public void setTurnover(BigDecimal turnover) {
+        this.turnover = turnover;
+    }
+
+    public String getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(String salesman) {
+        this.salesman = salesman;
+    }
 
     public int getId() {
         return id;
