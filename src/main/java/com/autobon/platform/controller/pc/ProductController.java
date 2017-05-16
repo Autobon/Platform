@@ -71,8 +71,8 @@ public class ProductController {
         order.setLicense(license == null ? order.getLicense() : license);
         order.setVin(vin == null ? order.getVin():vin);
 
-        order.setCustomerName(customerName == null ? order.getCreatorName(): customerName);
-        order.setCustomerPhone(customerPhone == null ? order.getContactPhone(): customerPhone);
+        order.setCustomerName(customerName == null ? order.getCustomerName(): customerName);
+        order.setCustomerPhone(customerPhone == null ? order.getCustomerPhone(): customerPhone);
         order.setTurnover(turnover == null ? order.getTurnover(): turnover);
         order.setSalesman(salesman == null ? order.getSalesman() : salesman);
 
