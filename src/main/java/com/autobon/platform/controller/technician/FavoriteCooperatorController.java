@@ -1,7 +1,9 @@
 package com.autobon.platform.controller.technician;
 
+import com.autobon.cooperators.entity.Cooperator;
 import com.autobon.cooperators.entity.FavoriteCooperator;
 import com.autobon.cooperators.entity.FavoriteCooperatorView;
+import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.FavoriteCooperatorService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
@@ -20,10 +22,18 @@ public class FavoriteCooperatorController {
 
     @Autowired
     FavoriteCooperatorService favoriteCooperatorService;
+    @Autowired
+    CooperatorService cooperatorService;
 
     @RequestMapping(value = "/favorite/cooperator/{cooperatorId}",method = RequestMethod.POST)
     public JsonMessage save(@PathVariable("cooperatorId") int cooperatorId,
                             HttpServletRequest request) {
+
+        Cooperator cooperator = cooperatorService.get(cooperatorId);
+
+        if(cooperator == null){
+            return new JsonMessage(false, "商户不存在");
+        }
 
         Technician tech = (Technician) request.getAttribute("user");
         int technicianId = tech.getId();
