@@ -26,13 +26,13 @@
                 <input type="text" class="form-control ml10" required ng-model="technician.bankCardNo" style="width: 190px">
             </div>
             <div class="form-group ml10 por">
-                <label>身份1证照</label>
+                <label>身份证照</label>
                 <input type="file" file-uploader required ng-model="technician.idPhoto" name="file"
                        accept=".jpg,.jpeg,.png,.bmp" callback="onUploadedPhoto(data)" upload-url="{{uploadUrl}}"  class="form-control ml10" style="width: 400px">
                 <!--  <input type="file" style="position: absolute;left: 180px;top: 195px;"> -->
             </div>
             <div>
-                <img class="cardimg img-rounded" ng-if="technician.idPhoto" ng-src="{{technician.idPhoto}}" image-modal style="margin-top:210px;margin-left: 632px;">
+                <img class="cardimg img-rounded" ng-if="technician.idPhoto" ng-src="{{technician.idPhoto}}" image-modal style="margin-top:210px;margin-left: 670px;">
             </div>
         </div>
        <!-- <div class="mt20 row-search-h40">
