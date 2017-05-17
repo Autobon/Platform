@@ -37,16 +37,13 @@ export default class OrderMakeupCtrl extends Injector {
                 if (project[i].productShowList[j].productId > 0) {
                     if (productIdStr === '') {
                         productIdStr = project[i].productShowList[j].productId;
-                        alert("1111111111" + productIdStr);
                     } else {
                         productIdStr = productIdStr + ',' + project[i].productShowList[j].productId;
-                        alert("1111111111" + productIdStr);
                     }
                 }
             }
-            alert("1111111111" + productIdStr);
         }
-        ProductService.saveProduct($scope.product.orderId, {productIds: productIdStr, vehicleModel: $scope.vehicleModel, license: $scope.license, vin: $scope.vin, realOrderNum: $scope.realOrderNum}).then(res => {
+        ProductService.saveProduct($scope.product.orderId, {productIds: productIdStr, vehicleModel: $scope.vehicleModel, license: $scope.license, vin: $scope.vin, realOrderNum: $scope.realOrderNum, customerName: $scope.customerName, customerPhone: $scope.customerPhone, turnover: $scope.turnover, salesman: $scope.salesman}).then(res => {
             if (res.data.status === true) {
                 let pCoop = $scope.$parent.orders.find(c => c.id === res.data.message.id);
                 if (pCoop) {
@@ -56,6 +53,20 @@ export default class OrderMakeupCtrl extends Injector {
             } else {
                 $scope.error = res.data.message;
             }
+        });
+    }
+    toSave() {
+        let $ctrl = this;
+        const {$uibModal} = this.$injected;
+        let modalInstance = $uibModal.open({
+            animation: $ctrl.animationsEnabled,
+            component: 'modalComponent',
+            resolve: {
+            }
+        });
+
+        modalInstance.result.then(function () {
+            alert(22);
         });
     }
 }

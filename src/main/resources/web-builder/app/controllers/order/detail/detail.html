@@ -22,10 +22,19 @@
          <div class="col-sm-4"><b>改派状态: </b><span>{{Settings.reassignmentStatus[order.reassignmentStatus]}}</span></div>
      </div>
      <div class="row detail-row">
-         <div class="col-sm-3"><b>真实编号: </b><span>{{or.realOrderNum}}</span></div>
-         <div class="col-sm-3"><b>车型: </b><span>{{or.vehicleModel}}</span></div>
-         <div class="col-sm-3"><b>车牌: </b><span>{{or.license}}</span></div>
-         <div class="col-sm-3"><b>车架号: </b><span>{{or.vin}}</span></div>
+         <div class="col-sm-4"><b>真实编号: </b><span>{{or.realOrderNum}}</span></div>
+         <div class="col-sm-4"><b>车型: </b><span>{{or.vehicleModel}}</span></div>
+         <div class="col-sm-4"><b>车牌: </b><span>{{or.license}}</span></div>
+     </div>
+     <div class="row detail-row">
+         <div class="col-sm-4"><b>车架号: </b><span>{{or.vin}}</span></div>
+         <div class="col-sm-4"><b>客户名称: </b><span>{{or.customerName}}</span></div>
+         <div class="col-sm-4"><b>联系方式: </b><span>{{or.customerPhone}}</span></div>
+     </div>
+     <div class="row detail-row">
+         <div class="col-sm-4"><b>业务员: </b><span>{{or.turnover}}</span></div>
+         <div class="col-sm-4"><b>营业额: </b><span>{{or.salesman}}</span></div>
+         <div class="col-sm-4"></div>
      </div>
     <div class="row detail-row">
         <div class="col-sm-12"><b>备注: </b><span>{{order.remark}}</span></div>
