@@ -77,7 +77,7 @@ public class TechnicianService {
 
         Integer statusCode = status == null ? null : status.getStatusCode();
         return repository.find(phone, name, statusCode, new PageRequest(page - 1, pageSize,
-                new Sort(Sort.Direction.DESC, "lastLoginAt")));
+                new Sort(Sort.Direction.DESC, "id")));
     }
 
     public int countOfNew(Date from, Date to) {
