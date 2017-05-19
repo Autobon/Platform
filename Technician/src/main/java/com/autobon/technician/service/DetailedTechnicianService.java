@@ -26,7 +26,7 @@ public class DetailedTechnicianService {
 
     public Page<DetailedTechnician> findByName(String name, int page, int pageSize) {
         return repository.findByName(name, new PageRequest(page - 1, pageSize,
-                Sort.Direction.DESC, "lastLoginAt"));
+                Sort.Direction.DESC, "id"));
     }
 
     public Page<DetailedTechnician> findAll(int page, int pageSize) {
