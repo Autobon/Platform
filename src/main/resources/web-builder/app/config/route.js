@@ -25,12 +25,12 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.OrderCtrl,
         })
         .state('console.order.detail', {
-            url       : '/{orderNum:\\d+[^/]*}',
+            url       : '/detail/{id:\\d+}',
             controller: 'OrderDetailCtrl',
             template  : templateCache.OrderDetailCtrl,
         })
         .state('console.order.edit', {
-            url       : '/edit/{orderNum:\\d+[^/]*}',
+            url       : '/edit/{id:\\d+[^/]*}',
             controller: 'OrderEditorCtrl',
             template  : templateCache.OrderEditorCtrl,
         })
@@ -38,6 +38,21 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             url       : '/new',
             controller: 'OrderEditCtrl',
             template  : templateCache.OrderEditCtrl,
+        })
+        .state('console.order.makeup', {
+            url       : '/makeup/{id:\\d+[^/]*}',
+            controller: 'OrderMakeupCtrl',
+            template  : templateCache.OrderMakeupCtrl,
+        })
+        .state('console.order.modify', {
+            url       : '/modify/{id:\\d+}',
+            controller: 'OrderModifyCtrl',
+            template  : templateCache.OrderModifyCtrl,
+        })
+        .state('console.order.dispatch', {
+            url       : '/dispatch/{id:\\d+}',
+            controller: 'OrderDispatchCtrl',
+            template  : templateCache.OrderDispatchCtrl,
         })
         .state('console.technician', {
             url       : '/technician',
@@ -48,6 +63,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             url       : '/{id:\\d+}',
             controller: 'TechnicianDetailCtrl',
             template  : templateCache.TechnicianDetailCtrl,
+        })
+        .state('console.technician.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'TechnicianEditorCtrl',
+            template  : templateCache.TechnicianEditorCtrl,
         })
         .state('console.cooperator', {
             url       : '/cooperator',
@@ -122,7 +142,33 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
         .state('console.test', {
             url     : '/test',
             template: 'ABDDDD',
-        });
+        })
+        .state('console.product', {
+            url       : '/product',
+            controller: 'ProductCtrl',
+            template  : templateCache.ProductCtrl,
+        })
+        .state('console.product.detail', {
+            url       : '/{id:\\d+}',
+            controller: 'ProductDetailCtrl',
+            template  : templateCache.ProductDetailCtrl,
+        })
+        .state('console.product.import', {
+            url       : '/import',
+            controller: 'ProductImportCtrl',
+            template  : templateCache.ProductImportCtrl,
+        })
+        .state('console.product.new', {
+            url       : '/new',
+            controller: 'ProductEditCtrl',
+            template  : templateCache.ProductEditCtrl,
+        })
+        .state('console.product.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'ProductEditCtrl',
+            template  : templateCache.ProductEditCtrl,
+        })
+        ;
 }
 
 routeConfig.$inject = ['$locationProvider', '$urlRouterProvider', '$stateProvider', 'templateProvider'];

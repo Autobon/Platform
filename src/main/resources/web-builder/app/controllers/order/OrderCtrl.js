@@ -23,6 +23,13 @@ export default class OrderCtrl extends Injector {
         OrderService.search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.orders = res.data.data.list;
+                let datatime = new Date().getTime();
+                for (let i = 0; i < $scope.orders.length; i++) {
+                    if ($scope.orders[i].agreedStartTime - datatime < 3600000 && $scope.orders[i].agreedStartTime - datatime > 0) {
+                        $scope.orders[i].style = {'background-color':'#ec9104'};
+                    }
+                }
+
                 $scope.pagination.totalItems = res.data.data.totalElements;
             }
         });
@@ -63,5 +70,16 @@ export default class OrderCtrl extends Injector {
                 }
             }
         });
+    }
+
+    exportExcel() {
+        const {$scope, Settings} = this.$injected;
+        window.location.href = Settings.domain + '/api/web/admin/order/excel/download?id=' + ($scope.filter.id === undefined ? '' : $scope.filter.id)
+                            + '&orderTime=' +  ($scope.filter.orderTime === undefined ? '' : $scope.filter.orderTime)
+                            + '&orderNum=' +  ($scope.filter.orderNum === undefined ? '' : $scope.filter.orderNum)
+                            + '&orderCreator=' +  ($scope.filter.orderCreator === undefined ? '' : $scope.filter.orderCreator)
+                            + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech)
+                            + '&orderType=' +  ($scope.filter.orderType === undefined ? '' : $scope.filter.orderType)
+                            + '&orderStatus=' +  ($scope.filter.orderStatus === undefined ? '' : $scope.filter.orderStatus);
     }
 }

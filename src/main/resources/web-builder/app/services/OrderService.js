@@ -16,7 +16,22 @@ export default class OrderService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/order/' + orderNum);
     }
-
+    getDetail2(orderId) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/v2/' + orderId);
+    }
+    getOrder(orderId) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/v2/' + orderId + '/info');
+    }
+    getOrderProduct(orderId) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/v2/' + orderId + '/product');
+    }
+    getAllPosition(orderId) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/project/position/' + orderId);
+    }
     assign(orderId, techId) {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/order/assign', {orderId: orderId, techId: techId});
@@ -25,6 +40,10 @@ export default class OrderService extends Injector {
     add(order) {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/order', order);
+    }
+    update(orderShow) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/order/v2/' + orderShow.id, orderShow);
     }
 
     getWorkItems(orderType) {
@@ -36,6 +55,16 @@ export default class OrderService extends Injector {
     addComment(comment) {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/order/comment', comment);
+    }
+
+    dispatch(dis) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/order/' + dis.orderId + '/technician/' + dis.techId + '/assign');
+    }
+
+    mapTechnician(orderId, params) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/order/technician/assign/' + orderId, {params: {...params}});
     }
 
     async assembleWorkItemsText(workItems, workPercent, orderType) {

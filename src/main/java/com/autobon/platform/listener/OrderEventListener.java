@@ -3,6 +3,7 @@ package com.autobon.platform.listener;
 import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.getui.PushService;
+import com.autobon.order.entity.DetailedOrder;
 import com.autobon.order.entity.Order;
 import com.autobon.order.service.ConstructionService;
 import com.autobon.order.service.DetailedOrderService;
@@ -70,7 +71,7 @@ public class OrderEventListener {
                 this.onOrderAppointed(order);
                 break;
             case FINISHED:
-                this.onOrderFinished(order);
+                this.orderFinished(order);
                 break;
             case GIVEN_UP:
                 this.onOrderGivenUp(order);
@@ -135,7 +136,13 @@ public class OrderEventListener {
         String msgTitle = "你收到新订单推送消息";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "NEW_ORDER");
-        map.put("order", detailedOrderService.get(order.getId()));
+        DetailedOrder detailedOrder = detailedOrderService.get(order.getId());
+        detailedOrder.setRemark("");
+        detailedOrder.setPhoto("");
+        order.setPhoto("");
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
+        map.put("order", order);
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.error("订单: " + order.getOrderNum() + "的推送消息发送失败");
@@ -149,6 +156,10 @@ public class OrderEventListener {
         }
         stat.setTotalOrders(stat.getTotalOrders() + 1);
         techStatService.save(stat);
+
+        order.setPhoto("");
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
 
         // 向商户推送订单已有人接单消息
         CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
@@ -171,6 +182,9 @@ public class OrderEventListener {
         stat.setTotalOrders(stat.getTotalOrders() + 1);
         techStatService.save(stat);
 
+        order.setPhoto("");
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
         // 推送派单消息
         String msgTitle = "你收到派单消息";
         HashMap<String, Object> map = new HashMap<>();
@@ -184,6 +198,10 @@ public class OrderEventListener {
     private void onOrderCanceled(Order order) throws IOException {
         if (order.getMainTechId() > 0) {
             Technician mainTech = technicianService.get(order.getMainTechId());
+
+            order.setPhoto("");
+            order.setBeforePhotos("");
+            order.setAfterPhotos("");
             // 推送撤单消息
             String msgTitle = "你有订单已被商户撤销";
             HashMap<String, Object> map = new HashMap<>();
@@ -205,7 +223,9 @@ public class OrderEventListener {
 
     private void onOrderGivenUp(Order order) throws IOException {
         CoopAccount account = coopAccountService.getById(order.getCreatorId());
-
+        order.setPhoto("");
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
         String msgTitle = "你有订单已被技师放弃";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "ORDER_GIVEN_UP");
@@ -230,6 +250,9 @@ public class OrderEventListener {
         redisCache.getAfterUpdate(totalFinishedKey, () -> String.valueOf(orderService.totalOfFinished() - 1),
                 24*3600, this::increase);
 
+        order.setPhoto("");
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
         // 向商户推送订单完成消息
         CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
         String msgTitle = "订单: " + order.getOrderNum() + "已完成";
@@ -261,6 +284,41 @@ public class OrderEventListener {
                     order.getSecondTechId(), order.getId()).getPayment());
             techStatService.save(secondStat);
         }
+    }
+
+
+    /**
+     *
+     * @param order
+     * @throws IOException
+     */
+    private void orderFinished(Order order) throws IOException {
+        LocalDate localDate = order.getFinishTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Date day = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date month = Date.from(localDate.withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+
+        String dayKey = dayFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(day);
+        String monthKey = monthFinishedKeyPrefix + new SimpleDateFormat("yyyy-MM-dd").format(month);
+        redisCache.getAfterUpdate(dayKey, () -> String.valueOf(orderService.countOfFinished(day, new Date()) - 1),
+                24*3600, this::increase);
+        redisCache.getAfterUpdate(monthKey, () -> String.valueOf(orderService.countOfFinished(month, new Date()) - 1),
+                24 * 3600, this::increase);
+        redisCache.getAfterUpdate(totalFinishedKey, () -> String.valueOf(orderService.totalOfFinished() - 1),
+                24 * 3600, this::increase);
+
+        Order  order1 = new Order();
+
+        order1.setId(order.getId());
+        // 向商户推送订单完成消息
+        CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
+        String msgTitle = "订单: " + order.getOrderNum() + "已完成";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "ORDER_COMPLETE");
+        map.put("title", msgTitle);
+        map.put("order", order1);
+        pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
+
+
     }
 
     private String increase(String v) {

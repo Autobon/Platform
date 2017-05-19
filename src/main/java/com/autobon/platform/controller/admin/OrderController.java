@@ -1,16 +1,18 @@
 package com.autobon.platform.controller.admin;
 
 import com.autobon.getui.PushService;
+import com.autobon.order.entity.AgentRebate;
 import com.autobon.order.entity.DetailedOrder;
 import com.autobon.order.entity.Order;
-import com.autobon.order.service.CommentService;
-import com.autobon.order.service.DetailedOrderService;
-import com.autobon.order.service.OrderService;
+import com.autobon.order.entity.WorkDetail;
+import com.autobon.order.service.*;
 import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.shared.JsonResult;
 import com.autobon.shared.VerifyCode;
+import com.autobon.staff.entity.Staff;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechStatService;
 import com.autobon.technician.service.TechnicianService;
@@ -31,10 +33,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -53,6 +57,10 @@ public class OrderController {
     @Autowired DetailedOrderService detailedOrderService;
     @Autowired ApplicationEventPublisher publisher;
     @Autowired @Qualifier("PushServiceA") PushService pushServiceA;
+    @Autowired
+    WorkDetailService workDetailService;
+    @Autowired
+    ConstructionProjectService constructionProjectService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonMessage search(
@@ -60,6 +68,7 @@ public class OrderController {
             @RequestParam(value = "orderCreator", required = false) String orderCreator,
             @RequestParam(value = "orderType", required = false) Integer orderType,
             @RequestParam(value = "orderStatus", required = false) Order.Status orderStatus,
+            @RequestParam(value = "tech", required = false) String tech,
             @RequestParam(value = "sort", defaultValue = "id") String sort,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
@@ -71,7 +80,7 @@ public class OrderController {
         if (!"orderTime".equals(sort) && !"id".equals(sort)) return new JsonMessage(false, "ILLEGAL_SORT_PARAM" , "sort参数只能为id或orderTime");
 
         if (orderCreator != null) {
-            if (Pattern.matches("\\d{11}", orderCreator)) {
+            if (Pattern.matches("\\d+", orderCreator)) {
                 contactPhone = orderCreator;
             } else {
                 creatorName = orderCreator;
@@ -81,6 +90,14 @@ public class OrderController {
         if (orderType != null) {
             types = Arrays.asList(orderType);
         }
+
+        if(tech != null){
+            List<Integer> ids = technicianService.find(tech);
+            return new JsonMessage(true, "", "",
+                    new JsonPage<>(orderService.findOrder(orderNum, creatorName, contactPhone,
+                            ids, types, statusCode, sort, Sort.Direction.DESC, page, pageSize)));
+        }
+
 
         return new JsonMessage(true, "", "",
                 new JsonPage<>(orderService.find(orderNum, creatorName, contactPhone,
@@ -105,26 +122,26 @@ public class OrderController {
             @RequestParam("contact") String contact,
             @RequestParam("photo") String photo,
             @RequestParam(value = "remark", required = false) String remark) throws Exception {
-        return new JsonMessage(false, "DEPRECATED", "后台创建订单功能已关闭");
-//        Staff staff = (Staff) request.getAttribute("user");
-//        if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
-//            return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
-//
-//        Order order = new Order();
-//        order.setCreatorType(2);
-//        order.setCreatorId(staff.getId());
-//        order.setCreatorName(contact);
-//        order.setContactPhone(contactPhone);
-//        order.setPositionLon(positionLon);
-//        order.setPositionLat(positionLat);
-//        order.setOrderType(orderType);
-//        order.setOrderTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(orderTime));
-//        order.setRemark(remark);
-//        order.setPhoto(photo);
-//        orderService.save(order);
-//
-//        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
-//        return new JsonMessage(true, "", "", order);
+
+        Staff staff = (Staff) request.getAttribute("user");
+        if (!Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$", orderTime))
+            return new JsonMessage(false, "ILLEGAL_PARAM", "订单时间格式不对, 正确格式: 2016-02-10 09:23");
+
+        Order order = new Order();
+
+        order.setCreatorId(staff.getId());
+        order.setCreatorName(contact);
+        order.setContactPhone(contactPhone);
+        order.setPositionLon(positionLon);
+        order.setPositionLat(positionLat);
+        order.setOrderType(orderType);
+        order.setOrderTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(orderTime));
+        order.setRemark(remark);
+        order.setPhoto(photo);
+        orderService.save(order);
+
+        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
+        return new JsonMessage(true, "", "", order);
     }
 
     @RequestMapping(value = "/photo", method = RequestMethod.POST)
@@ -132,7 +149,7 @@ public class OrderController {
                                    @RequestParam("file") MultipartFile file) throws Exception {
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有上传文件");
 
-        String path = "/uploads/order";
+        String path = "/uploads/order/photo";
         File dir = new File(new File(uploadPath).getCanonicalPath() + path);
         if (!dir.exists()) dir.mkdirs();
 
@@ -143,17 +160,17 @@ public class OrderController {
 
         InputStream in;
         if (file == null || file.isEmpty()) return new JsonMessage(false, "NO_UPLOAD_FILE", "没有选择上传文件");
-        in = file.getInputStream();
-
-        ConvertCmd cmd = new ConvertCmd(true);
-        cmd.setSearchPath(gmPath);
-        cmd.setInputProvider(new Pipe(in, null));
-        IMOperation operation = new IMOperation();
-        operation.addImage("-");
-        operation.resize(1200, 1200, ">");
-        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
-        cmd.run(operation);
-
+//        in = file.getInputStream();
+//
+//        ConvertCmd cmd = new ConvertCmd(true);
+//        cmd.setSearchPath(gmPath);
+//        cmd.setInputProvider(new Pipe(in, null));
+//        IMOperation operation = new IMOperation();
+//        operation.addImage("-");
+//        operation.resize(1200, 1200, ">");
+//        operation.addImage(dir.getAbsolutePath() + File.separator + filename);
+//        cmd.run(operation);
+        file.transferTo(new File(dir.getAbsolutePath() + File.separator + filename));
         return new JsonMessage(true, "", "", path + "/" + filename);
     }
 
@@ -233,5 +250,56 @@ public class OrderController {
 //        techStatService.save(techStat);
 //
 //        return new JsonMessage(true, "", "", comment);
+
     }
+
+
+    /**
+     * 回扣设置
+     * @param firstAgents
+     * @param secondAgents
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/rebate", method = RequestMethod.POST)
+    public JsonMessage addRebate(@RequestParam("firstAgents ") int firstAgents,
+                                 @RequestParam("secondAgents") int secondAgents) throws IOException {
+
+        List<AgentRebate> agentRebates  = orderService.findAgentRebate();
+        if(agentRebates!= null && agentRebates.size()>0){
+            return  new JsonMessage(false ,"","回扣配置已存在，只允许一条配置规则", "");
+        }
+        AgentRebate agentRebate = new AgentRebate();
+        agentRebate.setPrimaryAgent(firstAgents);
+        agentRebate.setSecondAgent(secondAgents);
+        orderService.saveAgentRebate(agentRebate);
+        return new JsonMessage(true, "", "" ,"一级代理回扣点数："+firstAgents+" ,二级代理回扣点数："+ secondAgents);
+    }
+
+
+
+    /**
+     * 回扣设置
+     * @param firstAgents
+     * @param secondAgents
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/rebate/{rid}", method = RequestMethod.POST)
+    public JsonMessage updateRebate(@PathVariable("rid") int rid,
+                                    @RequestParam("firstAgents ") int firstAgents,
+                                    @RequestParam("secondAgents") int secondAgents) throws IOException {
+
+
+        AgentRebate agentRebate = orderService.getAgentRebate(rid);
+        if(agentRebate != null) {
+            agentRebate.setPrimaryAgent(firstAgents);
+            agentRebate.setSecondAgent(secondAgents);
+            orderService.saveAgentRebate(agentRebate);
+            return new JsonMessage(true, "", "" ,"一级代理回扣点数："+firstAgents+" ,二级代理回扣点数："+ secondAgents);
+        }
+        return new JsonMessage(false, "", "" ,"");
+    }
+
+
 }

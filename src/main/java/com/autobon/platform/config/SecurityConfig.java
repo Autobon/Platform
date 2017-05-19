@@ -54,6 +54,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/web/admin/logout",
                 "/api/mobile/*/login",
                 "/api/mobile/*/register",
+                "/api/mobile/*/merchant/login",
+                "/api/mobile/*/merchant/register",
+                "/api/mobile/*/v2/register",
+                "/api/mobile/*/v2/login",
+                "/api/mobile/*/v2/resetPassword",
                 "/api/mobile/*/resetPassword").permitAll()
             .and().authorizeRequests().antMatchers("/api/mobile/technician/**").hasAuthority("TECHNICIAN")
             .and().authorizeRequests().antMatchers("/api/web/**").hasAuthority("STAFF")
