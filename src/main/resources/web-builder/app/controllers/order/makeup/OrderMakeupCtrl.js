@@ -55,18 +55,4 @@ export default class OrderMakeupCtrl extends Injector {
             }
         });
     }
-    toSave() {
-        let $ctrl = this;
-        const {$uibModal} = this.$injected;
-        let modalInstance = $uibModal.open({
-            animation: $ctrl.animationsEnabled,
-            component: 'modalComponent',
-            resolve: {
-            }
-        });
-
-        modalInstance.result.then(function () {
-            alert(22);
-        });
-    }
 }
