@@ -3,8 +3,20 @@ package com.autobon.platform.controller.pc;
 import com.autobon.shared.JsonResult;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.TechnicianService;
+import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wh on 2016/11/22.
@@ -135,6 +147,190 @@ public class TechnicianAdminController {
         return  new JsonResult(false, "技师不存在");
     }
 
+
+
+
+
+    @RequestMapping(value = "/technician/download", method = RequestMethod.GET)
+    public void download(HttpServletRequest request,
+                         HttpServletResponse response) throws IOException {
+
+
+
+
+        List<Technician> list  = technicianService.findAll();
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        byte[] content = os.toByteArray();
+        InputStream is = new ByteArrayInputStream(content);
+        // 设置response参数，可以打开下载页面
+
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("技师信息表");
+
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy h:mm"));
+
+        HSSFRow row = sheet.createRow(0);
+        //设置列宽，setColumnWidth的第二个参数要乘以256，这个参数的单位是1/256个字符宽度
+        sheet.setColumnWidth(2, 15 * 256);
+        sheet.setColumnWidth(3, 20 * 256);
+        sheet.setColumnWidth(4, 20 * 256);
+        sheet.setColumnWidth(5, 20 * 256);
+        sheet.setColumnWidth(6, 20 * 256);
+        sheet.setColumnWidth(7, 20 * 256);
+        sheet.setColumnWidth(8, 20 * 256);
+        sheet.setColumnWidth(10, 15 * 256);
+        sheet.setColumnWidth(11, 15 * 256);
+        sheet.setColumnWidth(12, 15 * 256);
+        sheet.setColumnWidth(13, 15 * 256);
+        sheet.setColumnWidth(14, 15 * 256);
+        sheet.setColumnWidth(15, 15 * 256);
+        sheet.setColumnWidth(16, 15 * 256);
+        sheet.setColumnWidth(17, 15 * 256);
+        sheet.setColumnWidth(18, 15 * 256);
+
+
+        HSSFCell cell;
+
+        cell = row.createCell(0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+        cell = row.createCell(1);
+        cell.setCellValue("姓名");
+        cell.setCellStyle(style);
+        cell = row.createCell(2);
+        cell.setCellValue("手机号");
+        cell.setCellStyle(style);
+        cell = row.createCell(3);
+        cell.setCellValue("身份证号");
+        cell.setCellStyle(style);
+        cell = row.createCell(4);
+        cell.setCellValue("开户银行");
+        cell = row.createCell(5);
+        cell.setCellValue("银行卡号");
+        cell.setCellStyle(style);
+        cell = row.createCell(6);
+        cell.setCellValue("注册时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(7);
+        cell.setCellValue("申请认证时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(8);
+        cell.setCellValue("认证日期");
+        cell.setCellStyle(style);
+        cell = row.createCell(9);
+        cell.setCellValue("账户状态");
+        cell.setCellStyle(style);
+        cell = row.createCell(10);
+        cell.setCellValue("推荐人手机");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(11);
+        cell.setCellValue("隔热膜星级");
+        cell.setCellStyle(style);
+        cell = row.createCell(12);
+        cell.setCellValue("隔热膜年限");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell(13);
+        cell.setCellValue("美容星级");
+        cell.setCellStyle(style);
+        cell = row.createCell(14);
+        cell.setCellValue("美容年限");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell(15);
+        cell.setCellValue("车衣星级");
+        cell.setCellStyle(style);
+        cell = row.createCell(16);
+        cell.setCellValue("车衣年限");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell(17);
+        cell.setCellValue("改色星级");
+        cell.setCellStyle(style);
+        cell = row.createCell(18);
+        cell.setCellValue("改色年限");
+        cell.setCellStyle(style);
+
+
+
+
+
+        //新增数据行，并且设置单元格数据
+
+
+        //新增数据行，并且设置单元格数据
+        if(list != null && list.size() > 0) {
+            int rowNum = 1;
+            for (Technician technician : list) {
+
+                row = sheet.createRow(rowNum);
+                row.createCell(0).setCellValue(technician.getId());
+                row.createCell(1).setCellValue(technician.getName());
+                row.createCell(2).setCellValue(technician.getPhone());
+
+                row.createCell(3).setCellValue(technician.getIdNo());
+                row.createCell(4).setCellValue(technician.getBank());
+                row.createCell(5).setCellValue(technician.getBankCardNo());
+
+                row.createCell(6).setCellValue(technician.getCreateAt() == null? "":technician.getCreateAt()+"");
+                row.createCell(7).setCellValue(technician.getRequestVerifyAt() == null? "":technician.getRequestVerifyAt()+"");
+                row.createCell(8).setCellValue(technician.getVerifyAt() == null? "":technician.getVerifyAt()+"");
+
+
+
+
+                if(technician.getStatus().equals(Technician.Status.NEWLY_CREATED)){
+                    row.createCell(9).setCellValue("新注册");
+                }else if(technician.getStatus().equals(Technician.Status.IN_VERIFICATION)){
+                    row.createCell(9).setCellValue("认证中");
+                }else if(technician.getStatus().equals(Technician.Status.VERIFIED)){
+                    row.createCell(9).setCellValue("认证通过");
+                }else if(technician.getStatus().equals(Technician.Status.REJECTED)){
+                    row.createCell(9).setCellValue("认证失败");
+                }else{
+                    row.createCell(9).setCellValue("帐户禁用");
+                }
+
+
+                row.createCell(10).setCellValue(technician.getReference());
+
+                row.createCell(11).setCellValue(technician.getFilmLevel()+"星");
+                row.createCell(12).setCellValue(technician.getFilmWorkingSeniority()+"年");
+                row.createCell(13).setCellValue(technician.getBeautyLevel()+"星");
+                row.createCell(14).setCellValue(technician.getBeautyWorkingSeniority()+"年");
+                row.createCell(15).setCellValue(technician.getCarCoverLevel()+"星");
+                row.createCell(16).setCellValue(technician.getCarCoverWorkingSeniority()+"年");
+                row.createCell(17).setCellValue(technician.getColorModifyLevel()+"星");
+                row.createCell(18).setCellValue(technician.getColorModifyWorkingSeniority()+"年");
+
+                rowNum++;
+            }
+        }
+
+        response.reset();
+        response.setHeader("content-type", "application/octet-stream");
+        response.setContentType("application/octet-stream");
+        response.addHeader("Content-Disposition", "attachment;filename=technician"
+                + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls");
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            workbook.write(out);
+            out.close();
+        } catch (Exception e) {
+            throw new RuntimeException("导出失败");
+        }
+
+
+
+    }
 
 
 }

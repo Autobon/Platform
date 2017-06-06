@@ -1,0 +1,1 @@
+create view t_cooperators_view as select c.*, a.id as account_id from t_cooperators c LEFT JOIN t_coop_account a on a.cooperator_id = c.id where a.is_main =1;

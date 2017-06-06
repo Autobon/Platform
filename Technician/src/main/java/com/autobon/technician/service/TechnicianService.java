@@ -122,4 +122,10 @@ public class TechnicianService {
         return  null;
     }
 
+
+    public List<Technician> findAll(){
+
+        return repository.findAll();
+    }
+
 }

@@ -2,6 +2,7 @@ package com.autobon.platform.controller.admin;
 
 import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
+import com.autobon.cooperators.entity.CooperatorView;
 import com.autobon.cooperators.entity.ReviewCooper;
 import com.autobon.cooperators.service.CoopAccountService;
 import com.autobon.cooperators.service.CooperatorService;
@@ -12,6 +13,7 @@ import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
 import com.autobon.shared.VerifyCode;
 import com.autobon.staff.entity.Staff;
+import org.apache.poi.hssf.usermodel.*;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
 import org.im4java.process.Pipe;
@@ -21,15 +23,17 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -350,5 +354,145 @@ public class CooperatorController {
             coopAccountService.save(coopAccount);
         }
         return msg;
+    }
+
+
+
+
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public void download(HttpServletRequest request,
+                         HttpServletResponse response) throws IOException {
+
+
+
+
+        List<CooperatorView> list  = cooperatorService.findAll();
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        byte[] content = os.toByteArray();
+        InputStream is = new ByteArrayInputStream(content);
+        // 设置response参数，可以打开下载页面
+
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("商户信息表");
+
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy h:mm"));
+
+        HSSFRow row = sheet.createRow(0);
+        //设置列宽，setColumnWidth的第二个参数要乘以256，这个参数的单位是1/256个字符宽度
+        sheet.setColumnWidth(1, 30 * 256);
+        sheet.setColumnWidth(2, 20 * 256);
+        sheet.setColumnWidth(4, 20 * 256);
+        sheet.setColumnWidth(5, 20 * 256);
+        sheet.setColumnWidth(6, 20 * 256);
+        sheet.setColumnWidth(7, 20 * 256);
+        sheet.setColumnWidth(8, 20 * 256);
+        sheet.setColumnWidth(10, 25 * 256);
+        sheet.setColumnWidth(11, 25 * 256);
+        sheet.setColumnWidth(12, 15 * 256);
+        sheet.setColumnWidth(13, 15 * 256);
+
+
+
+        HSSFCell cell;
+
+        cell = row.createCell(0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+        cell = row.createCell(1);
+        cell.setCellValue("企业名称");
+        cell.setCellStyle(style);
+        cell = row.createCell(2);
+        cell.setCellValue("营业执照号");
+        cell.setCellStyle(style);
+        cell = row.createCell(3);
+        cell.setCellValue("联系人");
+        cell.setCellStyle(style);
+        cell = row.createCell(4);
+        cell.setCellValue("联系人号码");
+        cell.setCellStyle(style);
+        cell = row.createCell(5);
+        cell.setCellValue("企业简称");
+        cell = row.createCell(6);
+        cell.setCellValue("管理账户");
+        cell.setCellStyle(style);
+        cell = row.createCell(7);
+        cell.setCellValue("法人姓名");
+        cell.setCellStyle(style);
+        cell = row.createCell(8);
+        cell.setCellValue("法人身份证号");
+        cell.setCellStyle(style);
+        cell = row.createCell(9);
+        cell.setCellValue("发票抬头");
+        cell.setCellStyle(style);
+        cell = row.createCell(10);
+        cell.setCellValue("纳税识别号");
+        cell.setCellStyle(style);
+        cell = row.createCell(11);
+        cell.setCellValue("地址");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(12);
+        cell.setCellValue("业务员姓名");
+        cell.setCellStyle(style);
+        cell = row.createCell(13);
+        cell.setCellValue("业务员电话");
+        cell.setCellStyle(style);
+
+
+
+
+        //新增数据行，并且设置单元格数据
+        if(list != null && list.size() > 0) {
+            int rowNum = 1;
+            for (CooperatorView cooperator : list) {
+
+                row = sheet.createRow(rowNum);
+                row.createCell(0).setCellValue(cooperator.getId());
+                row.createCell(1).setCellValue(cooperator.getFullname());
+                row.createCell(2).setCellValue(cooperator.getBusinessLicense());
+
+                row.createCell(3).setCellValue(cooperator.getContact());
+                row.createCell(4).setCellValue(cooperator.getContactPhone());
+                row.createCell(5).setCellValue(cooperator.getCoopAccount().getShortname());
+
+                row.createCell(6).setCellValue(cooperator.getCoopAccount().getUsername());
+                row.createCell(7).setCellValue(cooperator.getCorporationName());
+                row.createCell(8).setCellValue(cooperator.getCorporationIdNo());
+
+
+                row.createCell(9).setCellValue(cooperator.getInvoiceHeader());
+
+
+
+                row.createCell(10).setCellValue(cooperator.getTaxIdNo());
+
+                row.createCell(11).setCellValue(cooperator.getAddress());
+                row.createCell(12).setCellValue(cooperator.getSalesman());
+                row.createCell(13).setCellValue(cooperator.getSalesmanPhone());
+
+
+                rowNum++;
+            }
+        }
+
+        response.reset();
+        response.setHeader("content-type", "application/octet-stream");
+        response.setContentType("application/octet-stream");
+        response.addHeader("Content-Disposition", "attachment;filename=cooperator"
+                + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls");
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            workbook.write(out);
+            out.close();
+        } catch (Exception e) {
+            throw new RuntimeException("导出失败");
+        }
+
+
+
     }
 }
