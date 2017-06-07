@@ -30,4 +30,11 @@ export default class TechnicianCtrl extends Injector {
         $scope.filter = {};
         // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
+
+    exportFile() {
+        console.log(111);
+        let url = '/api/web/admin/technician/download';
+
+        window.location.href = url;
+    }
 }

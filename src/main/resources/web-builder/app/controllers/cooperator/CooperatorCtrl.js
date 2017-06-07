@@ -31,4 +31,11 @@ export default class CooperatorCtrl extends Injector {
         $scope.filter = {};
         // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
+
+    exportFile() {
+        console.log(111);
+        let url = '/api/web/admin/cooperator/download';
+
+        window.location.href = url;
+    }
 }
