@@ -1,5 +1,6 @@
 <div class="container-fluid">
     <div class="clearfix m-b-20">
+        <uib-alert type="danger" close="msg = ''" ng-show="msg">{{msg}}</uib-alert>
         <div class="pull-right text-right" ng-if="cooperator.statusCode == 0">
             <button class="btn btn-primary" ng-click="verify(true)" ng-if="!willReject">通过认证</button>
             <button class="btn btn-default" ng-click="willReject = !willReject" ng-show="willReject">取消操作</button>

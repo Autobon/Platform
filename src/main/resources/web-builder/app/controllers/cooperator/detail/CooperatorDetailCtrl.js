@@ -29,6 +29,8 @@ export default class CooperatorDetailCtrl extends Injector {
                 let cooperators = $scope.$parent.cooperators;
                 let pCoop = cooperators.find(p => {return p.id === $scope.cooperator.id;});
                 if (pCoop) angular.extend(pCoop, verifyObj);
+            } else {
+                $scope.msg = res.data.message;
             }
         });
     }
