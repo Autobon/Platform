@@ -1,0 +1,39 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>{{$state.is('console.study.new') ? '添加资料' : '修改资料'}}</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <form class="form-horizontal" name="form">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">资料类型</label>
+            <div class="col-sm-6">
+                <select class="form-control" id="type" ng-model="studyData.type" required
+                        ng-options="list.id as list.name for list in typeList">
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">资料文件</label>
+            <div class="col-sm-6">
+                <input type="file" file-uploader required ng-model="studyData.path" name="file"
+                       accept=".ppt,.doc,.docx,.xls,.xlsx,.xlt,.xlsm,.wps,.dps,.et"
+                       callback="onUploaded(data)" upload-url="{{uploadUrl}}" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">资料名称</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="fileName" ng-model="studyData.fileName" placeholder="文件大小限制为5M,暂支持office和wps">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注</label>
+            <div class="col-sm-6">
+                <textarea class="form-control" rows="3" ng-model="studyData.remark"> {{studyData.remark}}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-3">
+                <button type="submit" class="btn btn-primary btn-block" ng-click="save()">提 交</button>
+            </div>
+        </div>
+    </form>
+</div>

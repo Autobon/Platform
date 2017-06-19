@@ -32,6 +32,13 @@ export default class CooperatorCtrl extends Injector {
         // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 
+    upload() {
+        const {$scope, CooperatorService} = this.$injected;
+        CooperatorService.upload().then(res => {
+
+        });
+    }
+
     exportFile() {
         console.log(111);
         let url = '/api/web/admin/cooperator/download';

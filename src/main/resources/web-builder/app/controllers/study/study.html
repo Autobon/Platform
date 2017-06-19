@@ -1,0 +1,82 @@
+<div class="page-title">
+    <i class="fa fa-book"></i>&nbsp;学习园地
+</div>
+<div class="row-search">
+    <form class="form-inline pull-left">
+        <div class="form-group">
+            <label for="fileName">资料名称:</label>
+            <input type="text" class="form-control" id="fileName" ng-model="studyData.fileName">
+        </div>
+        <div class="form-group">
+            <label for="type">资料类型:</label>
+            <select class="form-control" id="type" ng-model="studyData.type">
+                <option value="1">培训资料</option>
+                <option value="2">施工标准</option>
+                <option value="3">业务规则</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" ng-click="getDatas(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+    </form>
+    <a ui-sref="console.study.new" class="pull-right btn-new">添加资料&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+</div>
+<br>
+<div class="clearfix">
+    <div ng-class="$state.is('console.study') ? 'col-sm-12' : 'col-sm-3'">
+        <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.study')">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>资料名称</th>
+                        <th>资料类型</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="s in studyDatas">
+                    <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                    <td>{{s.fileName}}</td>
+                    <td>{{['','培训资料','施工标准','业务规则'][s.type]}}</td>
+                    <td>{{s.remark}}</td>
+                    <td><a ui-sref="console.study.detail({id: s.id})" class="btn btn-xs btn-default"><i class="fa fa-list"></i>&nbsp;详情</a>
+                        <a ui-sref="console.study.edit({id: s.id})" class="btn btn-xs btn-default"><i class="fa fa-edit"></i>&nbsp;编辑</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <footer class="text-right">
+                <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getDatas()"
+                                previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+            </footer>
+        </div>
+        <div ng-if="!$state.is('console.study')">
+            <div class="clearfix">
+                <div class="pull-right btn-inverse m-b-5" ng-click="$state.go('^')"
+                     style="width: 24px; height: 16px; line-height: 16px; border-radius: 16px; text-align: center; cursor: pointer;">
+                    <i class="fa fa-arrows-h"></i></div>
+            </div>
+            <ul class="side-nav-list">
+                <li ng-repeat="s in studyDatas" ui-sref-active="active" class="clearfix">
+                    <a ui-sref="console.study.detail({id: s.id})">
+                        <img ng-src="{{s.avatar}}" resize="40,40" class="img-thumbnail pull-left m-r-10">
+                        <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
+                        {{s.fileName}}
+                        <small class="btn btn-success btn-xs m-l-10">{{Settings.studyTypes[s.type]}}</small><br>
+                    </a>
+                </li>
+            </ul>
+
+            <footer class="text-right">
+                <div>第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getDatas()"
+                                previous-text="←" next-text="→" max-size="3" class="pagination-sm"></uib-pagination>
+            </footer>
+        </div>
+    </div>
+    <div ui-view class="col-sm-9"></div>
+</div>

@@ -168,6 +168,26 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'ProductEditCtrl',
             template  : templateCache.ProductEditCtrl,
         })
+        .state('console.study', {
+            url       : '/study',
+            controller: 'StudyCtrl',
+            template  : templateCache.StudyCtrl,
+        })
+        .state('console.study.new', {
+            url       : '/new',
+            controller: 'StudyEditCtrl',
+            template  : templateCache.StudyEditCtrl,
+        })
+        .state('console.study.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'StudyEditCtrl',
+            template  : templateCache.StudyEditCtrl,
+        })
+        .state('console.study.detail', {
+            url       : '/{id:\\d+}',
+            controller: 'StudyDetailCtrl',
+            template  : templateCache.StudyDetailCtrl,
+        })
         ;
 }
 

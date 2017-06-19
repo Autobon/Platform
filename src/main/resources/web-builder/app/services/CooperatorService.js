@@ -36,4 +36,14 @@ export default class CooperatorService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/cooperator/' + coop.id, coop);
     }
+
+    upload() {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/study/upload');
+
+    }
+
+    get uploadFile() {
+        return '/api/web/admin/study/upload';
+    }
 }

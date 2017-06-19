@@ -130,6 +130,11 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                         '1': '已申请改派',
                         '2': '已处理',
                     },
+                    studyTypes: {
+                        '1': '培训资料',
+                        '2': '施工标准',
+                        '3': '业务规则',
+                    },
                 };
             }])
             .run(['$rootScope', '$state', function($rootScope, $state) {
