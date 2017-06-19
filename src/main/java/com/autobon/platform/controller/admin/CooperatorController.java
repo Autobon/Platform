@@ -46,8 +46,7 @@ public class CooperatorController {
     @Autowired CooperatorService cooperatorService;
     @Autowired ReviewCooperService reviewCooperService;
     @Autowired ApplicationEventPublisher publisher;
-    @Autowired
-    private CoopAccountService coopAccountService;
+    @Autowired CoopAccountService coopAccountService;
     @Value("${com.autobon.uploadPath}") String uploadPath;
     @Value("${com.autobon.gm-path}") String gmPath;
 
@@ -495,4 +494,46 @@ public class CooperatorController {
 
 
     }
+
+    @RequestMapping(value = "/{coopId:[\\d]+}/sale", method = RequestMethod.GET)
+    public JsonMessage getAccount(@PathVariable("coopId") int coopId) {
+
+        return new JsonMessage(true, "", "", coopAccountService.findCoopAccountByCooperatorId(coopId));
+    }
+
+
+    @RequestMapping(value = "/{coopId:[\\d]+}/sale/{saleId}", method = RequestMethod.PUT)
+    public JsonMessage modifyAccount(@PathVariable("coopId") int coopId,
+                                     @PathVariable("saleId") int saleId,
+                                     @RequestParam("newCoopId") int newCoopId) {
+
+        CoopAccount coopAccount  = coopAccountService.getById(saleId);
+        if(coopAccount == null){
+            return new JsonMessage(false, "员工账号不存在");
+
+        }
+
+        if(coopAccount.isMain()){
+            return new JsonMessage(false, "管理账户不能修改门店");
+
+        }
+
+        if(coopAccount.getCooperatorId() != coopId){
+
+            return new JsonMessage(false, "员工不属于该门店");
+        }
+
+        Cooperator cooperator  = cooperatorService.get(newCoopId);
+
+        if(cooperator == null){
+
+            return new JsonMessage(false, "新的门店不存在");
+        }
+
+        coopAccount.setShortname(coopAccount.getShortname());
+        coopAccount.setCooperatorId(newCoopId);
+        coopAccountService.save(coopAccount);
+        return new JsonMessage(true, "修改成功");
+    }
+
 }
