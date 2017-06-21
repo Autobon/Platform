@@ -1,6 +1,5 @@
 import {Injector} from 'ngES6';
 import angular from 'angular';
-import $ from 'jquery';
 
 export default class StudyEditCtrl extends Injector {
     static $inject   = ['$scope', '$state', '$stateParams', 'StudyService'];
@@ -47,8 +46,6 @@ export default class StudyEditCtrl extends Injector {
 
     onUploaded(data) {
         const {$scope, $uibModal} = this.$injected;
-        console.log(data);
-        console.log(data.res.realName);
         if (!data.result) {
             $scope.message = data.message;
             $uibModal.open({

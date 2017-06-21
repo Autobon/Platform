@@ -7,7 +7,7 @@
             <label for="fileName">资料名称:</label>
             <input type="text" class="form-control" id="fileName" ng-model="studyData.fileName">
         </div>
-        <div class="form-group">
+        <div class="form-group m-l-5">
             <label for="type">资料类型:</label>
             <select class="form-control" id="type" ng-model="studyData.type">
                 <option value="1">培训资料</option>
@@ -15,8 +15,8 @@
                 <option value="3">业务规则</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary" ng-click="getDatas(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
-        <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+        <button type="submit" class="btn btn-primary m-l-5" ng-click="getDatas(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button type="button" class="btn btn-sm btn-default m-l-5" ng-click="reset()">重置</button>
     </form>
     <a ui-sref="console.study.new" class="pull-right btn-new">添加资料&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
 </div>
@@ -39,7 +39,7 @@
                     <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
                     <td>{{s.fileName}}</td>
                     <td>{{['','培训资料','施工标准','业务规则'][s.type]}}</td>
-                    <td>{{s.remark}}</td>
+                    <td><div class="text_overflow">{{s.remark}}</div></td>
                     <td><a ui-sref="console.study.detail({id: s.id})" class="btn btn-xs btn-default"><i class="fa fa-list"></i>&nbsp;详情</a>
                         <a ui-sref="console.study.edit({id: s.id})" class="btn btn-xs btn-default"><i class="fa fa-edit"></i>&nbsp;编辑</a>
                     </td>

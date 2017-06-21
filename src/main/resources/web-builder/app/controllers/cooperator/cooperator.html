@@ -1,7 +1,7 @@
 <div class="page-title">
     <i class="fa fa-university"></i>&nbsp;商户管理
 </div>
-<div class="row-search">
+<div class="row-search" ng-if="!$state.is('console.cooperator.account')">
     <form class="form-inline pull-left">
         <div class="form-group">
             <label for="fullname">企业名称:</label>
@@ -26,6 +26,29 @@
     </form>
     <a ui-sref="console.cooperator.new" class="pull-right btn-new">新建商户&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
 </div>
+
+<div class="row-search" ng-if="$state.is('console.cooperator.account')">
+    <div class="col-sm-3"></div>
+    <form class="form-inline pull-left">
+        <div class="form-group">
+            <label for="fullname">业务员姓名:</label>
+            <input type="text" class="form-control" id="name" ng-model="account.name">
+        </div>
+        <div class="form-group">
+            <label for="corporationName">业务员电话:</label>
+            <input type="text" class="form-control" id="phone" ng-model="account.phone">
+        </div>
+        <div class="form-group">
+            <label for="orderStatus">性别:</label>
+            <select class="form-control" id="gender" ng-model="filter.gender">
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" ng-click="getCooperators(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+    </form>
+</div>
 <br>
 <div class="clearfix">
     <div ng-class="$state.is('console.cooperator') ? 'col-sm-12' : 'col-sm-3'">
@@ -44,6 +67,7 @@
                     <td>{{c.createTime | date : 'YYYY-MM-DD HH:mm'}}</td>
                     <td><a ui-sref="console.cooperator.detail({id: c.id})" class="btn btn-xs btn-default"><i class="fa fa-list"></i>&nbsp;详情</a>
                         <a ui-sref="console.cooperator.edit({id: c.id})" class="btn btn-xs btn-default"><i class="fa fa-edit"></i>&nbsp;编辑</a>
+                        <a ui-sref="console.cooperator.account({id: c.id})" class="btn btn-xs btn-default"><i class="fa fa-users"></i>&nbsp;业务员</a>
                     </td>
                 </tr>
                 </tbody>

@@ -188,6 +188,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'StudyDetailCtrl',
             template  : templateCache.StudyDetailCtrl,
         })
+        .state('console.cooperator.account', {
+            url       : '/account/{id:\\d+}',
+            controller: 'AccountCtrl',
+            template  : templateCache.AccountCtrl,
+        })
         ;
 }
 

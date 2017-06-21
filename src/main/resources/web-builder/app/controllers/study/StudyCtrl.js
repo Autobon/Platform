@@ -1,4 +1,5 @@
 import {Injector} from 'ngES6';
+import './study.scss';
 
 export default class StudyCtrl extends Injector {
     static $inject = ['$scope', 'Settings', 'StudyService'];

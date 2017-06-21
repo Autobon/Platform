@@ -46,4 +46,9 @@ export default class CooperatorService extends Injector {
     get uploadFile() {
         return '/api/web/admin/study/upload';
     }
+
+    getAccounts(id) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/cooperator/' + id + '/sale');
+    }
 }
