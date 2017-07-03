@@ -502,7 +502,7 @@ public class CooperatorController {
     }
 
 
-    @RequestMapping(value = "/{coopId:[\\d]+}/sale/{saleId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{coopId:[\\d]+}/sale/{saleId}", method = RequestMethod.POST)
     public JsonMessage modifyAccount(@PathVariable("coopId") int coopId,
                                      @PathVariable("saleId") int saleId,
                                      @RequestParam("newCoopId") int newCoopId) {
