@@ -13,20 +13,20 @@ public class OrderProductView {
 
     @Id
     private int id;
-    @Column  private int orderId; //订单ID
-    @Column private int constructionProjectId; //施工项目ID
-    @Column private int constructionPositionId; //施工部位ID
-    @Column private int productId; //产品ID
-    @Column private Integer type;//'施工项目'
-    @Column private String brand; //'品牌'
-    @Column private String code;  //'编码'
-    @Column private String model; //'型号'
-    @Column private Integer constructionPosition;  //'施工部位'
-    @Column private Integer workingHours;   //'工时'
-    @Column private Integer constructionCommission;  //'施工提成'
-    @Column private Integer starLevel;  //'星级要求'
-    @Column private Integer scrapCost; //'报废扣款'
-    @Column private Integer warranty; //'质保
+    @Column  private int orderId;
+    @Column private int constructionProjectId;
+    @Column private int constructionPositionId;
+    @Column private int productId;
+    @Column private Integer type;
+    @Column private String brand;
+    @Column private String code;
+    @Column private String model;
+    @Column private Integer constructionPosition;
+    @Column private Integer workingHours;
+    @Column private Integer constructionCommission;
+    @Column private Integer starLevel;
+    @Column private Integer scrapCost;
+    @Column private Integer warranty;
 
 
     public int getId() {
