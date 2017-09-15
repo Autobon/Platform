@@ -14,6 +14,7 @@ export default class OrderCtrl extends Injector {
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
         $scope.assignTemplate = 'assignOrder.html';
         $scope.techQuery = {};
+        $scope.showExport = 0;
         this.getOrders();
     }
 
@@ -72,14 +73,24 @@ export default class OrderCtrl extends Injector {
         });
     }
 
+    toExport(){
+        const {$scope, Settings} = this.$injected;
+        $scope.showExport = 1;
+    }
+
     exportExcel() {
         const {$scope, Settings} = this.$injected;
-        window.location.href = Settings.domain + '/api/web/admin/order/excel/download?id=' + ($scope.filter.id === undefined ? '' : $scope.filter.id)
-                            + '&orderTime=' +  ($scope.filter.orderTime === undefined ? '' : $scope.filter.orderTime)
-                            + '&orderNum=' +  ($scope.filter.orderNum === undefined ? '' : $scope.filter.orderNum)
-                            + '&orderCreator=' +  ($scope.filter.orderCreator === undefined ? '' : $scope.filter.orderCreator)
-                            + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech)
-                            + '&orderType=' +  ($scope.filter.orderType === undefined ? '' : $scope.filter.orderType)
-                            + '&orderStatus=' +  ($scope.filter.orderStatus === undefined ? '' : $scope.filter.orderStatus);
+        $scope.showExport = 0;
+        // window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?id=' + ($scope.filter.id === undefined ? '' : $scope.filter.id)
+        //                     + '&orderTime=' +  ($scope.filter.orderTime === undefined ? '' : $scope.filter.orderTime)
+        //                     + '&orderNum=' +  ($scope.filter.orderNum === undefined ? '' : $scope.filter.orderNum)
+        //                     + '&orderCreator=' +  ($scope.filter.orderCreator === undefined ? '' : $scope.filter.orderCreator)
+        //                     + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech)
+        //                     + '&orderType=' +  ($scope.filter.orderType === undefined ? '' : $scope.filter.orderType)
+        //                     + '&orderStatus=' +  ($scope.filter.orderStatus === undefined ? '' : $scope.filter.orderStatus);
+        window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?id=' + ($scope.filter.id === undefined ? '' : $scope.filter.id)
+            + '&startDate=' +  ($scope.filter.startDate === undefined ? '' : $scope.filter.startDate)
+            + '&endDate=' +  ($scope.filter.endDate === undefined ? '' : $scope.filter.endDate)
+            + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech);
     }
 }

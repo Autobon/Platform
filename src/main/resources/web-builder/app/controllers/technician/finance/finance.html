@@ -1,0 +1,62 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>技师账单</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <div class="row-search">
+        <form class="form-inline pull-left">
+            <div class="form-group">
+                <label for="name">姓名:</label>
+                <input type="text" class="form-control" id="name" ng-model="filter.name">
+            </div>
+            <div class="form-group">
+                <label for="phone">手机号:</label>
+                <input type="text" class="form-control" id="phone" ng-model="filter.phone">
+            </div>
+            <button type="submit" class="btn btn-primary" ng-click="getTechFinance()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+            <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+        </form>
+    </div>
+    <div class="clearfix">
+        <div class="table-responsive m-l-20 m-r-20">
+            <table class="table table-striped align-middle">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>手机号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>总收入</th>
+                    <th>已提现</th>
+                    <th>未提现</th>
+                    <th>已申请</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="t in finances">
+                    <td><b>{{$index+1+pagination.pageSize*(pagination.page-1)}}</b></td>
+                    <td>{{t.phone}}</td>
+                    <td>{{t.name}}</td>
+                    <td>{{t.gender}}</td>
+                    <td>{{t.sumIncome}}</td>
+                    <td>{{t.sumCash}}</td>
+                    <td>{{t.notCash}}</td>
+                    <td>{{t.alreadyApply}}</td>
+                    <td><a ui-sref="console.technician.workDetail({id: t.techId})" class="btn btn-xs btn-default">
+                        <i class="fa fa-list"></i>&nbsp;收入明细</a>
+                        <a ui-sref="console.technician.edit({id: t.id})" class="btn btn-xs btn-default">
+                            <i class="fa fa-list"></i>&nbsp;申请记录</a>
+                        <button type="button" class="btn btn-sm btn-default" ng-click="exportDetail(t.techId)"><i class="fa fa-list"></i>导出明细</button>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+            <footer class="text-right">
+                <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getTechFinance()"
+                                previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+            </footer>
+        </div>
+    </div>
+</div>

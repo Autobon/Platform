@@ -40,7 +40,6 @@ export default class StudyService extends Injector {
     download() {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/study/upload');
-
     }
 
     // get uploadFile() {

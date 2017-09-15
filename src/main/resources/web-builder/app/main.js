@@ -135,6 +135,11 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                         '2': '施工标准',
                         '3': '业务规则',
                     },
+                    payStatus: {
+                        '0': '未出账',
+                        '1': '已出账',
+                        '2': '已转账支付',
+                    },
                 };
             }])
             .run(['$rootScope', '$state', function($rootScope, $state) {

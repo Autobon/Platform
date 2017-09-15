@@ -6,9 +6,11 @@ import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
 import com.autobon.technician.entity.DetailedTechnician;
 import com.autobon.technician.entity.Location;
+import com.autobon.technician.entity.TechFinanceView;
 import com.autobon.technician.entity.Technician;
 import com.autobon.technician.service.DetailedTechnicianService;
 import com.autobon.technician.service.LocationService;
+import com.autobon.technician.service.TechFinanceService;
 import com.autobon.technician.service.TechnicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,6 +40,9 @@ public class TechnicianController {
 
     @Autowired
     private TechnicianService technicianService1;
+
+    @Autowired
+    private TechFinanceService techFinanceService;
 
     @RequestMapping(value = "/mobile/technician/search",method = RequestMethod.GET)
     public JsonMessage search(@RequestParam("query") String query,
@@ -175,6 +180,27 @@ public class TechnicianController {
         location.setStreetNumber(streetNumber);
         locationService.save(location);
         return new JsonResult(true, "上传成功");
+    }
+
+    /**
+     *查询所有技师的账单列表
+     * @param request
+     * @param response
+     * @param phone
+     * @param name
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/technician/finance",method = RequestMethod.GET)
+    public JsonResult getTech(HttpServletRequest request,
+                              HttpServletResponse response,
+                              @RequestParam(value = "phone", required = false) String phone,
+                              @RequestParam(value = "name", required = false) String name,
+                              @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+        Page<TechFinanceView> views = techFinanceService.find(phone, name, page, pageSize);
+        return new JsonResult(true, new JsonPage<>(views));
     }
 
 }

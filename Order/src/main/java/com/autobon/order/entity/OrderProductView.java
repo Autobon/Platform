@@ -13,7 +13,7 @@ public class OrderProductView {
 
     @Id
     private int id;
-    @Column  private int orderId;
+    @Column(name = "order_id")  private int orderId;
     @Column private int constructionProjectId;
     @Column private int constructionPositionId;
     @Column private int productId;

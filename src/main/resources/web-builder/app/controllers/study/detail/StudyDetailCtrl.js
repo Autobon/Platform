@@ -1,5 +1,4 @@
 import {Injector} from 'ngES6';
-import angular from 'angular';
 
 export default class StudyDetailCtrl extends Injector {
     static $inject   = ['$scope', '$state', '$stateParams', 'StudyService'];

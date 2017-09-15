@@ -1,12 +1,12 @@
 import {Injector} from 'ngES6';
 
 export default class AccountCtrl extends Injector {
-    static $inject   = ['$scope', '$state', '$stateParams', 'CooperatorService','$uibModal'];
+    static $inject   = ['$scope', '$state', '$stateParams', 'CooperatorService', '$uibModal'];
     static $template = require('./account.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, CooperatorService} = this.$injected;
+        const {$scope} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.params = {};
         $scope.modalInstance = {};
@@ -80,7 +80,7 @@ export default class AccountCtrl extends Injector {
     chooseNew(coop) {
         const {$scope} = this.$injected;
         $scope.params.newCoopId = coop.id;
-        $scope.fullName = coop.fullname
+        $scope.fullName = coop.fullname;
     }
 
     toClose() {

@@ -2,10 +2,12 @@ package com.autobon.order.service;
 
 import com.autobon.order.entity.ConstructionWaste;
 import com.autobon.order.entity.WorkDetail;
+import com.autobon.order.entity.WorkDetailView;
 import com.autobon.order.repository.ConstructionWasteRepository;
 import com.autobon.order.repository.OrderProductRepository;
 import com.autobon.order.repository.WorkDetailRepository;
 
+import com.autobon.order.repository.WorkDetailViewRepository;
 import com.autobon.order.vo.ConstructionDetail;
 import com.autobon.order.vo.ConstructionShow;
 import com.autobon.order.vo.ProjectPosition;
@@ -38,6 +40,8 @@ public class WorkDetailService {
     OrderProductRepository orderProductRepository;
     @Autowired
     TechStatRepository techStatRepository;
+    @Autowired
+    WorkDetailViewRepository workDetailViewRepository;
 
 
 
@@ -227,5 +231,9 @@ public class WorkDetailService {
             constructionWaste.setOrderId(constructionShow.getOrderId());
             constructionWasteRepository.save(constructionWastes);
         }
+    }
+
+    public Page<WorkDetailView> findViews(int techId, int page, int pageSize){
+        return workDetailViewRepository.findViews(techId, new PageRequest(page - 1, pageSize, new Sort(Sort.Direction.ASC, "id")));
     }
 }

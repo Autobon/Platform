@@ -33,8 +33,8 @@ export default class CooperatorCtrl extends Injector {
     }
 
     upload() {
-        const {$scope, CooperatorService} = this.$injected;
-        CooperatorService.upload().then(res => {
+        const {CooperatorService} = this.$injected;
+        CooperatorService.upload().then(() => {
 
         });
     }

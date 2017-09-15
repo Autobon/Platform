@@ -301,5 +301,18 @@ public class OrderController {
         return new JsonMessage(false, "", "" ,"");
     }
 
+    /**
+     * 查询技师所有的施工单详情
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/work/detail/{techId}", method = RequestMethod.GET)
+    public JsonMessage findWorkDetailView(@PathVariable("techId") int techId,
+                                          @RequestParam(value = "page", defaultValue = "1") int page,
+                                          @RequestParam(value = "pageSize", defaultValue = "20") int pageSize){
+        return new JsonMessage(true, "", "",
+                new JsonPage<>(workDetailService.findViews(techId, page, pageSize)));
+    }
 
 }

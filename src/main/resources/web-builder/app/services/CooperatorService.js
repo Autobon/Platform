@@ -40,7 +40,6 @@ export default class CooperatorService extends Injector {
     upload() {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/study/upload');
-
     }
 
     get uploadFile() {
@@ -54,6 +53,6 @@ export default class CooperatorService extends Injector {
 
     modifyAccount(params) {
         const {$http, Settings} = this.$injected;
-        return $http.post(Settings.domain + '/api/web/admin/cooperator/' + params.coopId +'/sale/' + params.saleId, {newCoopId: params.newCoopId});
+        return $http.post(Settings.domain + '/api/web/admin/cooperator/' + params.coopId + '/sale/' + params.saleId, {newCoopId: params.newCoopId});
     }
 }

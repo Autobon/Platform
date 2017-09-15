@@ -69,6 +69,16 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'TechnicianEditorCtrl',
             template  : templateCache.TechnicianEditorCtrl,
         })
+        .state('console.technician.finance', {
+            url       : '/finance',
+            controller: 'TechnicianFinanceCtrl',
+            template  : templateCache.TechnicianFinanceCtrl,
+        })
+        .state('console.technician.workDetail', {
+            url       : '/workDetail/{id:\\d+}',
+            controller: 'WorkDetailCtrl',
+            template  : templateCache.WorkDetailCtrl,
+        })
         .state('console.cooperator', {
             url       : '/cooperator',
             controller: 'CooperatorCtrl',
