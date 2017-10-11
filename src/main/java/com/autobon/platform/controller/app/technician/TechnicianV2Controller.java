@@ -11,13 +11,12 @@ import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.platform.listener.TechnicianEventListener;
 import com.autobon.shared.*;
 import com.autobon.technician.entity.Location;
+import com.autobon.technician.entity.TechCashApply;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
-import com.autobon.technician.service.DetailedTechnicianService;
-import com.autobon.technician.service.LocationService;
-import com.autobon.technician.service.TechStatService;
-import com.autobon.technician.service.TechnicianService;
+import com.autobon.technician.service.*;
 import com.autobon.technician.vo.LocationShow;
+import com.autobon.technician.vo.TechCashApplyShow;
 import com.autobon.technician.vo.TechnicianShow;
 import com.autobon.technician.vo.TechnicianSuperShow;
 import org.im4java.core.ConvertCmd;
@@ -39,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -93,6 +93,9 @@ public class TechnicianV2Controller {
 
     @Autowired
     TechStatService techStatService;
+
+    @Autowired
+    TechCashApplyService techCashApplyService;
 
     @Value("${com.autobon.gm-path}") String gmPath;
     @Value("${com.autobon.uploadPath}") String uploadPath;
@@ -1244,4 +1247,136 @@ public class TechnicianV2Controller {
         return new JsonResult(true, new JsonPage<>(orderViewService.findByStatusCode(0, page, pageSize)));
     }
 
+    /**
+     * 查询提现申请列表
+     * @param techId
+     * @param techName
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/v2/cash/apply", method = RequestMethod.GET)
+    public JsonResult getListApply(HttpServletRequest request,
+            @RequestParam(value = "techId", defaultValue = "1") int techId,
+            @RequestParam(value = "techName", defaultValue = "1") String techName,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize){
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+
+        return new JsonResult(true, new JsonPage<>(techCashApplyService.find(techName, techId, page, pageSize)));
+    }
+
+    /**
+     * 新增提现申请
+     * @param techCashApplyShow
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/v2/cash/apply", method = RequestMethod.POST)
+    public JsonResult addApply(@RequestBody TechCashApplyShow techCashApplyShow,
+                                     HttpServletRequest request)throws Exception {
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+
+        TechCashApply techCashApply = new TechCashApply(techCashApplyShow);
+        techCashApply.setState(0);
+        return new JsonResult(true, techCashApplyService.save(techCashApply));
+    }
+
+    /**
+     * 修改提现申请
+     * @param techCashApplyShow
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/v2/cash/apply/{id:\\d+}", method = RequestMethod.PUT)
+    public JsonResult updateApply(@PathVariable("id") int id,@RequestBody TechCashApplyShow techCashApplyShow,
+                          HttpServletRequest request)throws Exception {
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        TechCashApply techCashApply = techCashApplyService.findById(id);
+        if(techCashApply == null){
+            return new JsonResult(false, "申请单不存在");
+        }
+        techCashApply.setApplyDate(techCashApplyShow.getApplyDate() == null ? techCashApply.getApplyDate() : techCashApplyShow.getApplyDate());
+        techCashApply.setApplyMoney(techCashApplyShow.getApplyMoney() == null ? techCashApply.getApplyMoney() : techCashApplyShow.getApplyMoney());
+        techCashApply.setTechId(techCashApplyShow.getTechId() == null ? techCashApply.getTechId() : techCashApplyShow.getTechId());
+        techCashApply.setOrderId(techCashApplyShow.getOrderId() == null ? techCashApply.getOrderId() : techCashApplyShow.getOrderId());
+        techCashApply.setPayDate(techCashApplyShow.getPayDate() == null ? techCashApply.getPayDate() : techCashApplyShow.getPayDate());
+        techCashApply.setPayment(techCashApplyShow.getPayment() == null ? techCashApply.getPayment() : techCashApplyShow.getPayment());
+        techCashApply.setNotPay(techCashApplyShow.getNotPay() == null ? techCashApply.getNotPay() : techCashApplyShow.getNotPay());
+        techCashApply.setState(techCashApplyShow.getState() == null ? techCashApply.getState() : techCashApplyShow.getState());
+        return new JsonResult(true, techCashApplyService.save(techCashApply));
+    }
+
+    /**
+     * 删除申请单
+     * @param id
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/v2/cash/apply/{id:\\d+}", method = RequestMethod.DELETE)
+    public JsonResult updateApply(@PathVariable("id") int id,
+                                  HttpServletRequest request)throws Exception {
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        TechCashApply techCashApply = techCashApplyService.findById(id);
+        if(techCashApply == null){
+            return new JsonResult(false, "申请单不存在");
+        }
+        if(techCashApply.getState() > 0){
+            return new JsonResult(false, "已提过现，不能删除");
+        }
+        techCashApplyService.deleteById(id);
+        return new JsonResult(true, "删除成功");
+    }
+
+    /**
+     * 执行支付
+     * @param id
+     * @param techCashApplyShow  存放提现金额（payment）和提现时间(payDate)
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/v2/cash/apply/{id:\\d+}/to", method = RequestMethod.PUT)
+    public JsonResult toApply(@PathVariable("id") int id,@RequestBody TechCashApplyShow techCashApplyShow,
+                               HttpServletRequest request)throws Exception {
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        TechCashApply techCashApply = techCashApplyService.findById(id);
+        if(techCashApply == null){
+            return new JsonResult(false, "申请单不存在");
+        }
+        if(techCashApply.getState() == 2){
+            return new JsonResult(false, "已全部提现，无法支付");
+        }
+        if(techCashApplyShow.getPayment().compareTo(techCashApply.getNotPay()) == 1){
+            return new JsonResult(false, "金额超出未提现金额，无法支付");
+        }
+        BigDecimal left = techCashApply.getNotPay().subtract(techCashApplyShow.getPayment());
+        techCashApply.setNotPay(left);
+        if(left.compareTo(new BigDecimal(0)) == 0){
+            techCashApply.setState(2);
+        }else{
+            techCashApply.setState(1);
+        }
+        techCashApply.setPayment(techCashApply.getPayment().add(techCashApplyShow.getPayment()));
+        techCashApply.setPayDate(techCashApplyShow.getPayDate());
+        return new JsonResult(true, techCashApplyService.save(techCashApply));
+    }
 }

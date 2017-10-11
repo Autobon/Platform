@@ -1161,6 +1161,7 @@ public class OrderV2Controller {
                 for(OrderProductView product : productList){
                     if(product.getConstructionProjectId() == 1){
                         if(product.getConstructionPositionId() == 1){
+                            product.getScrapCost();
                             row.getCell(15).setCellValue(product.getModel());
                             row.getCell(16).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 2){
