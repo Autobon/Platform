@@ -31,9 +31,6 @@ public class TechCashApply {
     @Column(name = "tech_id")
     private Integer techId;                  //技师ID
 
-    @Column(name = "order_id")
-    private Integer orderId;                //订单ID
-
     @Column(name = "pay_date")
     private Date payDate;           //支付日期
 
@@ -44,7 +41,7 @@ public class TechCashApply {
     private BigDecimal notPay;          //未支付金额
 
     @Column(name = "state")
-    private Integer state;            //支付状态  0已申请，1部分扣款，2已扣款
+    private Integer state;            //支付状态  0已申请，1部分扣款，2已扣款, 3已被取消
 
     public Integer getId() {
         return id;
@@ -76,14 +73,6 @@ public class TechCashApply {
 
     public void setTechId(Integer techId) {
         this.techId = techId;
-    }
-
-    public Integer getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
     }
 
     public Date getPayDate() {
@@ -122,10 +111,12 @@ public class TechCashApply {
         this.applyDate = techCashApplyShow.getApplyDate();
         this.applyMoney = techCashApplyShow.getApplyMoney();
         this.techId = techCashApplyShow.getTechId();
-        this.orderId = techCashApplyShow.getOrderId();
         this.payDate = techCashApplyShow.getPayDate();
         this.payment = techCashApplyShow.getPayment();
         this.notPay = techCashApplyShow.getNotPay();
         this.state = techCashApplyShow.getState();
+    }
+
+    public TechCashApply() {
     }
 }

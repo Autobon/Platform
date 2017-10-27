@@ -15,6 +15,6 @@ public interface TechCashApplyViewRepository extends JpaRepository<TechCashApply
     TechCashApplyView getByTechId(int techId);
 
     @Query("select t from TechCashApplyView t " +
-            "where (?1 is null or t.techName like ?1) and (?2 is null or t.techId = ?2) ")
-    Page<TechCashApplyView> find(String techName, int techId, Pageable pageable);
+            "where (?1 is null or t.techName like ?1) and (?2 is null or t.techId = ?2) and (?3 is null or t.state = ?3)")
+    Page<TechCashApplyView> find(String techName, Integer techId, Integer state, Pageable pageable);
 }

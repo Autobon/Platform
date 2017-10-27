@@ -33,12 +33,6 @@ public class TechCashApplyView {
     @Column(name = "tech_name")
     private String techName;                  //技师姓名
 
-    @Column(name = "order_id")
-    private int orderId;                //订单ID
-
-    @Column(name = "order_num")
-    private String orderNum;                //订单编号
-
     @Column(name = "pay_date")
     private Date payDate;           //支付日期
 
@@ -49,7 +43,7 @@ public class TechCashApplyView {
     private BigDecimal notPay;          //未支付金额
 
     @Column(name = "state")
-    private int state;            //支付状态  0已申请，1已扣款
+    private int state;            //支付状态  0已申请，1部分扣款，2已扣款, 3已被取消
 
     public int getId() {
         return id;
@@ -81,14 +75,6 @@ public class TechCashApplyView {
 
     public void setTechId(int techId) {
         this.techId = techId;
-    }
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
     }
 
     public Date getPayDate() {
@@ -129,13 +115,5 @@ public class TechCashApplyView {
 
     public void setTechName(String techName) {
         this.techName = techName;
-    }
-
-    public String getOrderNum() {
-        return orderNum;
-    }
-
-    public void setOrderNum(String orderNum) {
-        this.orderNum = orderNum;
     }
 }

@@ -10,10 +10,7 @@ import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.platform.listener.TechnicianEventListener;
 import com.autobon.shared.*;
-import com.autobon.technician.entity.Location;
-import com.autobon.technician.entity.TechCashApply;
-import com.autobon.technician.entity.TechStat;
-import com.autobon.technician.entity.Technician;
+import com.autobon.technician.entity.*;
 import com.autobon.technician.service.*;
 import com.autobon.technician.vo.LocationShow;
 import com.autobon.technician.vo.TechCashApplyShow;
@@ -95,6 +92,9 @@ public class TechnicianV2Controller {
     TechStatService techStatService;
 
     @Autowired
+    TechFinanceService techFinanceService;
+
+    @Autowired
     TechCashApplyService techCashApplyService;
 
     @Value("${com.autobon.gm-path}") String gmPath;
@@ -120,8 +120,13 @@ public class TechnicianV2Controller {
             if(techStat != null){
                 technicianSuperShow.setStarRate(String.valueOf(techStat.getStarRate()));
                 technicianSuperShow.setTotalOrders(String.valueOf(techStat.getTotalOrders()));
-                technicianSuperShow.setBalance(String.valueOf(techStat.getBalance()));
+                technicianSuperShow.setTotalBalance(String.valueOf(techStat.getBalance()));
                 technicianSuperShow.setUnpaidOrders(String.valueOf(techStat.getUnpaidOrders()));
+            }
+            TechFinance techFinance = techFinanceService.getByTechId(technician.getId());
+            if(techFinance != null){
+                technicianSuperShow.setTotalBalance(String.valueOf(techFinance.getSumIncome()));
+                technicianSuperShow.setBalance(String.valueOf(techFinance.getNotCash()));
             }
             return new JsonResult(true, technicianSuperShow);
         }catch (Exception e){
@@ -172,6 +177,11 @@ public class TechnicianV2Controller {
                 TechStat techStat = new TechStat();
                 techStat.setTechId(technician.getId());
                 techStatService.save(techStat);
+
+                TechFinance techFinance = new TechFinance();
+                techFinance.setId(technician.getId());
+                techFinanceService.save(techFinance);
+
                 jsonResult.setStatus(true);
                 jsonResult.setMessage(technician);
             }
@@ -1259,6 +1269,7 @@ public class TechnicianV2Controller {
     public JsonResult getListApply(HttpServletRequest request,
             @RequestParam(value = "techId", defaultValue = "1") int techId,
             @RequestParam(value = "techName", defaultValue = "1") String techName,
+            @RequestParam(value = "state",required = false) Integer state,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize){
         Technician tech = (Technician) request.getAttribute("user");
@@ -1266,7 +1277,7 @@ public class TechnicianV2Controller {
             return new JsonResult(false, "登陆过期");
         }
 
-        return new JsonResult(true, new JsonPage<>(techCashApplyService.find(techName, techId, page, pageSize)));
+        return new JsonResult(true, new JsonPage<>(techCashApplyService.find(techName, techId, state, page, pageSize)));
     }
 
     /**
@@ -1276,17 +1287,28 @@ public class TechnicianV2Controller {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value="/v2/cash/apply", method = RequestMethod.POST)
+    @RequestMapping(value="/v2/cash/apply", method = RequestMethod.POST, consumes="application/json")
     public JsonResult addApply(@RequestBody TechCashApplyShow techCashApplyShow,
                                      HttpServletRequest request)throws Exception {
         Technician tech = (Technician) request.getAttribute("user");
         if(tech == null){
             return new JsonResult(false, "登陆过期");
         }
-
+        if(techCashApplyShow.getApplyMoney().compareTo(new BigDecimal(0)) <= 0){
+            return new JsonResult(false, "申请金额必须大于0");
+        }
         TechCashApply techCashApply = new TechCashApply(techCashApplyShow);
         techCashApply.setState(0);
-        return new JsonResult(true, techCashApplyService.save(techCashApply));
+        TechCashApply res = techCashApplyService.save(techCashApply);
+        if(res == null){
+            return new JsonResult(false, "申请失败");
+        }
+
+        TechFinance techFinance = techFinanceService.getByTechId(tech.getId());
+        techFinance.setAlreadyApply(techFinance.getAlreadyApply().add(res.getApplyMoney()));
+        techFinanceService.save(techFinance);
+
+        return new JsonResult(true, res);
     }
 
     /**
@@ -1307,15 +1329,22 @@ public class TechnicianV2Controller {
         if(techCashApply == null){
             return new JsonResult(false, "申请单不存在");
         }
+        if(techCashApplyShow.getApplyMoney().compareTo(new BigDecimal(0)) > 0){
+            return new JsonResult(false, "申请提现金额不能修改");
+        }
         techCashApply.setApplyDate(techCashApplyShow.getApplyDate() == null ? techCashApply.getApplyDate() : techCashApplyShow.getApplyDate());
         techCashApply.setApplyMoney(techCashApplyShow.getApplyMoney() == null ? techCashApply.getApplyMoney() : techCashApplyShow.getApplyMoney());
         techCashApply.setTechId(techCashApplyShow.getTechId() == null ? techCashApply.getTechId() : techCashApplyShow.getTechId());
-        techCashApply.setOrderId(techCashApplyShow.getOrderId() == null ? techCashApply.getOrderId() : techCashApplyShow.getOrderId());
         techCashApply.setPayDate(techCashApplyShow.getPayDate() == null ? techCashApply.getPayDate() : techCashApplyShow.getPayDate());
         techCashApply.setPayment(techCashApplyShow.getPayment() == null ? techCashApply.getPayment() : techCashApplyShow.getPayment());
         techCashApply.setNotPay(techCashApplyShow.getNotPay() == null ? techCashApply.getNotPay() : techCashApplyShow.getNotPay());
         techCashApply.setState(techCashApplyShow.getState() == null ? techCashApply.getState() : techCashApplyShow.getState());
-        return new JsonResult(true, techCashApplyService.save(techCashApply));
+        TechCashApply res = techCashApplyService.save(techCashApply);
+        if(res == null){
+            return new JsonResult(false, "申请失败");
+        }
+
+        return new JsonResult(true, res);
     }
 
     /**
@@ -1365,7 +1394,12 @@ public class TechnicianV2Controller {
         if(techCashApply.getState() == 2){
             return new JsonResult(false, "已全部提现，无法支付");
         }
-        if(techCashApplyShow.getPayment().compareTo(techCashApply.getNotPay()) == 1){
+        Technician t = technicianService.get(techCashApplyShow.getTechId());
+        if(t == null){
+            return new JsonResult(false, "技师不存在");
+        }
+        TechFinance techFinance = techFinanceService.getByTechId(t.getId());
+        if(techCashApplyShow.getPayment().compareTo(techFinance.getNotCash()) == 1){
             return new JsonResult(false, "金额超出未提现金额，无法支付");
         }
         BigDecimal left = techCashApply.getNotPay().subtract(techCashApplyShow.getPayment());
@@ -1377,6 +1411,16 @@ public class TechnicianV2Controller {
         }
         techCashApply.setPayment(techCashApply.getPayment().add(techCashApplyShow.getPayment()));
         techCashApply.setPayDate(techCashApplyShow.getPayDate());
-        return new JsonResult(true, techCashApplyService.save(techCashApply));
+        TechCashApply res = techCashApplyService.save(techCashApply);
+        if(res == null){
+            return new JsonResult(false, "支付失败");
+        }
+        //修改该技师的流水
+        techFinance.setSumIncome(techFinance.getSumIncome().subtract(res.getPayment()));
+        techFinance.setNotCash(techFinance.getNotCash().subtract(res.getPayment()));
+        techFinance.setSumCash(techFinance.getSumCash().add(res.getPayment()));
+        techFinance.setAlreadyApply(techFinance.getAlreadyApply().subtract(res.getPayment()));
+        techFinanceService.save(techFinance);
+        return new JsonResult(true, res);
     }
 }

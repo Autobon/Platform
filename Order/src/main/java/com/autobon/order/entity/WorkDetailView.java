@@ -82,6 +82,9 @@ public class WorkDetailView {
     @Column(name = "create_date")
     private Date createDate;
 
+    @Column(name = "total_cost")
+    private float totalCost;
+
     public WorkDetailView(){}
 
     public int getSource() {
@@ -298,5 +301,13 @@ public class WorkDetailView {
 
     public void setProjectName6(String projectName6) {
         this.projectName6 = projectName6;
+    }
+
+    public float getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(float totalCost) {
+        this.totalCost = totalCost;
     }
 }

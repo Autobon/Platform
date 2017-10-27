@@ -140,6 +140,12 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                         '1': '已出账',
                         '2': '已转账支付',
                     },
+                    applyStatus: {
+                        '0': '已申请',
+                        '1': '部分扣款',
+                        '2': '已扣款',
+                        '3': '已被取消',
+                    },
                 };
             }])
             .run(['$rootScope', '$state', function($rootScope, $state) {

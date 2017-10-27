@@ -55,4 +55,13 @@ export default class TechnicianService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/order/work/detail/' + techId, {params: {page: page, pageSize: pageSize}});
     }
+    searchApply(params, page, pageSize) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/cash/apply', {params: {...params, page: page, pageSize: pageSize}});
+    }
+
+    endPay(id) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/cash/apply/' + id + "/pay");
+    }
 }

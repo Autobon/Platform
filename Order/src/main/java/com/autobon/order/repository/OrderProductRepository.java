@@ -24,6 +24,12 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Inte
             " and op.construction_position_id in (?3) ", nativeQuery = true )
     Float getMoney(int orderId, int projectId, List<Integer> positionId);
 
+    @Query(value = "select sum(op.scrap_cost) from t_order_product op where " +
+            " op.order_id = ?1 " +
+            " and op.construction_project_id = ?2 " +
+            " and op.construction_position_id in (?3) ", nativeQuery = true )
+    Float getCost(int orderId, int projectId, List<Integer> positionId);
+
 
     @Modifying
     @Transactional

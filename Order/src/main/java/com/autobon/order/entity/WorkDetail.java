@@ -67,6 +67,9 @@ public class WorkDetail {
     @Column(name = "create_date")
     private Date createDate;
 
+    @Column(name = "total_cost")
+    private float totalCost;
+
     public WorkDetail(){}
 
     public int getSource() {
@@ -227,5 +230,13 @@ public class WorkDetail {
 
     public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public float getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(float totalCost) {
+        this.totalCost = totalCost;
     }
 }

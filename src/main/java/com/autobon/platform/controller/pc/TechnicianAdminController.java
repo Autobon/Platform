@@ -1,8 +1,20 @@
 package com.autobon.platform.controller.pc;
 
+import com.autobon.order.entity.WorkDetail;
+import com.autobon.order.repository.OrderProductRepository;
+import com.autobon.order.repository.WorkDetailRepository;
+import com.autobon.order.service.WorkDetailService;
+import com.autobon.shared.JsonMessage;
+import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
+import com.autobon.staff.entity.Staff;
+import com.autobon.technician.entity.TechCashApply;
+import com.autobon.technician.entity.TechFinance;
 import com.autobon.technician.entity.Technician;
+import com.autobon.technician.service.TechCashApplyService;
+import com.autobon.technician.service.TechFinanceService;
 import com.autobon.technician.service.TechnicianService;
+import com.autobon.technician.vo.TechCashApplyShow;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +26,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +42,116 @@ public class TechnicianAdminController {
 
     @Autowired
     TechnicianService technicianService;
+
+    @Autowired
+    TechCashApplyService techCashApplyService;
+
+    @Autowired
+    TechFinanceService techFinanceService;
+
+    @Autowired
+    WorkDetailRepository workDetailRepository;
+
+    @Autowired
+    OrderProductRepository orderProductRepository;
+
+    @RequestMapping(value = "/v2/test/ty", method = RequestMethod.GET)
+    public JsonResult gai(){
+        List<WorkDetail> workDetails = workDetailRepository.findAll();
+        if(workDetails !=null && workDetails.size()> 0){
+
+            for(WorkDetail workDetail: workDetails){
+
+                float cost = 0;
+                int orderId = workDetail.getOrderId();
+                if(workDetail.getProject1() != null&&workDetail.getPosition1()!=null){
+                    int projectId = workDetail.getProject1();
+                    String positionId = workDetail.getPosition1();
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
+
+                    cost += total;
+
+                }
+                if(workDetail.getProject2() != null&&workDetail.getPosition2()!=null){
+                    int projectId = workDetail.getProject2();
+                    String positionId = workDetail.getPosition2();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
+
+                    cost += total;
+                }
+                if(workDetail.getProject3() != null&&workDetail.getPosition3()!=null){
+                    int projectId = workDetail.getProject3();
+                    String positionId = workDetail.getPosition3();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
+
+                    cost += total;
+                }
+                if(workDetail.getProject4() != null&&workDetail.getPosition4()!=null){
+                    int projectId = workDetail.getProject4();
+                    String positionId = workDetail.getPosition4();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
+
+                    cost += total;
+                }
+
+                if(workDetail.getProject5() != null&&workDetail.getPosition5()!=null){
+                    int projectId = workDetail.getProject5();
+                    String positionId = workDetail.getPosition5();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
+
+                    cost += total;
+                }
+
+                if(workDetail.getProject6() != null&&workDetail.getPosition6()!=null){
+                    int projectId = workDetail.getProject6();
+                    String positionId = workDetail.getPosition6();
+
+                    List<Integer> positionIds = new ArrayList<>();
+                    String[] pStr = positionId.split(",");
+                    for(String id: pStr){
+                        positionIds.add(Integer.valueOf(id));
+                    }
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
+
+                    cost += total;
+                }
+
+                workDetail.setTotalCost(cost);
+                workDetailRepository.save(workDetail);
+            }
+        }
+        return  new JsonResult(true, "ok");
+    }
 
     /**
      * 查询技师
@@ -332,5 +456,78 @@ public class TechnicianAdminController {
 
     }
 
+
+    /**
+     * 查询提现申请列表
+     * @param techId
+     * @param techName
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/cash/apply", method = RequestMethod.GET)
+    public JsonMessage getListApply(HttpServletRequest request,
+                                    @RequestParam(value = "techId",required = false) Integer techId,
+                                    @RequestParam(value = "techName",required = false) String techName,
+                                    @RequestParam(value = "state",required = false) Integer state,
+                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize){
+        Staff staff = (Staff) request.getAttribute("user");
+        String res = "";
+        if(staff != null){
+            if(staff.getRole().equals("SUPER")){
+                res = "able";
+            }
+        }
+        return new JsonMessage(true, "" , res, new JsonPage<>(techCashApplyService.find(techName, techId, state, page, pageSize)));
+    }
+
+    /**
+     * 执行支付
+     * @param id
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/cash/apply/{id:\\d+}/pay", method = RequestMethod.POST)
+    public JsonResult toApply(@PathVariable("id") int id,
+                              HttpServletRequest request)throws Exception {
+        Staff staff = (Staff) request.getAttribute("user");
+        if(!staff.getRole().equals("SUPER")){
+            return new JsonResult(false, "没有权限");
+        }
+        TechCashApply techCashApply = techCashApplyService.findById(id);
+        if(techCashApply == null){
+            return new JsonResult(false, "申请单不存在");
+        }
+        if(techCashApply.getState() == 2){
+            return new JsonResult(false, "已全部提现，无法支付");
+        }
+        if(techCashApply.getState() == 3){
+            return new JsonResult(false, "申请已取消，无法支付");
+        }
+        Technician t = technicianService.get(techCashApply.getTechId());
+        if(t == null){
+            return new JsonResult(false, "技师不存在");
+        }
+        TechFinance techFinance = techFinanceService.getByTechId(t.getId());
+        if(techCashApply.getApplyMoney().compareTo(techFinance.getNotCash()) == 1){
+            return new JsonResult(false, "金额超出未提现金额，无法支付");
+        }
+        techCashApply.setState(2);
+        techCashApply.setPayment(techCashApply.getApplyMoney());
+        techCashApply.setPayDate(new Date());
+        TechCashApply res = techCashApplyService.save(techCashApply);
+        if(res == null){
+            return new JsonResult(false, "支付失败");
+        }
+        //修改该技师的流水
+        //techFinance.setSumIncome(techFinance.getSumIncome().subtract(res.getPayment()));
+        techFinance.setNotCash(techFinance.getNotCash().subtract(res.getPayment()));
+        techFinance.setSumCash(techFinance.getSumCash().add(res.getPayment()));
+        techFinance.setAlreadyApply(techFinance.getAlreadyApply().subtract(res.getPayment()));
+        techFinanceService.save(techFinance);
+        return new JsonResult(true, res);
+    }
 
 }

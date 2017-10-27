@@ -12,7 +12,9 @@ import com.autobon.order.vo.ConstructionDetail;
 import com.autobon.order.vo.ConstructionShow;
 import com.autobon.order.vo.ProjectPosition;
 import com.autobon.order.vo.WorkDetailShow;
+import com.autobon.technician.entity.TechFinance;
 import com.autobon.technician.entity.TechStat;
+import com.autobon.technician.repository.TechFinanceRepository;
 import com.autobon.technician.repository.TechStatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +43,8 @@ public class WorkDetailService {
     OrderProductRepository orderProductRepository;
     @Autowired
     TechStatRepository techStatRepository;
+    @Autowired
+    TechFinanceRepository techFinanceRepository;
     @Autowired
     WorkDetailViewRepository workDetailViewRepository;
 
@@ -84,6 +89,7 @@ public class WorkDetailService {
                 int techId = workDetail.getTechId();
 
                 float money = 0;
+                float cost = 0;
                 int orderId = workDetail.getOrderId();
                 if(workDetail.getProject1() != null&&workDetail.getPosition1()!=null){
                     int projectId = workDetail.getProject1();
@@ -94,7 +100,10 @@ public class WorkDetailService {
                         positionIds.add(Integer.valueOf(id));
                     }
                     float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
+
                     money += sum;
+                    cost += total;
 
                 }
                 if(workDetail.getProject2() != null&&workDetail.getPosition2()!=null){
@@ -108,8 +117,10 @@ public class WorkDetailService {
                     }
 
                     float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
 
                     money += sum;
+                    cost += total;
                 }
                 if(workDetail.getProject3() != null&&workDetail.getPosition3()!=null){
                     int projectId = workDetail.getProject3();
@@ -121,8 +132,10 @@ public class WorkDetailService {
                         positionIds.add(Integer.valueOf(id));
                     }
                     float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
 
                     money += sum;
+                    cost += total;
                 }
                 if(workDetail.getProject4() != null&&workDetail.getPosition4()!=null){
                     int projectId = workDetail.getProject4();
@@ -134,8 +147,10 @@ public class WorkDetailService {
                         positionIds.add(Integer.valueOf(id));
                     }
                     float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
 
                     money += sum;
+                    cost += total;
                 }
 
                 if(workDetail.getProject5() != null&&workDetail.getPosition5()!=null){
@@ -147,8 +162,11 @@ public class WorkDetailService {
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
                     }
-                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
+
                     money += sum;
+                    cost += total;
                 }
 
                 if(workDetail.getProject6() != null&&workDetail.getPosition6()!=null){
@@ -160,11 +178,15 @@ public class WorkDetailService {
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
                     }
-                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
+                    float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
+
                     money += sum;
+                    cost += total;
                 }
 
                 workDetail.setPayment(money);
+                workDetail.setTotalCost(cost);
                 workDetail.setPayStatus(1);
                 workDetail.setCreateDate(new Date());
                 workDetailRepository.save(workDetail);
@@ -172,8 +194,12 @@ public class WorkDetailService {
 
                 TechStat techStat = techStatRepository.getByTechId(techId);
                 techStat.setBalance(techStat.getBalance() + money);
-
                 techStatRepository.save(techStat);
+
+                TechFinance techFinance = techFinanceRepository.getByTechId(techId);
+                techFinance.setSumIncome(techFinance.getSumIncome().add(new BigDecimal(money)));
+                techFinance.setNotCash(techFinance.getNotCash().add(new BigDecimal(money)));
+                techFinanceRepository.save(techFinance);
             }
         }
         return 0;

@@ -20,13 +20,13 @@ public class TechCashApplyService {
     @Autowired
     TechCashApplyRepository techCashApplyRepository;
 
-    public Page<TechCashApplyView> find(String techName, int techId, int page, int pageSize) {
+    public Page<TechCashApplyView> find(String techName, Integer techId, Integer state, Integer page, Integer pageSize) {
         if(techName != null){
             techName = "%"+techName+"%";
         }
 
 
-        return techCashApplyViewRepository.find(techName, techId, new PageRequest(page - 1, pageSize,
+        return techCashApplyViewRepository.find(techName, techId, state, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.ASC, "id")));
 
     }

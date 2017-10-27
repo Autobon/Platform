@@ -12,6 +12,7 @@ public class TechnicianSuperShow {
     private String balance;
     private String unpaidOrders;
     private String totalOrders;
+    private String totalBalance;
 
     public Technician getTechnician() {
         return technician;
@@ -51,5 +52,13 @@ public class TechnicianSuperShow {
 
     public void setTotalOrders(String totalOrders) {
         this.totalOrders = totalOrders;
+    }
+
+    public String getTotalBalance() {
+        return totalBalance;
+    }
+
+    public void setTotalBalance(String totalBalance) {
+        this.totalBalance = totalBalance;
     }
 }

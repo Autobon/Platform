@@ -36,4 +36,10 @@ export default class TechnicianCtrl extends Injector {
 
         window.location.href = Settings.domain + '/api/web/admin/order/excel/download/work/' + id;
     }
+
+    exportAllDetail() {
+        const {$scope, Settings} = this.$injected;
+
+        window.location.href = Settings.domain + '/api/web/admin/order/excel/download/work';
+    }
 }

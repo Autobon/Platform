@@ -79,6 +79,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'WorkDetailCtrl',
             template  : templateCache.WorkDetailCtrl,
         })
+        .state('console.bill.applyRecord', {
+            url       : '/applyRecord/{id:\\d+}',
+            controller: 'ApplyRecordCtrl',
+            template  : templateCache.ApplyRecordCtrl,
+        })
         .state('console.cooperator', {
             url       : '/cooperator',
             controller: 'CooperatorCtrl',
