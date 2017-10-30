@@ -69,17 +69,17 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'TechnicianEditorCtrl',
             template  : templateCache.TechnicianEditorCtrl,
         })
-        .state('console.bill.finance', {
+        .state('console.finance', {
             url       : '/finance',
             controller: 'TechnicianFinanceCtrl',
             template  : templateCache.TechnicianFinanceCtrl,
         })
-        .state('console.bill.workDetail', {
+        .state('console.finance.workDetail', {
             url       : '/workDetail/{id:\\d+}',
             controller: 'WorkDetailCtrl',
             template  : templateCache.WorkDetailCtrl,
         })
-        .state('console.bill.applyRecord', {
+        .state('console.finance.applyRecord', {
             url       : '/applyRecord/{id:\\d+}',
             controller: 'ApplyRecordCtrl',
             template  : templateCache.ApplyRecordCtrl,
