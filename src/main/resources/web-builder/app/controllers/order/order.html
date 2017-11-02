@@ -74,6 +74,9 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
+                    <th>
+                        <input type="checkbox" id="qx" ng-change="allSelect(filter.toSelectAll)" ng-model="filter.toSelectAll">
+                    </th>
                     <th>序号</th>
                     <th>订单编号</th>
                     <th>订单类型</th>
@@ -91,6 +94,10 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="order in orders" ng-style="order.style">
+                        <td>
+                            <input type="checkbox"  id="cb"  ng-model="order.selected"
+                                   ng-change="onCheckChange(order.id, order.selected)">
+                        </td>
                         <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
                         <td>{{order.orderNum}}</td>
                         <td><span ng-repeat="s in order.type.split(',')" class="fa fa-tag m-l-5">{{Settings.orderTypes[s]}}</span></td>

@@ -275,7 +275,6 @@ public class OrderService {
         if(contactPhone != null){
             contactPhone = "%"+ contactPhone+"%";
         }
-
         String type = null;
 
         if(orderType != null && orderType.size()>0){

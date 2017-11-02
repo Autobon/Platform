@@ -15,6 +15,30 @@ export default class OrderCtrl extends Injector {
         $scope.assignTemplate = 'assignOrder.html';
         $scope.techQuery = {};
         $scope.showExport = 0;
+        $scope.orders = [];
+
+        $scope.chooseIds = [];
+        this.getOrders();
+    }
+
+    allSelect(flag) {
+        const {$scope} = this.$injected;
+        if (flag) {
+            for (let i = 0; i < $scope.orders.length; i++) {
+                if($scope.chooseIds.indexOf($scope.orders[i].id) < 0){
+                    $scope.chooseIds.push($scope.orders[i].id);
+                }
+            }
+        } else {
+            for (let i = 0; i < $scope.orders.length; i++) {
+                let max = $scope.chooseIds.length;
+                for (let j = 0; j < max; j++) {
+                    if ($scope.chooseIds[j] === $scope.orders[i].id) {
+                        $scope.chooseIds.splice(j, 1);
+                    }
+                }
+            }
+        }
         this.getOrders();
     }
 
@@ -24,16 +48,49 @@ export default class OrderCtrl extends Injector {
         OrderService.search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data && res.data.result) {
                 $scope.orders = res.data.data.list;
+                $scope.filter.toSelectAll = true;
                 let datatime = new Date().getTime();
                 for (let i = 0; i < $scope.orders.length; i++) {
                     if ($scope.orders[i].agreedStartTime - datatime < 3600000 && $scope.orders[i].agreedStartTime - datatime > 0) {
                         $scope.orders[i].style = {'background-color':'#ec9104'};
+                    }
+                    $scope.orders[i].selected = this.isSelected($scope.orders[i].id);
+                    if($scope.chooseIds.indexOf($scope.orders[i].id) < 0){
+                        $scope.filter.toSelectAll = false;
                     }
                 }
 
                 $scope.pagination.totalItems = res.data.data.totalElements;
             }
         });
+    }
+
+    isSelected(id) {
+        const {$scope} = this.$injected;
+
+        if ($scope.chooseIds.indexOf(id) > -1) {
+            return true;
+        }
+        return false;
+    }
+
+    onCheckChange(id, flag) {
+        const {$scope} = this.$injected;
+
+        $scope.filter.toSelectAll = false;
+        if (flag) {
+            if (id) {
+                $scope.chooseIds.push(id);
+            }
+        }else {
+            let max = $scope.chooseIds.length;
+            for (let i = 0; i < max; i++) {
+                if ($scope.chooseIds[i] === id) {
+                    $scope.chooseIds.splice(i, 1);
+                    break;
+                }
+            }
+        }
     }
 
     reset() {
@@ -88,9 +145,14 @@ export default class OrderCtrl extends Injector {
         //                     + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech)
         //                     + '&orderType=' +  ($scope.filter.orderType === undefined ? '' : $scope.filter.orderType)
         //                     + '&orderStatus=' +  ($scope.filter.orderStatus === undefined ? '' : $scope.filter.orderStatus);
-        window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?id=' + ($scope.filter.id === undefined ? '' : $scope.filter.id)
-            + '&startDate=' +  ($scope.filter.startDate === undefined ? '' : $scope.filter.startDate)
-            + '&endDate=' +  ($scope.filter.endDate === undefined ? '' : $scope.filter.endDate)
-            + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech);
+
+        if($scope.chooseIds.length > 0){
+            window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?idList=' + $scope.chooseIds.join(",");
+        }else{
+            window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?id=' + ($scope.filter.id === undefined ? '' : $scope.filter.id)
+                + '&startDate=' +  ($scope.filter.startDate === undefined ? '' : $scope.filter.startDate)
+                + '&endDate=' +  ($scope.filter.endDate === undefined ? '' : $scope.filter.endDate)
+                + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech);
+        }
     }
 }

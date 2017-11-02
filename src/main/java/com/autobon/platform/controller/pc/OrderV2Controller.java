@@ -655,6 +655,7 @@ public class OrderV2Controller {
                          @RequestParam(value = "startDate", required = false) String startDate,
                          @RequestParam(value = "endDate", required = false) String endDate,
                          @RequestParam(value = "status", required = false) Order.Status status,
+                         @RequestParam(value = "idList", required = false) String idList,
                          HttpServletRequest request,
                          HttpServletResponse response) throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("1970-01-01 00:00:00");
@@ -665,7 +666,10 @@ public class OrderV2Controller {
             end = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(endDate);
         }
         List<WorkDetailOrderView> viewList;
-        if(tech == null || tech == ""){
+        if(idList != null && !idList.equals("")){
+            Page<WorkDetailOrderView> viewPage =  workDetailOrderViewService.findByIds(idList,1,300);
+            viewList = viewPage.getContent();
+        }else if(tech == null || tech == ""){
             Page<WorkDetailOrderView> viewPage =  workDetailOrderViewService.findViews(start, end,1,300);
             viewList = viewPage.getContent();
         }else{

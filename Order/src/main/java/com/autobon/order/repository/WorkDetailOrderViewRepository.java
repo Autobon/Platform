@@ -24,4 +24,8 @@ public interface WorkDetailOrderViewRepository extends JpaRepository<WorkDetailO
     @Query(value = "select o.* from t_work_detail_view w LEFT JOIN t_work_detail_order_view o ON o.id = w.order_id " +
             "where w.tech_name=?1 and o.create_time >= ?2 and o.create_time <= ?3 group by o.id LIMIT ?4,?5", nativeQuery = true)
     List<WorkDetailOrderView> findViewsByTech(String tech, Date start, Date end, Integer page ,Integer pageSize);
+
+    @Query("select w from WorkDetailOrderView w " +
+            "where (COALESCE(?1) is null or w.id in (?1)) ")
+    Page<WorkDetailOrderView> findByIds(List<Integer> idList, Pageable pageable);
 }

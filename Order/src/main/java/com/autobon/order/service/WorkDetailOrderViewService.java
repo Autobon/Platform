@@ -10,8 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by ty on 2017/9/5.
@@ -41,6 +43,20 @@ public class WorkDetailOrderViewService {
         pageSize = pageSize==null?10:pageSize;
         pageSize = pageSize<=0?10:pageSize;
         List<WorkDetailOrderView> page = workDetailOrderViewRepository.findViewsByTech(tech,start, end, currentPage, pageSize);
+
+
+        return page;
+    }
+
+    public Page<WorkDetailOrderView> findByIds(String idList, Integer currentPage, Integer pageSize){
+        currentPage = currentPage==null?1:currentPage;
+        currentPage = currentPage<=0?1:currentPage;
+        pageSize = pageSize==null?10:pageSize;
+        pageSize = pageSize<=0?10:pageSize;
+        Pageable p = new PageRequest(currentPage-1,pageSize);
+
+        List<Integer> listIds = Arrays.asList(idList.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        Page<WorkDetailOrderView> page = workDetailOrderViewRepository.findByIds(listIds, p);
 
 
         return page;
