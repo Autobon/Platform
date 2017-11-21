@@ -6,26 +6,26 @@ export default class ApplyRecordCtrl extends Injector {
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, Settings} = this.$injected;
+        const {$scope, Settings} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.Settings = Settings;
         $scope.filter = {};
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
         this.getViews();
-
     }
+
     getViews() {
         const {$scope, $stateParams, TechnicianService} = this.$injected;
         const {page, pageSize} = $scope.pagination;
         console.log($stateParams);
-        if($stateParams.id == 0){
+        if ($stateParams.id === 0) {
             $scope.filter.state = 0;
         }
         let params = {
             ...$scope.filter,
             //techId : $stateParams.id,
         };
-        if($stateParams.id > 0){
+        if ($stateParams.id > 0) {
             params.techId = $stateParams.id;
         }
 
@@ -45,15 +45,14 @@ export default class ApplyRecordCtrl extends Injector {
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
     }
 
-    endPay(id){
-        const {$scope, $stateParams, TechnicianService} = this.$injected;
-        const {page, pageSize} = $scope.pagination;
+    endPay(id) {
+        const {TechnicianService} = this.$injected;
         TechnicianService.endPay(id).then(res => {
             console.log(res.data);
-            if(res.data.status){
+            if (res.data.status) {
                 this.getViews();
-                alert("完成支付");
-            }else{
+                alert('完成支付');
+            } else {
                 alert(res.data.message);
             }
         });

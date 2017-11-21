@@ -3,7 +3,10 @@ package com.autobon.platform.controller.admin;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.RedisCache;
 import com.autobon.shared.VerifyCode;
+import com.autobon.staff.entity.RoleStaff;
 import com.autobon.staff.entity.Staff;
+import com.autobon.staff.entity.StaffMenu;
+import com.autobon.staff.service.RoleStaffService;
 import com.autobon.staff.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +30,7 @@ import java.util.regex.Pattern;
 public class StaffAccountController {
     @Autowired StaffService staffService;
     @Autowired RedisCache redisCache;
+    @Autowired RoleStaffService roleStaffService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public JsonMessage register(
@@ -82,7 +86,13 @@ public class StaffAccountController {
             c.setPath("/");
             c.setHttpOnly(true);
             response.addCookie(c);
-            return new JsonMessage(true, "", "", staff);
+
+            StaffMenu staffMenu = roleStaffService.findMenuByStaffId(staff.getId());
+            Cookie c0 = new Cookie("ro", staffMenu.getMenuId());
+            //c0.setPath("/");
+            response.addCookie(c0);
+
+            return new JsonMessage(true, "", "", staffMenu);
         }
     }
 

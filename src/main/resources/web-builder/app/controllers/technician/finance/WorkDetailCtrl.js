@@ -6,14 +6,14 @@ export default class WorkDetailCtrl extends Injector {
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, Settings} = this.$injected;
+        const {$scope, Settings} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.Settings = Settings;
         $scope.filter = {};
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
         this.getWorkDetailViews();
-
     }
+
     getWorkDetailViews() {
         const {$scope, $stateParams, TechnicianService} = this.$injected;
         const {page, pageSize} = $scope.pagination;

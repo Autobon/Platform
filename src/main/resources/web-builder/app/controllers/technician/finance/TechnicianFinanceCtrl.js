@@ -12,8 +12,8 @@ export default class TechnicianCtrl extends Injector {
         $scope.filter = {};
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
         this.getTechFinance();
-
     }
+
     getTechFinance() {
         const {$scope, TechnicianService} = this.$injected;
         const {page, pageSize} = $scope.pagination;
@@ -32,13 +32,13 @@ export default class TechnicianCtrl extends Injector {
     }
 
     exportDetail(id) {
-        const {$scope, Settings} = this.$injected;
+        const {Settings} = this.$injected;
 
         window.location.href = Settings.domain + '/api/web/admin/order/excel/download/work/' + id;
     }
 
     exportAllDetail() {
-        const {$scope, Settings} = this.$injected;
+        const {Settings} = this.$injected;
 
         window.location.href = Settings.domain + '/api/web/admin/order/excel/download/work';
     }

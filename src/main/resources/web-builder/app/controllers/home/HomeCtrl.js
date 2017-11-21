@@ -2,7 +2,7 @@ import {Injector} from 'ngES6';
 import './home.scss';
 
 export default class HomeCtrl extends Injector {
-    static $inject = ['$scope', '$http', 'Settings'];
+    static $inject = ['$scope', '$http', 'Settings', 'LoginService'];
     static $template = require('./home.html');
 
     constructor(...args) {

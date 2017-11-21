@@ -25,7 +25,7 @@ export default class OrderCtrl extends Injector {
         const {$scope} = this.$injected;
         if (flag) {
             for (let i = 0; i < $scope.orders.length; i++) {
-                if($scope.chooseIds.indexOf($scope.orders[i].id) < 0){
+                if ($scope.chooseIds.indexOf($scope.orders[i].id) < 0) {
                     $scope.chooseIds.push($scope.orders[i].id);
                 }
             }
@@ -55,7 +55,7 @@ export default class OrderCtrl extends Injector {
                         $scope.orders[i].style = {'background-color':'#ec9104'};
                     }
                     $scope.orders[i].selected = this.isSelected($scope.orders[i].id);
-                    if($scope.chooseIds.indexOf($scope.orders[i].id) < 0){
+                    if ($scope.chooseIds.indexOf($scope.orders[i].id) < 0) {
                         $scope.filter.toSelectAll = false;
                     }
                 }
@@ -82,7 +82,7 @@ export default class OrderCtrl extends Injector {
             if (id) {
                 $scope.chooseIds.push(id);
             }
-        }else {
+        } else {
             let max = $scope.chooseIds.length;
             for (let i = 0; i < max; i++) {
                 if ($scope.chooseIds[i] === id) {
@@ -130,8 +130,8 @@ export default class OrderCtrl extends Injector {
         });
     }
 
-    toExport(){
-        const {$scope, Settings} = this.$injected;
+    toExport() {
+        const {$scope} = this.$injected;
         $scope.showExport = 1;
     }
 
@@ -146,9 +146,9 @@ export default class OrderCtrl extends Injector {
         //                     + '&orderType=' +  ($scope.filter.orderType === undefined ? '' : $scope.filter.orderType)
         //                     + '&orderStatus=' +  ($scope.filter.orderStatus === undefined ? '' : $scope.filter.orderStatus);
 
-        if($scope.chooseIds.length > 0){
-            window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?idList=' + $scope.chooseIds.join(",");
-        }else{
+        if ($scope.chooseIds.length > 0) {
+            window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?idList=' + $scope.chooseIds.join(',');
+        } else {
             window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?id=' + ($scope.filter.id === undefined ? '' : $scope.filter.id)
                 + '&startDate=' +  ($scope.filter.startDate === undefined ? '' : $scope.filter.startDate)
                 + '&endDate=' +  ($scope.filter.endDate === undefined ? '' : $scope.filter.endDate)

@@ -19,20 +19,20 @@
     </div>
     <div class="console-nav">
         <ul class="list-inline">
-            <li><a ui-sref="console.home" ui-sref-disabled="true" ui-sref-active="active">首页</a></li><li>
-            <a ui-sref="console.order" ui-sref-active="active">订单管理</a></li><li>
-            <a ui-sref="console.cooperator" ui-sref-active="active">商户管理</a></li><li>
-            <a ui-sref="console.technician" ui-sref-active="active">技师管理</a></li><li>
-            <a ui-sref="console.finance" ui-sref-active="active">财务管理</a></li><li>
-            <a ui-sref="console.product" ui-sref-active="active">产品管理</a></li><li>
-            <a ui-sref="console.stat" ui-sref-active="active">统计分析</a></li><li>
-            <a ui-sref="console.study" ui-sref-active="active">学习园地</a></li><li>
-            <div uib-dropdown is-open="false">
+            <li ng-show="homeShow"><a ui-sref="console.home" ui-sref-disabled="true" ui-sref-active="active">首页</a></li><li>
+            <a ui-sref="console.order" ui-sref-active="active" ng-show="orderShow">订单管理</a></li><li>
+            <a ui-sref="console.cooperator" ui-sref-active="active" ng-show="coopShow">商户管理</a></li><li>
+            <a ui-sref="console.technician" ui-sref-active="active" ng-show="techShow">技师管理</a></li><li>
+            <a ui-sref="console.finance" ui-sref-active="active" ng-show="finaShow">财务管理</a></li><li>
+            <a ui-sref="console.product" ui-sref-active="active" ng-show="prodShow">产品管理</a></li><li>
+            <a ui-sref="console.stat" ui-sref-active="active" ng-show="statShow">统计分析</a></li><li>
+            <a ui-sref="console.study" ui-sref-active="active" ng-show="studyShow">学习园地</a></li><li>
+            <div uib-dropdown is-open="false" ng-show="techMapShow && coopMapShow">
                 <a href ui-sref-active="{active: 'console.map'}" uib-dropdown-toggle id="menu-big-map">地图模式</a>
                 <ul uib-dropdown-menu role="menu" aria-labelledby="menu-big-map">
-                    <li role="menuitem"><a ui-sref="console.map.technician">技师地图</a></li>
-                    <li class="divider"></li>
-                    <li role="menuitem"><a ui-sref="console.map.cooperator">商户地图</a></li>
+                    <li role="menuitem" ng-show="techMapShow"><a ui-sref="console.map.technician">技师地图</a></li>
+                    <li class="divider" ng-show="techMapShow && coopMapShow"></li>
+                    <li role="menuitem" ng-show="coopMapShow"><a ui-sref="console.map.cooperator">商户地图</a></li>
                 </ul>
             </div>
             </li>
