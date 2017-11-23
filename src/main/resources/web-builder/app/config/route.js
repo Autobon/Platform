@@ -208,6 +208,36 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'AccountCtrl',
             template  : templateCache.AccountCtrl,
         })
+        .state('console.role', {
+            url       : '/role',
+            controller: 'RoleCtrl',
+            template  : templateCache.RoleCtrl,
+        })
+        .state('console.role.new', {
+            url       : '/new',
+            controller: 'EditorRoleCtrl',
+            template  : templateCache.EditorRoleCtrl,
+        })
+        .state('console.role.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'EditorRoleCtrl',
+            template  : templateCache.EditorRoleCtrl,
+        })
+        .state('console.staff', {
+            url       : '/staff',
+            controller: 'StaffCtrl',
+            template  : templateCache.StaffCtrl,
+        })
+        .state('console.staff.new', {
+            url       : '/new',
+            controller: 'EditorStaffCtrl',
+            template  : templateCache.EditorStaffCtrl,
+        })
+        .state('console.staff.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'EditorStaffCtrl',
+            template  : templateCache.EditorStaffCtrl,
+        })
         ;
 }
 

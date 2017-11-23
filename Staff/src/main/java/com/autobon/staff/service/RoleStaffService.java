@@ -21,4 +21,8 @@ public class RoleStaffService {
     public RoleStaff findByStaffId(Integer staffId){ return repository.findByStaffId(staffId);}
 
     public StaffMenu findMenuByStaffId(Integer staffId){ return staffMenuRepository.findOne(staffId);}
+
+    public void deleteOne(int id){ repository.delete(id); }
+
+    public RoleStaff save(RoleStaff roleStaff){ return repository.save(roleStaff); }
 }

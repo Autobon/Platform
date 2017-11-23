@@ -83,13 +83,14 @@ export default class OrderCtrl extends Injector {
                 $scope.chooseIds.push(id);
             }
         } else {
-            let max = $scope.chooseIds.length;
-            for (let i = 0; i < max; i++) {
-                if ($scope.chooseIds[i] === id) {
-                    $scope.chooseIds.splice(i, 1);
-                    break;
-                }
-            }
+            // let max = $scope.chooseIds.length;
+            // for (let i = 0; i < max; i++) {
+            //     if ($scope.chooseIds[i] === id) {
+            //         $scope.chooseIds.splice(i, 1);
+            //         break;
+            //     }
+            // }
+            $scope.chooseIds = $scope.chooseIds.filter(items => items !== id);
         }
     }
 

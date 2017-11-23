@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by Administrator on 2017/11/20.
  */
 public interface RoleMenuRepository extends JpaRepository<RoleMenu, Integer> {
+    RoleMenu findByRoleId(int id);
 }

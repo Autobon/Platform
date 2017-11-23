@@ -21,33 +21,35 @@ export default class LoginCtrl extends Injector {
                     for (var i = 0; i < menus.length; i++) {
                         if (menus[i] === '1') {
                             $state.go('console.home');
+                            break;
+                        } else {
+
                             j++;
                         }
                     }
                     if (j == menus.length) {
-                        switch (menus[0]) {
-                            case '1':
-                                $state.go('console.home');
-                            case '2':
-                                $state.go('console.order');
-                            case '3':
-                                $state.go('console.cooperator');
-                            case '4':
-                                $state.go('console.technician');
-                            case '5':
-                                $state.go('console.finance');
-                            case '6':
-                                $state.go('console.product');
-                            case '7':
-                                $state.go('console.stat');
-                            case '8':
-                                $state.go('console.study');
-                            case '9':
-                                $state.go('console.map.technician');
-                            case '10':
-                                $state.go('console.map.cooperator');
-                            case '11':
-                                $state.go('console.role');
+                        if (menus.indexOf("1") != -1) {
+                            $state.go('console.home');
+                        } else if (menus.indexOf("2") != -1) {
+                            $state.go('console.order');
+                        } else if (menus.indexOf("3") != -1) {
+                            $state.go('console.cooperator');
+                        } else if (menus.indexOf("4") != -1) {
+                            $state.go('console.technician');
+                        } else if (menus.indexOf("5") != -1) {
+                            $state.go('console.finance');
+                        } else if (menus.indexOf("6") != -1) {
+                            $state.go('console.product');
+                        } else if (menus.indexOf("7") != -1) {
+                            $state.go('console.stat');
+                        } else if (menus.indexOf("8") != -1) {
+                            $state.go('console.study');
+                        } else if (menus.indexOf("9") != -1) {
+                            $state.go('console.map.technician');
+                        } else if (menus.indexOf("10") != -1) {
+                            $state.go('console.map.cooperator');
+                        } else if (menus.indexOf("11") != -1) {
+                            $state.go('console.role');
                         }
                     }
 
