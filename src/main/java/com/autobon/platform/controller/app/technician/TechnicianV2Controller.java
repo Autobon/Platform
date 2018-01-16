@@ -179,7 +179,7 @@ public class TechnicianV2Controller {
                 techStatService.save(techStat);
 
                 TechFinance techFinance = new TechFinance();
-                techFinance.setId(technician.getId());
+                techFinance.setTechId(technician.getId());
                 techFinanceService.save(techFinance);
 
                 jsonResult.setStatus(true);
