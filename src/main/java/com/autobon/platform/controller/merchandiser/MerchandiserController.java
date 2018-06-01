@@ -64,11 +64,11 @@ public class MerchandiserController {
             if (merchandiser == null) {
                 jsonResult.setStatus(false);
                 jsonResult.setMessage("手机号未注册");
-            } else if (!merchandiser.getPassword().equals(Technician.encryptPassword(password))) {
+            } else if (!merchandiser.getPassword().equals(Merchandiser.encryptPassword(password))) {
                 jsonResult.setStatus(false);
                 jsonResult.setMessage("密码错误");
             } else {
-                response.addCookie(new Cookie("autoken", Technician.makeToken(merchandiser.getId())));
+                response.addCookie(new Cookie("autoken", Merchandiser.makeToken(merchandiser.getId())));
                 merchandiser.setLastLoginAt(new Date());
                 merchandiser.setLastLoginIp(request.getRemoteAddr());
                 merchandiserService.save(merchandiser);
@@ -136,7 +136,7 @@ public class MerchandiserController {
             if (newPassword.length() < 6) {
                 return new JsonResult(false, "密码至少6位");
             } else {
-                if (!merchandiser.getPassword().equals(Technician.encryptPassword(oldPassword))) {
+                if (!merchandiser.getPassword().equals(Merchandiser.encryptPassword(oldPassword))) {
                     return new JsonResult(false, "原密码错误");
                 }
                 merchandiser.setPassword(Technician.encryptPassword(newPassword));
