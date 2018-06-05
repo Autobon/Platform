@@ -150,12 +150,12 @@ public class MerchandiserController {
 
 
     /**
-     * 技师查询自己信息
+     * 查询自己信息
      * @param request HTTP请求
      * @return JsonResult 对象
      */
     @RequestMapping(value = "/me", method = RequestMethod.GET)
-    public JsonResult getTechnicianInfo(HttpServletRequest request) {
+    public JsonResult getInfo(HttpServletRequest request) {
         try {
             Merchandiser merchandiser = (Merchandiser) request.getAttribute("user");
             if (merchandiser == null) {
@@ -181,7 +181,7 @@ public class MerchandiserController {
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public JsonResult uploadAvatarForm(HttpServletRequest request) throws Exception {
         try{
-            String path = "/uploads/technician/avatar";
+            String path = "/uploads/merchandiser/avatar";
             File dir = new File(new File(uploadPath).getCanonicalPath() + path);
             if (!dir.exists()) dir.mkdirs();
             Merchandiser merchandiser = (Merchandiser) request.getAttribute("user");

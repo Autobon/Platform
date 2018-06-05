@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -19,6 +16,8 @@ import java.util.Date;
 /**
  * Created by wh on 2018/5/30.
  */
+@Entity
+@Table(name="t_merchandiser")
 public class Merchandiser  implements UserDetails {
 
 
