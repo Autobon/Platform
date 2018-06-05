@@ -1,4 +1,3 @@
-drop view t_order_view;
 CREATE VIEW t_order_view as  SELECT   o.id ,
                                           o.order_num,
                                           o.photo,

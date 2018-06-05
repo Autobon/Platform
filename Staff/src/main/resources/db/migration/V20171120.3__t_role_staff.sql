@@ -5,4 +5,4 @@ CREATE TABLE `t_role_staff` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色用户关系表';
 
-insert into t_role_menu values(1, 1, 1);
+insert into t_role_staff values(1, 1, 1);
