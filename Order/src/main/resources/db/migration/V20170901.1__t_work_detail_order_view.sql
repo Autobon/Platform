@@ -1,4 +1,3 @@
-drop view t_work_detail_order_view;
 create view t_work_detail_order_view  as
 select o.id,o.order_num,
 o.photo,

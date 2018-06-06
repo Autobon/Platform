@@ -1,4 +1,3 @@
-drop view t_work_detail_view;
 create view t_work_detail_view  as
 select w.*,t.name as tech_name,cp1.name as project_name1,
 cp2.name as project_name2,

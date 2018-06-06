@@ -1,3 +1,4 @@
 rootProject.name = 'Platform'
 include 'Technician', 'Staff', 'Shared', 'Order', 'Cooperators', 'Getui', 'Message', 'Study'
+include 'Merchandiser'
 
