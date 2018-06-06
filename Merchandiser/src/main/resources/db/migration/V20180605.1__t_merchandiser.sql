@@ -13,7 +13,7 @@ CREATE TABLE `t_merchandiser` (
   `status` int(11) DEFAULT NULL COMMENT '0: 未审核，1：审核通过，2：审核未过，3：帐户禁用',
   `last_login_at` datetime DEFAULT NULL COMMENT '上次登录时间',
   `last_login_ip` VARCHAR(45) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '上次登录IP',
-  `create_at` datetime DEFAULT NULL,,
+  `create_at` datetime DEFAULT NULL,
   `push_id` VARCHAR(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
