@@ -1423,4 +1423,19 @@ public class TechnicianV2Controller {
         techFinanceService.save(techFinance);
         return new JsonResult(true, res);
     }
+
+
+    /**
+     * 修改技师备注
+     *
+     * @param techId
+     * @param remark
+     * @return
+     */
+    @RequestMapping(value = "/v2/remark", method = RequestMethod.POST)
+    public JsonResult saveRemark(@RequestParam("techId")     Integer techId,
+                               @RequestParam("remark")  String remark) {
+        Technician technician = technicianService.saveRemark(techId, remark);
+        return new JsonResult(true, technician);
+    }
 }

@@ -82,4 +82,6 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
             " where t.id = ?1 " ,nativeQuery = true)
     List<Object[]> getByTechId(int techId);
 
+    Technician getById(int id);
+
 }

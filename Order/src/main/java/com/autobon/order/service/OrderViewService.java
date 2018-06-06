@@ -70,7 +70,7 @@ public class OrderViewService {
     }
 
 
-    public Page<OrderView> findCoopOrder(Integer coopId,Integer status, Integer currentPage, Integer pageSize){
+    public Page<OrderView> findCoopOrder(Integer coopId,Integer status, String workDate, String vin, String phone, Integer currentPage, Integer pageSize){
         currentPage = currentPage==null?1:currentPage;
         currentPage = currentPage<=0?1:currentPage;
         pageSize = pageSize==null?10:pageSize;
@@ -80,19 +80,19 @@ public class OrderViewService {
         Page<OrderView> page = null;
         if(status == 1){
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
-            page = orderViewRepository.findUnFinishCoopOrder(coopId, p);
+            page = orderViewRepository.findUnFinishCoopOrder(coopId, workDate, vin, phone, p);
         }else if(status == 2)
         {
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "endTime"));
-            page = orderViewRepository.findFinishCoopOrder(coopId, p);
+            page = orderViewRepository.findFinishCoopOrder(coopId, workDate, vin, phone, p);
         }
         else if(status == 3){
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "endTime"));
-            page = orderViewRepository.findUnEvaluateCoopOrder(coopId, p);
+            page = orderViewRepository.findUnEvaluateCoopOrder(coopId, workDate, vin, phone, p);
         }
         else if(status == 4){
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
-            page = orderViewRepository.findAllCoopOrder(coopId, p);
+            page = orderViewRepository.findAllCoopOrder(coopId, workDate, vin, phone, p);
         }
         return page;
     }

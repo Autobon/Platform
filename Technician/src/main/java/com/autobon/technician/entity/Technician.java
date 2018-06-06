@@ -101,6 +101,8 @@ public class Technician implements UserDetails {
 
     @Column private int workStatus;
 
+    @Column private String remark;
+
 
     @JsonIgnore
     @Column(name = "status")
@@ -442,5 +444,13 @@ public class Technician implements UserDetails {
 
     public void setBeautyWorkingSeniority(int beautyWorkingSeniority) {
         this.beautyWorkingSeniority = beautyWorkingSeniority;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

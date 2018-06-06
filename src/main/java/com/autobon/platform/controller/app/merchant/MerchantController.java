@@ -711,6 +711,9 @@ public class MerchantController {
      */
     @RequestMapping(value = "/merchant/order", method = RequestMethod.GET)
     public JsonResult getOdrders( @RequestParam(value = "status", defaultValue = "1") int status,
+                                  @RequestParam(value = "workDate",required = false) String workDate,
+                                  @RequestParam(value = "vin",required = false) String vin,
+                                  @RequestParam(value = "phone",required = false) String phone,
                                   @RequestParam(value = "page",  defaultValue = "1" )  int page,
                                   @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
                                   HttpServletRequest request) {
@@ -719,7 +722,7 @@ public class MerchantController {
         int coopId = coopAccount.getCooperatorId();
 
         Page<OrderView> orders;
-        orders = orderViewService.findCoopOrder(coopId, status, page, pageSize);
+        orders = orderViewService.findCoopOrder(coopId, status, workDate, vin, phone, page, pageSize);
         return new JsonResult(true,orders);
 
     }
