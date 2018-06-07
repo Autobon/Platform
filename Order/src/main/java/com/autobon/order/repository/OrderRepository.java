@@ -631,5 +631,16 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " LEFT JOIN t_cooperators ct ON ct.id = o.coop_id" +
                 " where o.coop_id = ?1 " ,nativeQuery = true)
         int getCoopAllOrderCount(Integer coopId);
+
+
+
+
+
+
+        @Query(value = "select *  from  t_order where  hour(timediff(agreed_start_time,NOW())) =36", nativeQuery = true)
+        List<Order> findNewCreate36();
+
+        @Query(value = "select *  from  t_order where  hour(timediff(agreed_start_time,NOW())) =12", nativeQuery = true)
+        List<Order> findNewCreate12();
 }
 
