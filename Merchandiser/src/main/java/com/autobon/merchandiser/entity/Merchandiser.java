@@ -23,7 +23,7 @@ public class Merchandiser  implements UserDetails {
 
     private static Logger log = LoggerFactory.getLogger(Merchandiser.class);
     public enum Status {
-        NEWLY_CREATED(0), IN_VERIFICATION(1), VERIFIED(2), REJECTED(3), BANNED(4);
+        VERIFIED(0), BANNED(1);
         private int statusCode;
 
         Status(int statusCode) {
@@ -84,7 +84,7 @@ public class Merchandiser  implements UserDetails {
     private static String Token = "Autobon~!@#2016=";
 
     public Merchandiser() {
-        this.setStatus(Status.NEWLY_CREATED);
+        this.setStatus(Status.VERIFIED);
         this.createAt = new Date();
     }
 
