@@ -1,15 +1,18 @@
 package com.autobon.platform.controller.merchandiser;
 
 import com.autobon.merchandiser.entity.Merchandiser;
+import com.autobon.merchandiser.service.MerchandiserCooperatorService;
 import com.autobon.merchandiser.service.MerchandiserService;
 import com.autobon.shared.JsonMessage;
 import com.autobon.shared.JsonPage;
+import com.autobon.shared.JsonResult;
 import com.autobon.technician.entity.Technician;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -22,6 +25,8 @@ public class MerchandiserController {
 
     @Autowired
     MerchandiserService merchandiserService;
+    @Autowired
+    MerchandiserCooperatorService merchandiserCooperatorService;
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -35,6 +40,16 @@ public class MerchandiserController {
                 phone, name, status, page, pageSize)));
     }
 
+
+
+    @RequestMapping(value = "/cooperator/list", method = RequestMethod.GET)
+    public JsonResult getCooperator(@RequestParam("id") int id) {
+
+
+
+        return new JsonResult(true, merchandiserCooperatorService.findByMerchandiserId(id));
+
+    }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public JsonMessage create(@RequestParam("phone") String phone,

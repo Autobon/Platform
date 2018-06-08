@@ -272,7 +272,7 @@ public class MerchandiserController {
             if (merchandiser == null) {
                 return new JsonResult(false, "登陆超时");
             }
-        
+
             return new JsonResult(true, merchandiserCooperatorService.findByMerchandiserId(merchandiser.getId()));
 
     }
