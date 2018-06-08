@@ -18,6 +18,14 @@ public class MerchandiserCooperator {
     private int cooperatorId;
 
 
+    public MerchandiserCooperator(){}
+
+    public MerchandiserCooperator(int mid , int cid){
+
+        this.merchandiserId = mid;
+        this.cooperatorId = cid;
+    }
+
     public int getId() {
         return id;
     }

@@ -131,4 +131,24 @@ public class MerchandiserController {
         merchandiserService.save(merchandiser);
         return new JsonMessage(true, "解除禁用成功");
     }
+
+
+    @RequestMapping(value = "/cooperator", method = RequestMethod.POST)
+    public JsonMessage createCooperator(@RequestParam("mid")  int mid,
+                              @RequestParam("cid")  int cid){
+
+
+        merchandiserService.createMerchandiserCooperator(mid, cid);
+        return new JsonMessage(true, "新增成功");
+    }
+
+    @RequestMapping(value = "/cooperator", method = RequestMethod.DELETE)
+    public JsonMessage deleteCooperator(@RequestParam("mid")  int mid,
+                                        @RequestParam("cid")  int cid){
+
+
+
+        merchandiserService.deleteMerchandiserCooperator(mid, cid);
+        return new JsonMessage(true, "删除成功");
+    }
 }
