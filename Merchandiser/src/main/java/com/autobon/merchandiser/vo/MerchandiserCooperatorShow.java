@@ -1,6 +1,7 @@
 package com.autobon.merchandiser.vo;
 
-import javax.persistence.*;
+
+import java.util.List;
 
 /**
  * Created by wh on 2018/6/5.
@@ -8,8 +9,7 @@ import javax.persistence.*;
 
 public class MerchandiserCooperatorShow {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private int id;
 
     private int merchandiserId;
@@ -17,6 +17,15 @@ public class MerchandiserCooperatorShow {
     private int cooperatorId;
 
     private String cooperatorName;
+
+
+    public MerchandiserCooperatorShow(Object[] o){
+
+        this.setId(Integer.valueOf(o[0].toString()));
+        this.setMerchandiserId(Integer.valueOf(o[1].toString()));
+        this.setCooperatorId(Integer.valueOf(o[2].toString()));
+        this.setCooperatorName(o[3].toString());
+    }
 
 
     public int getId() {

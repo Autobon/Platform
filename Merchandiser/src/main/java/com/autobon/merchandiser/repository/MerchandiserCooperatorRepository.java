@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface MerchandiserCooperatorRepository extends JpaRepository<MerchandiserCooperator, Integer> {
 
-    @Query(value = "select mc.id, mc.merchandiser_id, mc.cooperator_id, c.fullname from t_merchandiser_cooperator mc left join t_cooperator c on c.id = mc.cooperator_id where mc.merchandiser_id = ?1", nativeQuery = true)
+    @Query(value = "select mc.id, mc.merchandiser_id, mc.cooperator_id, c.fullname from t_merchandiser_cooperator mc left join t_cooperators c on c.id = mc.cooperator_id where mc.merchandiser_id = ?1", nativeQuery = true)
     List<Object[]> find(int merchandiserId);
 }
