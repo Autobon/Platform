@@ -12,10 +12,7 @@ import com.autobon.platform.listener.TechnicianEventListener;
 import com.autobon.shared.*;
 import com.autobon.technician.entity.*;
 import com.autobon.technician.service.*;
-import com.autobon.technician.vo.LocationShow;
-import com.autobon.technician.vo.TechCashApplyShow;
-import com.autobon.technician.vo.TechnicianShow;
-import com.autobon.technician.vo.TechnicianSuperShow;
+import com.autobon.technician.vo.*;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
 import org.im4java.process.Pipe;
@@ -96,6 +93,9 @@ public class TechnicianV2Controller {
 
     @Autowired
     TechCashApplyService techCashApplyService;
+
+    @Autowired
+    TeamService teamService;
 
     @Value("${com.autobon.gm-path}") String gmPath;
     @Value("${com.autobon.uploadPath}") String uploadPath;
@@ -1245,16 +1245,27 @@ public class TechnicianV2Controller {
 
     /**
      * 获取可抢订单列表
+     *
+     * @param workType 施工项目  1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁
+     * @param orderType 排序类型   1-按预约开始时间排序 2-按距离排序
+     * @param latitude  纬度
+     * @param longitude  经度
+     * @param order 排序方式   1-倒序  2-顺序
      * @param page
      * @param pageSize
      * @return
      */
     @RequestMapping(value = "/v2/order/listNew", method = RequestMethod.GET)
     public JsonResult getNewCreateOrder(
+            @RequestParam(value = "workType",required = false) String workType,
+            @RequestParam(value = "orderType",required = false) int orderType,
+            @RequestParam(value = "latitude",required = false) String latitude,
+            @RequestParam(value = "longitude",required = false) String longitude,
+            @RequestParam(value = "order",required = false) int order,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
 
-        return new JsonResult(true, new JsonPage<>(orderViewService.findByStatusCode(0, page, pageSize)));
+        return new JsonResult(true, new JsonPage<>(orderViewService.findByStatusCode(0, workType, orderType, order, latitude, longitude, page, pageSize)));
     }
 
     /**
@@ -1438,4 +1449,156 @@ public class TechnicianV2Controller {
         Technician technician = technicianService.saveRemark(techId, remark);
         return new JsonResult(true, technician);
     }
+
+    /**
+     * 查询团队
+     *
+     * @param name
+     * @param managerId
+     * @param managerName
+     * @param managerPhone
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/v2/team", method = RequestMethod.GET)
+    public JsonResult getTeam(@RequestParam(value = "name", required = false) String name,
+                              @RequestParam(value = "managerId",required = false) int managerId,
+                              @RequestParam(value = "managerName",required = false) String managerName,
+                              @RequestParam(value = "managerPhone",required = false) String managerPhone,
+                              @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                              HttpServletRequest request) {
+//
+//        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+//        int coopId = coopAccount.getCooperatorId();
+
+        Page<Team> teams = teamService.find(name, managerId, managerName, managerPhone, page, pageSize);
+        return new JsonResult(true, teams);
+
+    }
+
+    /**
+     * 查询团队详情
+     *
+     * @param id
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/v2/team/{id:\\d+}", method = RequestMethod.GET)
+    public JsonResult getTeamDetail(@PathVariable("id") int id,
+                              HttpServletRequest request) {
+//
+//        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+//        int coopId = coopAccount.getCooperatorId();
+
+        Team team = teamService.get(id);
+        return new JsonResult(true, team);
+    }
+
+    /**
+     * 查询团队成员
+     *
+     * @param request
+     * @param tecId
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/v2/team/{tecId:\\d+}/member", method = RequestMethod.GET)
+    public JsonResult getTeamMember(HttpServletRequest request,
+                                    @PathVariable("tecId") int tecId,
+                                    @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                                    @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+//
+//        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
+//        int coopId = coopAccount.getCooperatorId();
+
+        Page<Technician> technicians = teamService.findTechByTeam(tecId, page, pageSize);
+        return new JsonResult(true, technicians);
+
+
+    }
+
+    /**
+     * 新增团队
+     *
+     * @param request
+     * @param teamShow
+     * @return
+     */
+    @RequestMapping(value = "/v2/team", method = RequestMethod.POST)
+    public JsonResult createTeam(HttpServletRequest request,
+                                 @RequestBody TeamShow teamShow){
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        if(teamShow.getName() != null){
+            Team check = teamService.getByName(teamShow.getName());
+            if(check != null) {
+                return new JsonResult(false, "团队姓名已存在");
+            }
+        }
+
+        Team team = new Team(teamShow);
+        Team res = teamService.save(team);
+        return new JsonResult(true, res);
+
+    }
+
+    /**
+     * 修改团队
+     *
+     * @param request
+     * @param id
+     * @param teamShow
+     * @return
+     */
+    @RequestMapping(value = "/v2/team/{id:\\d+}", method = RequestMethod.PUT)
+    public JsonResult updateTeam(HttpServletRequest request,@PathVariable("id") int id,
+                                 @RequestBody TeamShow teamShow){
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        Team check1 = teamService.get(id);
+        if(check1 == null) {
+            return new JsonResult(false, "团队不存在");
+        }
+        if(teamShow.getName() != null){
+            Team check2 = teamService.getByName(teamShow.getName());
+            if(check2 != null && check2.getId() != id) {
+                return new JsonResult(false, "团队姓名已存在");
+            }
+        }
+
+        Team team = new Team(teamShow);
+        Team res = teamService.save(team);
+        return new JsonResult(true, res);
+
+    }
+
+    /**
+     * 删除团队
+     *
+     * @param request
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/v2/team/{id:\\d+}", method = RequestMethod.DELETE)
+    public JsonResult deleteTeam(HttpServletRequest request,@PathVariable("id") int id){
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        Team check1 = teamService.get(id);
+        if(check1 == null) {
+            return new JsonResult(false, "团队不存在");
+        }
+        teamService.deleteTeam(id);
+        return new JsonResult(true, "删除成功");
+    }
+
 }

@@ -58,15 +58,37 @@ public class OrderViewService {
         return orderViewRepository.findById(orderId);
     }
 
-    public Page<OrderView> findByStatusCode(Integer statusCode, Integer currentPage, Integer pageSize){
+    public Page<OrderView> findByStatusCode(Integer statusCode, String workType, Integer orderType, Integer order, String lat, String lng, Integer currentPage, Integer pageSize){
         currentPage = currentPage==null?1:currentPage;
         currentPage = currentPage<=0?1:currentPage;
         pageSize = pageSize==null?10:pageSize;
         pageSize = pageSize<=0?10:pageSize;
         pageSize = pageSize>20?20:pageSize;
-        Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
 
-        return orderViewRepository.findByStatusCode(statusCode, p);
+        Sort.Direction direction = Sort.Direction.DESC;
+        if(order == 2){
+            direction = Sort.Direction.ASC;
+        }else{
+            direction = Sort.Direction.DESC;
+        }
+
+        Page<OrderView> page;
+        if(orderType == 1){    //按预约开始时间排序
+            page = orderViewRepository.findByStatusCode(statusCode, workType, new PageRequest(currentPage-1,pageSize, new Sort(direction, "agreedStartTime")));
+        }else if(orderType == 2){    //按距离排序
+            List<OrderView> list;
+            if(order == 2){    //2:顺序
+                list = orderViewRepository.findByStatusCode2(statusCode, lat, lng, (currentPage - 1) * pageSize, pageSize);
+            }else{           // 1:降序
+                list = orderViewRepository.findByStatusCode1(statusCode, lat, lng, (currentPage - 1) * pageSize, pageSize);
+            }
+            int count = orderViewRepository.findByStatusCodeCount(statusCode);
+            page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
+        }else{
+            page = orderViewRepository.findByStatusCode(statusCode, workType, new PageRequest(currentPage-1,pageSize, new Sort(direction, "createTime")));
+        }
+
+        return page;
     }
 
 

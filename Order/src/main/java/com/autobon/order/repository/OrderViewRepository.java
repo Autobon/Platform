@@ -49,30 +49,48 @@ public interface OrderViewRepository extends JpaRepository<OrderView, Integer> {
 
     OrderView findById(Integer orderId);
 
-    Page<OrderView> findByStatusCode(Integer statusCode, Pageable pageable);
+    @Query("select ov from OrderView ov where ov.statusCode = ?1" +
+            " and (?2 is null or ov.type = ?2) ")
+    Page<OrderView> findByStatusCode(Integer statusCode, String workType, Pageable pageable);
+
+    @Query(value = "select ov.* " +
+            " from t_order_view ov where ov.status = ?1 order by " +
+            " truncate(round(6378.138*2*asin(sqrt(pow(sin( (ov.latitude*pi()/180-?2*pi()/180)/2),2)+cos(ov.latitude*pi()/180)*cos(?2 *pi()/180)* pow(sin( (ov.longitude*pi()/180-?3*pi()/180)/2),2)))*1000)/1000,2) " +
+            " desc limit ?4,?5", nativeQuery = true)
+    List<OrderView> findByStatusCode1(Integer statusCode, String lat, String lng, int begin, int size);
+
+    @Query(value = "select ov.* " +
+            " from t_order_view ov where ov.status = ?1 order by " +
+            " truncate(round(6378.138*2*asin(sqrt(pow(sin( (ov.latitude*pi()/180-?2*pi()/180)/2),2)+cos(ov.latitude*pi()/180)*cos(?2 *pi()/180)* pow(sin( (ov.longitude*pi()/180-?3*pi()/180)/2),2)))*1000)/1000,2) " +
+            " asc limit ?4,?5", nativeQuery = true)
+    List<OrderView> findByStatusCode2(Integer statusCode, String lat, String lng, int begin, int size);
+
+    @Query(value = "SELECT  count(*)   FROM t_order_view ov " +
+            " where ov.status = ?1",nativeQuery = true)
+    int findByStatusCodeCount(Integer statusCode);
 
 
     @Query("select ov from OrderView ov where ov.coopId = ?1" +
-            " and (?2 is null or o.startTime = ?2) " +
-            " and (?3 is null or o.vin = ?3) " +
-            " and (?5 is null or o.contactPhone = ?4)")
+            " and (?2 is null or ov.startTime = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contactPhone = ?4)")
     Page<OrderView> findAllCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
 
     @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode<71" +
-            " and (?2 is null or o.startTime = ?2) " +
-            " and (?3 is null or o.vin = ?3) " +
-            " and (?5 is null or o.contactPhone = ?4)")
+            " and (?2 is null or ov.startTime = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?5 is null or ov.contactPhone = ?4)")
     Page<OrderView> findFinishCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
 
     @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode<60" +
-            " and (?2 is null or o.startTime = ?2) " +
-            " and (?3 is null or o.vin = ?3) " +
-            " and (?5 is null or o.contactPhone = ?4)")
+            " and (?2 is null or ov.startTime = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?5 is null or ov.contactPhone = ?4)")
     Page<OrderView> findUnFinishCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
 
     @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode<70" +
-            " and (?2 is null or o.startTime = ?2) " +
-            " and (?3 is null or o.vin = ?3) " +
-            " and (?5 is null or o.contactPhone = ?4)")
+            " and (?2 is null or ov.startTime = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?5 is null or ov.contactPhone = ?4)")
     Page<OrderView> findUnEvaluateCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
 }

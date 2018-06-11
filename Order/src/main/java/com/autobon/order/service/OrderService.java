@@ -40,14 +40,34 @@ public class OrderService {
     @Autowired
     private AgentRebateRepository agentRebateRepository;
 
+    @Autowired
+    private OrderStatusRecordService orderStatusRecordService;
+
 
 
     public Order get(int orderId) {
         return repository.findOne(orderId);
     }
 
+
+    @Transactional
     public void save(Order order) {
-        repository.save(order);
+        Order res = repository.save(order);
+
+        OrderStatusRecord record = orderStatusRecordService.findByOrderIdAndStatus(res.getId(), res.getStatusCode());
+        if(record == null) {
+            OrderStatusRecord orderStatusRecord = new OrderStatusRecord();
+            orderStatusRecord.setOrderId(res.getId());
+            orderStatusRecord.setRecordTime(new Date());
+            if(res.getStatusCode() == 0) orderStatusRecord.setStatus(0);
+            else if(res.getStatusCode() == 10) orderStatusRecord.setStatus(10);
+            else if(res.getStatusCode() == 55) orderStatusRecord.setStatus(20);
+            else if(res.getStatusCode() == 56) orderStatusRecord.setStatus(30);
+            else if(res.getStatusCode() == 50) orderStatusRecord.setStatus(40);
+            else if(res.getStatusCode() == 60) orderStatusRecord.setStatus(50);
+
+            orderStatusRecordService.save(orderStatusRecord);
+        }
     }
 
     /**

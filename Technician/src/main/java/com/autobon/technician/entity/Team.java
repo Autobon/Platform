@@ -1,5 +1,6 @@
 package com.autobon.technician.entity;
 
+import com.autobon.technician.vo.TeamShow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,15 @@ public class Team {
     @Column private int managerId; // 负责人ID
 
     @Column private String managerName; // 负责人名称
+
+    @Column private String managerPhone; // 负责人名称
+
+    public Team(TeamShow teamShow) {
+        this.name = teamShow.getName();
+        this.managerId = teamShow.getManagerId();
+        this.managerName = teamShow.getManagerName();
+        this.managerPhone = teamShow.getManagerPhone();
+    }
 
     public int getId() {
         return id;
@@ -53,5 +63,13 @@ public class Team {
 
     public void setManagerName(String managerName) {
         this.managerName = managerName;
+    }
+
+    public String getManagerPhone() {
+        return managerPhone;
+    }
+
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone;
     }
 }

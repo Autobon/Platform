@@ -80,6 +80,8 @@ public class MerchantController {
 
     @Autowired
     OrderViewService orderViewService;
+    @Autowired
+    OrderStatusRecordService orderStatusRecordService;
 
 
     /**
@@ -435,12 +437,17 @@ public class MerchantController {
         order.setAgreedStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(agreedStartTime));
         order.setAgreedEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(agreedEndTime));
         order.setAddTime(new Date());
-        order.setType(type);
+        // order.setType(type);
         order.setPositionLon(cooperator.getLongitude());
         order.setPositionLat(cooperator.getLatitude());
         order.setContactPhone(coopAccount.getPhone());
         if (!pushToAll) order.setStatus(Order.Status.CREATED_TO_APPOINT);
-        orderService.save(order);
+
+        String[] types = type.split(",");
+        for(String s : types){
+            order.setType(s);
+            orderService.save(order);
+        }
         cooperator.setOrderNum(cooperator.getOrderNum() + 1);
         cooperatorService.save(cooperator);
 
@@ -798,5 +805,13 @@ public class MerchantController {
         }
     }
 
+    @RequestMapping(value = "/merchant/order/{orderId:\\d+}/status/score", method = RequestMethod.GET)
+    public JsonResult getOdrders(HttpServletRequest request,
+                                 @PathVariable("orderId") int orderId) {
+
+        List list = orderStatusRecordService.findByOrderId(orderId);
+        return new JsonResult(true, list);
+
+    }
 
 }

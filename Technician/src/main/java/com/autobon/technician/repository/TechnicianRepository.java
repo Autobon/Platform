@@ -84,4 +84,8 @@ public interface TechnicianRepository extends JpaRepository<Technician, Integer>
 
     Technician getById(int id);
 
+
+    @Query("select dt from Technician dt where dt.teamId = ?1 ")
+    Page<Technician> findByTeam(Integer teamId, Pageable pageable);
+
 }

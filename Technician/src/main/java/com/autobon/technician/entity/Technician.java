@@ -103,6 +103,8 @@ public class Technician implements UserDetails {
 
     @Column private String remark;
 
+    @Column private int teamId;
+
 
     @JsonIgnore
     @Column(name = "status")
@@ -452,5 +454,13 @@ public class Technician implements UserDetails {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public int getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 }
