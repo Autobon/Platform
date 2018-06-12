@@ -27,7 +27,6 @@ import java.util.UUID;
 /**
  * Created by wh on 2018/6/1.
  */
-
 @RestController
 @RequestMapping("/api/mobile/merchandiser")
 public class MerchandiserController {

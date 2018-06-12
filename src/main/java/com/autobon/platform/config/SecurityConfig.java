@@ -62,7 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/mobile/*/resetPassword").permitAll()
             .and().authorizeRequests().antMatchers("/api/mobile/technician/**").hasAuthority("TECHNICIAN")
             .and().authorizeRequests().antMatchers("/api/web/**").hasAuthority("STAFF")
-            .and().authorizeRequests().antMatchers("/api/mobile/coop/**").hasAuthority("COOPERATOR");
+            .and().authorizeRequests().antMatchers("/api/mobile/coop/**").hasAuthority("COOPERATOR")
+                .and().authorizeRequests().antMatchers("/api/mobile/merchandiser/**").hasAuthority("MERCHANDISER");
 
         RequestMatcher apiRequestMatcher = new AntPathRequestMatcher("/api/**");
         HeaderWriter headerWriter = new DelegatingRequestMatcherHeaderWriter(apiRequestMatcher,

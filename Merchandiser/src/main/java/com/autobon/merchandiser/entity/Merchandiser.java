@@ -139,6 +139,7 @@ public class Merchandiser  implements UserDetails {
      *
      * @return the authorities, sorted by natural key (never <code>null</code>)
      */
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> ret = new ArrayList<>();
@@ -159,6 +160,7 @@ public class Merchandiser  implements UserDetails {
         return ret;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -169,9 +171,10 @@ public class Merchandiser  implements UserDetails {
      *
      * @return the username (never <code>null</code>)
      */
+    @JsonIgnore
     @Override
     public String getUsername() {
-        return null;
+        return phone;
     }
 
     /**
@@ -181,6 +184,7 @@ public class Merchandiser  implements UserDetails {
      * @return <code>true</code> if the user's account is valid (ie non-expired),
      * <code>false</code> if no longer valid (ie expired)
      */
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return false;
@@ -192,6 +196,7 @@ public class Merchandiser  implements UserDetails {
      *
      * @return <code>true</code> if the user is not locked, <code>false</code> otherwise
      */
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return false;
@@ -204,6 +209,7 @@ public class Merchandiser  implements UserDetails {
      * @return <code>true</code> if the user's credentials are valid (ie non-expired),
      * <code>false</code> if no longer valid (ie expired)
      */
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return false;
@@ -215,9 +221,10 @@ public class Merchandiser  implements UserDetails {
      *
      * @return <code>true</code> if the user is enabled, <code>false</code> otherwise
      */
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return false;
+        return getStatus() != Status.BANNED;
     }
 
     public void setPassword(String password) {

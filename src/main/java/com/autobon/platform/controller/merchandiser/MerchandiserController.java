@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -18,7 +19,7 @@ import java.util.Date;
 /**
  * Created by wh on 2018/6/6.
  */
-
+@RestController("webMerchandiserController")
 @RequestMapping("/api/web/merchandiser")
 public class MerchandiserController {
 
@@ -52,7 +53,7 @@ public class MerchandiserController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public JsonMessage create(@RequestParam("phone") String phone,
+        public JsonMessage create(@RequestParam("phone") String phone,
                               @RequestParam("password") String password,
                               @RequestParam("name") String name,
                               @RequestParam("gender") String gender){

@@ -17,7 +17,7 @@ CREATE TABLE `t_merchandiser` (
   `push_id` VARCHAR(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
-  KEY `tech_name_index` (`name`),
-  KEY `tech_push_id` (`push_id`)
+  KEY `merchandiser_name_index` (`name`),
+  KEY `merchandiser_push_id` (`push_id`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
