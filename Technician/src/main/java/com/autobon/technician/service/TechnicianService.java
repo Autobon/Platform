@@ -135,4 +135,10 @@ public class TechnicianService {
         return technician;
     }
 
+
+    public Technician findById(int id){
+
+        return repository.findOne(id);
+    }
+
 }

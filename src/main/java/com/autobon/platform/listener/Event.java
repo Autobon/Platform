@@ -4,7 +4,7 @@ package com.autobon.platform.listener;
  * Created by dave on 16/4/14.
  */
 public class Event<T> {
-    public enum Action {CREATED, VERIFIED, APPOINTED, FINISHED, TAKEN, CANCELED, GIVEN_UP};
+    public enum Action {CREATED, VERIFIED, APPOINTED, FINISHED, TAKEN, CANCELED, GIVEN_UP, REMIND36, REMIND12}
     private T payload;
     private Action action;
 
