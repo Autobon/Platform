@@ -4,9 +4,10 @@ import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.repository.CoopAccountRepository;
 import com.autobon.order.entity.Order;
 import com.autobon.order.repository.OrderRepository;
-import com.autobon.technician.entity.Technician;
-import com.autobon.technician.repository.TechnicianRepository;
+import com.autobon.platform.listener.Event;
+import com.autobon.platform.listener.OrderEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 
@@ -19,8 +20,9 @@ public class OrderTask {
     OrderRepository orderRepository;
     @Autowired
     CoopAccountRepository coopAccountRepository;
+
     @Autowired
-    TechnicianRepository technicianRepository;
+    ApplicationEventPublisher publisher;
 
 
 
@@ -33,17 +35,11 @@ public class OrderTask {
             CoopAccount coopAccount = coopAccountRepository.findOne(order.getCreatorId());
             if(coopAccount!= null && coopAccount.getPushId() != null){
 
-                //todo 推送提示
+                publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.REMIND36));
+
             }
 
-            if(order.getMainTechId() != 0){
-               Technician technician = technicianRepository.findOne(order.getMainTechId());
-                if(technician != null && technician.getPushId() != null){
 
-
-                    // todo 推送提示
-                }
-            }
         }
 
     }
@@ -53,21 +49,14 @@ public class OrderTask {
 
         List<Order> orderList = orderRepository.findNewCreate12();
 
-        for(Order order :orderList){
+        for(Order order :orderList) {
             CoopAccount coopAccount = coopAccountRepository.findOne(order.getCreatorId());
-            if(coopAccount!= null && coopAccount.getPushId() != null){
+            if (coopAccount != null && coopAccount.getPushId() != null) {
 
-                //todo 推送提示
+                publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.REMIND36));
             }
 
-            if(order.getMainTechId() != 0){
-                Technician technician = technicianRepository.findOne(order.getMainTechId());
-                if(technician != null && technician.getPushId() != null){
 
-
-                    // todo 推送提示
-                }
-            }
         }
 
     }
