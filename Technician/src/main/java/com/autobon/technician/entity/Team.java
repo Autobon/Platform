@@ -26,6 +26,9 @@ public class Team {
 
     @Column private String managerPhone; // 负责人名称
 
+    public Team() {
+    }
+
     public Team(TeamShow teamShow) {
         this.name = teamShow.getName();
         this.managerId = teamShow.getManagerId();

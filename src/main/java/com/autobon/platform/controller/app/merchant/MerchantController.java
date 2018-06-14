@@ -8,6 +8,7 @@ import com.autobon.cooperators.service.CooperatorService;
 import com.autobon.cooperators.service.ReviewCooperService;
 import com.autobon.order.entity.Comment;
 import com.autobon.order.entity.Order;
+import com.autobon.order.entity.OrderStatusRecord;
 import com.autobon.order.entity.OrderView;
 import com.autobon.order.service.*;
 import com.autobon.order.vo.OrderConstructionShow;
@@ -109,9 +110,9 @@ public class MerchantController {
             messages.add("密码至少6位");
         }
         String code = redisCache.get("verifySms:" + phone);
-        if (!verifySms.equals(code)) {
-            messages.add("验证码错误");
-        }
+//        if (!verifySms.equals(code)) {
+//            messages.add("验证码错误");
+//        }
 
         if (messages.size() > 0) {
             jsonResult.setStatus(false);
@@ -805,11 +806,18 @@ public class MerchantController {
         }
     }
 
+    /**
+     * 查询订单流程记录
+     *
+     * @param request
+     * @param orderId
+     * @return
+     */
     @RequestMapping(value = "/merchant/order/{orderId:\\d+}/status/score", method = RequestMethod.GET)
     public JsonResult getOdrders(HttpServletRequest request,
                                  @PathVariable("orderId") int orderId) {
 
-        List list = orderStatusRecordService.findByOrderId(orderId);
+        List<OrderStatusRecord> list = orderStatusRecordService.findByOrderId(orderId);
         return new JsonResult(true, list);
 
     }

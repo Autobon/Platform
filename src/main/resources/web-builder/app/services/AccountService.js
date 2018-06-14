@@ -63,7 +63,7 @@ export default class AccountService extends Injector {
         return $http.post(Settings.domain + '/api/web/admin/role/' + id, {name: name, menus: menus, remark: remark});
     }
 
-    deleteRole(id){
+    deleteRole(id) {
         const {$http, Settings} = this.$injected;
         return $http.delete(Settings.domain + '/api/web/admin/role/' + id);
     }

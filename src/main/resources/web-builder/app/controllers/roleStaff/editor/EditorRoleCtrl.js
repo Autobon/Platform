@@ -21,14 +21,14 @@ export default class EditorRoleCtrl extends Injector {
                 if (res.data && res.data.result) {
                     $scope.roleData = res.data.data;
                     AccountService.getRoleMenu($scope.roleData.id).then(menu => {
-                        if (menu.data.data.menuId != null) {
+                        if (menu.data.data.menuId !== null) {
                             $scope.chooseIds = menu.data.data.menuId.split(/[,"]/);
                         }
-                        if ($scope.menus != null && $scope.menus.length > 0) {
-                            for (var i = 0; i < $scope.menus.length; i++) {
+                        if ($scope.menus !== null && $scope.menus.length > 0) {
+                            for (let i = 0; i < $scope.menus.length; i++) {
                                 $scope.menus[i].selected = false;
-                                for (var j = 0; j < $scope.chooseIds.length; j++) {
-                                    if ($scope.chooseIds[j] == $scope.menus[i].id) {
+                                for (let j = 0; j < $scope.chooseIds.length; j++) {
+                                    if ($scope.chooseIds[j] === $scope.menus[i].id) {
                                         $scope.menus[i].selected = true;
                                     }
                                 }
@@ -55,16 +55,15 @@ export default class EditorRoleCtrl extends Injector {
                 $scope.chooseIds.push(id);
             }
         } else {
-
-            $scope.chooseIds = $scope.chooseIds.filter(items => items != id);
+            $scope.chooseIds = $scope.chooseIds.filter(items => items !== id);
             console.log($scope.chooseIds);
         }
     }
 
     save() {
         const {$scope, $state, AccountService} = this.$injected;
-        if ($scope.roleData.name == null || $scope.roleData.name == '') {
-            $scope.error = "姓名不能为空";
+        if ($scope.roleData.name === null || $scope.roleData.name === '') {
+            $scope.error = '姓名不能为空';
             return;
         }
         let q, isUpdate       = !!$scope.roleData.id;

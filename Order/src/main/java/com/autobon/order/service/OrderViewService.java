@@ -102,17 +102,21 @@ public class OrderViewService {
         Page<OrderView> page = null;
         if(status == 1){
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
-            page = orderViewRepository.findUnFinishCoopOrder(coopId, workDate, vin, phone, p);
+            page = orderViewRepository.findUnGetCoopOrder(coopId, workDate, vin, phone, p);
         }else if(status == 2)
         {
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "endTime"));
-            page = orderViewRepository.findFinishCoopOrder(coopId, workDate, vin, phone, p);
+            page = orderViewRepository.findworkingCoopOrder(coopId, workDate, vin, phone, p);
         }
         else if(status == 3){
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "endTime"));
             page = orderViewRepository.findUnEvaluateCoopOrder(coopId, workDate, vin, phone, p);
         }
         else if(status == 4){
+            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
+            page = orderViewRepository.findEvaluatedCoopOrder(coopId, workDate, vin, phone, p);
+        }
+        else if(status == 5){
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
             page = orderViewRepository.findAllCoopOrder(coopId, workDate, vin, phone, p);
         }

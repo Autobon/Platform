@@ -56,6 +56,5 @@ export default class ApplyRecordCtrl extends Injector {
                 alert(res.data.message);
             }
         });
-
     }
 }

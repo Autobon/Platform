@@ -107,7 +107,7 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                         '43': '喜悦套餐',
                         '44': '前杠角',
                         '45': '后杠角',
-                        '46': '四轮眉'
+                        '46': '四轮眉',
                     },
                     technicianStatus: {
                         'NEWLY_CREATED': '新注册',

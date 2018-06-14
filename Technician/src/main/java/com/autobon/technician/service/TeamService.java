@@ -34,6 +34,10 @@ public class TeamService {
         return repository.findByName(name);
     }
 
+    public Team getByManagerId(Integer managerId) {
+        return repository.findByManagerId(managerId);
+    }
+
 
     public Page<Team> find(String name, Integer managerId, String managerName, String managerPhone, int page, int pageSize) {
         if(name != null){

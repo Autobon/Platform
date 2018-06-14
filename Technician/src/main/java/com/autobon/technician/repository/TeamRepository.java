@@ -18,6 +18,8 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
 
     Team findByName(String name);
 
+    Team findByManagerId(Integer managerId);
+
     @Query("select t from Team t " +
             "where (?1 is null or t.name like ?1) " +
             "and (?2 is null or t.managerName like ?2) " +

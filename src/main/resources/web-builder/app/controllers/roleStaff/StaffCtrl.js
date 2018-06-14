@@ -36,8 +36,8 @@ export default class StaffCtrl extends Injector {
 
     deleteStaff(id) {
         const {$scope, AccountService} = this.$injected;
-        var message = confirm("确定删除吗？");
-        if (message == false) {
+        let message = confirm('确定删除吗？');
+        if (message === false) {
             return;
         }
         AccountService.deleteStaff(id).then(res => {

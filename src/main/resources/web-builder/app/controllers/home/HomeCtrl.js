@@ -16,18 +16,18 @@ export default class HomeCtrl extends Injector {
         $scope.getOrder = false;
         $scope.getCoop = false;
         $scope.getTech = false;
-        if (LoginService.getCookie('ro') != null) {
+        if (LoginService.getCookie('ro') !== null) {
             AccountService.getStaffMenu(LoginService.getCookie('ro')).then(res => {
                 if (res.data && res.data.result) {
                     $scope.staffMenu = res.data.data;
-                    var menus = res.data.data.menuId.split(',');
-                    if (menus.indexOf('2') != -1) {
+                    let menus = res.data.data.menuId.split(',');
+                    if (menus.indexOf('2') !== -1) {
                         $scope.getOrder = true;
                     }
-                    if (menus.indexOf('3') != -1) {
+                    if (menus.indexOf('3') !== -1) {
                         $scope.getCoop = true;
                     }
-                    if (menus.indexOf('4') != -1) {
+                    if (menus.indexOf('4') !== -1) {
                         $scope.getTech = true;
                     }
                 }

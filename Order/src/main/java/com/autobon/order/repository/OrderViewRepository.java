@@ -76,21 +76,40 @@ public interface OrderViewRepository extends JpaRepository<OrderView, Integer> {
             " and (?4 is null or ov.contactPhone = ?4)")
     Page<OrderView> findAllCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
 
-    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode<71" +
+
+    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode<10" +
             " and (?2 is null or ov.startTime = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?5 is null or ov.contactPhone = ?4)")
-    Page<OrderView> findFinishCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+            " and (?4 is null or ov.contactPhone = ?4)")
+    Page<OrderView> findUnGetCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
 
     @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode<60" +
             " and (?2 is null or ov.startTime = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?5 is null or ov.contactPhone = ?4)")
+            " and (?4 is null or ov.contactPhone = ?4)")
     Page<OrderView> findUnFinishCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+
+    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>=50 and ov.statusCode<60" +
+            " and (?2 is null or ov.startTime = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contactPhone = ?4)")
+    Page<OrderView> findworkingCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+
+    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode<71" +
+            " and (?2 is null or ov.startTime = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contactPhone = ?4)")
+    Page<OrderView> findFinishCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
 
     @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode<70" +
             " and (?2 is null or ov.startTime = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?5 is null or ov.contactPhone = ?4)")
+            " and (?4 is null or ov.contactPhone = ?4)")
     Page<OrderView> findUnEvaluateCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+
+    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode>=70" +
+            " and (?2 is null or ov.startTime = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contactPhone = ?4)")
+    Page<OrderView> findEvaluatedCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
 }

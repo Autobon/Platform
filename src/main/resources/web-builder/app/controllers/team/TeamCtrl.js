@@ -1,9 +1,9 @@
 import {Injector} from 'ngES6';
-import './role.scss';
+import './team.scss';
 
-export default class RoleCtrl extends Injector {
-    static $inject = ['$scope', 'Settings', 'AccountService'];
-    static $template = require('./role.html');
+export default class StaffCtrl extends Injector {
+    static $inject = ['$scope', 'Settings', 'TeamService'];
+    static $template = require('./team.html');
 
     constructor(...args) {
         super(...args);
@@ -11,36 +11,36 @@ export default class RoleCtrl extends Injector {
         this.attachMethodsTo($scope);
 
         $scope.Settings = Settings;
-        $scope.roleData = {};
-        $scope.roleDatas = [];
+        $scope.staffData = {};
+        $scope.staffDatas = [];
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
         this.getDatas();
     }
 
     getDatas(resetPageNo) {
-        const {$scope, AccountService} = this.$injected;
+        const {$scope, TeamService} = this.$injected;
         const {page, pageSize} = $scope.pagination;
-        AccountService.searchRole($scope.roleData, resetPageNo ? 1 : page, pageSize).then(res => {
-            if (res.data && res.data.result) {
-                $scope.roleDatas = res.data.data.list;
-                $scope.pagination.totalItems = res.data.data.totalElements;
+        TeamService.search($scope.staffData, resetPageNo ? 1 : page, pageSize).then(res => {
+            if (res.data && res.data.status === true) {
+                $scope.teamDatas = res.data.message.content;
+                $scope.pagination.totalItems = res.data.message.totalElements;
             }
         });
     }
 
     reset() {
         const {$scope} = this.$injected;
-        $scope.roleData = {};
+        $scope.teamData = {};
         // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 
-    deleteRole(id) {
-        const {$scope, AccountService} = this.$injected;
+    deleteTeam(id) {
+        const {$scope, TeamService} = this.$injected;
         let message = confirm('确定删除吗？');
         if (message === false) {
             return;
         }
-        AccountService.deleteRole(id).then(res => {
+        TeamService.deleteTeam(id).then(res => {
             if (res.data && res.data.result) {
                 this.getDatas();
             } else {

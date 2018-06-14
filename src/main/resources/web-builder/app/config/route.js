@@ -238,6 +238,26 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'EditorStaffCtrl',
             template  : templateCache.EditorStaffCtrl,
         })
+        .state('console.team', {
+            url       : '/team',
+            controller: 'TeamCtrl',
+            template  : templateCache.TeamCtrl,
+        })
+        .state('console.team.new', {
+            url       : '/new',
+            controller: 'TeamEditorCtrl',
+            template  : templateCache.TeamEditorCtrl,
+        })
+        .state('console.team.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'TeamEditorCtrl',
+            template  : templateCache.TeamEditorCtrl,
+        })
+        .state('console.team.member', {
+            url       : '/team/{id:\\d+}/member',
+            controller: 'MemberCtrl',
+            template  : templateCache.MemberCtrl,
+        })
         ;
 }
 

@@ -34,28 +34,28 @@ export default class EditorStaffCtrl extends Injector {
 
     save() {
         const {$scope, $state, AccountService} = this.$injected;
-        if ($scope.staffData.username == null || $scope.staffData.username == '') {
-            $scope.error = "用户名不能为空";
+        if ($scope.staffData.username === null || $scope.staffData.username === '') {
+            $scope.error = '用户名不能为空';
             return;
         }
-        if ($scope.staffData.name == null || $scope.staffData.name == '') {
-            $scope.error = "姓名不能为空";
+        if ($scope.staffData.name === null || $scope.staffData.name === '') {
+            $scope.error = '姓名不能为空';
             return;
         }
-        if ($scope.staffData.phone == null || $scope.staffData.phone == '') {
-            $scope.error = "电话不能为空";
+        if ($scope.staffData.phone === null || $scope.staffData.phone === '') {
+            $scope.error = '电话不能为空';
             return;
         }
-        if ($scope.staffData.email == null || $scope.staffData.email == '') {
-            $scope.error = "邮箱不能为空";
+        if ($scope.staffData.email === null || $scope.staffData.email === '') {
+            $scope.error = '邮箱不能为空';
             return;
         }
-        if ($scope.staffData.id && $scope.staffData.password == null || $scope.staffData.password == '') {
-            $scope.error = "密码不能为空";
+        if ($scope.staffData.id && $scope.staffData.password === null || $scope.staffData.password === '') {
+            $scope.error = '密码不能为空';
             return;
         }
-        if (!$scope.staffData.roleId || $scope.staffData.roleId <1) {
-            $scope.error = "角色不能为空";
+        if (!$scope.staffData.roleId || $scope.staffData.roleId < 1) {
+            $scope.error = '角色不能为空';
             return;
         }
         let q, isUpdate       = !!$scope.staffData.id;

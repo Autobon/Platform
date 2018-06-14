@@ -103,7 +103,7 @@ public class Technician implements UserDetails {
 
     @Column private String remark;
 
-    @Column private int teamId;
+    @Column private Integer teamId;
 
 
     @JsonIgnore
@@ -456,11 +456,11 @@ public class Technician implements UserDetails {
         this.remark = remark;
     }
 
-    public int getTeamId() {
+    public Integer getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(int teamId) {
+    public void setTeamId(Integer teamId) {
         this.teamId = teamId;
     }
 }

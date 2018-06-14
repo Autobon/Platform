@@ -24,13 +24,14 @@ export default class ConsoleCtrl extends Injector {
         $scope.techMapShow = false;
         $scope.coopMapShow = false;
         $scope.roleStaffShow = false;
-        var menus = [];
-        if (LoginService.getCookie('ro') != null) {
+        $scope.teamShow = false;
+        let menus = [];
+        if (LoginService.getCookie('ro') !== null) {
             AccountService.getStaffMenu(LoginService.getCookie('ro')).then(res => {
                 if (res.data && res.data.result) {
                     $scope.staffMenu = res.data.data;
                     menus = res.data.data.menuId.split(',');
-                    for (var i = 0; i < menus.length; i++) {
+                    for (let i = 0; i < menus.length; i++) {
                         if (menus[i] === '1') {
                             $scope.homeShow = true;
                             continue;
@@ -75,12 +76,14 @@ export default class ConsoleCtrl extends Injector {
                             $scope.roleStaffShow = true;
                             continue;
                         }
+                        if (menus[i] === '12') {
+                            $scope.teamShow = true;
+                            continue;
+                        }
                     }
                 }
             });
-
         }
-
     }
 
     logout() {
