@@ -530,4 +530,45 @@ public class TechnicianAdminController {
         return new JsonResult(true, res);
     }
 
+
+    /**
+     * 技师账号禁用
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/technician/ban/{id}", method = RequestMethod.PUT)
+    public JsonMessage technicianBan(@PathVariable("id") int id){
+
+        Technician technician = technicianService.findById(id);
+
+        if(technician == null){
+            return new JsonMessage(false, "技师不存在");
+        }
+
+        technician.setStatus(Technician.Status.BANNED);
+        technicianService.save(technician);
+
+        return new JsonMessage(true, "禁用成功");
+  }
+
+    /**
+     * 技师账号解禁
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/technician/unban/{id}", method = RequestMethod.PUT)
+    public JsonMessage technicianUnBan(@PathVariable("id") int id){
+
+        Technician technician = technicianService.findById(id);
+
+        if(technician == null){
+            return new JsonMessage(false, "技师不存在");
+        }
+
+        technician.setStatus(Technician.Status.VERIFIED);
+        technicianService.save(technician);
+
+        return new JsonMessage(true, "解禁成功");
+    }
+
 }

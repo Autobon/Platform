@@ -55,7 +55,7 @@ public class Cooperator{
 
     @Column private Date createTime; //注册时间
 
-    @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败
+    @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败 3-禁用
 
     @Column private int orderNum;//商户订单数
 
