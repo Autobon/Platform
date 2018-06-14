@@ -15,4 +15,7 @@ public interface MerchandiserCooperatorRepository extends JpaRepository<Merchand
 
     @Query(value = "select mc.id, mc.merchandiser_id, mc.cooperator_id, c.fullname from t_merchandiser_cooperator mc left join t_cooperators c on c.id = mc.cooperator_id where mc.merchandiser_id = ?1", nativeQuery = true)
     List<Object[]> find(int merchandiserId);
+
+
+    MerchandiserCooperator findByMerchandiserIdAndCooperatorId(int mid, int cid);
 }

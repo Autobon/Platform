@@ -429,31 +429,35 @@ public class MerchantController {
             return new JsonResult(false,   "订单时间格式不对, 正确格式: 2016-02-10 09:23");
         }
 
-        Order order = new Order();
-        order.setCreatorId(coopAccount.getId());
-        order.setCoopId(coopId);
-        order.setCreatorName(coopAccount.getName());
-        order.setPhoto(photo);
-        order.setRemark(remark);
-        order.setAgreedStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(agreedStartTime));
-        order.setAgreedEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(agreedEndTime));
-        order.setAddTime(new Date());
-        // order.setType(type);
-        order.setPositionLon(cooperator.getLongitude());
-        order.setPositionLat(cooperator.getLatitude());
-        order.setContactPhone(coopAccount.getPhone());
-        if (!pushToAll) order.setStatus(Order.Status.CREATED_TO_APPOINT);
+
 
         String[] types = type.split(",");
         for(String s : types){
+            Order order = new Order();
+            order.setCreatorId(coopAccount.getId());
+            order.setCoopId(coopId);
+            order.setCreatorName(coopAccount.getName());
+            order.setPhoto(photo);
+            order.setRemark(remark);
+            order.setAgreedStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(agreedStartTime));
+            order.setAgreedEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(agreedEndTime));
+            order.setAddTime(new Date());
+            order.setPositionLon(cooperator.getLongitude());
+            order.setPositionLat(cooperator.getLatitude());
+            order.setContactPhone(coopAccount.getPhone());
+            order.setStatus(pushToAll!= true ?Order.Status.CREATED_TO_APPOINT:Order.Status.NEWLY_CREATED);
             order.setType(s);
             orderService.save(order);
+
+            if(pushToAll){
+                publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
+            }
         }
-        cooperator.setOrderNum(cooperator.getOrderNum() + 1);
+        cooperator.setOrderNum(cooperator.getOrderNum() + types.length);
         cooperatorService.save(cooperator);
 
-        publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
-        return new JsonResult(true,   order);
+
+        return new JsonResult(true,   "下单完成");
     }
 
 
@@ -704,7 +708,7 @@ public class MerchantController {
         CoopAccount account = (CoopAccount) request.getAttribute("user");
 
 
-        return new JsonResult(true,locationStatusService.getTechByName(latitude,longitude,query, page, pageSize));
+        return new JsonResult(true,locationStatusService.getTechByName(latitude, longitude, query, page, pageSize));
 
     }
 

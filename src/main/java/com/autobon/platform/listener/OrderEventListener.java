@@ -79,6 +79,12 @@ public class OrderEventListener {
             case CANCELED:
                 this.onOrderCanceled(order);
                 break;
+            case REMIND36:
+                this.onOrderRemind36(order);
+                break;
+            case REMIND12:
+                this.onOrderRemind12(order);
+                break;
         }
     }
 
@@ -169,6 +175,58 @@ public class OrderEventListener {
         map.put("title", msgTitle);
         map.put("order", order);
         pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
+    }
+
+
+
+    private void onOrderRemind36(Order order) throws IOException {
+
+
+        order.setPhoto("");
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
+
+        // 向商户推送订单已有人接单消息
+        CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
+        String msgTitle = "订单: " + order.getOrderNum() + "预约施工时间已超过36小时";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "ORDER_REMIND");
+        map.put("title", msgTitle);
+        map.put("order", order);
+        pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
+
+        if(order.getMainTechId() != 0){
+           Technician technician =  technicianService.findById(order.getMainTechId());
+            if(technician!= null && technician.getPushId() != null)
+            pushServiceA.pushToSingle(technician.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24 * 3600);
+
+        }
+
+    }
+
+    private void onOrderRemind12(Order order) throws IOException {
+
+
+        order.setPhoto("");
+        order.setBeforePhotos("");
+        order.setAfterPhotos("");
+
+        // 向商户推送订单已有人接单消息
+        CoopAccount coopAccount = coopAccountService.getById(order.getCreatorId());
+        String msgTitle = "订单: " + order.getOrderNum() + "距离预约施工时间仅剩12小时";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("action", "ORDER_REMIND");
+        map.put("title", msgTitle);
+        map.put("order", order);
+        pushServiceB.pushToSingle(coopAccount.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24*3600);
+
+        if(order.getMainTechId() != 0){
+            Technician technician =  technicianService.findById(order.getMainTechId());
+            if(technician!= null && technician.getPushId() != null)
+                pushServiceA.pushToSingle(technician.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24 * 3600);
+
+        }
+
     }
 
     private void onOrderAppointed(Order order) throws IOException {

@@ -1,6 +1,7 @@
 package com.autobon.platform.controller.app.merchandiser;
 
 import com.autobon.merchandiser.entity.Merchandiser;
+import com.autobon.merchandiser.service.MerchandiserCooperatorService;
 import com.autobon.merchandiser.service.MerchandiserService;
 import com.autobon.shared.JsonResult;
 import com.autobon.shared.RedisCache;
@@ -26,7 +27,6 @@ import java.util.UUID;
 /**
  * Created by wh on 2018/6/1.
  */
-
 @RestController
 @RequestMapping("/api/mobile/merchandiser")
 public class MerchandiserController {
@@ -34,6 +34,8 @@ public class MerchandiserController {
 
     @Autowired
     MerchandiserService merchandiserService;
+    @Autowired
+    MerchandiserCooperatorService merchandiserCooperatorService;
     @Autowired
     RedisCache redisCache;
     @Autowired
@@ -254,6 +256,24 @@ public class MerchandiserController {
         }catch (Exception e){
             return new JsonResult(false, e.getMessage());
         }
+    }
+
+
+    /**
+     * 查询自己信息
+     * @param request HTTP请求
+     * @return JsonResult 对象
+     */
+    @RequestMapping(value = "/cooperator", method = RequestMethod.GET)
+    public JsonResult getCooperator(HttpServletRequest request) {
+
+            Merchandiser merchandiser = (Merchandiser) request.getAttribute("user");
+            if (merchandiser == null) {
+                return new JsonResult(false, "登陆超时");
+            }
+
+            return new JsonResult(true, merchandiserCooperatorService.findByMerchandiserId(merchandiser.getId()));
+
     }
 
 
