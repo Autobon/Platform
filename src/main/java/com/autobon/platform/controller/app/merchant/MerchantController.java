@@ -711,7 +711,7 @@ public class MerchantController {
 
     /**
      * 商户查询订单
-     * @param status 1未完成  2 已完成  3未评价 4 全部订单
+     * @param status 1未接单  2 施工中  3未评价 4 已评价  5全部订单
      * @param page
      * @param pageSize
      * @param request
