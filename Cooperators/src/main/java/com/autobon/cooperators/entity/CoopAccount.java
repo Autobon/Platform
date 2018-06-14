@@ -63,7 +63,7 @@ public class CoopAccount implements UserDetails {
     @Column
     private String pushId; // 个推客户端ID, 由手机端更新
 
-    @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败 3-账号禁用
+    @Column private int statusCode; //状态 0 可用 1-账号禁用
 
 
     public int getStatusCode() {
@@ -203,7 +203,7 @@ public class CoopAccount implements UserDetails {
     @Override
     public boolean isEnabled() {
         //return this.fired = false;
-        return this.statusCode == 1;
+        return this.statusCode == 0;
     }
 
     public void setPassword(String password) {

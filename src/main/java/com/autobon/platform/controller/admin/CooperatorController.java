@@ -554,7 +554,7 @@ public class CooperatorController {
         List<CoopAccount> list = coopAccountService.findCoopAccountByCooperatorId(id);
         if(list != null && list.size() >0){
             for(CoopAccount coopAccount: list){
-                coopAccount.setStatusCode(3);
+                coopAccount.setStatusCode(1);
                 coopAccountService.save(coopAccount);
             }
         }
@@ -580,7 +580,7 @@ public class CooperatorController {
         List<CoopAccount> list = coopAccountService.findCoopAccountByCooperatorId(id);
         if(list != null && list.size() >0){
             for(CoopAccount coopAccount: list){
-                coopAccount.setStatusCode(1);
+                coopAccount.setStatusCode(0);
                 coopAccountService.save(coopAccount);
             }
         }
