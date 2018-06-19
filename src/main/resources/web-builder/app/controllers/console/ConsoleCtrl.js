@@ -25,6 +25,7 @@ export default class ConsoleCtrl extends Injector {
         $scope.coopMapShow = false;
         $scope.roleStaffShow = false;
         $scope.teamShow = false;
+        $scope.merchandiserShow = false;
         let menus = [];
         if (LoginService.getCookie('ro') !== null) {
             AccountService.getStaffMenu(LoginService.getCookie('ro')).then(res => {
@@ -78,6 +79,10 @@ export default class ConsoleCtrl extends Injector {
                         }
                         if (menus[i] === '12') {
                             $scope.teamShow = true;
+                            continue;
+                        }
+                        if (menus[i] === '13') {
+                            $scope.merchandiserShow = true;
                             continue;
                         }
                     }

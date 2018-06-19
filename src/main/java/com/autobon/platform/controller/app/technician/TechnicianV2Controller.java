@@ -1439,15 +1439,16 @@ public class TechnicianV2Controller {
     /**
      * 修改技师备注
      *
-     * @param techId
+     * @param orderId
      * @param remark
      * @return
      */
     @RequestMapping(value = "/v2/remark", method = RequestMethod.POST)
-    public JsonResult saveRemark(@RequestParam("techId")     Integer techId,
+    public JsonResult saveRemark(@RequestParam("orderId")     Integer orderId,
                                @RequestParam("remark")  String remark) {
-        Technician technician = technicianService.saveRemark(techId, remark);
-        return new JsonResult(true, technician);
+        Order order = orderService.saveRemark(orderId, remark);
+
+        return new JsonResult(true, orderViewService.findById(orderId));
     }
 
     /**

@@ -97,6 +97,8 @@ public class OrderShow {
 
     private Comment comment;
 
+    private String technicianRemark;
+
     public OrderShow() {}
 
     public OrderShow(Object[] objects) {
@@ -550,5 +552,13 @@ public class OrderShow {
 
     public void setComment(Comment comment) {
         this.comment = comment;
+    }
+
+    public String getTechnicianRemark() {
+        return technicianRemark;
+    }
+
+    public void setTechnicianRemark(String technicianRemark) {
+        this.technicianRemark = technicianRemark;
     }
 }

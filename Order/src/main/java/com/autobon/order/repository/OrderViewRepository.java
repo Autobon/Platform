@@ -70,46 +70,96 @@ public interface OrderViewRepository extends JpaRepository<OrderView, Integer> {
     int findByStatusCodeCount(Integer statusCode);
 
 
-    @Query("select ov from OrderView ov where ov.coopId = ?1" +
-            " and (?2 is null or ov.startTime = ?2) " +
+    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contactPhone = ?4)")
-    Page<OrderView> findAllCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+            " and (?4 is null or ov.contact_phone = ?4) " +
+            " order by ov.id desc limit ?5,?6", nativeQuery = true)
+    List<OrderView> findAllCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+
+    @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
+    int findAllCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
 
 
-    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode<10" +
-            " and (?2 is null or ov.startTime = ?2) " +
+    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1 and ov.status<10" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contactPhone = ?4)")
-    Page<OrderView> findUnGetCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+            " and (?4 is null or ov.contact_phone = ?4) " +
+            " order by ov.id desc limit ?5,?6", nativeQuery = true)
+    List<OrderView> findUnGetCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
 
-    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode<60" +
-            " and (?2 is null or ov.startTime = ?2) " +
+    @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status<10" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contactPhone = ?4)")
-    Page<OrderView> findUnFinishCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+            " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
+    int findUnGetCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
 
-    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>=50 and ov.statusCode<60" +
-            " and (?2 is null or ov.startTime = ?2) " +
+    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1 and ov.status<60" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contactPhone = ?4)")
-    Page<OrderView> findworkingCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+            " and (?4 is null or ov.contact_phone = ?4) " +
+            " order by ov.id desc limit ?5,?6", nativeQuery = true)
+    List<OrderView> findUnFinishCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
 
-    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode<71" +
-            " and (?2 is null or ov.startTime = ?2) " +
+    @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status<60" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contactPhone = ?4)")
-    Page<OrderView> findFinishCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+            " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
+    int findUnFinishCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
 
-    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode<70" +
-            " and (?2 is null or ov.startTime = ?2) " +
+    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1 and ov.status>=50 and ov.status<60" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contactPhone = ?4)")
-    Page<OrderView> findUnEvaluateCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+            " and (?4 is null or ov.contact_phone = ?4) " +
+            " order by ov.id desc limit ?5,?6", nativeQuery = true)
+    List<OrderView> findWorkingCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
 
-    @Query("select ov from OrderView ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode>=70" +
-            " and (?2 is null or ov.startTime = ?2) " +
+    @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status>=50 and ov.status<60" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contactPhone = ?4)")
-    Page<OrderView> findEvaluatedCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+            " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
+    int findWorkingCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
+
+    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1 and ov.status>59 and ov.status<71" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contact_phone = ?4) " +
+            " order by ov.id desc limit ?5,?6", nativeQuery = true)
+    List<OrderView> findFinishCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+
+    @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status>59 and ov.status<71" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
+    int findFinishCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
+
+    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1 and ov.status>59 and ov.status<70" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contact_phone = ?4) " +
+            " order by ov.id desc limit ?5,?6", nativeQuery = true)
+    List<OrderView> findUnEvaluateCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+
+    @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status>59 and ov.status<70" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
+    int findUnEvaluateCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
+
+    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1 and ov.status=70" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contact_phone = ?4) " +
+            " order by ov.id desc limit ?5,?6", nativeQuery = true)
+    List<OrderView> findEvaluatedCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+
+    @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status=70" +
+            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
+    int findEvaluatedCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
+
 }

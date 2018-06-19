@@ -722,7 +722,7 @@ public class MerchantController {
      * @return
      */
     @RequestMapping(value = "/merchant/order", method = RequestMethod.GET)
-    public JsonResult getOdrders( @RequestParam(value = "status", defaultValue = "1") int status,
+    public JsonResult getOdrders( @RequestParam(value = "status", defaultValue = "5") int status,
                                   @RequestParam(value = "workDate",required = false) String workDate,
                                   @RequestParam(value = "vin",required = false) String vin,
                                   @RequestParam(value = "phone",required = false) String phone,

@@ -158,6 +158,8 @@ public class OrderView {
 
     @Column private String salesman;
 
+    @Column private String technicianRemark;
+
 
     public String getVehicleModel() {
         return vehicleModel;
@@ -567,4 +569,11 @@ public class OrderView {
         this.statusCode = status.getStatusCode();
     }
 
+    public String getTechnicianRemark() {
+        return technicianRemark;
+    }
+
+    public void setTechnicianRemark(String technicianRemark) {
+        this.technicianRemark = technicianRemark;
+    }
 }

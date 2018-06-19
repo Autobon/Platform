@@ -258,6 +258,11 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'MemberCtrl',
             template  : templateCache.MemberCtrl,
         })
+        .state('console.merchandiser', {
+            url       : '/merchandiser',
+            controller: 'MerchandiserCtrl',
+            template  : templateCache.MerchandiserCtrl,
+        })
         ;
 }
 

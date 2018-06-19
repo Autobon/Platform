@@ -59,11 +59,11 @@ public class OrderService {
             OrderStatusRecord orderStatusRecord = new OrderStatusRecord();
             orderStatusRecord.setOrderId(res.getId());
             orderStatusRecord.setRecordTime(new Date());
-            if(res.getStatusCode() == 0) orderStatusRecord.setStatus(0);
+            if(res.getStatusCode() < 10) orderStatusRecord.setStatus(0);
             else if(res.getStatusCode() == 10) orderStatusRecord.setStatus(10);
-            else if(res.getStatusCode() == 55) orderStatusRecord.setStatus(20);
-            else if(res.getStatusCode() == 56) orderStatusRecord.setStatus(30);
-            else if(res.getStatusCode() == 50) orderStatusRecord.setStatus(40);
+            else if(res.getStatusCode() == 50) orderStatusRecord.setStatus(20);
+            else if(res.getStatusCode() == 55) orderStatusRecord.setStatus(30);
+            else if(res.getStatusCode() == 56) orderStatusRecord.setStatus(40);
             else if(res.getStatusCode() == 60) orderStatusRecord.setStatus(50);
 
             orderStatusRecordService.save(orderStatusRecord);
@@ -440,5 +440,12 @@ public class OrderService {
     public List<AgentRebate> findAgentRebate(){
 
         return agentRebateRepository.findAll();
+    }
+
+    public Order saveRemark(int orderId, String remark){
+        Order order = repository.findOrderById(orderId);
+
+        order.setRemark(remark == null ? order.getRemark() : remark);
+        return order;
     }
 }

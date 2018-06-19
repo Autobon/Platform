@@ -1,9 +1,9 @@
 import {Injector} from 'ngES6';
-import './team.scss';
+import './merchandiser.scss';
 
-export default class StaffCtrl extends Injector {
-    static $inject = ['$scope', 'Settings', 'TeamService'];
-    static $template = require('./team.html');
+export default class MerchandiserCtrl extends Injector {
+    static $inject = ['$scope', 'Settings', 'MerchandiserService'];
+    static $template = require('./merchandiser.html');
 
     constructor(...args) {
         super(...args);
@@ -11,16 +11,16 @@ export default class StaffCtrl extends Injector {
         this.attachMethodsTo($scope);
 
         $scope.Settings = Settings;
-        $scope.teamData = {};
-        $scope.teamDatas = [];
+        $scope.merchandiserData = {};
+        $scope.merchandiserDatas = [];
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
         this.getDatas();
     }
 
     getDatas(resetPageNo) {
-        const {$scope, TeamService} = this.$injected;
+        const {$scope, MerchandiserService} = this.$injected;
         const {page, pageSize} = $scope.pagination;
-        TeamService.search($scope.teamData, resetPageNo ? 1 : page, pageSize).then(res => {
+        MerchandiserService.search($scope.merchandiserData, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data && res.data.status === true) {
                 $scope.teamDatas = res.data.message.content;
                 $scope.pagination.totalItems = res.data.message.totalElements;
@@ -30,7 +30,7 @@ export default class StaffCtrl extends Injector {
 
     reset() {
         const {$scope} = this.$injected;
-        $scope.teamData = {};
+        $scope.merchandiserData = {};
         // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 

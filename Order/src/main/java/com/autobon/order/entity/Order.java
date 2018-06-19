@@ -25,37 +25,37 @@ public class Order {
         INVITATION_REJECTED(40), // 合作邀请已拒绝
         IN_PROGRESS(50), // 订单进入施工环节中
         SIGNED_IN(55), // 已签到
-        AT_WORK(56),
+        AT_WORK(56),   //  施工中
         FINISHED(60), // 订单已结束
         COMMENTED(70), // 订单已评论
         CANCELED(200), // 订单已撤销
         GIVEN_UP(201), // 订单已被放弃
         EXPIRED(210); // 订单已超时
-        private int statusCode;
+        private Integer statusCode;
 
-        Status(int statusCode) {
+        Status(Integer statusCode) {
             this.statusCode = statusCode;
         }
 
-        public static Status getStatus(int statusCode) {
+        public static Status getStatus(Integer statusCode) {
             for (Status s : Status.values()) {
                 if (s.getStatusCode() == statusCode) return s;
             }
             return null;
         }
 
-        public int getStatusCode() {
+        public Integer getStatusCode() {
             return this.statusCode;
         }
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column private String orderNum;
 
-    @Column private int orderType; // 订单类型(1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁)
+    @Column private Integer orderType; // 订单类型(1-隔热膜 2-隐形车衣 3-车身改色 4-美容清洁)
 
     @Column private String photo;
 
@@ -69,11 +69,11 @@ public class Order {
 
     @JsonIgnore
     @Column(name="status")
-    private int statusCode;
+    private Integer statusCode;
 
-    @Column private int creatorId;
+    @Column private Integer creatorId;
 
-    @Column private int coopId;
+    @Column private Integer coopId;
 
     @Column private String creatorName;
 
@@ -85,9 +85,9 @@ public class Order {
 
     @Column private String remark;
 
-    @Column private int mainTechId;
+    @Column private Integer mainTechId;
 
-    @Column private int secondTechId;
+    @Column private Integer secondTechId;
 
     @Column private String beforePhotos;
 
@@ -105,9 +105,9 @@ public class Order {
 
     @Column private Date AgreedEndTime;
 
-    @Column private int productStatus; //订单补录产品状态 0 未补录,1已补录
+    @Column private Integer productStatus; //订单补录产品状态 0 未补录,1已补录
 
-    @Column private int reassignmentStatus;  //申请改派状态 0 未申请改派,1已申请改派 2已处理
+    @Column private Integer reassignmentStatus;  //申请改派状态 0 未申请改派,1已申请改派 2已处理
 
     @Column private String vehicleModel;
 
@@ -124,6 +124,8 @@ public class Order {
     @Column private BigDecimal turnover ;
 
     @Column private String salesman;
+
+    @Column private String technicianRemark;
 
     public Order() {
         this.orderNum = generateOrderNum();
@@ -169,11 +171,11 @@ public class Order {
         this.salesman = salesman;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -185,11 +187,11 @@ public class Order {
         this.orderNum = orderNum;
     }
 
-    public int getOrderType() {
+    public Integer getOrderType() {
         return orderType;
     }
 
-    public void setOrderType(int orderType) {
+    public void setOrderType(Integer orderType) {
         this.orderType = orderType;
     }
 
@@ -233,27 +235,27 @@ public class Order {
         this.takenTime = takenTime;
     }
 
-    public int getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 
-    public int getCreatorId() {
+    public Integer getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(Integer creatorId) {
         this.creatorId = creatorId;
     }
 
-    public int getCoopId() {
+    public Integer getCoopId() {
         return coopId;
     }
 
-    public void setCoopId(int coopId) {
+    public void setCoopId(Integer coopId) {
         this.coopId = coopId;
     }
 
@@ -297,19 +299,19 @@ public class Order {
         this.remark = remark;
     }
 
-    public int getMainTechId() {
+    public Integer getMainTechId() {
         return mainTechId;
     }
 
-    public void setMainTechId(int mainTechId) {
+    public void setMainTechId(Integer mainTechId) {
         this.mainTechId = mainTechId;
     }
 
-    public int getSecondTechId() {
+    public Integer getSecondTechId() {
         return secondTechId;
     }
 
-    public void setSecondTechId(int secondTechId) {
+    public void setSecondTechId(Integer secondTechId) {
         this.secondTechId = secondTechId;
     }
 
@@ -385,19 +387,19 @@ public class Order {
         AgreedEndTime = agreedEndTime;
     }
 
-    public int getProductStatus() {
+    public Integer getProductStatus() {
         return productStatus;
     }
 
-    public void setProductStatus(int productStatus) {
+    public void setProductStatus(Integer productStatus) {
         this.productStatus = productStatus;
     }
 
-    public int getReassignmentStatus() {
+    public Integer getReassignmentStatus() {
         return reassignmentStatus;
     }
 
-    public void setReassignmentStatus(int reassignmentStatus) {
+    public void setReassignmentStatus(Integer reassignmentStatus) {
         this.reassignmentStatus = reassignmentStatus;
     }
 
@@ -431,5 +433,13 @@ public class Order {
 
     public void setVin(String vin) {
         this.vin = vin;
+    }
+
+    public String getTechnicianRemark() {
+        return technicianRemark;
+    }
+
+    public void setTechnicianRemark(String technicianRemark) {
+        this.technicianRemark = technicianRemark;
     }
 }

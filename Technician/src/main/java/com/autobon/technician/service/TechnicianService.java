@@ -128,13 +128,6 @@ public class TechnicianService {
         return repository.findAll();
     }
 
-    public Technician saveRemark(int techId, String remark){
-        Technician technician = repository.getById(techId);
-
-        technician.setRemark(remark == null ? technician.getRemark() : remark);
-        return technician;
-    }
-
 
     public Technician findById(int id){
 
