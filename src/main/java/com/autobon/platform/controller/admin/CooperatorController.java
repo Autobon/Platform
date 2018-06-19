@@ -536,4 +536,55 @@ public class CooperatorController {
         return new JsonMessage(true, "修改成功");
     }
 
+
+
+    @RequestMapping(value = "/coop/ban/{id}", method = RequestMethod.PUT)
+    public JsonMessage coopBan(@PathVariable("id") int id){
+
+        Cooperator cooperator = cooperatorService.get(id);
+
+        if(cooperator == null){
+            return new JsonMessage(false, "商户不存在");
+        }
+
+        cooperator.setStatusCode(3);
+        cooperatorService.save(cooperator);
+
+
+        List<CoopAccount> list = coopAccountService.findCoopAccountByCooperatorId(id);
+        if(list != null && list.size() >0){
+            for(CoopAccount coopAccount: list){
+                coopAccount.setStatusCode(1);
+                coopAccountService.save(coopAccount);
+            }
+        }
+
+
+        return new JsonMessage(true, "禁用成功");
+    }
+
+
+    @RequestMapping(value = "/coop/unban/{id}", method = RequestMethod.PUT)
+    public JsonMessage coopUnBan(@PathVariable("id") int id){
+
+        Cooperator cooperator = cooperatorService.get(id);
+
+        if(cooperator == null){
+            return new JsonMessage(false, "商户不存在");
+        }
+
+        cooperator.setStatusCode(1);
+        cooperatorService.save(cooperator);
+
+
+        List<CoopAccount> list = coopAccountService.findCoopAccountByCooperatorId(id);
+        if(list != null && list.size() >0){
+            for(CoopAccount coopAccount: list){
+                coopAccount.setStatusCode(0);
+                coopAccountService.save(coopAccount);
+            }
+        }
+
+        return new JsonMessage(true, "解禁成功");
+    }
 }
