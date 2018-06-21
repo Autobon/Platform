@@ -6,6 +6,7 @@ CREATE TABLE `t_function` (
   `menu_id` int(10) DEFAULT '0' COMMENT '菜单ID',
   `category_id` int(10) DEFAULT '0' COMMENT '分类ID',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `is_enable` int(1) DEFAULT '0' COMMENT '是否可用 0 可用 1不可用',
   PRIMARY KEY (`id`)
 )DEFAULT CHARSET=utf8 COMMENT='API表';
 

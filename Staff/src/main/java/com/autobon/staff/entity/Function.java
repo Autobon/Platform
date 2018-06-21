@@ -17,7 +17,7 @@ public class Function implements Serializable {
     private Integer menuId;  // 关联菜单id
     private Integer categoryId; //分类id
     private String remark;  //备注
-    private char isEnable; //是否可用
+    private int isEnable; //是否可用
 
     public Function() {
     }
@@ -98,11 +98,11 @@ public class Function implements Serializable {
 
 
     @Column(name = "is_enable", nullable = false, insertable = true, updatable = true)
-    public char getIsEnable() {
+    public int getIsEnable() {
         return isEnable;
     }
 
-    public void setIsEnable(char isEnable) {
+    public void setIsEnable(int isEnable) {
         this.isEnable = isEnable;
     }
 

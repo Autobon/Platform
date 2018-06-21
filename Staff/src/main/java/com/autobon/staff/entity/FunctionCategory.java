@@ -17,7 +17,7 @@ public class FunctionCategory {
     private Integer menuId;
     private Integer isDefault; // 是否默认  0非默认 1默认
 
-    private char isEnable; //是否可用
+    private int isEnable; //是否可用
 
 
 
@@ -62,11 +62,11 @@ public class FunctionCategory {
 
 
     @Column(name = "is_enable", nullable = false, insertable = true, updatable = true)
-    public Character getIsEnable() {
+    public int getIsEnable() {
         return isEnable;
     }
 
-    public void setIsEnable(Character isEnable) {
+    public void setIsEnable(int isEnable) {
         this.isEnable = isEnable;
     }
 }
