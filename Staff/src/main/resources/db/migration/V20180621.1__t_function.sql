@@ -7,6 +7,6 @@ CREATE TABLE `t_function` (
   `category_id` int(10) DEFAULT '0' COMMENT '分类ID',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='API表';
+)DEFAULT CHARSET=utf8 COMMENT='API表';
 
 

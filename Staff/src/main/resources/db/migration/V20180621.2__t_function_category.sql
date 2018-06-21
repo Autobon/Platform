@@ -5,6 +5,6 @@ CREATE TABLE `t_function_category` (
   `is_default` int(1) DEFAULT NULL COMMENT '是否默认  0非默认 1默认',
   PRIMARY KEY (`id`),
   UNIQUE KEY `category` (`category`)
-) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8 COMMENT='权限分类表';
+) DEFAULT CHARSET=utf8 COMMENT='权限分类表';
 
 
