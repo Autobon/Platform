@@ -1,4 +1,4 @@
-CREATE TABLE `t_role_menu` (
+CREATE TABLE `t_role_coop` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) DEFAULT 0 COMMENT '角色ID',
   `coop_id` varchar(255) DEFAULT NULL COMMENT '菜单ID',

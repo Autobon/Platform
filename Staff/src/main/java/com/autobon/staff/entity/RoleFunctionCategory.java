@@ -1,6 +1,5 @@
 package com.autobon.staff.entity;
 
-import com.hpe.authority.RoleFunctionCategoryRelativeShow;
 
 import javax.persistence.*;
 
@@ -9,7 +8,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name="t_role_function_category_relative")
+@Table(name="t_role_function_category")
 public class RoleFunctionCategory {
 
     private Integer id;
@@ -19,11 +18,7 @@ public class RoleFunctionCategory {
 
     public RoleFunctionCategory(){}
 
-    public RoleFunctionCategory(RoleFunctionCategoryRelativeShow roleFunctionCategoryRelativeShow){
-        this.id = roleFunctionCategoryRelativeShow.getId();
-        this.roleId = roleFunctionCategoryRelativeShow.getRoleId();
-        this.categoryId = roleFunctionCategoryRelativeShow.getCategoryId();
-    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
