@@ -20,4 +20,6 @@ public interface FunctionCategoryRepository extends JpaRepository<FunctionCatego
     @Query("select f from FunctionCategory f where f.menuId in ?1 and f.isDefault = 1")
     List<FunctionCategory> findByMenuIds(List<Integer> menuIds);
 
+
+
 }
