@@ -404,7 +404,7 @@ public class StaffAccountController {
      * 修改
      * @param id
      * @param name
-     * @param menus
+     * @param menuIds
      * @param remark
      * @return
      */
