@@ -74,7 +74,7 @@ public class RoleService {
         //遍历角色集合
         for (Role role : roles) {
 
-            String roleAuthorityStr = role.getRoleAuthority();
+            String roleAuthorityStr = role.getFunctionCategoryIds();
             String[] roleAuthorityArray = roleAuthorityStr.split(",");
 
             for (String fidStr : roleAuthorityArray) {
