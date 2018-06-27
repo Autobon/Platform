@@ -45,4 +45,38 @@ export default class CooperatorCtrl extends Injector {
 
         window.location.href = url;
     }
+
+
+    banCoop(id) {
+        const {$scope, CooperatorService} = this.$injected;
+        let message = confirm('确定禁用当前商户吗？');
+        if (message === false) {
+            return;
+        }
+        CooperatorService.banCoop(id).then(res => {
+            if (res.data && res.data.result) {
+                this.getCooperators();
+            } else {
+                if (res.data.result === false) {
+                    $scope.error = res.data.message;
+                }
+            }
+        });
+    }
+    pickCoop(id) {
+        const {$scope, CooperatorService} = this.$injected;
+        let message = confirm('确定解禁当前商户吗？');
+        if (message === false) {
+            return;
+        }
+        CooperatorService.pickCoop(id).then(res => {
+            if (res.data && res.data.result) {
+                this.getCooperators();
+            } else {
+                if (res.data.result === false) {
+                    $scope.error = res.data.message;
+                }
+            }
+        });
+    }
 }

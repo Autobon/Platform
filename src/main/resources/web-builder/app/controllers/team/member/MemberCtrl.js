@@ -95,7 +95,7 @@ export default class MemberCtrl extends Injector {
 
     toClose() {
         const {$scope, TeamService} = this.$injected;
-        if(!$scope.params.techId) {
+        if (!$scope.params.techId) {
             $scope.error = '请选择技师';
             return;
         }

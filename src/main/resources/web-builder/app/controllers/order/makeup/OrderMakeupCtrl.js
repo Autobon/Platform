@@ -1,5 +1,6 @@
 import {Injector} from 'ngES6';
 import angular from 'angular';
+import $ from 'jquery';
 
 export default class OrderMakeupCtrl extends Injector {
     static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'ProductService', 'OrderService', 'Settings'];
@@ -26,6 +27,8 @@ export default class OrderMakeupCtrl extends Injector {
                 $scope.error = res.data.message;
             }
         });
+        // $('.carousel').carousel();
+        // $('#myCarousel').carousel();
     }
 
     save() {

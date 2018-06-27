@@ -11,36 +11,46 @@ export default class MerchandiserService extends Injector {
 
     getDetail(id) {
         const {$http, Settings} = this.$injected;
-        return $http.get(Settings.domain + '/api/web/admin/team/' + id);
+        return $http.get(Settings.domain + '/api/web/merchandiser/' + id);
     }
 
     add(team) {
         const {$http, Settings} = this.$injected;
-        return $http.post(Settings.domain + '/api/web/admin/team', team);
+        return $http.post(Settings.domain + '/api/web/merchandiser/add', team);
     }
 
-    update(id, team) {
+    update(team) {
         const {$http, Settings} = this.$injected;
-        return $http.post(Settings.domain + '/api/web/admin/team/' + id, team);
+        return $http.post(Settings.domain + '/api/web/merchandiser/modify', team);
     }
 
-    deleteTeam(id) {
+    deleteMerchandiser(id) {
         const {$http, Settings} = this.$injected;
-        return $http.delete(Settings.domain + '/api/web/admin/team/' + id);
+        return $http.delete(Settings.domain + '/api/web/merchandiser/delete/' + id);
     }
 
-    getMembers(id) {
+    banMerchandiser(id) {
         const {$http, Settings} = this.$injected;
-        return $http.get(Settings.domain + '/api/web/admin/team/' + id + '/member');
+        return $http.post(Settings.domain + '/api/web/merchandiser/ban/' + id);
     }
 
-    addMember(id, techId) {
+    pickMerchandiser(id) {
         const {$http, Settings} = this.$injected;
-        return $http.post(Settings.domain + '/api/web/admin/team/' + id + '/member/' + techId);
+        return $http.post(Settings.domain + '/api/web/merchandiser/unban/' + id);
     }
 
-    deleteMember(id, techId) {
+    getMerchandisers(id) {
         const {$http, Settings} = this.$injected;
-        return $http.delete(Settings.domain + '/api/web/admin/team/' + id + '/member/' + techId);
+        return $http.get(Settings.domain + '/api/web/merchandiser/' + id + '/cooperator/list');
+    }
+
+    coopAddMerchandiser(mid, cid) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/merchandiser/' + mid + '/cooperator/' + cid);
+    }
+
+    coopDeleteMerchandiser(mid, cid) {
+        const {$http, Settings} = this.$injected;
+        return $http.delete(Settings.domain + '/api/web/merchandiser/' + mid + '/cooperator/' + cid);
     }
 }

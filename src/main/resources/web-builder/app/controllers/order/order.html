@@ -30,24 +30,59 @@
                     ng-options="key as value for (key, value) in Settings.orderStatus" style="width: 145px;">
             </select>
         </div>
-        <div class="form-group m-l-5 m-r-5">
-            <label class="radio-inline">
-                <input type="radio" name="paid" ng-model="filter.sort" value="id"> 按下单时间
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="paid" ng-model="filter.sort" value="orderTime"> 按预约时间
-            </label>
-        </div>
+        <button ng-if="!showMore" type="button" class="btn btn-link" ng-click="openMoreSearch()">展开更多</button>
+        <button ng-if="showMore" type="button" class="btn btn-link" ng-click="closeMoreSearch()">收起更多</button>
         <button type="submit" class="btn btn-primary" ng-click="getOrders(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
         <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
     <a ui-sref="console.order.new" class="pull-right btn-new">发布订单&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
     <a class="pull-right btn-new" style="cursor:pointer" ng-click="toExport();">导出Excel</a>
 </div>
+<div ng-if="showMore" style="float:left;margin-left:10px;margin-top:10px;">
+    <div class="form-group" style="float:left;">
+        <label style="float:left;line-height:40px;margin:0 4px;">下单开始时间:</label>
+        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 100px;">{{filter.addTime}}</div>
+            <div uib-dropdown-menu>
+                <datetimepicker ng-model="filter.addTime"
+                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD', minView: 'day', startView: 'year'}"
+                                before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" style="float:left;">
+        <label style="float:left;line-height:40px;margin:0 4px;">预约开始时间:</label>
+        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 100px;">{{filter.orderTime}}</div>
+            <div uib-dropdown-menu>
+                <datetimepicker ng-model="filter.orderTime"
+                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD', minView: 'day', startView: 'year'}"
+                                before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" style="float:left;">
+        <label for="orderStatus">商户:</label>
+        <span ng-dropdown-multiselect="" options="coops" selected-model="selected"
+              extra-settings="searchSelectAllSettings">
+            </span>
+    </div>
+    <div class="form-group" style="float:left;">
+        <label for="orderStatus">vin:</label>
+        <input type="text" class="form-control" id="vin" ng-model="filter.vin"
+               placeholder="车架号" style="width: 120px;display: inline-block;">
+    </div>
+    <div class="form-group" style="float:left;">
+        <label class="radio-inline">
+            <input type="radio" name="paid" ng-model="filter.sort" value="id"> 按下单时间
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="paid" ng-model="filter.sort" value="agreed_start_time"> 按预约时间
+        </label>
+    </div>
+</div>
 <div ng-if="showExport == 1" style="float:right;margin-right:10px;margin-top:10px;">
     <div class="form-group" style="float:left;">
         <label style="float:left;line-height:40px;margin:0 4px;">开始时间:</label>
-        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{filter.startDate}}</div>
+        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.startDate}}</div>
             <div uib-dropdown-menu>
                 <datetimepicker ng-model="filter.startDate"
                                 data-datetimepicker-config="{modelType: 'YYYY-MM-DD hh:mm:ss', minView: 'minute', startView: 'year'}"
@@ -57,7 +92,7 @@
     </div>
     <div class="form-group" style="float:left;">
         <label style="float:left;line-height:40px;margin:0 4px;">结束时间:</label>
-        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 200px;">{{filter.endDate}}</div>
+        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.endDate}}</div>
             <div uib-dropdown-menu>
                 <datetimepicker ng-model="filter.endDate"
                                 data-datetimepicker-config="{modelType: 'YYYY-MM-DD hh:mm:ss', minView: 'minute', startView: 'year'}"
@@ -114,7 +149,7 @@
                             <i class="fa fa-list"></i>&nbsp;详情</a>
                             <a ui-sref="console.order.modify({id: order.id})" class="btn btn-xs btn-default">
                                 <i class="fa fa-list"></i>&nbsp;修改</a>
-                            <a ng-if="order.status != 'CANCELED' && order.productStatus != 1" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.makeup({id: order.id})" class="btn btn-xs btn-default">
+                            <a ng-if="order.status != 'CANCELED'" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.makeup({id: order.id})" class="btn btn-xs btn-default">
                                 <i class="fa fa-paper-plane-o"></i>&nbsp;回填
                             </a>
                             <a ng-if="order.status == 'CREATED_TO_APPOINT' || order.reassignmentStatus == 1" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.dispatch({id: order.id})" class="btn btn-xs btn-default">

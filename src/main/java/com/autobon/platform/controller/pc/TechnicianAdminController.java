@@ -536,13 +536,16 @@ public class TechnicianAdminController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/technician/ban/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/technician/ban/{id}", method = RequestMethod.POST)
     public JsonMessage technicianBan(@PathVariable("id") int id){
 
         Technician technician = technicianService.findById(id);
 
         if(technician == null){
             return new JsonMessage(false, "技师不存在");
+        }
+        if(technician.getStatus().getStatusCode() == 0){
+            return new JsonMessage(false, "商户未认证，请先认证再操作");
         }
 
         technician.setStatus(Technician.Status.BANNED);
@@ -556,13 +559,16 @@ public class TechnicianAdminController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/technician/unban/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/technician/unban/{id}", method = RequestMethod.POST)
     public JsonMessage technicianUnBan(@PathVariable("id") int id){
 
         Technician technician = technicianService.findById(id);
 
         if(technician == null){
             return new JsonMessage(false, "技师不存在");
+        }
+        if(technician.getStatus().getStatusCode() == 0){
+            return new JsonMessage(false, "商户未认证，不能解禁");
         }
 
         technician.setStatus(Technician.Status.VERIFIED);

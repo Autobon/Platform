@@ -447,6 +447,7 @@ public class MerchantController {
             order.setContactPhone(coopAccount.getPhone());
             order.setStatus(pushToAll!= true ?Order.Status.CREATED_TO_APPOINT:Order.Status.NEWLY_CREATED);
             order.setType(s);
+            order.setOrderType(Integer.parseInt(s));
             orderService.save(order);
 
             if(pushToAll){

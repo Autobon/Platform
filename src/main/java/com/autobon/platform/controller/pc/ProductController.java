@@ -154,7 +154,7 @@ public class ProductController {
                 ProjectShow projectShow = new ProjectShow();
                 projectShow.setProjectId(projectId);
                 projectShow.setProjectName(projectMap.get(projectId));
-                List<ConstructionPosition> list = constructionProjectService.findByProject(projectId);
+                List<ConstructionPosition> list = constructionProjectService.findByProject2(projectId);
                 List<OrderProductShow> orderProductShows = new ArrayList<>();
                 for(ConstructionPosition constructionPosition: list) {
                     List<ProductShow> products1  = new ArrayList<>();
@@ -201,7 +201,7 @@ public class ProductController {
                 ProjectShow projectShow = new ProjectShow();
                 projectShow.setProjectId(projectId);
                 projectShow.setProjectName(projectMap.get(projectId));
-                List<ConstructionPosition> list = constructionProjectService.findByProject(projectId);
+                List<ConstructionPosition> list = constructionProjectService.findByProject2(projectId);
                 List<OrderProductShow> orderProductShows = new ArrayList<>();
                 for (ConstructionPosition constructionPosition : list) {
                     List<ProductShow> products1 = new ArrayList<>();

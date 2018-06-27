@@ -2,12 +2,12 @@ import {Injector} from 'ngES6';
 import angular from 'angular';
 
 export default class OrderCtrl extends Injector {
-    static $inject   = ['$scope', 'Settings', 'OrderService', 'TechnicianService'];
+    static $inject   = ['$scope', 'Settings', 'OrderService', 'TechnicianService', 'CooperatorService'];
     static $template = require('./order.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, Settings} = this.$injected;
+        const {$scope, Settings, CooperatorService} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.Settings   = Settings;
         $scope.filter     = {sort: 'id'};
@@ -18,7 +18,39 @@ export default class OrderCtrl extends Injector {
         $scope.orders = [];
 
         $scope.chooseIds = [];
+
+        $scope.coops = [];
+        $scope.selected = [];
+        $scope.showMore = false;
+        CooperatorService.search({statusCode: 1}, 1, 1000).then(res => {
+            if (res.data && res.data.result) {
+                let datas = res.data.data.list;
+                if (datas.length > 0) {
+                    datas.forEach(item =>{
+                        $scope.coops.push({id: item.id, fullname: item.fullname})
+                    })
+                }
+            }
+        });
+        $scope.searchSelectAllSettings = {
+            displayProp: 'fullname',
+            enableSearch: true,
+            showSelectAll: true,
+            keyboardControls: true,
+            selectedToTop: true,
+            scrollable: true
+        };
+
         this.getOrders();
+    }
+
+    openMoreSearch() {
+        const {$scope} = this.$injected;
+        $scope.showMore = true;
+    }
+    closeMoreSearch() {
+        const {$scope} = this.$injected;
+        $scope.showMore = false;
     }
 
     allSelect(flag) {
@@ -45,14 +77,26 @@ export default class OrderCtrl extends Injector {
     getOrders(resetPageNo) {
         const {$scope, OrderService} = this.$injected;
         const {page, pageSize} = $scope.pagination;
+        if ($scope.selected.length > 0) {
+            let ids = [];
+            $scope.selected.forEach(item =>{
+                ids.push(item.id);
+            });
+            $scope.filter.coopIds = ids;
+        }
         OrderService.search($scope.filter, resetPageNo ? 1 : page, pageSize).then(res => {
             if (res.data && res.data.result) {
-                $scope.orders = res.data.data.list;
+                $scope.orders = res.data.data.content;
                 $scope.filter.toSelectAll = true;
                 let datatime = new Date().getTime();
                 for (let i = 0; i < $scope.orders.length; i++) {
-                    if ($scope.orders[i].agreedStartTime - datatime < 3600000 && $scope.orders[i].agreedStartTime - datatime > 0) {
-                        $scope.orders[i].style = {'background-color':'#ec9104'};
+                    if($scope.orders[i].status === 'NEWLY_CREATED' || $scope.orders[i].status === 'CREATED_TO_APPOINT') {
+                        if ($scope.orders[i].agreedStartTime - datatime < 300000 && $scope.orders[i].agreedStartTime - datatime > 0) {
+                            $scope.orders[i].style = {'background-color':'#ec9104'};
+                        }
+                        if ($scope.orders[i].agreedStartTime - datatime < 0) {
+                            $scope.orders[i].style = {'background-color':'#FF0000'};
+                        }
                     }
                     $scope.orders[i].selected = this.isSelected($scope.orders[i].id);
                     if ($scope.chooseIds.indexOf($scope.orders[i].id) < 0) {
@@ -97,6 +141,7 @@ export default class OrderCtrl extends Injector {
     reset() {
         const {$scope} = this.$injected;
         $scope.filter = {};
+        $scope.selected = [];
         // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 
@@ -156,4 +201,5 @@ export default class OrderCtrl extends Injector {
                 + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech);
         }
     }
+
 }

@@ -56,6 +56,20 @@ public class ConstructionProjectService {
         return null;
     }
 
+    public List<ConstructionPosition> findByProject2(int pid){
+        ConstructionProject constructionProject =  constructionProjectRepository.getOne(pid);
+        if(constructionProject!= null){
+            String idsStr = constructionProject.getIds();
+            String[] ids = idsStr.split(",");
+            List<Integer> idList = new ArrayList<>();
+            for(int i=0; i<ids.length;i++){
+                idList.add(Integer.valueOf(ids[i]));
+            }
+            return constructionPositionRepository.getByIds2(idList,"," + idsStr + ',');
+        }
+        return null;
+    }
+
 
     public Map<Integer,String> getProject(){
         Map<Integer, String> map = new HashMap<>();

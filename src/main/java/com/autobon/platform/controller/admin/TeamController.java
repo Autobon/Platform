@@ -118,7 +118,7 @@ public class TeamController {
         if(technician == null) {
             return new JsonResult(false, "技师不存在");
         }
-        if(technician.getTeamId() == id){
+        if(technician.getTeamId() != null && technician.getTeamId() == id){
             return new JsonResult(false, "技师已在该团队，请勿重复添加");
         }
         technician.setTeamId(id);

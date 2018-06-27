@@ -43,15 +43,9 @@
             </div>
         </div>
 
-        <div class="row" style="margin-right: -484px;">
-            <div ng-repeat="photo in photoList">
-                <img ng-if="photo" ng-src="{{photo}}" style="height: 560px;width: 600px;" image-modal class="img-thumbnail pull-left m-r-10">
-            </div>
-        </div>
-
-        <div class="form-group" style="width: 40%;" ng-repeat="project in product.project">
-            <div class="row">
-                <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group" style="width: 40%;" ng-repeat="project in product.project">
                     <div class="main-principal">
                         <form class="form-inline form-border">
                             <div class="mt10">
@@ -80,7 +74,42 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <!--<div id="myCarousel" class="carousel slide" data-ride="carousel">-->
+                    <!--&lt;!&ndash; 轮播（Carousel）指标 &ndash;&gt;-->
+                    <!--<ol class="carousel-indicators">-->
+                        <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
+                        <!--<li data-target="#myCarousel" data-slide-to="1"></li>-->
+                        <!--<li data-target="#myCarousel" data-slide-to="2"></li>-->
+                    <!--</ol>-->
+                    <!--&lt;!&ndash; 轮播（Carousel）项目 &ndash;&gt;-->
+                    <!--<div class="carousel-inner">-->
+                        <!--<div class="item active">-->
+                            <!--<img src="/uploads/order/photo/20180615173955992780.jpeg" alt="First slide">-->
+                        <!--</div>-->
+                        <!--<div class="item">-->
+                            <!--<img src="/uploads/order/photo/20180615173919974603.jpeg" alt="Second slide">-->
+                        <!--</div>-->
+                        <!--<div class="item">-->
+                            <!--<img src="/uploads/order/photo/20180615175332230701.jpeg" alt="Third slide">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash; 轮播（Carousel）导航 &ndash;&gt;-->
+                    <!--<a class="carousel-control left" href="#myCarousel"-->
+                       <!--data-slide="prev"><span class="fa fa-chevron-left m-t-50"></span></a>-->
+                    <!--<a class="carousel-control right" href="#myCarousel"-->
+                       <!--data-slide="next"><span class="fa fa-chevron-right"></span></a>-->
+                <!--</div>-->
+                <!--<div ng-repeat="photo in photoList">-->
+                <!--<img ng-if="photo" ng-src="{{photo}}" style="height: 560px;width: 600px;" image-modal class="img-responsive pull-left m-r-10">-->
+                <!--</div>-->
+                <div id="myPicture">
+                    <img ng-src="/uploads/order/photo/20180615173955992780.jpeg" style="height: 560px;width: 600px;" image-modal class="img-responsive pull-left m-r-10">
+                </div>
+            </div>
         </div>
+
+
         <div class="pull-right modify-btn">
             <button class="mr50" ng-click="save();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
         </div>
@@ -89,4 +118,25 @@
 
 
 
+<script type="text/javascript">
+    var oDiv = document.getElementById("myPicture");
+    oDiv.onmousedown=function(ev)
+    {
+        var oEvent = ev;
+        var disX = oEvent.clientX - oDiv.offsetLeft;
+        var disY = oEvent.clientY - oDiv.offsetTop;
+        document.onmousemove=function (ev)
+        {
+            oEvent = ev;
+            oDiv.style.left = oEvent.clientX -disX+"px";
+            oDiv.style.top = oEvent.clientY -disY+"px";
+        }
+        document.onmouseup=function()
+        {
+            document.onmousemove=null;
+            document.onmouseup=null;
+        }
 
+    }
+
+</script>

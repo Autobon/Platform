@@ -538,13 +538,16 @@ public class CooperatorController {
 
 
 
-    @RequestMapping(value = "/coop/ban/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/coop/ban/{id}", method = RequestMethod.POST)
     public JsonMessage coopBan(@PathVariable("id") int id){
 
         Cooperator cooperator = cooperatorService.get(id);
 
         if(cooperator == null){
             return new JsonMessage(false, "商户不存在");
+        }
+        if(cooperator.getStatusCode() == 0){
+            return new JsonMessage(false, "商户未认证，请先认证再操作");
         }
 
         cooperator.setStatusCode(3);
@@ -564,13 +567,16 @@ public class CooperatorController {
     }
 
 
-    @RequestMapping(value = "/coop/unban/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/coop/unban/{id}", method = RequestMethod.POST)
     public JsonMessage coopUnBan(@PathVariable("id") int id){
 
         Cooperator cooperator = cooperatorService.get(id);
 
         if(cooperator == null){
             return new JsonMessage(false, "商户不存在");
+        }
+        if(cooperator.getStatusCode() == 0){
+            return new JsonMessage(false, "商户未认证，不能解禁");
         }
 
         cooperator.setStatusCode(1);

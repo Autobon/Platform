@@ -13,6 +13,7 @@ import 'angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js';
 import 'angular-bootstrap-datetimepicker/src/css/datetimepicker.css';
 import 'angular-chart.js/dist/angular-chart.css';
 import './styles/common.scss';
+import 'angularjs-dropdown-multiselect';
 
 import directives from './directives';
 import controllers, {templateCache} from './controllers';
@@ -23,8 +24,8 @@ import config from './config';
 moment.locale('zh-cn');
 export const App = 'app';
 
-const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
-                'chart.js', 'ui.bootstrap.datetimepicker',
+const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap', 'treeControl',
+                'chart.js', 'ui.bootstrap.datetimepicker', 'angularjs-dropdown-multiselect',
                 directives, services, controllers, filters])
             .provider('template', function() {
                 this.$get = () => {return templateCache;};
@@ -166,6 +167,10 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap',
                         '1': '部分扣款',
                         '2': '已扣款',
                         '3': '已被取消',
+                    },
+                    merchandiserStatus: {
+                        'VERIFIED': '可用',
+                        'BANNED': '禁用',
                     },
                 };
             }])

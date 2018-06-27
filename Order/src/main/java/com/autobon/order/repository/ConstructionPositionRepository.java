@@ -16,5 +16,7 @@ public interface ConstructionPositionRepository extends JpaRepository<Constructi
     @Query("select p from ConstructionPosition p where p.id in ?1 order by p.id desc")
     List<ConstructionPosition> getByIds(List<Integer> ids);
 
+    @Query("select p from ConstructionPosition p where p.id in ?1 order  by INSTR(?2,CONCAT(',',id,','))")
+    List<ConstructionPosition> getByIds2(List<Integer> ids, String idsStr);
 
 }

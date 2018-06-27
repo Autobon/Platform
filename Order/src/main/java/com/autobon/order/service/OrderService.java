@@ -251,32 +251,47 @@ public class OrderService {
     }
 
     public Page<Order> find(String orderNum, String creatorName, String contactPhone,
-                            List<Integer> orderType, Integer statusCode, String sort, Sort.Direction direction, int page, int pageSize) {
-
-
+                            List<Integer> orderType, Integer statusCode, String sort, Sort.Direction direction, Integer page, Integer pageSize) {
         if(orderNum != null){
             orderNum = "%"+ orderNum+"%";
         }
-
         if(creatorName != null){
             creatorName = "%"+ creatorName+"%";
         }
-
         if(contactPhone != null){
             contactPhone = "%"+ contactPhone+"%";
         }
-
         String type = null;
-
         if(orderType != null && orderType.size()>0){
             type = "%" +String.valueOf(orderType.get(0)) +"%";
-
         }
-
-
-
         return repository.findOrder(orderNum, creatorName, contactPhone, type,
                 statusCode, new PageRequest(page - 1, pageSize, direction, sort));
+    }
+    public Page<Order> find2(String orderNum, String creatorName, String contactPhone,
+                            List<Integer> orderType, Integer statusCode, List<String> coopIds,
+                             String vin, String addTime, String orderTime, String sort, int page, int pageSize) {
+        if(vin != null){
+            vin = "%"+ vin+"%";
+        }
+        if(orderNum != null){
+            orderNum = "%"+ orderNum+"%";
+        }
+        if(creatorName != null){
+            creatorName = "%"+ creatorName+"%";
+        }
+        if(contactPhone != null){
+            contactPhone = "%"+ contactPhone+"%";
+        }
+        String type = null;
+        if(orderType != null && orderType.size()>0){
+            type = "%" +String.valueOf(orderType.get(0)) +"%";
+        }
+        List<Order> list =  repository.findOrder2(orderNum, creatorName, contactPhone, type,
+                statusCode, coopIds, vin, addTime, orderTime, sort, (page - 1) * pageSize, pageSize);
+        int count = repository.findOrder2Count(orderNum, creatorName, contactPhone, type,
+                statusCode, coopIds, vin, addTime, orderTime);
+        return new PageImpl<>(list, new PageRequest(page-1,pageSize), count);
     }
 
 
@@ -303,6 +318,33 @@ public class OrderService {
         }
         return repository.findOrder(orderNum, creatorName, contactPhone, type,
                 statusCode, tech , new PageRequest(page - 1, pageSize, direction, sort));
+    }
+
+    public Page<Order> findOrder2(String orderNum, String creatorName, String contactPhone, List<Integer> tech,
+                                 List<Integer> orderType, Integer statusCode, List<String> coopIds,
+                                  String vin, String addTime, String orderTime, String sort, int page, int pageSize) {
+        if(vin != null){
+            vin = "%"+ vin+"%";
+        }
+        if(orderNum != null){
+            orderNum = "%"+ orderNum+"%";
+        }
+        if(creatorName != null){
+            creatorName = "%"+ creatorName+"%";
+        }
+        if(contactPhone != null){
+            contactPhone = "%"+ contactPhone+"%";
+        }
+        String type = null;
+        if(orderType != null && orderType.size()>0){
+            type = "%" +String.valueOf(orderType.get(0)) +"%";
+
+        }
+        List<Order> list =  repository.findOrder2(orderNum, creatorName, contactPhone, type,
+                statusCode, coopIds, vin, addTime, orderTime, tech, sort, (page - 1) * pageSize, pageSize);
+        int count =  repository.findOrder2Count(orderNum, creatorName, contactPhone, type,
+                statusCode, coopIds, vin, addTime, orderTime, tech);
+        return new PageImpl<>(list, new PageRequest(page-1,pageSize), count);
     }
 
     public Page<Order> findExpired(Date signInBefore, Date finishBefore,  int page, int pageSize){
@@ -445,7 +487,7 @@ public class OrderService {
     public Order saveRemark(int orderId, String remark){
         Order order = repository.findOrderById(orderId);
 
-        order.setRemark(remark == null ? order.getRemark() : remark);
+        order.setTechnicianRemark(remark == null ? order.getTechnicianRemark() : remark);
         return order;
     }
 }

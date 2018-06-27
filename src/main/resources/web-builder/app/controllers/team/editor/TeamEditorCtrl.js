@@ -11,7 +11,7 @@ export default class TeamEditorCtrl extends Injector {
         this.attachMethodsTo($scope);
         $scope.chooseIds = [];
         $scope.techs = [];
-        TechnicianService.search({pageSize:100}).then(res => {
+        TechnicianService.search(null, 1, 1000).then(res => {
             if (res.data && res.data.result) {
                 $scope.techs = res.data.data.list;
             }

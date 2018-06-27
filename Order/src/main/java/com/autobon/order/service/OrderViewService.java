@@ -66,16 +66,16 @@ public class OrderViewService {
         pageSize = pageSize>20?20:pageSize;
 
         Sort.Direction direction = Sort.Direction.DESC;
-        if(order == 2){
+        if(order != null && order == 2){
             direction = Sort.Direction.ASC;
         }else{
             direction = Sort.Direction.DESC;
         }
 
         Page<OrderView> page;
-        if(orderType == 1){    //按预约开始时间排序
+        if(orderType != null && orderType == 1){    //按预约开始时间排序
             page = orderViewRepository.findByStatusCode(statusCode, workType, new PageRequest(currentPage-1,pageSize, new Sort(direction, "agreedStartTime")));
-        }else if(orderType == 2){    //按距离排序
+        }else if(orderType != null && orderType == 2){    //按距离排序
             List<OrderView> list;
             if(order == 2){    //2:顺序
                 list = orderViewRepository.findByStatusCode2(statusCode, lat, lng, (currentPage - 1) * pageSize, pageSize);

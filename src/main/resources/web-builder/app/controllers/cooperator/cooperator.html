@@ -68,6 +68,8 @@
                     <td><a ui-sref="console.cooperator.detail({id: c.id})" class="btn btn-xs btn-default"><i class="fa fa-list"></i>&nbsp;详情</a>
                         <a ui-sref="console.cooperator.edit({id: c.id})" class="btn btn-xs btn-default"><i class="fa fa-edit"></i>&nbsp;编辑</a>
                         <a ui-sref="console.cooperator.account({id: c.id})" class="btn btn-xs btn-default"><i class="fa fa-users"></i>&nbsp;业务员</a>
+                        <button ng-show="c.statusCode==1" ng-click="banCoop(c.id)" class="btn btn-xs btn-default"><i class="fa fa-ban"></i>&nbsp;禁用</button>
+                        <button ng-show="c.statusCode==3" ng-click="pickCoop(c.id)" class="btn btn-xs btn-default"><i class="fa fa-check-square-o"></i>&nbsp;启用</button>
                     </td>
                 </tr>
                 </tbody>

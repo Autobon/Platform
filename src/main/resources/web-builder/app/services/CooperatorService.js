@@ -55,4 +55,14 @@ export default class CooperatorService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/cooperator/' + params.coopId + '/sale/' + params.saleId, {newCoopId: params.newCoopId});
     }
+
+    banCoop(id) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/cooperator/coop/ban/' + id);
+    }
+
+    pickCoop(id) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/cooperator/coop/unban/' + id);
+    }
 }

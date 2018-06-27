@@ -8,10 +8,7 @@ import com.autobon.shared.JsonPage;
 import com.autobon.shared.JsonResult;
 import com.autobon.technician.entity.Technician;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -41,10 +38,24 @@ public class MerchandiserController {
                 phone, name, status, page, pageSize)));
     }
 
+    /**
+     * 查询跟单员详情
+     *
+     * @param id
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/{id:\\d+}", method = RequestMethod.GET)
+    public JsonResult getDetail(@PathVariable("id") int id,
+                                    HttpServletRequest request) {
+
+        Merchandiser merchandiser = merchandiserService.get(id);
+        return new JsonResult(true, merchandiser);
+    }
 
 
-    @RequestMapping(value = "/cooperator/list", method = RequestMethod.GET)
-    public JsonResult getCooperator(@RequestParam("id") int id) {
+    @RequestMapping(value = "/{id:\\d+}/cooperator/list", method = RequestMethod.GET)
+    public JsonResult getCooperator(@PathVariable("id") int id) {
 
 
 
@@ -78,10 +89,10 @@ public class MerchandiserController {
         return new JsonMessage(true, "新增成功");
     }
 
-    @RequestMapping(value = "/modify", method = RequestMethod.PUT)
+    @RequestMapping(value = "/modify", method = RequestMethod.POST)
     public JsonMessage update(@RequestParam("id") int id,
  //                             @RequestParam("phone") String phone,
-                              @RequestParam("password") String password,
+                              @RequestParam(value = "password", required = false) String password,
                               @RequestParam("name") String name,
                               @RequestParam("gender") String gender){
 
@@ -110,16 +121,16 @@ public class MerchandiserController {
     }
 
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public JsonMessage delete(@RequestParam("id") int id){
+    @RequestMapping(value = "/delete/{id:\\d+}", method = RequestMethod.DELETE)
+    public JsonMessage delete(@PathVariable("id") int id){
 
         merchandiserService.delete(id);
         return new JsonMessage(true, "删除成功");
     }
 
 
-    @RequestMapping(value = "/ban", method = RequestMethod.PUT)
-    public JsonMessage ban(@RequestParam("id") int id){
+    @RequestMapping(value = "/ban/{id:\\d+}", method = RequestMethod.POST)
+    public JsonMessage ban(@PathVariable("id") int id){
 
         Merchandiser merchandiser = merchandiserService.get(id);
 
@@ -133,8 +144,8 @@ public class MerchandiserController {
         return new JsonMessage(true, "禁用成功");
     }
 
-    @RequestMapping(value = "/unban", method = RequestMethod.PUT)
-    public JsonMessage unban(@RequestParam("id") int id){
+    @RequestMapping(value = "/unban/{id:\\d+}", method = RequestMethod.POST)
+    public JsonMessage unban(@PathVariable("id") int id){
 
         Merchandiser merchandiser = merchandiserService.get(id);
 
@@ -149,18 +160,18 @@ public class MerchandiserController {
     }
 
 
-    @RequestMapping(value = "/cooperator", method = RequestMethod.POST)
-    public JsonMessage createCooperator(@RequestParam("mid")  int mid,
-                              @RequestParam("cid")  int cid){
+    @RequestMapping(value = "/{mid:\\d+}/cooperator/{cid:\\d+}", method = RequestMethod.POST)
+    public JsonMessage createCooperator(@PathVariable("mid") int mid,
+                                        @PathVariable("cid") int cid){
 
 
         merchandiserService.createMerchandiserCooperator(mid, cid);
         return new JsonMessage(true, "新增成功");
     }
 
-    @RequestMapping(value = "/cooperator", method = RequestMethod.DELETE)
-    public JsonMessage deleteCooperator(@RequestParam("mid")  int mid,
-                                        @RequestParam("cid")  int cid){
+    @RequestMapping(value = "/{mid:\\d+}/cooperator/{cid:\\d+}", method = RequestMethod.DELETE)
+    public JsonMessage deleteCooperator(@PathVariable("mid")  int mid,
+                                        @PathVariable("cid")  int cid){
 
 
 

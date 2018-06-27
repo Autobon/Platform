@@ -1,5 +1,7 @@
 import {Injector} from 'ngES6';
 import angular from 'angular';
+import '../../../css/tree-control-attribute.css';
+import '../../../css/tree-control.css';
 
 export default class EditorRoleCtrl extends Injector {
     static $inject   = ['$scope', '$state', '$stateParams', 'StudyService', 'AccountService'];
@@ -45,6 +47,43 @@ export default class EditorRoleCtrl extends Injector {
                 position : {lng: null, lat: null},
             };
         }
+        $scope.treeOptions = {
+            nodeChildren: "children",
+            dirSelectable: true,
+            injectClasses: {
+                ul: "a1",
+                li: "a2",
+                liSelected: "a7",
+                iExpanded: "a3",
+                iCollapsed: "a4",
+                iLeaf: "a5",
+                label: "a6",
+                labelSelected: "a8"
+            }
+        };
+        $scope.names = ['Homer', 'Marge', 'Bart', 'Lisa', 'Mo'];
+        $scope.treedata = this.createSubTree(2, 4, "");
+        $scope.buttonClick = function($event, node) {
+            $scope.lastClicked = node;
+            $event.stopPropagation();
+        }
+    }
+
+    showSelected(sel) {
+        const {$scope} = this.$injected;
+        $scope.selectedNode = sel;
+    };
+
+    createSubTree(level, width, prefix) {
+        const {$scope} = this.$injected;
+        if (level > 0) {
+            var res = [];
+            for (var i=1; i <= width; i++)
+                res.push({ "label" : "Node " + prefix + i, "id" : "id"+prefix + i, "i": i, "children": this.createSubTree(level-1, width, prefix + i +"."), "name": $scope.names[i%$scope.names.length] });
+            return res;
+        }
+        else
+            return [];
     }
 
     onCheckChange(id, flag) {
@@ -57,6 +96,15 @@ export default class EditorRoleCtrl extends Injector {
         } else {
             $scope.chooseIds = $scope.chooseIds.filter(items => items !== id);
             console.log($scope.chooseIds);
+        }
+    }
+
+    onCheckChange(node, flag) {
+        console.log(node.children.length);
+        if (node.children.length > 0) {
+            node.children.forEach(item =>{
+                item.selected = flag;
+            })
         }
     }
 

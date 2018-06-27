@@ -263,6 +263,16 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             controller: 'MerchandiserCtrl',
             template  : templateCache.MerchandiserCtrl,
         })
+        .state('console.merchandiser.new', {
+            url       : '/new',
+            controller: 'MerchandiserEditorCtrl',
+            template  : templateCache.MerchandiserEditorCtrl,
+        })
+        .state('console.merchandiser.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'MerchandiserEditorCtrl',
+            template  : templateCache.MerchandiserEditorCtrl,
+        })
         ;
 }
 

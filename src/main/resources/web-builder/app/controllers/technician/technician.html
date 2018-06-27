@@ -54,6 +54,8 @@
                         <i class="fa fa-list"></i>&nbsp;详情</a>
                         <a ui-sref="console.technician.edit({id: t.id})" class="btn btn-xs btn-default">
                         <i class="fa fa-list"></i>&nbsp;编辑</a>
+                        <button ng-show="t.status=='VERIFIED'" ng-click="banTech(t.id)" class="btn btn-xs btn-default"><i class="fa fa-ban"></i>&nbsp;禁用</button>
+                        <button ng-show="t.status=='BANNED'" ng-click="pickTech(t.id)" class="btn btn-xs btn-default"><i class="fa fa-check-square-o"></i>&nbsp;启用</button>
                     </td>
 
                 </tr>

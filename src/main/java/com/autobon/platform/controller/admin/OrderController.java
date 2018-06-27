@@ -69,9 +69,13 @@ public class OrderController {
             @RequestParam(value = "orderType", required = false) Integer orderType,
             @RequestParam(value = "orderStatus", required = false) Order.Status orderStatus,
             @RequestParam(value = "tech", required = false) String tech,
+            @RequestParam(value = "coopIds", required = false) List<String> coopIds,
+            @RequestParam(value = "vin", required = false) String vin,
+            @RequestParam(value = "addTime", required = false) String addTime,
+            @RequestParam(value = "orderTime", required = false) String orderTime,
             @RequestParam(value = "sort", defaultValue = "id") String sort,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         String creatorName = null;
         String contactPhone = null;
         List<Integer> types = null;
@@ -94,14 +98,14 @@ public class OrderController {
         if(tech != null){
             List<Integer> ids = technicianService.find(tech);
             return new JsonMessage(true, "", "",
-                    new JsonPage<>(orderService.findOrder(orderNum, creatorName, contactPhone,
-                            ids, types, statusCode, sort, Sort.Direction.DESC, page, pageSize)));
+                    orderService.findOrder2(orderNum, creatorName, contactPhone,
+                            ids, types, statusCode, coopIds, vin, addTime, orderTime, sort, page, pageSize));
         }
 
 
         return new JsonMessage(true, "", "",
-                new JsonPage<>(orderService.find(orderNum, creatorName, contactPhone,
-                        types, statusCode, sort, Sort.Direction.DESC, page, pageSize)));
+                orderService.find2(orderNum, creatorName, contactPhone,
+                        types, statusCode, coopIds, vin, addTime, orderTime, sort, page, pageSize));
     }
 
     @RequestMapping(value = "/{orderNum:\\d+.*}", method = RequestMethod.GET)

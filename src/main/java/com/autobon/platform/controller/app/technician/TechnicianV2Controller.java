@@ -10,6 +10,7 @@ import com.autobon.platform.listener.Event;
 import com.autobon.platform.listener.OrderEventListener;
 import com.autobon.platform.listener.TechnicianEventListener;
 import com.autobon.shared.*;
+import com.autobon.study.service.StudyDataService;
 import com.autobon.technician.entity.*;
 import com.autobon.technician.service.*;
 import com.autobon.technician.vo.*;
@@ -96,6 +97,9 @@ public class TechnicianV2Controller {
 
     @Autowired
     TeamService teamService;
+
+    @Autowired
+    StudyDataService studyDataService;
 
     @Value("${com.autobon.gm-path}") String gmPath;
     @Value("${com.autobon.uploadPath}") String uploadPath;
@@ -738,6 +742,37 @@ public class TechnicianV2Controller {
         }
     }
 
+    /**
+     * 查询技师订单
+     * @param status 1 所有订单  2 未完成  3 已完成
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/v2/order/{techId:\\d+}/tech", method = RequestMethod.GET)
+    public JsonResult getOrders(@PathVariable("techId") Integer techId,
+            @RequestParam(value = "status", defaultValue = "1") Integer status,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+            HttpServletRequest request) {
+        try{
+            Technician technician = (Technician) request.getAttribute("user");
+            if(technician == null){
+                return new JsonResult(false, "登陆过期");
+            }
+            Technician t = technicianService.get(techId);
+            if(t == null){
+                return new JsonResult(false, "技师不存在");
+            }
+            Page<OrderView> orders;
+            orders = orderViewService.find(t.getId(), status, page, pageSize);
+            return new JsonResult(true, orders);
+        }catch (Exception e){
+            return new JsonResult(false, e.getMessage());
+        }
+    }
+
 
     /**
      * 查询作为合作技师订单
@@ -1258,10 +1293,10 @@ public class TechnicianV2Controller {
     @RequestMapping(value = "/v2/order/listNew", method = RequestMethod.GET)
     public JsonResult getNewCreateOrder(
             @RequestParam(value = "workType",required = false) String workType,
-            @RequestParam(value = "orderType",required = false) int orderType,
+            @RequestParam(value = "orderType",required = false) Integer orderType,
             @RequestParam(value = "latitude",required = false) String latitude,
             @RequestParam(value = "longitude",required = false) String longitude,
-            @RequestParam(value = "order",required = false) int order,
+            @RequestParam(value = "order",required = false) Integer order,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
 
@@ -1454,29 +1489,22 @@ public class TechnicianV2Controller {
     /**
      * 查询团队
      *
-     * @param name
-     * @param managerId
-     * @param managerName
-     * @param managerPhone
-     * @param page
-     * @param pageSize
      * @param request
      * @return
      */
     @RequestMapping(value = "/v2/team", method = RequestMethod.GET)
-    public JsonResult getTeam(@RequestParam(value = "name", required = false) String name,
-                              @RequestParam(value = "managerId",required = false) int managerId,
-                              @RequestParam(value = "managerName",required = false) String managerName,
-                              @RequestParam(value = "managerPhone",required = false) String managerPhone,
-                              @RequestParam(value = "page",  defaultValue = "1" )  int page,
-                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
-                              HttpServletRequest request) {
+    public JsonResult getTeam(HttpServletRequest request) {
 //
 //        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
 //        int coopId = coopAccount.getCooperatorId();
-
-        Page<Team> teams = teamService.find(name, managerId, managerName, managerPhone, page, pageSize);
-        return new JsonResult(true, teams);
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        Team team = teamService.get(tech.getTeamId());
+        List<Team> list = new ArrayList<>();
+        list.add(team);
+        return new JsonResult(true, list);
 
     }
 
@@ -1502,21 +1530,21 @@ public class TechnicianV2Controller {
      * 查询团队成员
      *
      * @param request
-     * @param tecId
+     * @param id
      * @param page
      * @param pageSize
      * @return
      */
-    @RequestMapping(value = "/v2/team/{tecId:\\d+}/member", method = RequestMethod.GET)
+    @RequestMapping(value = "/v2/team/{id:\\d+}/member", method = RequestMethod.GET)
     public JsonResult getTeamMember(HttpServletRequest request,
-                                    @PathVariable("tecId") int tecId,
+                                    @PathVariable("id") int id,
                                     @RequestParam(value = "page",  defaultValue = "1" )  int page,
                                     @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) {
 //
 //        CoopAccount coopAccount = (CoopAccount) request.getAttribute("user");
 //        int coopId = coopAccount.getCooperatorId();
 
-        Page<Technician> technicians = teamService.findTechByTeam(tecId, page, pageSize);
+        Page<Technician> technicians = teamService.findTechByTeam(id, page, pageSize);
         return new JsonResult(true, technicians);
 
 
@@ -1602,4 +1630,28 @@ public class TechnicianV2Controller {
         return new JsonResult(true, "删除成功");
     }
 
+
+    /**
+     *
+     * 查询资料列表
+     *
+     * @param fileName 资料名称
+     * @param type 资料类型
+     * @param page 当前页
+     * @param pageSize 每页条数
+     * @return
+     */
+    @RequestMapping(value = "/v2/study",method = RequestMethod.GET)
+    public JsonResult search(HttpServletRequest request,
+            @RequestParam(value = "fileName", required = false) String fileName,
+            @RequestParam(value = "type", required = false) Integer type,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+        Technician tech = (Technician) request.getAttribute("user");
+        if(tech == null){
+            return new JsonResult(false, "登陆过期");
+        }
+        return new JsonResult(true, new JsonPage<>(studyDataService.find(
+                fileName, type, page, pageSize)));
+    }
 }

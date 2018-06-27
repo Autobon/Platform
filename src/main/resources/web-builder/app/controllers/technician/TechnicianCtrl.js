@@ -37,4 +37,37 @@ export default class TechnicianCtrl extends Injector {
 
         window.location.href = url;
     }
+
+    banTech(id) {
+        const {$scope, TechnicianService} = this.$injected;
+        let message = confirm('确定禁用当前技师吗？');
+        if (message === false) {
+            return;
+        }
+        TechnicianService.banTech(id).then(res => {
+            if (res.data && res.data.result) {
+                this.getTechnicians();
+            } else {
+                if (res.data.result === false) {
+                    $scope.error = res.data.message;
+                }
+            }
+        });
+    }
+    pickTech(id) {
+        const {$scope, TechnicianService} = this.$injected;
+        let message = confirm('确定解禁当前技师吗？');
+        if (message === false) {
+            return;
+        }
+        TechnicianService.pickTech(id).then(res => {
+            if (res.data && res.data.result) {
+                this.getTechnicians();
+            } else {
+                if (res.data.result === false) {
+                    $scope.error = res.data.message;
+                }
+            }
+        });
+    }
 }
