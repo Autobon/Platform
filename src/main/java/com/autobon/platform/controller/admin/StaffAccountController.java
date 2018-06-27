@@ -370,14 +370,16 @@ public class StaffAccountController {
     /**
      * 新增
      * @param name
-     * @param menus
+     * @param functionCategoryIds
      * @param remark
      * @return
      */
     @Transactional
     @RequestMapping(value = "/role", method = RequestMethod.POST)
     public JsonMessage addRole(@RequestParam("name") String name,
-                               @RequestParam(value = "menus", required = false) String menus,
+                               @RequestParam(value = "functionCategoryIds", required = false) String functionCategoryIds,
+                               @RequestParam(value = "coopIds", required = false) String coopIds,
+                               @RequestParam(value = "menuIds", required = false) String menuIds,
                                @RequestParam(value = "remark", required = false) String remark){
         Role role = roleService.findByName(name);
         if(role != null){
@@ -385,18 +387,15 @@ public class StaffAccountController {
         }
         Role r = new Role();
         r.setName(name);
+        r.setFunctionCategoryIds(functionCategoryIds);
+        r.setCoopIds(coopIds);
+        r.setMenuIds(menuIds);
         r.setRemark(remark);
         Role res = roleService.save(r);
         if(res == null){
             return new JsonMessage(false, "", "新增失败");
         }
-        RoleMenu roleMenu = new RoleMenu();
-        roleMenu.setMenuId(menus);
-        roleMenu.setRoleId(res.getId());
-        RoleMenu res0 = roleMenuService.save(roleMenu);
-        if(res0 == null){
-            return new JsonMessage(false, "", "新增失败");
-        }
+
         return new JsonMessage(true, "", "", res);
     }
 
@@ -405,16 +404,18 @@ public class StaffAccountController {
      * 修改
      * @param id
      * @param name
-     * @param menus
+     * @param menuIds
      * @param remark
      * @return
      */
     @Transactional
     @RequestMapping(value = "/role/{id}", method = RequestMethod.POST)
     public JsonMessage updateRole(@PathVariable("id") int id,
-                               @RequestParam(value = "name", required = false) String name,
-                               @RequestParam(value = "menus", required = false) String menus,
-                               @RequestParam(value = "remark", required = false) String remark){
+                                  @RequestParam(value = "name", required = false) String name,
+                                  @RequestParam(value = "functionCategoryIds", required = false) String functionCategoryIds,
+                                  @RequestParam(value = "coopIds", required = false) String coopIds,
+                                  @RequestParam(value = "menuIds", required = false) String menuIds,
+                                  @RequestParam(value = "remark", required = false) String remark){
 
         Role role = roleService.findById(id);
         if(role == null){
@@ -424,26 +425,20 @@ public class StaffAccountController {
             return new JsonMessage(false, "", "不能修改超级管理员！");
         }
         Role r = roleService.findByName(name);
-        if(r != null && !name.equals(role.getName())){
+        if(r != null && r.getId() != role.getId()){
             return new JsonMessage(false, "", "角色名称已存在");
         }
 
         role.setName(name == null ? role.getName() : name);
         role.setRemark(remark == null ? role.getRemark() : remark);
+        role.setFunctionCategoryIds(functionCategoryIds == null ? role.getFunctionCategoryIds(): functionCategoryIds);
+        role.setCoopIds(coopIds == null ? role.getCoopIds() : coopIds);
+        role.setMenuIds(menuIds == null ? role.getMenuIds() : menuIds);
         Role res = roleService.save(role);
         if(res == null){
             return new JsonMessage(false, "", "修改失败");
         }
-        RoleMenu roleMenu = roleMenuService.findByRid(res.getId());
-        if(roleMenu == null){
-            roleMenu = new RoleMenu();
-        }
-        roleMenu.setMenuId(menus);
-        roleMenu.setRoleId(res.getId());
-        RoleMenu res0 = roleMenuService.save(roleMenu);
-        if(res0 == null){
-            return new JsonMessage(false, "", "修改失败");
-        }
+
         return new JsonMessage(true, "", "", res);
     }
 

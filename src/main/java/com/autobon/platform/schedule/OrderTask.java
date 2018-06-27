@@ -53,7 +53,7 @@ public class OrderTask {
             CoopAccount coopAccount = coopAccountRepository.findOne(order.getCreatorId());
             if (coopAccount != null && coopAccount.getPushId() != null) {
 
-                publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.REMIND36));
+                publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.REMIND12));
             }
 
 
