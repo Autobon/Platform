@@ -3,8 +3,10 @@ package com.autobon.platform.controller.admin;
 import com.autobon.shared.JsonMessage;
 import com.autobon.staff.entity.FunctionCategory;
 import com.autobon.staff.entity.Menu;
+import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.FunctionCategoryService;
 import com.autobon.staff.service.MenuService;
+import com.autobon.staff.service.RoleService;
 import com.autobon.staff.vo.MenuShow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,8 @@ public class RoleController {
     FunctionCategoryService functionCategoryService;
     @Autowired
     MenuService menuService;
+    @Autowired
+    RoleService roleService;
 
     @RequestMapping(value = "/function/category/menu/{menuId}", method = RequestMethod.GET)
     public JsonMessage menu(@PathVariable("menuId") int menuId) {
@@ -47,6 +52,16 @@ public class RoleController {
 
         return new JsonMessage(true, "", "",menuShowList);
     }
+
+
+    @RequestMapping(value = "/staff/role", method = RequestMethod.GET)
+    public JsonMessage role(HttpServletRequest request) {
+
+        Staff staff = (Staff) request.getAttribute("user");
+        
+        return new JsonMessage(true, "", "", roleService.findByUserId(staff.getId()));
+    }
+
 
 
 }
