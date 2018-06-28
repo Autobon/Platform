@@ -99,8 +99,8 @@ export default class EditorRoleCtrl extends Injector {
         }
     }
 
-    onCheckChange(node, flag) {
-        console.log(node.children.length);
+    onMenuChange(node, flag) {
+        console.log(node);
         if (node.children.length > 0) {
             node.children.forEach(item =>{
                 item.selected = flag;

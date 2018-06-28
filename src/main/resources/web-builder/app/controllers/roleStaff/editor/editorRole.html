@@ -16,7 +16,7 @@
                     {{m.name}}
                 </div>
                 <div treecontrol="" class="tree-classic" tree-model="treedata" on-selection="showSelected(node)">
-                    <input type="checkbox"  id="cbc"  ng-model="node.selected" ng-change="onCheckChange(node, node.selected)">label: {{node.label}} ({{node.id}})
+                    <input type="checkbox"  id="cbc"  ng-model="node.selected" ng-change="onMenuChange(node, node.selected)">label: {{node.label}} ({{node.id}})
                 </div>
             </div>
         </div>

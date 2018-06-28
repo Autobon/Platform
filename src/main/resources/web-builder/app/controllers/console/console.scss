@@ -93,16 +93,18 @@
 
       > li {
         padding: 0;
+        width: 100px;
         margin: 0;
         &:first-child {
-          margin-left: 20px;
+          margin-left: 10px !important;
         }
 
         > a, > .dropdown > a {
           color: darken($color-primary, 30%);
           font-size: 16px;
           font-weight: bold;
-          padding: 0 40px;
+          padding: 0 9px !important;
+          width: 99px;
           line-height: 40px;
           display: inline-block;
           text-decoration: none;

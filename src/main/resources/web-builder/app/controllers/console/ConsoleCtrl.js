@@ -74,14 +74,18 @@ export default class ConsoleCtrl extends Injector {
                             continue;
                         }
                         if (menus[i] === '11') {
-                            $scope.roleStaffShow = true;
+                            $scope.staffShow = true;
                             continue;
                         }
                         if (menus[i] === '12') {
-                            $scope.teamShow = true;
+                            $scope.roleShow = true;
                             continue;
                         }
                         if (menus[i] === '13') {
+                            $scope.teamShow = true;
+                            continue;
+                        }
+                        if (menus[i] === '14') {
                             $scope.merchandiserShow = true;
                             continue;
                         }
