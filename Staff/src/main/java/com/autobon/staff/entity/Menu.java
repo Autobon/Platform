@@ -16,8 +16,18 @@ public class Menu {
     @Column
     private String name;
 
+    private String url;
+
     @Column
     private String remark;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public Integer getId() {
         return id;

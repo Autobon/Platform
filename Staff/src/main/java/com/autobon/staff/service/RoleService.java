@@ -21,7 +21,6 @@ public class RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
     private FunctionRepository functionRepository;
     @Autowired
@@ -38,6 +37,13 @@ public class RoleService {
         }
         return  roleRepository.find(name, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
+    }
+
+
+    public List<Role> findByUserId(int userId){
+
+        return roleRepository.findByUserId(userId);
+
     }
 
     public Role findById(int id){
