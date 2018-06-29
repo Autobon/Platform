@@ -58,7 +58,7 @@ public class RoleController {
     public JsonMessage role(HttpServletRequest request) {
 
         Staff staff = (Staff) request.getAttribute("user");
-        
+
         return new JsonMessage(true, "", "", roleService.findByUserId(staff.getId()));
     }
 
