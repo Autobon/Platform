@@ -77,4 +77,9 @@ export default class AccountService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/role/' + id + '/menu');
     }
+
+    getAllMenus() {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/function/category/menu');
+    }
 }

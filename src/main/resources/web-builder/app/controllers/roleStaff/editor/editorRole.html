@@ -9,14 +9,23 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-3 control-label">商户选择</label>
+            <div class="col-sm-6">
+                <!--<div ng-repeat="c in coops">-->
+                    <!--<input type="checkbox"  id="cb"  ng-model="m.selected" ng-change="onCheckChange(m.id, m.selected)">-->
+                    <!--{{c.fullname}}-->
+                <!--</div>-->
+                <span ng-dropdown-multiselect="" options="coops" selected-model="selected"
+                      extra-settings="searchSelectAllSettings">
+            </span>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-3 control-label">权限配置</label>
             <div class="col-sm-6">
-                <div ng-repeat="m in menus">
-                    <input type="checkbox"  id="cb"  ng-model="m.selected" ng-change="onCheckChange(m.id, m.selected)">
-                    {{m.name}}
-                </div>
-                <div treecontrol="" class="tree-classic" tree-model="treedata" on-selection="showSelected(node)">
-                    <input type="checkbox"  id="cbc"  ng-model="node.selected" ng-change="onMenuChange(node, node.selected)">label: {{node.label}} ({{node.id}})
+                <div treecontrol="" class="tree-classic" tree-model="treedata" expanded-nodes="expandedNodes" options="treeOptions">
+                    <input type="checkbox"  id="cbc"  ng-model="node.selected" ng-change="onMenuChange(node, node.selected, $parentNode)">
+                    {{node.name == null?node.category:node.name}}
                 </div>
             </div>
         </div>

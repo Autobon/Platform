@@ -24,16 +24,17 @@ export default class OrderCtrl extends Injector {
         $scope.showMore = false;
         CooperatorService.search({statusCode: 1}, 1, 1000).then(res => {
             if (res.data && res.data.result) {
-                let datas = res.data.data.list;
-                if (datas.length > 0) {
-                    datas.forEach(item =>{
-                        $scope.coops.push({id: item.id, fullname: item.fullname})
-                    })
-                }
+                $scope.coops = res.data.data.list;
+                // if (datas.length > 0) {
+                //     datas.forEach(item =>{
+                //         $scope.coops.push({id: item.id, fullname: item.fullname})
+                //     })
+                // }
             }
         });
         $scope.searchSelectAllSettings = {
             displayProp: 'fullname',
+            searchField: 'fullname',
             enableSearch: true,
             showSelectAll: true,
             keyboardControls: true,
