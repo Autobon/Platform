@@ -20,6 +20,6 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
     Page<Role> find(String name, Pageable pageable);
 
 
-    @Query(value = "select * from t_role r where r.uid in (select role_id from t_role_staff rs where rs.staff_id = ?1)", nativeQuery = true)
+    @Query(value = "select * from t_role r where r.id in (select role_id from t_role_staff rs where rs.staff_id = ?1)", nativeQuery = true)
     List<Role> findByUserId(int uid);
 }

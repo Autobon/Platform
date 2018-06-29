@@ -31,65 +31,62 @@ export default class ConsoleCtrl extends Injector {
             AccountService.getStaffMenu(LoginService.getCookie('ro')).then(res => {
                 if (res.data && res.data.result) {
                     $scope.staffMenu = res.data.data;
-                    menus = res.data.data.menuId.split(',');
-                    for (let i = 0; i < menus.length; i++) {
-                        if (menus[i] === '1') {
-                            $scope.homeShow = true;
-                            continue;
+                    AccountService.getStaffRole().then((r) => {
+                        if (!res.data.result) $scope.msg = res.data.message;
+                        else {
+                            menus = r.data.data[0].menuIds.split(',');
+                            for (let i = 0; i < menus.length; i++) {
+                                if (menus[i] === '1') {
+                                    $scope.homeShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '2') {
+                                    $scope.orderShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '3') {
+                                    $scope.coopShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '4') {
+                                    $scope.techShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '5') {
+                                    $scope.finaShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '6') {
+                                    $scope.prodShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '7') {
+                                    $scope.statShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '8') {
+                                    $scope.studyShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '9') {
+                                    $scope.staffShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '10') {
+                                    $scope.roleShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '11') {
+                                    $scope.teamShow = true;
+                                    continue;
+                                }
+                                if (menus[i] === '12') {
+                                    $scope.merchandiserShow = true;
+                                    continue;
+                                }
+                            }
                         }
-                        if (menus[i] === '2') {
-                            $scope.orderShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '3') {
-                            $scope.coopShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '4') {
-                            $scope.techShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '5') {
-                            $scope.finaShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '6') {
-                            $scope.prodShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '7') {
-                            $scope.statShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '8') {
-                            $scope.studyShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '9') {
-                            $scope.techMapShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '10') {
-                            $scope.coopMapShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '11') {
-                            $scope.staffShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '12') {
-                            $scope.roleShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '13') {
-                            $scope.teamShow = true;
-                            continue;
-                        }
-                        if (menus[i] === '14') {
-                            $scope.merchandiserShow = true;
-                            continue;
-                        }
-                    }
+                    });
                 }
             });
         }

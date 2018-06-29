@@ -92,7 +92,7 @@ public class StaffAccountController {
             c0.setPath("/");
             response.addCookie(c0);
 
-            return new JsonMessage(true, "", "", staffMenu);
+            return new JsonMessage(true, "", "", staff);
         }
     }
 

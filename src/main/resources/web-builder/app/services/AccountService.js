@@ -53,14 +53,14 @@ export default class AccountService extends Injector {
         return $http.get(Settings.domain + '/api/web/admin/role/' + id);
     }
 
-    addRole(name, remark, menus) {
+    addRole(name, remark, functionCategoryIds, coopIds, menuIds) {
         const {$http, Settings} = this.$injected;
-        return $http.post(Settings.domain + '/api/web/admin/role', {name: name, menus: menus, remark: remark});
+        return $http.post(Settings.domain + '/api/web/admin/role', {name: name, functionCategoryIds: functionCategoryIds, coopIds: coopIds, menuIds: menuIds, remark: remark});
     }
 
-    updateRole(id, name, remark, menus) {
+    updateRole(id, name, remark, functionCategoryIds, coopIds, menuIds) {
         const {$http, Settings} = this.$injected;
-        return $http.post(Settings.domain + '/api/web/admin/role/' + id, {name: name, menus: menus, remark: remark});
+        return $http.post(Settings.domain + '/api/web/admin/role/' + id, {name: name, functionCategoryIds: functionCategoryIds, coopIds: coopIds, menuIds: menuIds, remark: remark});
     }
 
     deleteRole(id) {
@@ -81,5 +81,10 @@ export default class AccountService extends Injector {
     getAllMenus() {
         const {$http, Settings} = this.$injected;
         return $http.get(Settings.domain + '/api/web/admin/function/category/menu');
+    }
+
+    getStaffRole() {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/staff/role');
     }
 }
