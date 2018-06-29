@@ -201,7 +201,6 @@ export default class EditorRoleCtrl extends Injector {
             $scope.selected.forEach(item =>{
                 ids.push(item.id);
             });
-            $scope.roleData.coopIds = ids;
         }
         let q, isUpdate       = !!$scope.roleData.id;
         if (isUpdate) {
