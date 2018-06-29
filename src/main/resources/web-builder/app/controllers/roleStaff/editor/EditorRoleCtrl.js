@@ -188,7 +188,7 @@ export default class EditorRoleCtrl extends Injector {
             $scope.error = '姓名不能为空';
             return;
         }
-        if($scope.selected || $scope.selected.length < 1){
+        if(!$scope.selected || $scope.selected.length < 1){
             $scope.error = '请选择商户';
             return;
         }
@@ -196,17 +196,17 @@ export default class EditorRoleCtrl extends Injector {
             $scope.error = '请选择权限';
             return;
         }
+        let ids = [];
         if ($scope.selected.length > 0) {
-            let ids = [];
             $scope.selected.forEach(item =>{
                 ids.push(item.id);
             });
         }
         let q, isUpdate       = !!$scope.roleData.id;
         if (isUpdate) {
-            q = AccountService.updateRole($scope.roleData.id, $scope.roleData.name, $scope.roleData.remark, $scope.chooseIds.join(','));
+            q = AccountService.updateRole($scope.roleData.id, $scope.roleData.name, $scope.roleData.remark, $scope.chooseCategorieIds.join(','), ids.join(','), $scope.chooseMenuIds.join(','));
         } else {
-            q = AccountService.addRole($scope.roleData.name, $scope.roleData.remark, $scope.chooseIds.join(','));
+            q = AccountService.addRole($scope.roleData.name, $scope.roleData.remark, $scope.chooseCategorieIds.join(','), ids.join(','), $scope.chooseMenuIds.join(','));
         }
 
         q.then(res => {

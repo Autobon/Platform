@@ -17,10 +17,9 @@ export default class HomeCtrl extends Injector {
         $scope.getCoop = false;
         $scope.getTech = false;
         if (LoginService.getCookie('ro') !== null) {
-            AccountService.getStaffMenu(LoginService.getCookie('ro')).then(res => {
+            AccountService.getStaffRole().then((res) => {
                 if (res.data && res.data.result) {
-                    $scope.staffMenu = res.data.data;
-                    let menus = res.data.data.menuId.split(',');
+                    let menus = res.data.data[0].menuIds.split(',');
                     if (menus.indexOf('2') !== -1) {
                         $scope.getOrder = true;
                     }
