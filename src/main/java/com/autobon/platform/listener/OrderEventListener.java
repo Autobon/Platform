@@ -85,6 +85,7 @@ public class OrderEventListener {
             case REMIND12:
                 this.onOrderRemind12(order);
                 break;
+
         }
     }
 
@@ -228,6 +229,8 @@ public class OrderEventListener {
         }
 
     }
+
+
 
     private void onOrderAppointed(Order order) throws IOException {
         // 更新订单总数
