@@ -142,9 +142,9 @@ public class OrderEventListener {
         String msgTitle = "你收到新订单推送消息";
         HashMap<String, Object> map = new HashMap<>();
         map.put("action", "NEW_ORDER");
-        DetailedOrder detailedOrder = detailedOrderService.get(order.getId());
-        detailedOrder.setRemark("");
-        detailedOrder.setPhoto("");
+//        DetailedOrder detailedOrder = detailedOrderService.get(order.getId());
+//        detailedOrder.setRemark("");
+//        detailedOrder.setPhoto("");
         order.setPhoto("");
         order.setBeforePhotos("");
         order.setAfterPhotos("");
