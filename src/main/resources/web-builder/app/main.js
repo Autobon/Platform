@@ -3,6 +3,7 @@ import angular from 'angular';
 import 'angular-animate';
 import 'angular-ui-router';
 import 'angular-ui-bootstrap';
+import 'angular-ui-bootstrap/datetimepicker';
 import 'angular-chart.js';
 import moment from 'moment';
 
