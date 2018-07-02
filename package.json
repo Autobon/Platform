@@ -23,7 +23,6 @@
     "font-awesome": "",
     "moment": "",
     "angular-bootstrap-datetimepicker": "",
-    "rxjs": "5.5.2",
     "angular-chart.js": "^0.10.2"
   },
   "devDependencies": {
