@@ -106,7 +106,7 @@ public class MerchandiserController {
      * @param verifySms 验证码
      * @return
      */
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.PUT)
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public JsonResult resetPassword(@RequestParam("phone")     String phone,
                                     @RequestParam("password")  String password,
                                     @RequestParam("verifySms") String verifySms) {
@@ -141,7 +141,7 @@ public class MerchandiserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/changePassword", method = RequestMethod.PUT)
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public JsonResult changePassword(@RequestParam("oldPassword") String oldPassword,
                                      @RequestParam("newPassword") String newPassword,
                                      HttpServletRequest request) {
