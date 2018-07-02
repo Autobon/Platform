@@ -5,7 +5,7 @@ import 'angular-ui-router';
 import 'angular-ui-bootstrap';
 import 'angular-chart.js';
 import moment from 'moment';
-import 'angular-ui-bootstrap/datetimepicker';
+
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.min.css';
