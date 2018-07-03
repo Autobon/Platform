@@ -172,6 +172,9 @@ export default class MerchandiserCtrl extends Injector {
             if (res.data && res.data.result === true) {
                 $scope.modalInstance.close();
                 confirm('添加成功');
+                $scope.pagination0 = {page: 1, totalItems: 0, pageSize: 15};
+                $scope.coopId = null;
+                $scope.coopName = null;
                 this.getDatas();
             } else {
                 if (res.data.status === false) {

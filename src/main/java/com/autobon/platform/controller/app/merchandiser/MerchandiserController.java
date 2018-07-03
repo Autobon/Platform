@@ -1,17 +1,26 @@
 package com.autobon.platform.controller.app.merchandiser;
 
+import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.merchandiser.entity.Merchandiser;
 import com.autobon.merchandiser.service.MerchandiserCooperatorService;
 import com.autobon.merchandiser.service.MerchandiserService;
+import com.autobon.order.entity.Order;
+import com.autobon.order.entity.OrderView;
+import com.autobon.order.service.ConstructionProjectService;
+import com.autobon.order.service.OrderService;
+import com.autobon.order.service.OrderViewService;
+import com.autobon.order.service.WorkDetailService;
+import com.autobon.order.vo.OrderConstructionShow;
+import com.autobon.order.vo.ProjectPositionShow;
+import com.autobon.order.vo.WorkDetailShow;
 import com.autobon.shared.JsonResult;
 import com.autobon.shared.RedisCache;
+import com.autobon.technician.entity.LocationStatus;
 import com.autobon.technician.entity.Technician;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -21,8 +30,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by wh on 2018/6/1.
@@ -31,7 +39,10 @@ import java.util.UUID;
 @RequestMapping("/api/mobile/merchandiser")
 public class MerchandiserController {
 
-
+    @Autowired
+    WorkDetailService workDetailService;
+    @Autowired
+    ConstructionProjectService constructionProjectService;
     @Autowired
     MerchandiserService merchandiserService;
     @Autowired
@@ -40,8 +51,12 @@ public class MerchandiserController {
     RedisCache redisCache;
     @Autowired
     MultipartResolver resolver;
+    @Autowired
+    OrderViewService orderViewService;
 
     @Value("${com.autobon.uploadPath}") String uploadPath;
+    @Autowired
+    OrderService orderService;
 
 
 
@@ -91,7 +106,7 @@ public class MerchandiserController {
      * @param verifySms 验证码
      * @return
      */
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.PUT)
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public JsonResult resetPassword(@RequestParam("phone")     String phone,
                                     @RequestParam("password")  String password,
                                     @RequestParam("verifySms") String verifySms) {
@@ -126,7 +141,7 @@ public class MerchandiserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/changePassword", method = RequestMethod.PUT)
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public JsonResult changePassword(@RequestParam("oldPassword") String oldPassword,
                                      @RequestParam("newPassword") String newPassword,
                                      HttpServletRequest request) {
@@ -277,6 +292,148 @@ public class MerchandiserController {
     }
 
 
+    /**
+     * 商户查询订单
+     * @param status 1未接单  2 施工中  3未评价 4 已评价  5全部订单
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/merchant/order", method = RequestMethod.GET)
+    public JsonResult getOdrders( @RequestParam(value = "coopId", defaultValue = "5") int coopId,
+                                  @RequestParam(value = "status", defaultValue = "5") int status,
+                                  @RequestParam(value = "workDate",required = false) String workDate,
+                                  @RequestParam(value = "vin",required = false) String vin,
+                                  @RequestParam(value = "phone",required = false) String phone,
+                                  @RequestParam(value = "page",  defaultValue = "1" )  int page,
+                                  @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                                  HttpServletRequest request) {
 
 
+        Page<OrderView> orders = orderViewService.findCoopOrder(coopId, status, workDate, vin, phone, page, pageSize);
+        return new JsonResult(true, orders);
+
+    }
+
+
+    /**
+     * 查询订单详情
+     * @param orderId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/merchant/order/{orderId:\\d+}", method = RequestMethod.GET)
+    public JsonResult getOrder(@PathVariable("orderId") int orderId,
+                               HttpServletRequest request) {
+
+
+
+        Order order = orderService.get(orderId);
+
+
+        OrderView orderShow = orderViewService.findById(orderId);
+
+
+
+        List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
+        Map<Integer, String> projectMap = constructionProjectService.getProject();
+        Map<Integer, String> positionMap = constructionProjectService.getPosition();
+
+        List<OrderConstructionShow> constructionShowList = new ArrayList<>();
+        for(WorkDetailShow workDetailShow: workDetailShowList) {
+            OrderConstructionShow orderConstructionShow = new OrderConstructionShow();
+            List<ProjectPositionShow> projectPositionShows = new ArrayList<>();
+            orderConstructionShow.setTechId(workDetailShow.getTechId());
+            orderConstructionShow.setTechName(workDetailShow.getTechName());
+            orderConstructionShow.setIsMainTech(workDetailShow.getTechId() == order.getMainTechId()?1:0);
+            orderConstructionShow.setPayStatus(workDetailShow.getPayStatus());
+            orderConstructionShow.setPayment(workDetailShow.getPayment());
+            if (workDetailShow.getPosition1() != null && workDetailShow.getPosition1() != null) {
+                String projectName = projectMap.get(workDetailShow.getProject1());
+                String position = workDetailShow.getPosition1();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+            if (workDetailShow.getPosition2() != null && workDetailShow.getPosition2() != null) {
+
+                String projectName = projectMap.get(workDetailShow.getProject2());
+
+                String position = workDetailShow.getPosition2();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+            if (workDetailShow.getPosition3() != null && workDetailShow.getPosition3() != null) {
+
+                String projectName = projectMap.get(workDetailShow.getProject3());
+
+                String position = workDetailShow.getPosition3();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+            if (workDetailShow.getPosition4() != null && workDetailShow.getPosition4() != null) {
+
+                String projectName = projectMap.get(workDetailShow.getProject4());
+
+                String position = workDetailShow.getPosition4();
+                String[] positionArr = position.split(",");
+                String positionStr = "";
+                for (String positionId : positionArr) {
+                    if (positionStr.length() > 0) {
+                        positionStr += "," + positionMap.get(Integer.valueOf(positionId));
+                    } else {
+                        positionStr += positionMap.get(Integer.valueOf(positionId));
+                    }
+                }
+                ProjectPositionShow projectPositionShow = new ProjectPositionShow(projectName, positionStr);
+                projectPositionShows.add(projectPositionShow);
+            }
+
+            orderConstructionShow.setProjectPosition(projectPositionShows);
+            constructionShowList.add(orderConstructionShow);
+        }
+        String type = orderShow.getType();
+        if(type!=null&& type.length()>0) {
+            String[] projectArr = type.split(",");
+            String projectStr = "";
+            for (String projectId : projectArr) {
+                if (projectStr.length() > 0) {
+                    projectStr += "," + projectMap.get(Integer.valueOf(projectId));
+                } else {
+                    projectStr += projectMap.get(Integer.valueOf(projectId));
+                }
+            }
+            orderShow.setType(projectStr);
+        }
+
+        orderShow.setOrderConstructionShow(constructionShowList);
+        return new JsonResult(true, orderShow);
+    }
 }

@@ -1,5 +1,6 @@
 package com.autobon.platform.controller.app.technician;
 
+import com.autobon.getui.PushService;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderPartnerView;
 import com.autobon.order.entity.OrderView;
@@ -14,10 +15,12 @@ import com.autobon.study.service.StudyDataService;
 import com.autobon.technician.entity.*;
 import com.autobon.technician.service.*;
 import com.autobon.technician.vo.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
 import org.im4java.process.Pipe;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -73,6 +76,8 @@ public class TechnicianV2Controller {
     SmsSender smsSender;
     @Autowired
     MultipartResolver resolver;
+    @Autowired @Qualifier("PushServiceA")
+    PushService pushServiceA;
 
     @Autowired
     DetailedOrderService detailedOrderService;
@@ -1144,6 +1149,28 @@ public class TechnicianV2Controller {
                 workDetailService.balance(order.getId());
             }
             //合作技师施工部位推送
+
+            if(constructionShow.getConstructionDetails().size() > 1){
+                for(ConstructionDetail constructionDetail: constructionShow.getConstructionDetails()){
+
+                    if(constructionDetail.getTechId() != order.getMainTechId()){
+                        Technician technician =  technicianService.findById(constructionDetail.getTechId());
+                        if(technician != null){
+
+
+
+                            String msgTitle = "订单: " + order.getOrderNum() + " 已被主技师提交";
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("action", "COOPERATION");
+                            map.put("title", msgTitle);
+                            map.put("order", order);
+
+                            pushServiceA.pushToSingle(technician.getPushId(), msgTitle, new ObjectMapper().writeValueAsString(map), 24 * 3600);
+
+                        }
+                    }
+                }
+            }
 
             return new JsonResult(true, "施工完成");
 

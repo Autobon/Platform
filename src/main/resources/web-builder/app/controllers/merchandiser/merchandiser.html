@@ -47,7 +47,7 @@
                     <td>{{s.gender}}</td>
                     <td>{{s.phone}}</td>
                     <td>{{Settings.merchandiserStatus[s.status]}}</td>
-                    <td>{{s.lastLoginAt}}</td>
+                    <td>{{s.lastLoginAt | date : 'YYYY-MM-DD HH:mm:ss'}}</td>
                     <td>
                         <a ui-sref="console.merchandiser.edit({id: s.id})" class="btn btn-xs btn-default"><i class="fa fa-edit"></i>&nbsp;编辑</a>
                         <button ng-click="deleteMerchandiser(s.id)" class="btn btn-xs btn-default"><i class="fa fa-close"></i>&nbsp;删除</button>
