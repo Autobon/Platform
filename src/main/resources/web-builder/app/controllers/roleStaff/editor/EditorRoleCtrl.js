@@ -30,6 +30,7 @@ export default class EditorRoleCtrl extends Injector {
 
         });
         $scope.searchSelectAllSettings = {
+            smartButtonMaxItems: 2,
             displayProp: 'fullname',
             searchField: 'fullname',
             enableSearch: true,

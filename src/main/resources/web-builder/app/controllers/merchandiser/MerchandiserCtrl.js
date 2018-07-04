@@ -2,7 +2,7 @@ import {Injector} from 'ngES6';
 import './merchandiser.scss';
 
 export default class MerchandiserCtrl extends Injector {
-    static $inject = ['$scope', 'Settings', 'MerchandiserService', 'CooperatorService', '$uibModal'];
+    static $inject = ['$scope', 'Settings', 'MerchandiserService', 'CooperatorService', '$uibModal', '$timeout'];
     static $template = require('./merchandiser.html');
 
     constructor(...args) {
@@ -101,8 +101,9 @@ export default class MerchandiserCtrl extends Injector {
 
     setCoop(id) {
         const {$scope, $uibModal} = this.$injected;
-        this.getCooperators(true);
         $scope.merchandiserId = id;
+        this.getCoops();
+        this.getCooperators(true);
         $scope.modalInstance = $uibModal.open({
             size     : 'lg',
             scope    : $scope,
@@ -158,6 +159,10 @@ export default class MerchandiserCtrl extends Injector {
 
     chooseNew(coop) {
         const {$scope} = this.$injected;
+            if($scope.coopIds.indexOf(coop.id) != -1){
+                confirm('跟单员已匹配此商户，请重新选择');
+                return;
+            }
         $scope.coopId = coop.id;
         $scope.coopName = coop.fullname;
     }
@@ -190,6 +195,10 @@ export default class MerchandiserCtrl extends Injector {
         MerchandiserService.getMerchandisers($scope.merchandiserId).then(res => {
             if (res.data && res.data.status) {
                 $scope.coops = res.data.message;
+                $scope.coopIds = [];
+                $scope.coops.forEach(a =>{
+                    $scope.coopIds.push(a.cooperatorId);
+                })
             }
         });
     }
