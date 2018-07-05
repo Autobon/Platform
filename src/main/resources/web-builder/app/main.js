@@ -26,7 +26,7 @@ moment.locale('zh-cn');
 export const App = 'app';
 
 const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap', 'treeControl',
-                'chart.js', 'ui.bootstrap.datetimepicker', 'ui.bootstrap.carousel', 'angularjs-dropdown-multiselect',
+                'chart.js', 'ui.bootstrap.datetimepicker', 'ui.bootstrap.carousel',
                 directives, services, controllers, filters])
             .provider('template', function() {
                 this.$get = () => {return templateCache;};
