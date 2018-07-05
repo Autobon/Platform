@@ -3,12 +3,12 @@ import angular from 'angular';
 import $ from 'jquery';
 
 export default class OrderMakeupCtrl extends Injector {
-    static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'ProductService', 'OrderService', 'Settings'];
+    static $inject   = ['$scope', '$state', '$stateParams', '$uibModal', 'ProductService', 'OrderService', 'Settings', '$timeout'];
     static $template = require('./makeup.html');
 
     constructor(...args) {
         super(...args);
-        const {$scope, $stateParams, ProductService, OrderService} = this.$injected;
+        const {$scope, $stateParams, ProductService, OrderService, $timeout} = this.$injected;
         this.attachMethodsTo($scope);
 
         OrderService.getDetail2($stateParams.id).then(res => {
@@ -29,6 +29,39 @@ export default class OrderMakeupCtrl extends Injector {
         });
         // $('.carousel').carousel();
         // $('#myCarousel').carousel();
+        $scope.myInterval = 2000;
+        $scope.active = 0;
+        $scope.slides = [];
+        $scope.addSlide = function () {
+            console.log($scope.photoList);
+            $scope.photoList.forEach((ph,i) =>{
+                console.log(ph);
+                $scope.slides.push({
+                    image: ph,
+                    text: (i + 1).toString(),
+                    id: i
+                });
+            });
+            // $scope.slides.push({
+            //     image: '/uploads/order/photo/20180615173955992780.jpeg',
+            //     text: '1',
+            //     id: 0
+            // });
+            // $scope.slides.push({
+            //     image: '/uploads/order/photo/20180615173919974603.jpeg',
+            //     text: '2',
+            //     id: 1
+            // });
+            // $scope.slides.push({
+            //     image: '/uploads/order/photo/20180615175332230701.jpeg',
+            //     text: '3',
+            //     id: 2
+            // });
+        };
+        $timeout(() => {
+            $scope.addSlide();
+        }, 1000);
+
     }
 
     save() {

@@ -148,6 +148,20 @@ public class OrderService {
     @Transactional
     public void save(Order order,ConstructionShow constructionShow){
         repository.save(order);
+        OrderStatusRecord record = orderStatusRecordService.findByOrderIdAndStatus(order.getId(), order.getStatusCode());
+        if(record == null) {
+            OrderStatusRecord orderStatusRecord = new OrderStatusRecord();
+            orderStatusRecord.setOrderId(order.getId());
+            orderStatusRecord.setRecordTime(new Date());
+            if(order.getStatusCode() < 10) orderStatusRecord.setStatus(0);
+            else if(order.getStatusCode() == 10) orderStatusRecord.setStatus(10);
+            else if(order.getStatusCode() == 50) orderStatusRecord.setStatus(20);
+            else if(order.getStatusCode() == 55) orderStatusRecord.setStatus(30);
+            else if(order.getStatusCode() == 56) orderStatusRecord.setStatus(40);
+            else if(order.getStatusCode() == 60) orderStatusRecord.setStatus(50);
+
+            orderStatusRecordService.save(orderStatusRecord);
+        }
 
         List<ConstructionDetail> constructionDetails = constructionShow.getConstructionDetails();
         for(ConstructionDetail constructionDetail: constructionDetails){
