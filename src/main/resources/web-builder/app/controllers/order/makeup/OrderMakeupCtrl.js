@@ -42,21 +42,21 @@ export default class OrderMakeupCtrl extends Injector {
                     id: i
                 });
             });
-            // $scope.slides.push({
-            //     image: '/uploads/order/photo/20180615173955992780.jpeg',
-            //     text: '1',
-            //     id: 0
-            // });
-            // $scope.slides.push({
-            //     image: '/uploads/order/photo/20180615173919974603.jpeg',
-            //     text: '2',
-            //     id: 1
-            // });
-            // $scope.slides.push({
-            //     image: '/uploads/order/photo/20180615175332230701.jpeg',
-            //     text: '3',
-            //     id: 2
-            // });
+            /*$scope.slides.push({
+                image: '/uploads/order/photo/20180615173955992780.jpeg',
+                text: '1',
+                id: 0
+            });
+            $scope.slides.push({
+                image: '/uploads/order/photo/20180615173919974603.jpeg',
+                text: '2',
+                id: 1
+            });
+            $scope.slides.push({
+                image: '/uploads/order/photo/20180615175332230701.jpeg',
+                text: '3',
+                id: 2
+            });*/
         };
         $timeout(() => {
             $scope.addSlide();

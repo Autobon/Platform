@@ -107,25 +107,25 @@ public class OrderViewService {
             page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
         }else if(status == 2)
         {
-            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
+            //Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
             List<OrderView> list = orderViewRepository.findWorkingCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
             int count = orderViewRepository.findWorkingCoopOrderCount(coopId, workDate, vin, phone);
             page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
         }
         else if(status == 3){
-            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
+            //Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
             List<OrderView> list = orderViewRepository.findUnEvaluateCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
             int count = orderViewRepository.findUnEvaluateCoopOrderCount(coopId, workDate, vin, phone);
             page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
         }
         else if(status == 4){
-            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
+            //Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
             List<OrderView> list = orderViewRepository.findEvaluatedCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
             int count = orderViewRepository.findEvaluatedCoopOrderCount(coopId, workDate, vin, phone);
             page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
         }
         else if(status == 5){
-            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
+            //Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
             List<OrderView> list = orderViewRepository.findAllCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
             int count = orderViewRepository.findAllCoopOrderCount(coopId, workDate, vin, phone);
             page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
