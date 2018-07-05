@@ -25,7 +25,7 @@ import config from './config';
 moment.locale('zh-cn');
 export const App = 'app';
 
-const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap', 'ui.bootstrap.datetimepicker', 'ui.bootstrap.carousel',
+const app = angular.module(App, ['ui.bootstrap', 'ui.bootstrap.datetimepicker', 'ngAnimate', 'ui.router', 'ui.bootstrap.carousel',
                 'chart.js', 'treeControl', 'angularjs-dropdown-multiselect',
                 directives, services, controllers, filters])
             .provider('template', function() {
