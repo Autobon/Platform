@@ -42,7 +42,7 @@ CREATE VIEW t_order_view as  SELECT   o.id ,
                                           LEFT JOIN t_technician tech ON tech.id = o.main_tech_id
                                           LEFT JOIN t_coop_account ca ON ca.id = o.creator_id
                                           LEFT JOIN t_cooperators ct ON ct.id = o.coop_id
-                                          LEFT JOIN t_work_detail wd ON wd.order_id = o.id
+                                          LEFT JOIN t_work_detail wd ON wd.order_id = o.id  and wd.tech_id = o.main_tech_id
                                           LEFT JOIN t_tech_stat ts ON ts.tech_id = o.main_tech_id
                                           LEFT JOIN t_comment t ON t.order_id = o.id
                                           LEFT JOIN t_location_status ls ON ls.tech_id = o.main_tech_id
