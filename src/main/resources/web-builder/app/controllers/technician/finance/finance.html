@@ -13,7 +13,7 @@
             </div>
             <button type="submit" class="btn btn-primary" ng-click="getTechFinance()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
             <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
-            <a ui-sref="console.finance.applyRecord({id: 0})" class="btn btn-xs btn-default"><i class="fa fa-list"></i>&nbsp;未处理提现申请</a>
+            <a ui-sref="console.finance.applyRecord({id: 0})" class="btn btn-sm btn-default"><i class="fa fa-list"></i>&nbsp;未处理提现申请</a>
             <button type="button" class="btn btn-sm btn-default" ng-click="exportAllDetail()"><i class="fa fa-level-down"></i>&nbsp;导出所有</button>
         </form>
     </div>
@@ -48,7 +48,7 @@
                             <i class="fa fa-list"></i>&nbsp;收入明细</a>
                             <a ui-sref="console.finance.applyRecord({id: t.techId})" class="btn btn-xs btn-default">
                                 <i class="fa fa-list"></i>&nbsp;申请记录</a>
-                            <button type="button" class="btn btn-sm btn-default" ng-click="exportDetail(t.techId)"><i class="fa fa-list"></i>导出明细</button>
+                            <button type="button" class="btn btn-xs btn-default" ng-click="exportDetail(t.techId)"><i class="fa fa-list"></i>导出明细</button>
                         </td>
 
                     </tr>
