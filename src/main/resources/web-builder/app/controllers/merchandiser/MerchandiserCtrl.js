@@ -34,6 +34,7 @@ export default class MerchandiserCtrl extends Injector {
     reset() {
         const {$scope} = this.$injected;
         $scope.searchData = {};
+        $scope.filter = {};
         // $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 
@@ -102,6 +103,7 @@ export default class MerchandiserCtrl extends Injector {
     setCoop(id) {
         const {$scope, $uibModal} = this.$injected;
         $scope.merchandiserId = id;
+        $scope.filter = {};
         this.getCoops();
         this.getCooperators(true);
         $scope.modalInstance = $uibModal.open({
@@ -113,6 +115,16 @@ export default class MerchandiserCtrl extends Injector {
                         <h3 class="modal-title">选择商户</h3>
                     </div>
                     <div class="modal-body">
+                        <div class="row">
+                            <form class="form-inline pull-left">
+                                <div class="form-group">
+                                    <label for="name">企业名称:</label>
+                                    <input type="text" class="form-control" id="fullname" ng-model="filter.fullname">
+                                </div>
+                                <button type="submit" class="btn btn-primary m-l-5" ng-click="getCooperators(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+                                <button type="button" class="btn btn-sm btn-default m-l-5" ng-click="reset()">重置</button>
+                            </form>
+                        </div>
                         <div class="table-responsive m-l-20 m-r-20">
                             <table class="table table-striped align-middle">
                                 <thead>

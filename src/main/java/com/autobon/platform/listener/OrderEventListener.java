@@ -146,10 +146,26 @@ public class OrderEventListener {
 //        DetailedOrder detailedOrder = detailedOrderService.get(order.getId());
 //        detailedOrder.setRemark("");
 //        detailedOrder.setPhoto("");
-        order.setPhoto("");
-        order.setBeforePhotos("");
-        order.setAfterPhotos("");
-        map.put("order", order);
+//        order.setPhoto("");
+//        order.setBeforePhotos("");
+//        order.setAfterPhotos("");
+//
+
+        Order order1 = new Order();
+        order1.setId(order.getId());
+        order1.setStatus(order.getStatus());
+        order1.setStatusCode(order.getStatusCode());
+        order1.setType(order.getType());
+        order1.setOrderType(order.getOrderType());
+        order1.setOrderTime(order.getOrderTime());
+        order1.setAddTime(order.getAddTime());
+        order1.setFinishTime(order.getFinishTime());
+        order1.setMainTechId(order.getMainTechId());
+        order1.setAgreedStartTime(order.getAgreedStartTime());
+        order1.setAgreedEndTime(order.getAgreedEndTime());
+
+
+        map.put("order", order1);
         map.put("title", msgTitle);
         boolean result = pushServiceA.pushToApp(msgTitle, new ObjectMapper().writeValueAsString(map), 0);
         if (!result) log.error("订单: " + order.getOrderNum() + "的推送消息发送失败");

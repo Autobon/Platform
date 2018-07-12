@@ -160,6 +160,8 @@ public class OrderView {
 
     @Column private String technicianRemark;
 
+    @Column private String makeUpRemark;
+
 
     public String getVehicleModel() {
         return vehicleModel;
@@ -575,5 +577,13 @@ public class OrderView {
 
     public void setTechnicianRemark(String technicianRemark) {
         this.technicianRemark = technicianRemark;
+    }
+
+    public String getMakeUpRemark() {
+        return makeUpRemark;
+    }
+
+    public void setMakeUpRemark(String makeUpRemark) {
+        this.makeUpRemark = makeUpRemark;
     }
 }

@@ -70,6 +70,28 @@ public class OrderService {
         }
     }
 
+    @Transactional
+    public void save(List<Order> list) {
+        List<Order> res = repository.save(list);
+
+        for(Order o : res){
+            OrderStatusRecord record = orderStatusRecordService.findByOrderIdAndStatus(o.getId(), o.getStatusCode());
+            if(record == null) {
+                OrderStatusRecord orderStatusRecord = new OrderStatusRecord();
+                orderStatusRecord.setOrderId(o.getId());
+                orderStatusRecord.setRecordTime(new Date());
+                if(o.getStatusCode() < 10) orderStatusRecord.setStatus(0);
+                else if(o.getStatusCode() == 10) orderStatusRecord.setStatus(10);
+                else if(o.getStatusCode() == 50) orderStatusRecord.setStatus(20);
+                else if(o.getStatusCode() == 55) orderStatusRecord.setStatus(30);
+                else if(o.getStatusCode() == 56) orderStatusRecord.setStatus(40);
+                else if(o.getStatusCode() == 60) orderStatusRecord.setStatus(50);
+
+                orderStatusRecordService.save(orderStatusRecord);
+            }
+        }
+    }
+
     /**
      * 通过订单编号获取订单施工项目
      * @return
@@ -301,8 +323,14 @@ public class OrderService {
         if(orderType != null && orderType.size()>0){
             type = "%" +String.valueOf(orderType.get(0)) +"%";
         }
-        List<Order> list =  repository.findOrder2(orderNum, creatorName, contactPhone, type,
-                statusCode, coopIds, vin, addTime, orderTime, sort, (page - 1) * pageSize, pageSize);
+        List<Order> list;
+        if(sort.equals("id")) {
+            list =  repository.findOrder2(orderNum, creatorName, contactPhone, type,
+                    statusCode, coopIds, vin, addTime, orderTime, (page - 1) * pageSize, pageSize);
+        }else{
+            list =  repository.findOrder2ByTime(orderNum, creatorName, contactPhone, type,
+                    statusCode, coopIds, vin, addTime, orderTime, (page - 1) * pageSize, pageSize);
+        }
         int count = repository.findOrder2Count(orderNum, creatorName, contactPhone, type,
                 statusCode, coopIds, vin, addTime, orderTime);
         return new PageImpl<>(list, new PageRequest(page-1,pageSize), count);
@@ -354,8 +382,14 @@ public class OrderService {
             type = "%" +String.valueOf(orderType.get(0)) +"%";
 
         }
-        List<Order> list =  repository.findOrder2(orderNum, creatorName, contactPhone, type,
-                statusCode, coopIds, vin, addTime, orderTime, tech, sort, (page - 1) * pageSize, pageSize);
+        List<Order> list;
+        if(sort.equals("id")){
+            list =  repository.findOrder2(orderNum, creatorName, contactPhone, type,
+                    statusCode, coopIds, vin, addTime, orderTime, tech, (page - 1) * pageSize, pageSize);
+        }else{
+            list =  repository.findOrder2ByTime(orderNum, creatorName, contactPhone, type,
+                    statusCode, coopIds, vin, addTime, orderTime, tech, (page - 1) * pageSize, pageSize);
+        }
         int count =  repository.findOrder2Count(orderNum, creatorName, contactPhone, type,
                 statusCode, coopIds, vin, addTime, orderTime, tech);
         return new PageImpl<>(list, new PageRequest(page-1,pageSize), count);

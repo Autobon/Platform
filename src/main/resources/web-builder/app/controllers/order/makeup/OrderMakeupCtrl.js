@@ -11,6 +11,7 @@ export default class OrderMakeupCtrl extends Injector {
         const {$scope, $stateParams, ProductService, OrderService, $timeout} = this.$injected;
         this.attachMethodsTo($scope);
 
+        $scope.$parent.showMore = false;
         OrderService.getDetail2($stateParams.id).then(res => {
             if (res.data.status === true) {
                 let order = $scope.order = res.data.message;
@@ -18,6 +19,7 @@ export default class OrderMakeupCtrl extends Injector {
                 order.position         = {lng: order.longitude, lat: order.latitude};
                 $scope.photoList = [];
                 $scope.photoList = $scope.order.photo.split(',');
+                if ($scope.photoList.length > 0) $scope.currentImg = $scope.photoList[$scope.imgNum];
             }
         });
         ProductService.getOrderProduct($stateParams.id).then(res => {
@@ -30,12 +32,11 @@ export default class OrderMakeupCtrl extends Injector {
         // $('.carousel').carousel();
         // $('#myCarousel').carousel();
         $scope.myInterval = 2000;
+        $scope.imgNum = 0;
         $scope.active = 0;
         $scope.slides = [];
         $scope.addSlide = function () {
-            console.log($scope.photoList);
             $scope.photoList.forEach((ph,i) =>{
-                console.log(ph);
                 $scope.slides.push({
                     image: ph,
                     text: (i + 1).toString(),
@@ -60,7 +61,14 @@ export default class OrderMakeupCtrl extends Injector {
         };
         $timeout(() => {
             $scope.addSlide();
+            $scope.imgWidth = document.querySelector(".imgdiv").offsetWidth;
         }, 1000);
+
+        //图片操作
+        $scope.winWidth = 0;
+        $scope.winHeight = 0;
+        $scope.isPicture = false;
+        $scope.num = 0;
 
     }
 
@@ -79,7 +87,7 @@ export default class OrderMakeupCtrl extends Injector {
                 }
             }
         }
-        ProductService.saveProduct($scope.product.orderId, {productIds: productIdStr, vehicleModel: $scope.vehicleModel, license: $scope.license, vin: $scope.vin, realOrderNum: $scope.realOrderNum, customerName: $scope.customerName, customerPhone: $scope.customerPhone, turnover: $scope.turnover, salesman: $scope.salesman}).then(res => {
+        ProductService.saveProduct($scope.product.orderId, {productIds: productIdStr, vehicleModel: $scope.vehicleModel, license: $scope.license, vin: $scope.vin, realOrderNum: $scope.realOrderNum, customerName: $scope.customerName, customerPhone: $scope.customerPhone, turnover: $scope.turnover, salesman: $scope.salesman, remark: $scope.remark}).then(res => {
             if (res.data.status === true) {
                 let pCoop = $scope.$parent.orders.find(c => c.id === res.data.message.id);
                 if (pCoop) {
@@ -90,5 +98,46 @@ export default class OrderMakeupCtrl extends Injector {
                 $scope.error = res.data.message;
             }
         });
+    }
+
+    // ===================图片操作=============================
+    next() {
+        const {$scope} = this.$injected;
+        $scope.imgNum ++;
+        if ($scope.imgNum < $scope.photoList.length) $scope.currentImg = $scope.photoList[$scope.imgNum];
+        else $scope.imgNum --;
+    }
+    previous() {
+        const {$scope} = this.$injected;
+        $scope.imgNum --;
+        if ($scope.imgNum >= 0 && $scope.imgNum < $scope.photoList.length) $scope.currentImg = $scope.photoList[$scope.imgNum];
+        else $scope.imgNum ++;
+    }
+    clickImg(){
+        const {$scope} = this.$injected;
+        this.getWindowWH();
+        $scope.num ++;
+        angular.element(document.querySelector(".img-view-content")).css({ transform: 'rotate(' + 90 * $scope.num + 'deg) scale(1, 1)' });
+        let img = new Image();
+        img.src = $scope.currentImg;
+        angular.element(document.querySelector(".img-view-content")).css({ width: $scope.imgWidth + 'px' });
+    }
+    // 获取浏览器宽高
+    getWindowWH() {
+        const {$scope} = this.$injected;
+        if (window.innerWidth)
+            $scope.winWidth = window.innerWidth;
+        else if ((document.body) && (document.body.clientWidth))
+            $scope.winWidth = document.body.clientWidth;
+        // 获取窗口高度
+        if (window.innerHeight)
+            $scope.winHeight = window.innerHeight;
+        else if ((document.body) && (document.body.clientHeight))
+            $scope.winHeight = document.body.clientHeight;
+        // 通过深入 Document 内部对 body 进行检测，获取窗口大小
+        if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+            $scope.winHeight = document.documentElement.clientHeight;
+            $scope.winWidth = document.documentElement.clientWidth;
+        }
     }
 }

@@ -8,6 +8,8 @@ export default class OrderDispatchCtrl extends Injector {
 
     constructor(...args) {
         super(...args);
+
+        $scope.$parent.showMore = false;
         const {$scope, $stateParams, OrderService, Settings} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.Settings   = Settings;

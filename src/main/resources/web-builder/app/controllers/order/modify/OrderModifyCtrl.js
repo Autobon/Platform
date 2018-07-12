@@ -11,6 +11,8 @@ export default class OrderModifyCtrl extends Injector {
         super(...args);
         const {$scope, $stateParams, OrderService, Settings} = this.$injected;
         this.attachMethodsTo($scope);
+
+        $scope.$parent.showMore = false;
         $scope.orderTypeList = [{id: 1, name: '隔热膜', state: false}, {id: 2, name:  '隐形车衣', state: false}, {id: 3, name:  '车身改色', state: false}, {id: 4, name: '美容清洁', state: false}];
         $scope.orderStatusList = [
             {id: 'CREATED_TO_APPOINT', name: '新建待指定技师'},

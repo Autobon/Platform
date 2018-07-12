@@ -432,6 +432,7 @@ public class MerchantController {
 
 
         String[] types = type.split(",");
+        List<Order> list = new ArrayList<>();
         for(String s : types){
             Order order = new Order();
             order.setCreatorId(coopAccount.getId());
@@ -449,14 +450,16 @@ public class MerchantController {
             order.setType(s);
             order.setOrderType(Integer.parseInt(s));
             orderService.save(order);
-
             if(pushToAll){
-                publisher.publishEvent(new OrderEventListener.OrderEvent(order, Event.Action.CREATED));
+                OrderEventListener.OrderEvent orderEvent = new OrderEventListener.OrderEvent(order, Event.Action.CREATED);
+                publisher.publishEvent(orderEvent);
             }
+
+
+
         }
         cooperator.setOrderNum(cooperator.getOrderNum() + types.length);
         cooperatorService.save(cooperator);
-
 
         return new JsonResult(true,   "下单完成");
     }

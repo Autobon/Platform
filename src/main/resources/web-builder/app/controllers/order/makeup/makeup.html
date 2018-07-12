@@ -1,4 +1,5 @@
-<div class="console-content">
+<div class="">
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
     <form class="form-inline form-border">
         <div class="row-search-h40">
             <div class="form-group">
@@ -74,55 +75,54 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <uib-carousel active="active" interval="myInterval" no-wrap="true" no-pause="false">
-                    <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
-                        <img ng-src="{{slide.image}}" style="margin:auto;">
-                        <div class="carousel-caption">
-                            <h4>Slide {{slide.id}}</h4>
-                            <p>{{slide.text}}</p>
-                        </div>
-                    </uib-slide>
-                </uib-carousel>
-                <!--<div id="myCarousel" class="carousel slide" data-ride="carousel">-->
-                    <!--&lt;!&ndash; 轮播（Carousel）指标 &ndash;&gt;-->
-                    <!--<ol class="carousel-indicators">-->
-                        <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
-                        <!--<li data-target="#myCarousel" data-slide-to="1"></li>-->
-                        <!--<li data-target="#myCarousel" data-slide-to="2"></li>-->
-                    <!--</ol>-->
-                    <!--&lt;!&ndash; 轮播（Carousel）项目 &ndash;&gt;-->
-                    <!--<div class="carousel-inner">-->
-                        <!--<div class="item active">-->
-                            <!--<img src="/uploads/order/photo/20180615173955992780.jpeg" alt="First slide">-->
+            <div class="col-md-6 imgdiv">
+                <!--<uib-carousel active="active" interval="myInterval" no-wrap="true" no-pause="false">-->
+                    <!--<uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">-->
+                        <!--<div class="img-view-content">-->
+                            <!--<img ng-src="{{slide.image}}" style="margin:auto;" ng-click="clickImg()">-->
+                            <!--<div class="carousel-caption">-->
+                                <!--<h4>Slide {{slide.id}}</h4>-->
+                                <!--<p>{{slide.text}}</p>-->
+                            <!--</div>-->
                         <!--</div>-->
-                        <!--<div class="item">-->
-                            <!--<img src="/uploads/order/photo/20180615173919974603.jpeg" alt="Second slide">-->
-                        <!--</div>-->
-                        <!--<div class="item">-->
-                            <!--<img src="/uploads/order/photo/20180615175332230701.jpeg" alt="Third slide">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash; 轮播（Carousel）导航 &ndash;&gt;-->
-                    <!--<a class="carousel-control left" href="#myCarousel"-->
-                       <!--data-slide="prev"><span class="fa fa-chevron-left m-t-50"></span></a>-->
-                    <!--<a class="carousel-control right" href="#myCarousel"-->
-                       <!--data-slide="next"><span class="fa fa-chevron-right"></span></a>-->
-                <!--</div>-->
+                    <!--</uib-slide>-->
+                <!--</uib-carousel>-->
                 <!--<div ng-repeat="photo in photoList">-->
                     <!--<img ng-if="photo" ng-src="{{photo}}" style="height: 560px;width: 600px;" image-modal class="img-responsive pull-left m-r-10">-->
                 <!--</div>-->
-                <!--<div id="myPicture">-->
-                    <!--<img ng-src="/uploads/order/photo/20180615173955992780.jpeg" style="height: 560px;width: 600px;" image-modal class="img-responsive pull-left m-r-10">-->
-                <!--</div>-->
+                    <img ng-src="{{currentImg}}" style="height: auto;width: 100%;display:block;transform-origin: center center;margin-top: 50px;" image-modal class="img-responsive pull-left m-r-10 img-view-content">
+                    <div style="clear:both;"></div>
+                <div style="width:230px;margin: 10px auto;">
+                    <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="previous()"><span class="glyphicon glyphicon-menu-left"></span>上一张</button>
+                    <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;background:#e89007 !important;" ng-click="clickImg()"><span class="glyphicon glyphicon-repeat">旋转</span></button>
+                    <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="next()">下一张<span class="glyphicon glyphicon-menu-right"></span></button>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row-search-h40">
+            <div class="form-group">
+                <label>备注</label>
+                <textarea class="form-control" rows="3" ng-model="remark"></textarea>
             </div>
         </div>
 
-
         <div class="pull-right modify-btn">
-            <button class="mr50" ng-click="save();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+            <button class="mr50 mt30" ng-click="save();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
         </div>
     </form>
+</div>
+<div class="img-view-dialog" ng-show="isPicture" ng-class="{ closing : isClose  }">
+    <div class="img-view-content" draggable ng-class="{ loadingImg : hasImg  }">
+        <img class="dialog-img" src="" />
+    </div>
+    <div class="dialog-tool">
+        <i class="download-dialog" ng-click="downloadImg()"><i class="fa fa-download"></i></i>
+        <i class="close-dialog" ng-click="backoff()"></i>
+        <i class="rotate-dialog" ng-click="rotate()"></i>
+        <i ng-show="preTrue" class="previous-dialog" ng-click="previous()"></i>
+        <i ng-show="nextTrue" class="next-dialog" ng-click="next()"></i>
+    </div>
 </div>
 
 

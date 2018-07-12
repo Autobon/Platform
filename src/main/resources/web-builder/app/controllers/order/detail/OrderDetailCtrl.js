@@ -8,6 +8,8 @@ export default class OrderDetailCtrl extends Injector {
     constructor(...args) {
         super(...args);
         const {$scope, $stateParams, OrderService} = this.$injected;
+
+        $scope.$parent.showMore = false;
         $scope.comment = {
             arriveOnTime  : true,
             completeOnTime: true,
@@ -24,14 +26,14 @@ export default class OrderDetailCtrl extends Injector {
 
                 order.position         = {lng: order.longitude, lat: order.latitude};
                 $scope.order.photoList = [];
-                $scope.order.photoList = $scope.order.photo.split(',');
+                if ($scope.order.photo != null) $scope.order.photoList = $scope.order.photo.split(',');
                 console.log($scope.order.beforePhotos);
                 $scope.order.startPhotoList = [];
-                $scope.order.startPhotoList = $scope.order.beforePhotos.split(',');
+                if ($scope.order.beforePhotos != null) $scope.order.startPhotoList = $scope.order.beforePhotos.split(',');
                 console.log(JSON.stringify($scope.order.startPhotoList));
 
                 $scope.order.afterPhotoList = [];
-                $scope.order.afterPhotoList = $scope.order.afterPhotos.split(',');
+                if ($scope.order.afterPhotos != null) $scope.order.afterPhotoList = $scope.order.afterPhotos.split(',');
             }
         });
         OrderService.getOrder($stateParams.id).then(res => {

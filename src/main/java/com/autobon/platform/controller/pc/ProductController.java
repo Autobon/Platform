@@ -54,7 +54,8 @@ public class ProductController {
                                   @RequestParam(value = "customerName", required = false) String customerName ,
                                   @RequestParam(value = "customerPhone", required = false) String customerPhone ,
                                   @RequestParam(value = "turnover", required = false) BigDecimal turnover ,
-                                  @RequestParam(value = "salesman", required = false) String salesman){
+                                  @RequestParam(value = "salesman", required = false) String salesman,
+                                  @RequestParam(value = "remark", required = false) String remark){
 
         Order order = orderService.get(orderId);
         if(order == null){
@@ -62,9 +63,9 @@ public class ProductController {
         }
 
 
-        if(order.getProductStatus() == 1){
-            return new JsonResult(false,"已经录入过产品，不能重复补录");
-        }
+//        if(order.getProductStatus() != null && order.getProductStatus() == 1){
+//            return new JsonResult(false,"已经录入过产品，不能重复补录");
+//        }
 
         order.setVehicleModel(vehicleModel == null ? order.getVehicleModel():vehicleModel);
         order.setRealOrderNum(realOrderNum == null ? order.getRealOrderNum() : realOrderNum);
@@ -75,6 +76,7 @@ public class ProductController {
         order.setCustomerPhone(customerPhone == null ? order.getCustomerPhone(): customerPhone);
         order.setTurnover(turnover == null ? order.getTurnover(): turnover);
         order.setSalesman(salesman == null ? order.getSalesman() : salesman);
+        order.setMakeUpRemark(remark == null ? order.getMakeUpRemark() : remark);
 
 
 

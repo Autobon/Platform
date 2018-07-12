@@ -81,7 +81,7 @@ public class OrderController {
         List<Integer> types = null;
         Integer statusCode = orderStatus != null ? orderStatus.getStatusCode() : null;
 
-        if (!"orderTime".equals(sort) && !"id".equals(sort)) return new JsonMessage(false, "ILLEGAL_SORT_PARAM" , "sort参数只能为id或orderTime");
+        if (!"agreed_start_time".equals(sort) && !"id".equals(sort)) return new JsonMessage(false, "ILLEGAL_SORT_PARAM" , "sort参数只能为id或orderTime");
 
         if (orderCreator != null) {
             if (Pattern.matches("\\d+", orderCreator)) {
