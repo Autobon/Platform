@@ -43,7 +43,7 @@ export default function httpConfig($httpProvider) {
         return {
             responseError: function(res) {
                 if (res.status === 403) {
-                    // window.location.href = '/';
+                    window.location.href = '/';
                 }
                 return res;
             },
