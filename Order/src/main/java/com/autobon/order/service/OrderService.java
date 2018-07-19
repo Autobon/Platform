@@ -152,7 +152,7 @@ public class OrderService {
                         plist.add(Integer.valueOf(positionId));
                     }
 
-                    List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds(plist);
+                    List<ConstructionPosition> constructionPositions = constructionPositionRepository.getByIds2(plist, "," + position + ",");
                     constructionProjectShow.setConstructionPositions(constructionPositions);
                     constructionProjectShowList.add(constructionProjectShow);
                 }
