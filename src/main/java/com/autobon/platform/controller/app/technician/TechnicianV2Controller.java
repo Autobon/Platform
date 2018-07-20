@@ -1530,7 +1530,7 @@ public class TechnicianV2Controller {
         }
         Team team = teamService.get(tech.getTeamId());
         List<Team> list = new ArrayList<>();
-        list.add(team);
+        if(team != null) list.add(team);
         return new JsonResult(true, list);
 
     }
