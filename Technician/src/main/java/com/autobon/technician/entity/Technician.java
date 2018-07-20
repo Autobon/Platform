@@ -101,7 +101,7 @@ public class Technician implements UserDetails {
 
     @Column private int workStatus;
 
-    @Column private Integer teamId;
+    @Column private int teamId;
 
 
     @JsonIgnore
@@ -446,11 +446,11 @@ public class Technician implements UserDetails {
         this.beautyWorkingSeniority = beautyWorkingSeniority;
     }
 
-    public Integer getTeamId() {
+    public int getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(Integer teamId) {
+    public void setTeamId(int teamId) {
         this.teamId = teamId;
     }
 }

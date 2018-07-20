@@ -1,1 +1,1 @@
-alter table t_technician add team_id int(11) DEFAULT NULL COMMENT '团队ID';
+alter table t_technician add team_id int(11) DEFAULT 0 COMMENT '团队ID';
