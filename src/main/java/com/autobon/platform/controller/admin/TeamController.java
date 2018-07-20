@@ -118,7 +118,7 @@ public class TeamController {
         if(technician == null) {
             return new JsonResult(false, "技师不存在");
         }
-        if(technician.getTeamId() != null && technician.getTeamId() == id){
+        if(technician.getTeamId() == id){
             return new JsonResult(false, "技师已在该团队，请勿重复添加");
         }
         technician.setTeamId(id);
@@ -149,7 +149,7 @@ public class TeamController {
         if(technician.getId() == team.getManagerId()){
             return new JsonResult(false, "团队负责人不能被删除");
         }
-        technician.setTeamId(null);
+        technician.setTeamId(0);
         technicianService.save(technician);
         return new JsonResult(true, "删除成功");
     }
