@@ -81,7 +81,7 @@ public class OrderV2Controller {
         List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
         if (workDetailShowList != null) {
             for (WorkDetailShow workDetailShow : workDetailShowList) {
-                if (workDetailShow.getTechId() == orderShow.getTechId()) {
+                if (workDetailShow.getTechId() - orderShow.getTechId() == 0) {
                     workDetailShow.setIsMainTech(1);
                 }
             }

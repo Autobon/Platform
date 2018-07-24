@@ -1,6 +1,7 @@
 package com.autobon.order.service;
 
 import com.autobon.order.entity.ConstructionWaste;
+import com.autobon.order.entity.Order;
 import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.entity.WorkDetailView;
 import com.autobon.order.repository.ConstructionWasteRepository;
@@ -184,7 +185,6 @@ public class WorkDetailService {
                     money += sum;
                     cost += total;
                 }
-
                 workDetail.setPayment(money);
                 workDetail.setTotalCost(cost);
                 workDetail.setPayStatus(1);
@@ -197,8 +197,15 @@ public class WorkDetailService {
                 techStatRepository.save(techStat);
 
                 TechFinance techFinance = techFinanceRepository.getByTechId(techId);
-                techFinance.setSumIncome(techFinance.getSumIncome().add(new BigDecimal(money)));
-                techFinance.setNotCash(techFinance.getNotCash().add(new BigDecimal(money)));
+                List<WorkDetailShow> list = getByOrderId(oid);
+                int total = 0;
+                if (list != null && list.size() > 0) {
+                    for (WorkDetailShow workDetailShow : list) {
+                        total += workDetailShow.getPayment();
+                    }
+                }
+                techFinance.setSumIncome(new BigDecimal(total));
+                techFinance.setNotCash(new BigDecimal(total).subtract(techFinance.getSumCash()));
                 techFinanceRepository.save(techFinance);
             }
         }

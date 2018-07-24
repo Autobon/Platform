@@ -23,7 +23,7 @@ export default class OrderDetailCtrl extends Injector {
         OrderService.getDetail2($stateParams.id).then(res => {
             if (res.data.status === true) {
                 let order = $scope.order = res.data.message;
-
+                console.log($scope.order.workDetailShows);
                 order.position         = {lng: order.longitude, lat: order.latitude};
                 $scope.order.photoList = [];
                 if ($scope.order.photo != null) $scope.order.photoList = $scope.order.photo.split(',');

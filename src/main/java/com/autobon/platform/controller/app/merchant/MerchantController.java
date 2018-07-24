@@ -449,6 +449,8 @@ public class MerchantController {
             order.setStatus(pushToAll!= true ?Order.Status.CREATED_TO_APPOINT:Order.Status.NEWLY_CREATED);
             order.setType(s);
             order.setOrderType(Integer.parseInt(s));
+            order.setProductStatus(0);
+            order.setReassignmentStatus(0);
             orderService.save(order);
             if(pushToAll){
                 OrderEventListener.OrderEvent orderEvent = new OrderEventListener.OrderEvent(order, Event.Action.CREATED);
