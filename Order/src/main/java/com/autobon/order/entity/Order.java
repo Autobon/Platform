@@ -39,7 +39,7 @@ public class Order {
 
         public static Status getStatus(Integer statusCode) {
             for (Status s : Status.values()) {
-                if (s.getStatusCode() == statusCode) return s;
+                if (s.getStatusCode() - statusCode == 0) return s;
             }
             return null;
         }
