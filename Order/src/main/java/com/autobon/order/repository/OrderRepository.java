@@ -732,5 +732,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 
         @Query(value = "select *  from  t_order where  hour(timediff(agreed_start_time,NOW())) =12", nativeQuery = true)
         List<Order> findNewCreate12();
+
+        @Query("from Order o where o.coopId = ?1")
+        Page<Order> findAllByCoop(int coopId, Pageable pageable);
+
 }
 

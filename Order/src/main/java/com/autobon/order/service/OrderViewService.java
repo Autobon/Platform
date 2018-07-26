@@ -134,5 +134,13 @@ public class OrderViewService {
     }
 
 
+    public Page<OrderView> findAllOrderM(Integer coopId, Integer currentPage, Integer pageSize){
+//        Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
+//        return orderViewRepository.findAllOrderM(coopId, p);
+        List<OrderView> list = orderViewRepository.findAllOrderM(coopId, (currentPage - 1) * pageSize, pageSize);
+        int count = orderViewRepository.findAllOrderMCount(coopId);
+        Page<OrderView> page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
+        return page;
+    }
 
 }

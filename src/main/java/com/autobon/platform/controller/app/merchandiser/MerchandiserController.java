@@ -294,7 +294,6 @@ public class MerchandiserController {
 
     /**
      * 商户查询订单
-     * @param status 1未接单  2 施工中  3未评价 4 已评价  5全部订单
      * @param page
      * @param pageSize
      * @param request
@@ -302,16 +301,12 @@ public class MerchandiserController {
      */
     @RequestMapping(value = "/merchant/order", method = RequestMethod.GET)
     public JsonResult getOdrders( @RequestParam(value = "coopId", defaultValue = "5") int coopId,
-                                  @RequestParam(value = "status", defaultValue = "5") int status,
-                                  @RequestParam(value = "workDate",required = false) String workDate,
-                                  @RequestParam(value = "vin",required = false) String vin,
-                                  @RequestParam(value = "phone",required = false) String phone,
                                   @RequestParam(value = "page",  defaultValue = "1" )  int page,
                                   @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
                                   HttpServletRequest request) {
 
 
-        Page<OrderView> orders = orderViewService.findCoopOrder(coopId, status, workDate, vin, phone, page, pageSize);
+        Page<Order> orders = orderService.findAllByCoop(coopId, page, pageSize);
         return new JsonResult(true, orders);
 
     }

@@ -162,4 +162,15 @@ public interface OrderViewRepository extends JpaRepository<OrderView, Integer> {
             " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
     int findEvaluatedCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
 
+    @Query("select ov from OrderView ov where 1=1" +
+            " and (?1 is null or ov.coopId = ?1) ")
+    Page<OrderView> findAllOrderM(Integer coopId, Pageable pageable);
+
+    @Query(value = "select ov.* from t_order_view ov where 1=1" +
+            " and (?1 is null or ov.coop_id = ?1) order by ov.id desc limit ?2,?3", nativeQuery = true)
+    List<OrderView> findAllOrderM(Integer coopId, Integer begin, Integer size);
+
+    @Query(value = "select count(*) from t_order_view ov where 1=1" +
+            " and (?1 is null or ov.coop_id = ?1) ", nativeQuery = true)
+    int findAllOrderMCount(Integer coopId);
 }

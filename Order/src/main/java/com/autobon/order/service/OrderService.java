@@ -538,4 +538,9 @@ public class OrderService {
         order.setTechnicianRemark(remark == null ? order.getTechnicianRemark() : remark);
         return order;
     }
+
+    public Page<Order> findAllByCoop(int coopId, int page, int pageSize) {
+        return repository.findAllByCoop(coopId, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
 }
