@@ -205,7 +205,7 @@ public class WorkDetailService {
                     }
                 }
                 techFinance.setSumIncome(new BigDecimal(total));
-                techFinance.setNotCash(new BigDecimal(total).subtract(techFinance.getSumCash()));
+                techFinance.setNotCash(techFinance.getSumCash() == null ? new BigDecimal(total) : new BigDecimal(total).subtract(techFinance.getSumCash()));
                 techFinanceRepository.save(techFinance);
             }
         }
