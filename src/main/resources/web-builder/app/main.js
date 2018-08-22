@@ -169,6 +169,12 @@ const app = angular.module(App, ['ngAnimate', 'ui.router', 'ui.bootstrap', 'tree
                         '103': '零售店撕车衣/改色膜',
                         '104': '零售店行车记录仪安装',
                         '105': '零售店裁脚垫',
+                        '106': '左机盖',
+                        '107': '右机盖',
+                        '108': '左前杠',
+                        '109': '右前杠',
+                        '110': '左后杠',
+                        '111': '右后杠',
                     },
                     technicianStatus: {
                         'NEWLY_CREATED': '新注册',
