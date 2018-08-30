@@ -115,7 +115,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " and (?8 is null or date_format(o.add_time,'%Y-%m-%d') = ?8) " +
                 " and (?9 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?9) " +
                 " and  o.main_tech_id in (?10) " +
-                " order by o.id desc limit ?12,?13", nativeQuery = true)
+                " order by o.id desc limit ?11,?12", nativeQuery = true)
         List<Order> findOrder2(String orderNum, String creatorName, String contactPhone,
                               String type, Integer statusCode, List<String> coopIds, String vin,
                                String addTime, String orderTime, List<Integer> list, Integer page, Integer pageSize);
