@@ -1167,88 +1167,88 @@ public class OrderV2Controller {
                         if(product.getConstructionPositionId() == 1){
                             product.getScrapCost();
                             row.getCell(15).setCellValue(product.getModel());
-                            row.getCell(16).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(16).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 2){
                             row.getCell(18).setCellValue(product.getModel());
-                            row.getCell(19).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(19).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 3){
                             row.getCell(21).setCellValue(product.getModel());
-                            row.getCell(22).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(22).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 4){
                             row.getCell(24).setCellValue(product.getModel());
-                            row.getCell(25).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(25).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 5){
                             row.getCell(27).setCellValue(product.getModel());
-                            row.getCell(28).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(28).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 6){
                             row.getCell(30).setCellValue(product.getModel());
-                            row.getCell(31).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(31).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 19){
                             row.getCell(33).setCellValue(product.getModel());
-                            row.getCell(34).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(34).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 20){
                             row.getCell(36).setCellValue(product.getModel());
-                            row.getCell(37).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(37).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 21){
                             row.getCell(39).setCellValue(product.getModel());
-                            row.getCell(40).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(40).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 22){
                             row.getCell(42).setCellValue(product.getModel());
-                            row.getCell(43).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(43).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 23){
                             row.getCell(45).setCellValue(product.getModel());
-                            row.getCell(46).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(46).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 24){
                             row.getCell(48).setCellValue(product.getModel());
-                            row.getCell(49).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(49).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 25){
                             row.getCell(51).setCellValue(product.getModel());
-                            row.getCell(52).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(52).setCellValue(product.getConstructionCommission());
                         }
                     }else if(product.getConstructionProjectId() == 2){
                         if(product.getConstructionPositionId() == 7){
                             row.getCell(54).setCellValue(product.getModel());
-                            row.getCell(55).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(55).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 8){
                             row.getCell(57).setCellValue(product.getModel());
-                            row.getCell(58).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(58).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 9){
                             row.getCell(60).setCellValue(product.getModel());
-                            row.getCell(61).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(61).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 10){
                             row.getCell(63).setCellValue(product.getModel());
-                            row.getCell(64).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(64).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 11){
                             row.getCell(66).setCellValue(product.getModel());
-                            row.getCell(67).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(67).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 12){
                             row.getCell(69).setCellValue(product.getModel());
-                            row.getCell(70).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(70).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 13){
                             row.getCell(72).setCellValue(product.getModel());
-                            row.getCell(73).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(73).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 14){
                             row.getCell(75).setCellValue(product.getModel());
-                            row.getCell(76).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(76).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 15){
                             row.getCell(78).setCellValue(product.getModel());
-                            row.getCell(79).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(79).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 16){
                             row.getCell(81).setCellValue(product.getModel());
-                            row.getCell(82).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(82).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 17){
                             row.getCell(84).setCellValue(product.getModel());
-                            row.getCell(85).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(85).setCellValue(product.getConstructionCommission());
                         }else if(product.getConstructionPositionId() == 18){
                             row.getCell(87).setCellValue(product.getModel());
-                            row.getCell(88).setCellValue(product.getConstructionCommission());
+                            if(product.getConstructionCommission() != null) row.getCell(88).setCellValue(product.getConstructionCommission());
                         }
                     }else if(product.getConstructionProjectId() == 3){
                         row.getCell(90).setCellValue(product.getModel());
-                        row.getCell(91).setCellValue(product.getConstructionCommission());
+                        if(product.getConstructionCommission() != null) row.getCell(91).setCellValue(product.getConstructionCommission());
                     }else if(product.getConstructionProjectId() == 4){
                         row.getCell(93).setCellValue(product.getModel());
-                        row.getCell(94).setCellValue(product.getConstructionCommission());
+                        if(product.getConstructionCommission() != null) row.getCell(94).setCellValue(product.getConstructionCommission());
                     }
                 }
 

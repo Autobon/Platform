@@ -64,7 +64,7 @@ defaultTasks "build"
 allprojects {
 
     repositories {
-        def REPOSITORY_URL = 'http://maven.aliyun.com/nexus/content/groups/public/'
+        def REPOSITORY_URL = 'https://maven.aliyun.com/repository/central'
         all { ArtifactRepository repo ->
             if(repo instanceof MavenArtifactRepository){
                 def url = repo.url.toString()
