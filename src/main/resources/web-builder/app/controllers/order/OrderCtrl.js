@@ -203,4 +203,7 @@ export default class OrderCtrl extends Injector {
         }
     }
 
+    kankan() {
+        console.log(1111);
+    }
 }

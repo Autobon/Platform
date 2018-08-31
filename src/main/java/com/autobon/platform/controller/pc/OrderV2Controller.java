@@ -667,13 +667,13 @@ public class OrderV2Controller {
         }
         List<WorkDetailOrderView> viewList;
         if(idList != null && !idList.equals("")){
-            Page<WorkDetailOrderView> viewPage =  workDetailOrderViewService.findByIds(idList,1,300);
+            Page<WorkDetailOrderView> viewPage =  workDetailOrderViewService.findByIds(idList,1,4000);
             viewList = viewPage.getContent();
         }else if(tech == null || tech == ""){
-            Page<WorkDetailOrderView> viewPage =  workDetailOrderViewService.findViews(start, end,1,300);
+            Page<WorkDetailOrderView> viewPage =  workDetailOrderViewService.findViews(start, end,1,4000);
             viewList = viewPage.getContent();
         }else{
-            viewList =  workDetailOrderViewService.findViewsByTech(tech, start, end,1,300);
+            viewList =  workDetailOrderViewService.findViewsByTech(tech, start, end,1,4000);
         }
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -1551,7 +1551,7 @@ public class OrderV2Controller {
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         for(Technician te : techList){
-            Page<WorkDetailView> views = workDetailService.findViews(te.getId(), 1, 300);
+            Page<WorkDetailView> views = workDetailService.findViews(te.getId(), 1, 4000);
             HSSFSheet sheet;
             if(te.getName() == null){
                 sheet = workbook.createSheet(te.getPhone());
@@ -1739,5 +1739,13 @@ public class OrderV2Controller {
 
 
 
+    }
+
+
+
+    @RequestMapping(value = "/test/finish", method = RequestMethod.GET)
+    public JsonResult testFinance(){
+        workDetailService.testFinance();
+        return new JsonResult(true, "修改完成");
     }
 }

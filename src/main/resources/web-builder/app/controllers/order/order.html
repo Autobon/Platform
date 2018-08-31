@@ -84,8 +84,8 @@
         <label style="float:left;line-height:40px;margin:0 4px;">开始时间:</label>
         <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.startDate}}</div>
             <div uib-dropdown-menu>
-                <datetimepicker ng-model="filter.startDate"
-                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD hh:mm:ss', minView: 'minute', startView: 'year'}"
+                <datetimepicker ng-model="filter.startDate" ng-change="kankan()"
+                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD hh:mm:ss', minView: 'day', startView: 'year'}"
                                 before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
             </div>
         </div>
@@ -95,7 +95,7 @@
         <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.endDate}}</div>
             <div uib-dropdown-menu>
                 <datetimepicker ng-model="filter.endDate"
-                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD hh:mm:ss', minView: 'minute', startView: 'year'}"
+                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD hh:mm:ss', minView: 'day', startView: 'year'}"
                                 before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
             </div>
         </div>

@@ -15,8 +15,10 @@ import com.autobon.order.vo.ProjectPosition;
 import com.autobon.order.vo.WorkDetailShow;
 import com.autobon.technician.entity.TechFinance;
 import com.autobon.technician.entity.TechStat;
+import com.autobon.technician.entity.Technician;
 import com.autobon.technician.repository.TechFinanceRepository;
 import com.autobon.technician.repository.TechStatRepository;
+import com.autobon.technician.repository.TechnicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,6 +50,8 @@ public class WorkDetailService {
     TechFinanceRepository techFinanceRepository;
     @Autowired
     WorkDetailViewRepository workDetailViewRepository;
+    @Autowired
+    TechnicianRepository technicianRepository;
 
 
 
@@ -197,7 +201,7 @@ public class WorkDetailService {
                 techStatRepository.save(techStat);
 
                 TechFinance techFinance = techFinanceRepository.getByTechId(techId);
-                List<WorkDetailShow> list = getByOrderId(oid);
+                List<WorkDetailShow> list = getByTechId(techId);
                 int total = 0;
                 if (list != null && list.size() > 0) {
                     for (WorkDetailShow workDetailShow : list) {
@@ -212,6 +216,26 @@ public class WorkDetailService {
         return 0;
     }
 
+    //临时用，修改财务
+    public void testFinance(){
+        List<Technician> techList = technicianRepository.findAll();
+        for(Technician t : techList){
+            TechFinance techFinance = techFinanceRepository.getByTechId(t.getId());
+            if(techFinance != null){
+                List<WorkDetailShow> list = getByTechId(t.getId());
+                int total = 0;
+                if (list != null && list.size() > 0) {
+                    for (WorkDetailShow workDetailShow : list) {
+                        total += workDetailShow.getPayment();
+                    }
+                }
+                techFinance.setSumIncome(new BigDecimal(total));
+                techFinance.setNotCash(techFinance.getSumCash() == null ? new BigDecimal(total) : new BigDecimal(total).subtract(techFinance.getSumCash()));
+                techFinanceRepository.save(techFinance);
+            }
+        }
+    }
+
 
 
     public WorkDetail getByOderIdAndTechId(int orderId, int techId){
@@ -222,6 +246,17 @@ public class WorkDetailService {
 
     public List<WorkDetailShow> getByOrderId(int orderId){
         List<Object[]> list = workDetailRepository.getByOrderId(orderId);
+        List<WorkDetailShow> workDetailShows = new ArrayList<>();
+        for(Object[] objects : list){
+            WorkDetailShow workDetailShow = new WorkDetailShow(objects);
+            workDetailShows.add(workDetailShow);
+        }
+
+        return workDetailShows;
+    }
+
+    public List<WorkDetailShow> getByTechId(int techId){
+        List<Object[]> list = workDetailRepository.getByTechId(techId);
         List<WorkDetailShow> workDetailShows = new ArrayList<>();
         for(Object[] objects : list){
             WorkDetailShow workDetailShow = new WorkDetailShow(objects);
