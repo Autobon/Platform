@@ -16,6 +16,9 @@ import java.util.List;
  */
 @Repository
 public interface WorkDetailViewRepository extends JpaRepository<WorkDetailView, Integer> {
-    @Query("select w from WorkDetailView w where w.techId = ?1 ")
+    @Query("select w from WorkDetailView w where w.techId = ?1 and w.createDate>'2018-08-31 23:59:59'")
     Page<WorkDetailView> findViews(int techId, Pageable pageable);
+
+    @Query("select w from WorkDetailView w where w.createDate>'2018-08-31 23:59:59' order by w.techId")
+    List<WorkDetailView> findAllViews();
 }

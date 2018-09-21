@@ -99,6 +99,30 @@ export default class OrderMakeupCtrl extends Injector {
             }
         });
     }
+    checkSelect(index){
+        const {$scope} = this.$injected;
+        let project = $scope.product.project;
+        if(index != 28){
+            for (let i = 0; i < project.length; i++) {
+                let aaa = project[i].productShowList;
+                let ccc = aaa.find((item) => (item.positionId == 28));
+                console.log(ccc);
+                if(ccc.productId > 0) return true;
+                if (index == 108 || index == 109) {
+                    let bbb = aaa.find((item) => (item.positionId == 29));
+                    console.log(bbb);
+                    console.log(aaa);
+                    if(bbb.productId > 0){
+                        return true;
+                    }
+                }
+            }
+        }
+        // if(index == 18) {
+        //     return true;
+        // }
+        return false;
+    }
 
     // ===================图片操作=============================
     next() {

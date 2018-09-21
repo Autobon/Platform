@@ -68,4 +68,10 @@ public interface WorkDetailRepository extends JpaRepository<WorkDetail, Integer>
             "and o.statusCode >= 60 and o.statusCode < 200 " +
             "and o.finishTime >= ?2 and o.finishTime < ?3)")
     int settlePayment(int techId, Date from, Date to);
+
+    @Query(value ="select position1 from t_work_detail where tech_id = ?1 and create_date > '2018-08-31 23:59:59' order by length(position1) DESC limit 1",nativeQuery = true)
+    String findlargest(int techId);
+
+    @Query(value ="select position1 from t_work_detail where create_date > '2018-08-31 23:59:59' order by length(position1) DESC limit 1",nativeQuery = true)
+    String findlargest();
 }

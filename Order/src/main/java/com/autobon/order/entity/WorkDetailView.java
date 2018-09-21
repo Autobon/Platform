@@ -21,6 +21,21 @@ public class WorkDetailView {
     @Column(name = "orderNum")
     private String orderNum;
 
+    @Column(name = "realOrderNum")
+    private String realOrderNum;
+
+    @Column(name = "fullname")
+    private String fullname;
+
+    @Column(name = "vehicle_model")
+    private String vehicleModel;
+
+    @Column(name = "license")
+    private String license;
+
+    @Column(name = "vin")
+    private String vin;
+
     @Column
     private int source;
 
@@ -309,5 +324,45 @@ public class WorkDetailView {
 
     public void setTotalCost(float totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public String getRealOrderNum() {
+        return realOrderNum;
+    }
+
+    public void setRealOrderNum(String realOrderNum) {
+        this.realOrderNum = realOrderNum;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getVehicleModel() {
+        return vehicleModel;
+    }
+
+    public void setVehicleModel(String vehicleModel) {
+        this.vehicleModel = vehicleModel;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
+    public String getVin() {
+        return vin;
+    }
+
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 }

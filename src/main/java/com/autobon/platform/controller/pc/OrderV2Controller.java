@@ -1283,7 +1283,7 @@ public class OrderV2Controller {
                          HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
 
-        Page<WorkDetailView> views = workDetailService.findViews(techId, 1, 300);
+        Page<WorkDetailView> views = workDetailService.findViews(techId, 1, 4000);
 // INSERT INTO t_tech_finance(tech_id,sum_income) SELECT t.id,SUM(w.payment) from t_technician t LEFT JOIN t_work_detail w on w.tech_id = t.id GROUP BY t.id
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] content = os.toByteArray();
@@ -1320,69 +1320,79 @@ public class OrderV2Controller {
         sheet.setColumnWidth(0, 18 * 256);
         sheet.setColumnWidth(1, 10 * 256);
         sheet.setColumnWidth(2, 17 * 256);
-        sheet.setColumnWidth(6, 150 * 256);
-        sheet.setColumnWidth(8, 150 * 256);
-        sheet.setColumnWidth(10, 150 * 256);
-        sheet.setColumnWidth(12, 150 * 256);
-        sheet.setColumnWidth(14, 150 * 256);
-        sheet.setColumnWidth(16, 150 * 256);
+        sheet.setColumnWidth(3, 30 * 256);
+        sheet.setColumnWidth(8, 22 * 256);
+        sheet.setColumnWidth(9, 16 * 256);
+        sheet.setColumnWidth(10, 16 * 256);
+//        sheet.setColumnWidth(10, 150 * 256);
+//        sheet.setColumnWidth(12, 150 * 256);
+//        sheet.setColumnWidth(14, 150 * 256);
+//        sheet.setColumnWidth(16, 150 * 256);
 
         HSSFCell cell;
 
         cell = row.createCell(0);
-        cell.setCellValue("订单编号");
+        cell.setCellValue("日期");
         cell.setCellStyle(style);
         cell = row.createCell(1);
         cell.setCellValue("技师姓名");
         cell.setCellStyle(style);
         cell = row.createCell(2);
-        cell.setCellValue("下单时间");
+        cell.setCellValue("订单编号");
         cell.setCellStyle(style);
         cell = row.createCell(3);
-        cell.setCellValue("结算金额");
+        cell.setCellValue("商户名称");
         cell.setCellStyle(style);
         cell = row.createCell(4);
-        cell.setCellValue("报废扣款");
+        cell.setCellValue("施工项目");
         cell.setCellStyle(style);
         cell = row.createCell(5);
-        cell.setCellValue("施工项目1");
+        cell.setCellValue("结算金额");
         cell.setCellStyle(style);
         cell = row.createCell(6);
-        cell.setCellValue("施工部位1");
+        cell.setCellValue("报废扣款");
         cell.setCellStyle(style);
         cell = row.createCell(7);
-        cell.setCellValue("施工项目2");
+        cell.setCellValue("车型");
         cell.setCellStyle(style);
         cell = row.createCell(8);
-        cell.setCellValue("施工部位2");
+        cell.setCellValue("车架号");
         cell.setCellStyle(style);
         cell = row.createCell(9);
-        cell.setCellValue("施工项目3");
+        cell.setCellValue("车牌号");
         cell.setCellStyle(style);
         cell = row.createCell(10);
-        cell.setCellValue("施工部位3");
+        cell.setCellValue("单号");
         cell.setCellStyle(style);
-        cell = row.createCell(11);
-        cell.setCellValue("施工项目4");
-        cell.setCellStyle(style);
-        cell = row.createCell(12);
-        cell.setCellValue("施工部位4");
-        cell.setCellStyle(style);
-        cell = row.createCell(13);
-        cell.setCellValue("施工项目5");
-        cell.setCellStyle(style);
-        cell = row.createCell(14);
-        cell.setCellValue("施工部位5");
-        cell.setCellStyle(style);
-        cell = row.createCell(15);
-        cell.setCellValue("施工项目6");
-        cell.setCellStyle(style);
-        cell = row.createCell(16);
-        cell.setCellValue("施工部位6");
-        cell.setCellStyle(style);
-        cell = row.createCell(17);
-        cell.setCellValue("支付状态");
-        cell.setCellStyle(style);
+//        String str = workDetailService.findLargest(techId);
+//        if(str != null){
+//            String[] positions = str.split(",");
+//            int j = 10;
+//            int k = 1;
+//            for(String s : positions){
+//                cell = row.createCell(j + 1);
+//                cell.setCellValue("施工部位" + k);
+//                cell.setCellStyle(style);
+//                cell = row.createCell(j + 2);
+//                cell.setCellValue("施工型号");
+//                cell.setCellStyle(style);
+//                cell = row.createCell(j + 3);
+//                cell.setCellValue("提成");
+//                cell.setCellStyle(style);
+//                j += 3;
+//                k ++;
+//            }
+//        }else{
+//            cell = row.createCell(11);
+//            cell.setCellValue("施工部位");
+//            cell.setCellStyle(style);
+//            cell = row.createCell(12);
+//            cell.setCellValue("施工型号");
+//            cell.setCellStyle(style);
+//            cell = row.createCell(13);
+//            cell.setCellValue("提成");
+//            cell.setCellStyle(style);
+//        }
 
 
         //新增数据行，并且设置单元格数据
@@ -1393,71 +1403,72 @@ public class OrderV2Controller {
                 row = sheet.createRow(rowNum);
                 cell = row.createCell(0);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getOrderNum());
+                cell.setCellValue(view.getCreateDate());
                 cell = row.createCell(1);
                 cell.setCellStyle(style);
                 cell.setCellValue(view.getTechName());
                 cell = row.createCell(2);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getCreateDate());
+                cell.setCellValue(view.getOrderNum());
                 cell = row.createCell(3);
-                cell.setCellStyle(style1);
-                cell.setCellValue(view.getPayment());
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getFullname());
                 cell = row.createCell(4);
-                cell.setCellStyle(style1);
-                cell.setCellValue(view.getTotalCost());
-                cell = row.createCell(5);
                 cell.setCellStyle(style);
                 cell.setCellValue(view.getProjectName1());
+                cell = row.createCell(5);
+                cell.setCellStyle(style1);
+                cell.setCellValue(view.getPayment());
                 cell = row.createCell(6);
-                cell.setCellStyle(style);
-                cell.setCellValue(changePosition(view.getPosition1()));
+                cell.setCellStyle(style1);
+                cell.setCellValue(view.getTotalCost());
                 cell = row.createCell(7);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getProjectName2());
+                cell.setCellValue(view.getVehicleModel());
                 cell = row.createCell(8);
                 cell.setCellStyle(style);
-                cell.setCellValue(changePosition(view.getPosition2()));
+                cell.setCellValue(view.getVin());
                 cell = row.createCell(9);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getProjectName3());
+                cell.setCellValue(view.getLicense());
                 cell = row.createCell(10);
                 cell.setCellStyle(style);
-                cell.setCellValue(changePosition(view.getPosition3()));
-                cell = row.createCell(11);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getProjectName4());
-                cell = row.createCell(12);
-                cell.setCellStyle(style);
-                cell.setCellValue(changePosition(view.getPosition4()));
-                cell = row.createCell(13);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getProjectName5());
-                cell = row.createCell(14);
-                cell.setCellStyle(style);
-                cell.setCellValue(changePosition(view.getPosition5()));
-                cell = row.createCell(15);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getProjectName6());
-                cell = row.createCell(16);
-                cell.setCellStyle(style);
-                cell.setCellValue(changePosition(view.getPosition6()));
+                cell.setCellValue(view.getRealOrderNum());
+                if(view.getPosition1() != null) {
+                    String[] pos = view.getPosition1().split(",");
+                    int m = 10;
+                    for(String s : pos){
+                        HSSFRow row0 = sheet.getRow(0);
+                        if(row0.getCell(m + 1) == null || row0.getCell(m + 1).getRichStringCellValue() == null){
+                            cell = row0.createCell(m + 1);
+                            cell.setCellValue("施工部位" + ((m + 1 - 10)/3 + 1));
+                            cell.setCellStyle(style);
+                            cell = row0.createCell(m + 2);
+                            cell.setCellValue("施工型号");
+                            cell.setCellStyle(style);
+                            cell = row0.createCell(m + 3);
+                            cell.setCellValue("提成");
+                            cell.setCellStyle(style);
+                        }
+                        OrderProductView p = orderProductService.findByOrderIdAndProject(view.getOrderId(), view.getProject1(), Integer.parseInt(s));
 
-
-                String status = "";
-                if (view.getPayStatus() == 0) {
-                    status = "未出帐";
+                        sheet.setColumnWidth(m + 1, 18 * 256);
+                        cell = row.createCell(m + 1);
+                        cell.setCellStyle(style);
+                        cell.setCellValue(p == null?"" : p.getName());
+                        sheet.setColumnWidth(m + 2, 16 * 256);
+                        cell = row.createCell(m + 2);
+                        cell.setCellStyle(style);
+                        cell.setCellValue(p == null?"" : p.getModel());
+                        cell = row.createCell(m + 3);
+                        cell.setCellStyle(style1);
+                        if(p != null && p.getConstructionCommission() != null) cell.setCellValue(p.getConstructionCommission());
+                        m += 3;
+                    }
                 }
-                if (view.getPayStatus() == 1) {
-                    status = "已出账";
-                }
-                if (view.getPayStatus() == 2) {
-                    status = "已转账支付";
-                }
-                cell = row.createCell(17);
-                cell.setCellStyle(style);
-                cell.setCellValue(status);
-
+//                cell = row.createCell(11);
+//                cell.setCellStyle(style);
+//                cell.setCellValue(changePosition(view.getPosition4()));
 
                 rowNum++;
             }
@@ -1535,7 +1546,7 @@ public class OrderV2Controller {
                          HttpServletRequest request,
                          HttpServletResponse response) throws IOException {
 
-        List<Technician> techList = technicianService.findAll();
+        List<WorkDetailView> views = workDetailService.findAllViews();
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] content = os.toByteArray();
@@ -1550,176 +1561,173 @@ public class OrderV2Controller {
 
 
         HSSFWorkbook workbook = new HSSFWorkbook();
-        for(Technician te : techList){
-            Page<WorkDetailView> views = workDetailService.findViews(te.getId(), 1, 4000);
-            HSSFSheet sheet;
-            if(te.getName() == null){
-                sheet = workbook.createSheet(te.getPhone());
-            }else{
-                sheet = workbook.createSheet(te.getName() + "  " + te.getPhone());
-            }
+        HSSFSheet sheet = workbook.createSheet("技师财务清单");
 
-            HSSFCellStyle style = workbook.createCellStyle();
-            style.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy h:mm"));
-            style.setBorderBottom(BorderStyle.THIN);//下边框
-            style.setBorderLeft(BorderStyle.THIN);//左边框
-            style.setBorderTop(BorderStyle.THIN);//上边框
-            style.setBorderRight(BorderStyle.THIN);//右边框
-            style.setAlignment(HorizontalAlignment.CENTER);
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy h:mm"));
+        style.setBorderBottom(BorderStyle.THIN);//下边框
+        style.setBorderLeft(BorderStyle.THIN);//左边框
+        style.setBorderTop(BorderStyle.THIN);//上边框
+        style.setBorderRight(BorderStyle.THIN);//右边框
+        style.setAlignment(HorizontalAlignment.CENTER);
 
-            HSSFCellStyle style1 = workbook.createCellStyle();
-            style1.setBorderBottom(BorderStyle.THIN);//下边框
-            style1.setBorderLeft(BorderStyle.THIN);//左边框
-            style1.setBorderTop(BorderStyle.THIN);//上边框
-            style1.setBorderRight(BorderStyle.THIN);//右边框
-            style1.setAlignment(HorizontalAlignment.CENTER);
+        HSSFCellStyle style1 = workbook.createCellStyle();
+        style1.setBorderBottom(BorderStyle.THIN);//下边框
+        style1.setBorderLeft(BorderStyle.THIN);//左边框
+        style1.setBorderTop(BorderStyle.THIN);//上边框
+        style1.setBorderRight(BorderStyle.THIN);//右边框
+        style1.setAlignment(HorizontalAlignment.CENTER);
 
-            HSSFRow row = sheet.createRow(0);
-            //设置列宽，setColumnWidth的第二个参数要乘以256，这个参数的单位是1/256个字符宽度
-            sheet.setColumnWidth(0, 18 * 256);
-            sheet.setColumnWidth(1, 10 * 256);
-            sheet.setColumnWidth(2, 17 * 256);
-            sheet.setColumnWidth(6, 150 * 256);
-            sheet.setColumnWidth(8, 150 * 256);
-            sheet.setColumnWidth(10, 150 * 256);
-            sheet.setColumnWidth(12, 150 * 256);
-            sheet.setColumnWidth(14, 150 * 256);
-            sheet.setColumnWidth(16, 150 * 256);
+        HSSFRow row = sheet.createRow(0);
+        //设置列宽，setColumnWidth的第二个参数要乘以256，这个参数的单位是1/256个字符宽度
+        sheet.setColumnWidth(0, 18 * 256);
+        sheet.setColumnWidth(1, 10 * 256);
+        sheet.setColumnWidth(2, 17 * 256);
+        sheet.setColumnWidth(3, 30 * 256);
+        sheet.setColumnWidth(8, 22 * 256);
+        sheet.setColumnWidth(9, 16 * 256);
+        sheet.setColumnWidth(10, 16 * 256);
 
-            HSSFCell cell;
+        HSSFCell cell;
 
-            cell = row.createCell(0);
-            cell.setCellValue("订单编号");
-            cell.setCellStyle(style);
-            cell = row.createCell(1);
-            cell.setCellValue("技师姓名");
-            cell.setCellStyle(style);
-            cell = row.createCell(2);
-            cell.setCellValue("下单时间");
-            cell.setCellStyle(style);
-            cell = row.createCell(3);
-            cell.setCellValue("结算金额");
-            cell.setCellStyle(style);
-            cell = row.createCell(4);
-            cell.setCellValue("报废扣款");
-            cell.setCellStyle(style);
-            cell = row.createCell(5);
-            cell.setCellValue("施工项目1");
-            cell.setCellStyle(style);
-            cell = row.createCell(6);
-            cell.setCellValue("施工部位1");
-            cell.setCellStyle(style);
-            cell = row.createCell(7);
-            cell.setCellValue("施工项目2");
-            cell.setCellStyle(style);
-            cell = row.createCell(8);
-            cell.setCellValue("施工部位2");
-            cell.setCellStyle(style);
-            cell = row.createCell(9);
-            cell.setCellValue("施工项目3");
-            cell.setCellStyle(style);
-            cell = row.createCell(10);
-            cell.setCellValue("施工部位3");
-            cell.setCellStyle(style);
-            cell = row.createCell(11);
-            cell.setCellValue("施工项目4");
-            cell.setCellStyle(style);
-            cell = row.createCell(12);
-            cell.setCellValue("施工部位4");
-            cell.setCellStyle(style);
-            cell = row.createCell(13);
-            cell.setCellValue("施工项目5");
-            cell.setCellStyle(style);
-            cell = row.createCell(14);
-            cell.setCellValue("施工部位5");
-            cell.setCellStyle(style);
-            cell = row.createCell(15);
-            cell.setCellValue("施工项目6");
-            cell.setCellStyle(style);
-            cell = row.createCell(16);
-            cell.setCellValue("施工部位6");
-            cell.setCellStyle(style);
-            cell = row.createCell(17);
-            cell.setCellValue("支付状态");
-            cell.setCellStyle(style);
-
-
-            //新增数据行，并且设置单元格数据
-            if(views != null && views.getContent().size() > 0) {
-                int rowNum = 1;
-                for (WorkDetailView view : views.getContent()) {
-
-                    row = sheet.createRow(rowNum);
-                    cell = row.createCell(0);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(view.getOrderNum());
-                    cell = row.createCell(1);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(view.getTechName());
-                    cell = row.createCell(2);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(view.getCreateDate());
-                    cell = row.createCell(3);
-                    cell.setCellStyle(style1);
-                    cell.setCellValue(view.getPayment());
-                    cell = row.createCell(4);
-                    cell.setCellStyle(style1);
-                    cell.setCellValue(view.getTotalCost());
-                    cell = row.createCell(5);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(view.getProjectName1());
-                    cell = row.createCell(6);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(changePosition(view.getPosition1()));
-                    cell = row.createCell(7);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(view.getProjectName2());
-                    cell = row.createCell(8);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(changePosition(view.getPosition2()));
-                    cell = row.createCell(9);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(view.getProjectName3());
-                    cell = row.createCell(10);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(changePosition(view.getPosition3()));
-                    cell = row.createCell(11);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(view.getProjectName4());
-                    cell = row.createCell(12);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(changePosition(view.getPosition4()));
-                    cell = row.createCell(13);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(view.getProjectName5());
-                    cell = row.createCell(14);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(changePosition(view.getPosition5()));
-                    cell = row.createCell(15);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(view.getProjectName6());
-                    cell = row.createCell(16);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(changePosition(view.getPosition6()));
+        cell = row.createCell(0);
+        cell.setCellValue("日期");
+        cell.setCellStyle(style);
+        cell = row.createCell(1);
+        cell.setCellValue("技师姓名");
+        cell.setCellStyle(style);
+        cell = row.createCell(2);
+        cell.setCellValue("订单编号");
+        cell.setCellStyle(style);
+        cell = row.createCell(3);
+        cell.setCellValue("商户名称");
+        cell.setCellStyle(style);
+        cell = row.createCell(4);
+        cell.setCellValue("施工项目");
+        cell.setCellStyle(style);
+        cell = row.createCell(5);
+        cell.setCellValue("结算金额");
+        cell.setCellStyle(style);
+        cell = row.createCell(6);
+        cell.setCellValue("报废扣款");
+        cell.setCellStyle(style);
+        cell = row.createCell(7);
+        cell.setCellValue("车型");
+        cell.setCellStyle(style);
+        cell = row.createCell(8);
+        cell.setCellValue("车架号");
+        cell.setCellStyle(style);
+        cell = row.createCell(9);
+        cell.setCellValue("车牌号");
+        cell.setCellStyle(style);
+        cell = row.createCell(10);
+        cell.setCellValue("单号");
+        cell.setCellStyle(style);
+//        String str = workDetailService.findLargest();
+//        if(str != null){
+//            String[] positions = str.split(",");
+//            int j = 10;
+//            int k = 1;
+//            for(String s : positions){
+//                cell = row.createCell(j + 1);
+//                cell.setCellValue("施工部位" + k);
+//                cell.setCellStyle(style);
+//                cell = row.createCell(j + 2);
+//                cell.setCellValue("施工型号");
+//                cell.setCellStyle(style);
+//                cell = row.createCell(j + 3);
+//                cell.setCellValue("提成");
+//                cell.setCellStyle(style);
+//                j += 3;
+//                k ++;
+//            }
+//        }else{
+//            cell = row.createCell(11);
+//            cell.setCellValue("施工部位");
+//            cell.setCellStyle(style);
+//            cell = row.createCell(12);
+//            cell.setCellValue("施工型号");
+//            cell.setCellStyle(style);
+//            cell = row.createCell(13);
+//            cell.setCellValue("提成");
+//            cell.setCellStyle(style);
+//        }
 
 
-                    String status = "";
-                    if (view.getPayStatus() == 0) {
-                        status = "未出帐";
+        //新增数据行，并且设置单元格数据
+        if(views != null && views.size() > 0) {
+            int rowNum = 1;
+            for (WorkDetailView view : views) {
+
+                row = sheet.createRow(rowNum);
+                cell = row.createCell(0);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getCreateDate());
+                cell = row.createCell(1);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getTechName());
+                cell = row.createCell(2);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getOrderNum());
+                cell = row.createCell(3);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getFullname());
+                cell = row.createCell(4);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getProjectName1());
+                cell = row.createCell(5);
+                cell.setCellStyle(style1);
+                cell.setCellValue(view.getPayment());
+                cell = row.createCell(6);
+                cell.setCellStyle(style1);
+                cell.setCellValue(view.getTotalCost());
+                cell = row.createCell(7);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getVehicleModel());
+                cell = row.createCell(8);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getVin());
+                cell = row.createCell(9);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getLicense());
+                cell = row.createCell(10);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getRealOrderNum());
+                if(view.getPosition1() != null) {
+                    String[] pos = view.getPosition1().split(",");
+                    int m = 10;
+                    for(String s : pos){
+                        HSSFRow row0 = sheet.getRow(0);
+                        if(row0.getCell(m + 1) == null || row0.getCell(m + 1).getRichStringCellValue() == null){
+                            cell = row0.createCell(m + 1);
+                            cell.setCellValue("施工部位" + ((m + 1 - 10)/3 + 1));
+                            cell.setCellStyle(style);
+                            cell = row0.createCell(m + 2);
+                            cell.setCellValue("施工型号");
+                            cell.setCellStyle(style);
+                            cell = row0.createCell(m + 3);
+                            cell.setCellValue("提成");
+                            cell.setCellStyle(style);
+                        }
+                        OrderProductView p = orderProductService.findByOrderIdAndProject(view.getOrderId(), view.getProject1(), Integer.parseInt(s));
+
+                        sheet.setColumnWidth(m + 1, 18 * 256);
+                        cell = row.createCell(m + 1);
+                        cell.setCellStyle(style);
+                        cell.setCellValue(p == null?"" : p.getName());
+                        sheet.setColumnWidth(m + 2, 16 * 256);
+                        cell = row.createCell(m + 2);
+                        cell.setCellStyle(style);
+                        cell.setCellValue(p == null?"" : p.getModel());
+                        cell = row.createCell(m + 3);
+                        cell.setCellStyle(style1);
+                        if(p != null && p.getConstructionCommission() != null) cell.setCellValue(p.getConstructionCommission());
+                        m += 3;
                     }
-                    if (view.getPayStatus() == 1) {
-                        status = "已出账";
-                    }
-                    if (view.getPayStatus() == 2) {
-                        status = "已转账支付";
-                    }
-                    cell = row.createCell(17);
-                    cell.setCellStyle(style);
-                    cell.setCellValue(status);
-
-
-                    rowNum++;
                 }
+
+
+                rowNum++;
             }
         }
 

@@ -12,4 +12,5 @@ public interface OrderProductViewRepository extends JpaRepository<OrderProductVi
 
     List<OrderProductView> findByOrderId(int orderId);
 
+    OrderProductView findByOrderIdAndConstructionProjectIdAndConstructionPositionId(int orderId, int project, int position);
 }

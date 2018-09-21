@@ -66,4 +66,8 @@ public class OrderProductService {
         return orderProductViewRepository.findByOrderId(orderId);
     }
 
+    public OrderProductView findByOrderIdAndProject(int orderId, int project, int position){
+
+        return orderProductViewRepository.findByOrderIdAndConstructionProjectIdAndConstructionPositionId(orderId, project, position);
+    }
 }

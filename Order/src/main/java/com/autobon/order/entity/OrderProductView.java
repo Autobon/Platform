@@ -16,6 +16,7 @@ public class OrderProductView {
     @Column(name = "order_id")  private int orderId;
     @Column private int constructionProjectId;
     @Column private int constructionPositionId;
+    @Column private String name;
     @Column private int productId;
     @Column private Integer type;
     @Column private String brand;
@@ -147,5 +148,13 @@ public class OrderProductView {
 
     public void setWarranty(Integer warranty) {
         this.warranty = warranty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

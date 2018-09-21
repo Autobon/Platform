@@ -204,6 +204,7 @@ export default class OrderCtrl extends Injector {
     }
 
     kankan() {
-        console.log(1111);
+        const {$scope} = this.$injected;
+        console.log($scope.filter.startDate);
     }
 }

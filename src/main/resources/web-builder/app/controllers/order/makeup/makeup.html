@@ -62,9 +62,9 @@
                                                 <span>{{proList.positionName}}：</span>
                                             </label>
                                             <div class="col-lg-6">
-                                                <select ng-model="proList.productId" style="width: 130px;">
+                                                <select ng-model="proList.productId" style="width: 130px;" id="select{{proList.positionId}}" ng-disabled="checkSelect(proList.positionId)">
                                                     <option ng-repeat="pl in proList.productList" value="{{pl.id}}">{{pl.model}}</option>
-                                                    <option value="">--</option>
+                                                    <option value=0>--</option>
                                                 </select>
                                             </div>
                                         </div>
