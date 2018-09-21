@@ -6,6 +6,7 @@ CREATE TABLE `t_order_product` (
   `product_id`int(4) default null comment '施工产品',
   `construction_commission`int(2) default null comment '施工提成',
   `scrap_cost`int(2) default null comment '报废扣款',
+  `work_detail_id` int(11) DEFAULT NULL COMMENT '施工单id',
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8 COMMENT='产品补录表';
 

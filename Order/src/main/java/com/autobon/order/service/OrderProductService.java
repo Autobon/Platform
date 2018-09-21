@@ -49,6 +49,11 @@ public class OrderProductService {
         }
     }
 
+    @Transactional
+    public void save(OrderProduct orderProduct){
+        orderProductRepository.save(orderProduct);
+    }
+
 
     public List<OrderProduct> get(int orderId){
 
@@ -69,5 +74,10 @@ public class OrderProductService {
     public OrderProductView findByOrderIdAndProject(int orderId, int project, int position){
 
         return orderProductViewRepository.findByOrderIdAndConstructionProjectIdAndConstructionPositionId(orderId, project, position);
+    }
+
+    public OrderProduct findByOrderIdAndProjectAndPosition(int orderId, int project, int position){
+
+        return orderProductRepository.findByOrderIdAndConstructionProjectIdAndConstructionPositionId(orderId, project, position);
     }
 }

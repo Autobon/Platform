@@ -17,6 +17,7 @@ public class OrderProduct {
     @Column private int productId; //产品ID
     @Column private int constructionCommission;  //'施工提成'
     @Column private int scrapCost; //'报废扣款'
+    @Column  private Integer workDetailId; //施工单ID
 
     public int getId() {
         return id;
@@ -72,5 +73,13 @@ public class OrderProduct {
 
     public void setScrapCost(int scrapCost) {
         this.scrapCost = scrapCost;
+    }
+
+    public Integer getWorkDetailId() {
+        return workDetailId;
+    }
+
+    public void setWorkDetailId(Integer workDetailId) {
+        this.workDetailId = workDetailId;
     }
 }

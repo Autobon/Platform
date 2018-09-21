@@ -415,20 +415,23 @@ public class OrderV2Controller {
     /**
      * 测试使用
      */
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @RequestMapping(value = "/v2/test", method = RequestMethod.GET)
     public void test() {
 
-        List<WorkDetail> list = new ArrayList<>();
+        List<WorkDetail> list = workDetailService.findAll();
 
-        WorkDetail workDetail = new WorkDetail();
-        workDetail.setOrderId(1);
-        workDetail.setProject1(1);
-        workDetail.setPosition1("1,2");
-        workDetail.setProject2(2);
-        workDetail.setPosition2("3,4");
-
-        list.add(workDetail);
-        workDetailService.balance(1);
+        for(WorkDetail workDetail : list){
+            if(workDetail.getPosition1() != null){
+                String[] strings = workDetail.getPosition1().split(",");
+                for(String s : strings){
+                    OrderProduct orderProduct = orderProductService.findByOrderIdAndProjectAndPosition(workDetail.getOrderId(), workDetail.getProject1(), Integer.parseInt(s));
+                    if(orderProduct != null){
+                        orderProduct.setWorkDetailId(workDetail.getId());
+                        orderProductService.save(orderProduct);
+                    }
+                }
+            }
+        }
     }
 
 

@@ -1,9 +1,6 @@
 package com.autobon.order.service;
 
-import com.autobon.order.entity.ConstructionWaste;
-import com.autobon.order.entity.Order;
-import com.autobon.order.entity.WorkDetail;
-import com.autobon.order.entity.WorkDetailView;
+import com.autobon.order.entity.*;
 import com.autobon.order.repository.ConstructionWasteRepository;
 import com.autobon.order.repository.OrderProductRepository;
 import com.autobon.order.repository.WorkDetailRepository;
@@ -103,6 +100,9 @@ public class WorkDetailService {
                     String[] pStr = positionId.split(",");
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
+                        OrderProduct orderProduct = orderProductRepository.findByOrderIdAndConstructionProjectIdAndConstructionPositionId(oid, workDetail.getProject1(), Integer.valueOf(id));
+                        orderProduct.setWorkDetailId(workDetail.getId());
+                        orderProductRepository.save(orderProduct);
                     }
                     float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
                     float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
@@ -316,4 +316,6 @@ public class WorkDetailService {
     public String findLargest(){
         return workDetailRepository.findlargest();
     }
+
+    public List<WorkDetail> findAll(){ return workDetailRepository.findAll(); }
 }

@@ -36,4 +36,5 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Inte
     @Query(value="delete from t_order_product where order_id=?1",nativeQuery=true)
     void deleteByOrderId(int orderId);
 
+    OrderProduct findByOrderIdAndConstructionProjectIdAndConstructionPositionId(int orderId, int constructionProjectId, int constructionPositionId);
 }

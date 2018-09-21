@@ -18,6 +18,7 @@ public class OrderProductView {
     @Column private int constructionPositionId;
     @Column private String name;
     @Column private int productId;
+    @Column(name = "work_detail_id") private Integer workDetailId;
     @Column private Integer type;
     @Column private String brand;
     @Column private String code;
@@ -156,5 +157,13 @@ public class OrderProductView {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getWorkDetailId() {
+        return workDetailId;
+    }
+
+    public void setWorkDetailId(Integer workDetailId) {
+        this.workDetailId = workDetailId;
     }
 }
