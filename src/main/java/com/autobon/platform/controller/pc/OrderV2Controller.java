@@ -425,7 +425,7 @@ public class OrderV2Controller {
                 String[] strings = workDetail.getPosition1().split(",");
                 for(String s : strings){
                     OrderProduct orderProduct = orderProductService.findByOrderIdAndProjectAndPosition(workDetail.getOrderId(), workDetail.getProject1(), Integer.parseInt(s));
-                    if(orderProduct != null){
+                    if(orderProduct != null && orderProduct.getWorkDetailId() != null){
                         orderProduct.setWorkDetailId(workDetail.getId());
                         orderProductService.save(orderProduct);
                     }
