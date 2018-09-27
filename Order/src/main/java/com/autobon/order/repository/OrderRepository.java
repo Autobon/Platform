@@ -58,12 +58,13 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " and (?5 is null or o.status = ?5) " +
                 " and (COALESCE(?6) is null or o.coop_id in (?6)) " +
                 " and (?7 is null or o.vin like ?7) " +
-                " and (?8 is null or date_format(o.add_time,'%Y-%m-%d') = ?8) " +
-                " and (?9 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?9) " +
-                " order by o.id desc limit ?10,?11", nativeQuery = true)
+                " and (?8 is null or o.license like ?8) " +
+                " and (?9 is null or date_format(o.add_time,'%Y-%m-%d') = ?9) " +
+                " and (?10 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?10) " +
+                " order by o.id desc limit ?11,?12", nativeQuery = true)
         List<Order> findOrder2(String orderNum, String creatorName, String contactPhone,
-                              String type, Integer statusCode, List<String> coopIds,
-                               String vin, String addTime, String orderTime, Integer page, Integer pageSize);
+                              String type, Integer statusCode, List<String> coopIds, String vin,
+                               String license, String addTime, String orderTime, Integer page, Integer pageSize);
 
         @Query(value = "select o.* from t_order o where 1=1 " +
                 " and (?1 is null or o.order_num like ?1) " +
@@ -73,12 +74,13 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " and (?5 is null or o.status = ?5) " +
                 " and (COALESCE(?6) is null or o.coop_id in (?6)) " +
                 " and (?7 is null or o.vin like ?7) " +
-                " and (?8 is null or date_format(o.add_time,'%Y-%m-%d') = ?8) " +
-                " and (?9 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?9) " +
-                " order by o.agreed_start_time desc limit ?10,?11", nativeQuery = true)
+                " and (?8 is null or o.license like ?8) " +
+                " and (?9 is null or date_format(o.add_time,'%Y-%m-%d') = ?9) " +
+                " and (?10 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?10) " +
+                " order by o.agreed_start_time desc limit ?11,?12", nativeQuery = true)
         List<Order> findOrder2ByTime(String orderNum, String creatorName, String contactPhone,
-                               String type, Integer statusCode, List<String> coopIds,
-                               String vin, String addTime, String orderTime, Integer page, Integer pageSize);
+                               String type, Integer statusCode, List<String> coopIds, String vin,
+                               String license, String addTime, String orderTime, Integer page, Integer pageSize);
 
         @Query(value = "select count(*) from t_order o where 1=1 " +
                 " and (?1 is null or o.order_num like ?1) " +
@@ -88,11 +90,12 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " and (?5 is null or o.status = ?5) " +
                 " and (COALESCE(?6) is null or o.coop_id in (?6)) " +
                 " and (?7 is null or o.vin like ?7) " +
-                " and (?8 is null or date_format(o.add_time,'%Y-%m-%d') = ?8) " +
-                " and (?9 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?9)", nativeQuery = true)
+                " and (?8 is null or o.license like ?8) " +
+                " and (?9 is null or date_format(o.add_time,'%Y-%m-%d') = ?9) " +
+                " and (?10 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?10)", nativeQuery = true)
         int findOrder2Count(String orderNum, String creatorName, String contactPhone,
                             String type, Integer statusCode, List<String> coopIds,
-                            String vin, String addTime, String orderTime);
+                            String vin, String license, String addTime, String orderTime);
 
         @Query("select o from Order o " +
                 "where (?1 is null or o.orderNum like ?1) " +
@@ -112,13 +115,14 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " and (?5 is null or o.status = ?5)" +
                 " and (COALESCE(?6) is null or o.coop_id in (?6)) " +
                 " and (?7 is null or o.vin like ?7) " +
-                " and (?8 is null or date_format(o.add_time,'%Y-%m-%d') = ?8) " +
-                " and (?9 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?9) " +
-                " and  o.main_tech_id in (?10) " +
-                " order by o.id desc limit ?11,?12", nativeQuery = true)
+                " and (?8 is null or o.license like ?8) " +
+                " and (?9 is null or date_format(o.add_time,'%Y-%m-%d') = ?9) " +
+                " and (?10 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?10) " +
+                " and  o.id in (?11) " +
+                " order by o.id desc limit ?12,?13", nativeQuery = true)
         List<Order> findOrder2(String orderNum, String creatorName, String contactPhone,
                               String type, Integer statusCode, List<String> coopIds, String vin,
-                               String addTime, String orderTime, List<Integer> list, Integer page, Integer pageSize);
+                               String license, String addTime, String orderTime, List<Integer> list, Integer page, Integer pageSize);
 
         @Query(value = "select o.* from t_order o where 1=1 " +
                 " and (?1 is null or o.order_num like ?1) " +
@@ -130,11 +134,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " and (?7 is null or o.vin like ?7) " +
                 " and (?8 is null or date_format(o.add_time,'%Y-%m-%d') = ?8) " +
                 " and (?9 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?9) " +
-                " and  o.main_tech_id in (?10) " +
+                " and  o.id in (?10) " +
                 " order by o.agreed_start_time desc limit ?11,?12", nativeQuery = true)
         List<Order> findOrder2ByTime(String orderNum, String creatorName, String contactPhone,
                                String type, Integer statusCode, List<String> coopIds, String vin,
-                               String addTime, String orderTime, List<Integer> list, Integer page, Integer pageSize);
+                               String license, String addTime, String orderTime, List<Integer> list, Integer page, Integer pageSize);
 
 
         @Query(value = "select count(*) from t_order o where 1=1 " +
@@ -145,11 +149,12 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
                 " and (?5 is null or o.status = ?5)" +
                 " and (COALESCE(?6) is null or o.coop_id in (?6)) " +
                 " and (?7 is null or o.vin like ?7) " +
-                " and (?8 is null or date_format(o.add_time,'%Y-%m-%d') = ?8) " +
-                " and (?9 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?9) " +
-                " and  o.main_tech_id in (?10)", nativeQuery = true)
+                " and (?8 is null or o.license like ?8) " +
+                " and (?9 is null or date_format(o.add_time,'%Y-%m-%d') = ?9) " +
+                " and (?10 is null or date_format(o.agreed_start_time,'%Y-%m-%d') = ?10) " +
+                " and  o.id in (?11)", nativeQuery = true)
         int findOrder2Count(String orderNum, String creatorName, String contactPhone, String type, Integer statusCode,
-                            List<String> coopIds, String vin, String addTime, String orderTime, List<Integer> list);
+                            List<String> coopIds, String vin, String license, String addTime, String orderTime, List<Integer> list);
 
 
         @Query("select o from Order o where (o.statusCode < 50 and o.orderTime <= ?1) or (o.statusCode = 50 and o.orderTime <= ?2)")
@@ -735,6 +740,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 
         @Query("from Order o where o.coopId = ?1")
         Page<Order> findAllByCoop(int coopId, Pageable pageable);
+
+        @Query(value = "select o.id from t_order o LEFT JOIN t_work_detail w on w.order_id = o.id where w.tech_id in ?1 GROUP BY o.id", nativeQuery = true)
+        List<Integer> findByTechs(List<Integer> list);
 
 }
 
