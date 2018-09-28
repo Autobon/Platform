@@ -767,52 +767,54 @@ public class OrderV2Controller {
                 0, //first row (0-based)
                 0, //last row (0-based)
                 14, //first column (0-based)
-                52
+                65
         ));
         cell = row.createCell(14);
         cell.setCellValue("隔          热             膜");
         cell.setCellStyle(style);
         //合并单元格会取第一个格子的值，但后面的格子也得创建出来
-        for(int i=15;i<53;i++){
+        for(int i=15;i<66;i++){
             row.createCell(i).setCellStyle(style);
         }
 
         sheet.addMergedRegion(new CellRangeAddress(
                 0, //first row (0-based)
                 0, //last row (0-based)
-                53, //first column (0-based)
-                88
+                66, //first column (0-based)
+                205
         ));
-        cell = row.createCell(53);
+        cell = row.createCell(66);
         cell.setCellValue("隐        形       车       衣");
         cell.setCellStyle(style);
-        for(int i=54;i<89;i++){
+        for(int i=67;i<206;i++){
             row.createCell(i).setCellStyle(style);
         }
 
         sheet.addMergedRegion(new CellRangeAddress(
                 0, //first row (0-based)
                 0, //last row (0-based)
-                89, //first column (0-based)
-                91
+                206, //first column (0-based)
+                321
         ));
-        cell = row.createCell(89);
+        cell = row.createCell(206);
         cell.setCellValue("车身改色");
         cell.setCellStyle(style);
-        row.createCell(90).setCellStyle(style);
-        row.createCell(91).setCellStyle(style);
+        for(int i=207;i<322;i++){
+            row.createCell(i).setCellStyle(style);
+        }
 
         sheet.addMergedRegion(new CellRangeAddress(
                 0, //first row (0-based)
                 0, //last row (0-based)
-                92, //first column (0-based)
-                94
+                322, //first column (0-based)
+                413
         ));
-        cell = row.createCell(92);
+        cell = row.createCell(322);
         cell.setCellValue("美容清洁");
         cell.setCellStyle(style);
-        row.createCell(93).setCellStyle(style);
-        row.createCell(94).setCellStyle(style);
+        for(int i=323;i<414;i++){
+            row.createCell(i).setCellStyle(style);
+        }
 
         //建第二行和第三行
         HSSFRow row2 = sheet.createRow(1);
@@ -828,83 +830,88 @@ public class OrderV2Controller {
             row3.createCell(i).setCellStyle(style);
         }
         HSSFCell cell2;
-        for(int i = 14;i < 95;i=i+3){
-            sheet.addMergedRegion(new CellRangeAddress(           //从第14列开始每隔3列合并一次单元格
+        for(int i = 14;i < 414;i=i+4){
+            sheet.addMergedRegion(new CellRangeAddress(           //从第14列开始每隔4列合并一次单元格
                     1, //first row (0-based)
                     1, //last row (0-based)
                     i, //first column (0-based)
-                    i+2
+                    i+3
             ));
         }
+        List<ConstructionProject> cp = constructionProjectService.findAll();
+        int j = 14;
+        for(ConstructionProject c : cp){
+            String[] ss = c.getIds().split(",");
+            for(int i = 0; i < ss.length; i ++){
+                cell2 = row2.createCell(j);
+                cell2.setCellValue(ss[i]);
+                cell2.setCellStyle(style);
+                row2.createCell(j + 1).setCellStyle(style);
+                row2.createCell(j + 2).setCellStyle(style);
+                row2.createCell(j + 3).setCellStyle(style);
+                j += 4;
+            }
+        }
         cell2 = row2.createCell(14);
-        cell2.setCellValue("前风挡");
+        cell2.setCellValue("前挡");
         cell2.setCellStyle(style);
         row2.createCell(15).setCellStyle(style);
         row2.createCell(16).setCellStyle(style);
+        row2.createCell(17).setCellStyle(style);
 
-        cell2 = row2.createCell(17);
+        cell2 = row2.createCell(18);
+        cell2.setCellValue("后档");
+        cell2.setCellStyle(style);
+        row2.createCell(19).setCellStyle(style);
+        row2.createCell(20).setCellStyle(style);
+        row2.createCell(21).setCellStyle(style);
+
+        cell2 = row2.createCell(22);
         cell2.setCellValue("左前门");
         cell2.setCellStyle(style);
-        row2.createCell(18).setCellStyle(style);
-        row2.createCell(19).setCellStyle(style);
-
-        cell2 = row2.createCell(20);
-        cell2.setCellValue("右前门");
-        cell2.setCellStyle(style);
-        row2.createCell(21).setCellStyle(style);
-        row2.createCell(22).setCellStyle(style);
-
-        cell2 = row2.createCell(23);
-        cell2.setCellValue("左后门");
-        cell2.setCellStyle(style);
+        row2.createCell(23).setCellStyle(style);
         row2.createCell(24).setCellStyle(style);
         row2.createCell(25).setCellStyle(style);
 
         cell2 = row2.createCell(26);
-        cell2.setCellValue("右后门");
+        cell2.setCellValue("右前门");
         cell2.setCellStyle(style);
         row2.createCell(27).setCellStyle(style);
         row2.createCell(28).setCellStyle(style);
+        row2.createCell(29).setCellStyle(style);
 
-        cell2 = row2.createCell(29);
-        cell2.setCellValue("后风挡");
+        cell2 = row2.createCell(30);
+        cell2.setCellValue("左后门");
         cell2.setCellStyle(style);
-        row2.createCell(30).setCellStyle(style);
         row2.createCell(31).setCellStyle(style);
-
-        cell2 = row2.createCell(32);
-        cell2.setCellValue("大天窗");
-        cell2.setCellStyle(style);
+        row2.createCell(32).setCellStyle(style);
         row2.createCell(33).setCellStyle(style);
-        row2.createCell(34).setCellStyle(style);
 
-        cell2 = row2.createCell(35);
-        cell2.setCellValue("中天窗");
+        cell2 = row2.createCell(34);
+        cell2.setCellValue("右后门");
         cell2.setCellStyle(style);
+        row2.createCell(35).setCellStyle(style);
         row2.createCell(36).setCellStyle(style);
         row2.createCell(37).setCellStyle(style);
 
         cell2 = row2.createCell(38);
-        cell2.setCellValue("小天窗");
+        cell2.setCellValue("左小角");
         cell2.setCellStyle(style);
         row2.createCell(39).setCellStyle(style);
         row2.createCell(40).setCellStyle(style);
+        row2.createCell(41).setCellStyle(style);
 
-        cell2 = row2.createCell(41);
-        cell2.setCellValue("左小角");
-        cell2.setCellStyle(style);
-        row2.createCell(42).setCellStyle(style);
-        row2.createCell(43).setCellStyle(style);
-
-        cell2 = row2.createCell(44);
+        cell2 = row2.createCell(42);
         cell2.setCellValue("右小角");
         cell2.setCellStyle(style);
+        row2.createCell(43).setCellStyle(style);
+        row2.createCell(44).setCellStyle(style);
         row2.createCell(45).setCellStyle(style);
-        row2.createCell(46).setCellStyle(style);
 
-        cell2 = row2.createCell(47);
+        cell2 = row2.createCell(46);
         cell2.setCellValue("左大角");
         cell2.setCellStyle(style);
+        row2.createCell(47).setCellStyle(style);
         row2.createCell(48).setCellStyle(style);
         row2.createCell(49).setCellStyle(style);
 
@@ -913,91 +920,49 @@ public class OrderV2Controller {
         cell2.setCellStyle(style);
         row2.createCell(51).setCellStyle(style);
         row2.createCell(52).setCellStyle(style);
+        row2.createCell(53).setCellStyle(style);
 
-
-        cell2 = row2.createCell(53);
-        cell2.setCellValue("前保险杠");
+        cell2 = row2.createCell(54);
+        cell2.setCellValue("前天窗");
         cell2.setCellStyle(style);
-        row2.createCell(54).setCellStyle(style);
         row2.createCell(55).setCellStyle(style);
-
-        cell2 = row2.createCell(56);
-        cell2.setCellValue("引擎盖");
-        cell2.setCellStyle(style);
+        row2.createCell(56).setCellStyle(style);
         row2.createCell(57).setCellStyle(style);
-        row2.createCell(58).setCellStyle(style);
 
-        cell2 = row2.createCell(59);
-        cell2.setCellValue("左右前叶子板");
+        cell2 = row2.createCell(58);
+        cell2.setCellValue("中天窗");
         cell2.setCellStyle(style);
+        row2.createCell(59).setCellStyle(style);
         row2.createCell(60).setCellStyle(style);
         row2.createCell(61).setCellStyle(style);
 
         cell2 = row2.createCell(62);
-        cell2.setCellValue("四门");
+        cell2.setCellValue("后天窗");
         cell2.setCellStyle(style);
         row2.createCell(63).setCellStyle(style);
         row2.createCell(64).setCellStyle(style);
+        row2.createCell(65).setCellStyle(style);
 
-        cell2 = row2.createCell(65);
-        cell2.setCellValue("左右后叶子板");
+        cell2 = row2.createCell(66);
+        cell2.setCellValue("整车");
         cell2.setCellStyle(style);
-        row2.createCell(66).setCellStyle(style);
         row2.createCell(67).setCellStyle(style);
-
-        cell2 = row2.createCell(68);
-        cell2.setCellValue("尾盖");
-        cell2.setCellStyle(style);
+        row2.createCell(68).setCellStyle(style);
         row2.createCell(69).setCellStyle(style);
-        row2.createCell(70).setCellStyle(style);
 
-        cell2 = row2.createCell(71);
-        cell2.setCellValue("后保险杠");
+        cell2 = row2.createCell(70);
+        cell2.setCellValue("整车不含顶");
         cell2.setCellStyle(style);
+        row2.createCell(71).setCellStyle(style);
         row2.createCell(72).setCellStyle(style);
         row2.createCell(73).setCellStyle(style);
 
         cell2 = row2.createCell(74);
-        cell2.setCellValue("ABC柱套件");
+        cell2.setCellValue("车顶");
         cell2.setCellStyle(style);
         row2.createCell(75).setCellStyle(style);
         row2.createCell(76).setCellStyle(style);
-
-        cell2 = row2.createCell(77);
-        cell2.setCellValue("车顶");
-        cell2.setCellStyle(style);
-        row2.createCell(78).setCellStyle(style);
-        row2.createCell(79).setCellStyle(style);
-
-        cell2 = row2.createCell(80);
-        cell2.setCellValue("门拉手");
-        cell2.setCellStyle(style);
-        row2.createCell(81).setCellStyle(style);
-        row2.createCell(82).setCellStyle(style);
-
-        cell2 = row2.createCell(83);
-        cell2.setCellValue("反光镜");
-        cell2.setCellStyle(style);
-        row2.createCell(84).setCellStyle(style);
-        row2.createCell(85).setCellStyle(style);
-
-        cell2 = row2.createCell(86);
-        cell2.setCellValue("整车");
-        cell2.setCellStyle(style);
-        row2.createCell(87).setCellStyle(style);
-        row2.createCell(88).setCellStyle(style);
-
-        cell2 = row2.createCell(89);
-        cell2.setCellValue("整车");
-        cell2.setCellStyle(style);
-        row2.createCell(90).setCellStyle(style);
-        row2.createCell(91).setCellStyle(style);
-
-        cell2 = row2.createCell(92);
-        cell2.setCellValue("整车");
-        cell2.setCellStyle(style);
-        row2.createCell(93).setCellStyle(style);
-        row2.createCell(94).setCellStyle(style);
+        row2.createCell(77).setCellStyle(style);
 
         HSSFCell cell3;
         for(int i = 14;i < 95;i=i+3){
@@ -1512,18 +1477,18 @@ public class OrderV2Controller {
 
     private String changePosition(String position){
         if(position != null){
-            position = position.replaceAll("1", "前风挡");
+            position = position.replaceAll("1", "前挡");
             position = position.replaceAll("2", "左前门");
             position = position.replaceAll("3", "右前门");
             position = position.replaceAll("4", "左后门");
             position = position.replaceAll("5", "右后门");
-            position = position.replaceAll("6", "后风挡");
+            position = position.replaceAll("6", "后挡");
             position = position.replaceAll("7", "前保险杠");
             position = position.replaceAll("8", "引擎盖");
             position = position.replaceAll("9", "左右前叶子板");
             position = position.replaceAll("10", "四门");
             position = position.replaceAll("11", "左右后叶子板");
-            position = position.replaceAll("12", "尾盖");
+            position = position.replaceAll("12", "后箱盖");
             position = position.replaceAll("13", "后保险杠");
             position = position.replaceAll("14", "ABC柱套件");
             position = position.replaceAll("15", "车顶");
