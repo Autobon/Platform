@@ -17,13 +17,15 @@
             <tbody>
             <tr ng-repeat="a in accounts">
                 <td>{{$index+1}}</td>
-                <td>{{a.shortname}}</td>
+                <td>{{a.name}}</td>
                 <td>{{a.name}}</td>
                 <td>{{a.phone}}</td>
-                <td>{{['男','女'][a.gender]}}</td>
-                <td>{{['不是','是'][a.fired]}}</td>
-                <td>{{getDateTime(a.createTime)}}</td>
-                <td><button class="btn btn-xs btn-default" ng-click="change(a.id)"><i class="fa fa-refresh"></i>&nbsp;变更</button>
+                <td>{{a.gender==1?'男':'女'}}</td>
+                <td>{{a.fired?'离职':'未离职'}}</td>
+                <td>{{a.createTime | date : 'YYYY-MM-DD HH:mm'}}</td>
+                <td>
+                    <button class="btn btn-xs btn-default" ng-click="info(a)"><i class="fa fa-edit"></i>&nbsp;修改</button>
+                    <button class="btn btn-xs btn-default" ng-click="change(a.id)"><i class="fa fa-refresh"></i>&nbsp;变更</button>
                 </td>
             </tr>
             </tbody>

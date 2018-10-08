@@ -9,7 +9,9 @@ export default class AccountCtrl extends Injector {
         const {$scope} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.params = {};
+        $scope.InfoParams = {};
         $scope.modalInstance = {};
+        $scope.modalEdit = {};
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
 
         this.getAccounts();
@@ -77,6 +79,52 @@ export default class AccountCtrl extends Injector {
         });
     }
 
+    info(account) {
+        const {$scope, $uibModal} = this.$injected;
+        $scope.InfoParams.saleId = account.id;
+        $scope.InfoParams.name = account.name;
+        $scope.InfoParams.fired = account.fired?'1':'0';
+        $scope.modalEdit = $uibModal.open({
+            size     : 'lg',
+            scope    : $scope,
+            animation: true,
+            template : `
+                <div class="modal-header">
+                    <h3 class="modal-title">修改业务员信息</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid m-l-40 m-r-40">
+                        <form class="form-horizontal" name="form">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">业务员姓名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" required ng-model="InfoParams.name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">是否离职</label>
+                                <div class="col-sm-9">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="paid" ng-model="InfoParams.fired" value="0"> 未离职
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="paid" ng-model="InfoParams.fired" value="1"> 已离职
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" ng-click="toSave()">确定</button>
+                </div>`,
+        });
+
+        $scope.modalEdit.result.then(()  => {
+            console.log(11111111111);
+        });
+    }
+
     chooseNew(coop) {
         const {$scope} = this.$injected;
         $scope.params.newCoopId = coop.id;
@@ -92,6 +140,21 @@ export default class AccountCtrl extends Injector {
             } else {
                 if (res.data.result === false) {
                     $scope.error = res.data.message;
+                }
+            }
+        });
+    }
+
+    toSave() {
+        const {$scope, CooperatorService} = this.$injected;
+        CooperatorService.modifyAccountInfo($scope.InfoParams).then(res => {
+            console.log(res);
+            if (res.data.result) {
+                $scope.modalEdit.close();
+                this.getAccounts();
+            } else {
+                if (res.result == false) {
+                    $scope.error = res.message;
                 }
             }
         });

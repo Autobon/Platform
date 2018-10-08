@@ -111,4 +111,8 @@ public class ConstructionProjectService {
         return map;
     }
 
+    public List<ConstructionProject> findAll(){
+        return constructionProjectRepository.findAll();
+    }
+
 }

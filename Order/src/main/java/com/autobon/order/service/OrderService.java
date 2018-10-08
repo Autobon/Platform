@@ -306,9 +306,12 @@ public class OrderService {
     }
     public Page<Order> find2(String orderNum, String creatorName, String contactPhone,
                             List<Integer> orderType, Integer statusCode, List<String> coopIds,
-                             String vin, String addTime, String orderTime, String sort, int page, int pageSize) {
+                             String vin, String license, String addTime, String orderTime, String sort, int page, int pageSize) {
         if(vin != null){
             vin = "%"+ vin+"%";
+        }
+        if(license != null){
+            license = "%"+ license+"%";
         }
         if(orderNum != null){
             orderNum = "%"+ orderNum+"%";
@@ -326,13 +329,13 @@ public class OrderService {
         List<Order> list;
         if(sort.equals("id")) {
             list =  repository.findOrder2(orderNum, creatorName, contactPhone, type,
-                    statusCode, coopIds, vin, addTime, orderTime, (page - 1) * pageSize, pageSize);
+                    statusCode, coopIds, vin, license, addTime, orderTime, (page - 1) * pageSize, pageSize);
         }else{
             list =  repository.findOrder2ByTime(orderNum, creatorName, contactPhone, type,
-                    statusCode, coopIds, vin, addTime, orderTime, (page - 1) * pageSize, pageSize);
+                    statusCode, coopIds, vin, license, addTime, orderTime, (page - 1) * pageSize, pageSize);
         }
         int count = repository.findOrder2Count(orderNum, creatorName, contactPhone, type,
-                statusCode, coopIds, vin, addTime, orderTime);
+                statusCode, coopIds, vin, license, addTime, orderTime);
         return new PageImpl<>(list, new PageRequest(page-1,pageSize), count);
     }
 
@@ -362,11 +365,14 @@ public class OrderService {
                 statusCode, tech , new PageRequest(page - 1, pageSize, direction, sort));
     }
 
-    public Page<Order> findOrder2(String orderNum, String creatorName, String contactPhone, List<Integer> tech,
+    public Page<Order> findOrder2(String orderNum, String creatorName, String contactPhone, List<Integer> oids,
                                  List<Integer> orderType, Integer statusCode, List<String> coopIds,
-                                  String vin, String addTime, String orderTime, String sort, int page, int pageSize) {
+                                  String vin, String license, String addTime, String orderTime, String sort, int page, int pageSize) {
         if(vin != null){
             vin = "%"+ vin+"%";
+        }
+        if(license != null){
+            license = "%"+ license+"%";
         }
         if(orderNum != null){
             orderNum = "%"+ orderNum+"%";
@@ -385,13 +391,13 @@ public class OrderService {
         List<Order> list;
         if(sort.equals("id")){
             list =  repository.findOrder2(orderNum, creatorName, contactPhone, type,
-                    statusCode, coopIds, vin, addTime, orderTime, tech, (page - 1) * pageSize, pageSize);
+                    statusCode, coopIds, vin, license, addTime, orderTime, oids, (page - 1) * pageSize, pageSize);
         }else{
             list =  repository.findOrder2ByTime(orderNum, creatorName, contactPhone, type,
-                    statusCode, coopIds, vin, addTime, orderTime, tech, (page - 1) * pageSize, pageSize);
+                    statusCode, coopIds, vin, license, addTime, orderTime, oids, (page - 1) * pageSize, pageSize);
         }
         int count =  repository.findOrder2Count(orderNum, creatorName, contactPhone, type,
-                statusCode, coopIds, vin, addTime, orderTime, tech);
+                statusCode, coopIds, vin, license, addTime, orderTime, oids);
         return new PageImpl<>(list, new PageRequest(page-1,pageSize), count);
     }
 
@@ -542,5 +548,9 @@ public class OrderService {
     public Page<Order> findAllByCoop(int coopId, int page, int pageSize) {
         return repository.findAllByCoop(coopId, new PageRequest(page - 1, pageSize,
                 new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public List<Integer> findByTechs(List<Integer> list){
+        return repository.findByTechs(list);
     }
 }

@@ -71,6 +71,7 @@ public class OrderController {
             @RequestParam(value = "tech", required = false) String tech,
             @RequestParam(value = "coopIds", required = false) List<String> coopIds,
             @RequestParam(value = "vin", required = false) String vin,
+            @RequestParam(value = "license", required = false) String license,
             @RequestParam(value = "addTime", required = false) String addTime,
             @RequestParam(value = "orderTime", required = false) String orderTime,
             @RequestParam(value = "sort", defaultValue = "id") String sort,
@@ -97,15 +98,16 @@ public class OrderController {
 
         if(tech != null){
             List<Integer> ids = technicianService.find(tech);
+            List<Integer> oids = orderService.findByTechs(ids);
             return new JsonMessage(true, "", "",
                     orderService.findOrder2(orderNum, creatorName, contactPhone,
-                            ids, types, statusCode, coopIds, vin, addTime, orderTime, sort, page, pageSize));
+                            oids, types, statusCode, coopIds, vin, license, addTime, orderTime, sort, page, pageSize));
         }
 
 
         return new JsonMessage(true, "", "",
                 orderService.find2(orderNum, creatorName, contactPhone,
-                        types, statusCode, coopIds, vin, addTime, orderTime, sort, page, pageSize));
+                        types, statusCode, coopIds, vin, license, addTime, orderTime, sort, page, pageSize));
     }
 
     @RequestMapping(value = "/{orderNum:\\d+.*}", method = RequestMethod.GET)

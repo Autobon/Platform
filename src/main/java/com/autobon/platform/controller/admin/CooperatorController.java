@@ -536,6 +536,26 @@ public class CooperatorController {
         return new JsonMessage(true, "修改成功");
     }
 
+    @RequestMapping(value = "/info/sale/{saleId}", method = RequestMethod.POST)
+    public JsonMessage modifyAccountInfo(@PathVariable("saleId") int saleId,
+                                         @RequestParam("name") String name,
+                                         @RequestParam("fired") Integer fired) {
+
+        CoopAccount coopAccount  = coopAccountService.getById(saleId);
+        if(coopAccount == null){
+            return new JsonMessage(false, "员工账号不存在");
+
+        }
+
+        coopAccount.setName(name == null ? coopAccount.getName() : name);
+        if(fired != null){
+            boolean f = fired > 0;
+            coopAccount.setFired(f);
+        }
+        coopAccountService.save(coopAccount);
+        return new JsonMessage(true, "修改成功");
+    }
+
 
 
     @RequestMapping(value = "/coop/ban/{id}", method = RequestMethod.POST)
