@@ -18,11 +18,14 @@ public class WorkDetailView {
     @Column(name = "order_id")
     private int orderId;
 
-    @Column(name = "orderNum")
+    @Column(name = "order_num")
     private String orderNum;
 
-    @Column(name = "realOrderNum")
+    @Column(name = "real_order_num")
     private String realOrderNum;
+
+    @Column(name = "add_time")
+    private Date addTime;
 
     @Column(name = "fullname")
     private String fullname;
@@ -364,5 +367,13 @@ public class WorkDetailView {
 
     public void setVin(String vin) {
         this.vin = vin;
+    }
+
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
     }
 }

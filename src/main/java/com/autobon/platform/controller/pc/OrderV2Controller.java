@@ -1651,7 +1651,7 @@ public class OrderV2Controller {
                 row = sheet.createRow(rowNum);
                 cell = row.createCell(0);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getCreateDate());
+                cell.setCellValue(view.getAddTime());
                 cell = row.createCell(1);
                 cell.setCellStyle(style);
                 cell.setCellValue(view.getTechName());
@@ -1996,7 +1996,7 @@ public class OrderV2Controller {
                 row = sheet.createRow(rowNum);
                 cell = row.createCell(0);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getCreateDate());
+                cell.setCellValue(view.getAddTime());
                 cell = row.createCell(1);
                 cell.setCellStyle(style);
                 cell.setCellValue(view.getTechName());

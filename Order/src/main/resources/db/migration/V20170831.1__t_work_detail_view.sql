@@ -1,5 +1,5 @@
 create view t_work_detail_view  as
-select w.*,o.real_order_num,o.vehicle_model,o.license,o.vin,c.fullname,t.name as tech_name,cp1.name as project_name1,
+select w.*,o.real_order_num,o.add_time,o.vehicle_model,o.license,o.vin,c.fullname,t.name as tech_name,cp1.name as project_name1,
 cp2.name as project_name2,
 cp3.name as project_name3,
 cp4.name as project_name4,
