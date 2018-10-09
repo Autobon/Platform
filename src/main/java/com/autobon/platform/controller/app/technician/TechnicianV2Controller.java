@@ -1106,7 +1106,7 @@ public class TechnicianV2Controller {
      * @throws IOException
      */
     // @RequestMapping(value = "/v2/order/finish", method = RequestMethod.PUT)
-    @RequestMapping(value = "/v2/order/finish", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/v2/order/finish", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult finish(@RequestBody ConstructionShow constructionShow,
                              HttpServletRequest request)  {
