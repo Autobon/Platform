@@ -273,7 +273,7 @@ public class OrderEventListener {
     }
 
     private void onOrderCanceled(Order order) throws IOException {
-        if (order.getMainTechId() > 0) {
+        if (order.getMainTechId() != null && order.getMainTechId() > 0) {
             Technician mainTech = technicianService.get(order.getMainTechId());
 
             order.setPhoto("");
@@ -287,7 +287,7 @@ public class OrderEventListener {
             map.put("title", msgTitle);
 
             boolean result;
-            if (order.getSecondTechId() > 0) {
+            if (order.getSecondTechId() != null && order.getSecondTechId() > 0) {
                 result = pushServiceA.pushToList(new String[] {mainTech.getPushId(), technicianService.get(order.getSecondTechId()).getPushId()},
                             msgTitle, new ObjectMapper().writeValueAsString(map), 72*3600);
             } else {
