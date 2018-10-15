@@ -101,8 +101,10 @@ public class WorkDetailService {
                     for(String id: pStr){
                         positionIds.add(Integer.valueOf(id));
                         OrderProduct orderProduct = orderProductRepository.findByOrderIdAndConstructionProjectIdAndConstructionPositionId(oid, workDetail.getProject1(), Integer.valueOf(id));
-                        orderProduct.setWorkDetailId(workDetail.getId());
-                        orderProductRepository.save(orderProduct);
+                        if(orderProduct != null){
+                            orderProduct.setWorkDetailId(workDetail.getId());
+                            orderProductRepository.save(orderProduct);
+                        }
                     }
                     float sum = orderProductRepository.getMoney(orderId, projectId, positionIds) == null? 0:orderProductRepository.getMoney(orderId, projectId, positionIds);
                     float total = orderProductRepository.getCost(orderId, projectId, positionIds) == null? 0:orderProductRepository.getCost(orderId, projectId, positionIds);
