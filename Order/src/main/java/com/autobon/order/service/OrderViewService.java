@@ -189,10 +189,14 @@ public class OrderViewService {
             orderView.setStatusCode(o.getStatusCode());
             // orderView.setCreatorType(o.gcrea());
             orderView.setTechId(o.getMainTechId());
-            Technician technician = technicianRepository.getById(o.getMainTechId());
-            orderView.setTechName(technician.getName());
-            orderView.setTechAvatar(technician.getAvatar());
-            orderView.setTechPhone(technician.getPhone());
+            if(o.getMainTechId() != null){
+                Technician technician = technicianRepository.getById(o.getMainTechId());
+                if(technician != null){
+                    orderView.setTechName(technician.getName());
+                    orderView.setTechAvatar(technician.getAvatar());
+                    orderView.setTechPhone(technician.getPhone());
+                }
+            }
             orderView.setBeforePhotos(o.getBeforePhotos());
             orderView.setAfterPhotos(o.getAfterPhotos());
             orderView.setStartTime(o.getStartTime());
@@ -202,27 +206,39 @@ public class OrderViewService {
             orderView.setCreateTime(o.getAddTime());
             orderView.setType(o.getType());
             orderView.setCoopId(o.getCoopId());
-            Cooperator cooperator = cooperatorRepository.getOne(o.getCoopId());
-            // orderView.setCoopName(cooperator.getCorporationName());
-            orderView.setAddress(cooperator.getAddress());
-            orderView.setLongitude(cooperator.getLongitude());
-            orderView.setLatitude(cooperator.getLatitude());
+            if(o.getCoopId() != null){
+                Cooperator cooperator = cooperatorRepository.getOne(o.getCoopId());
+                if(cooperator != null){
+                    // orderView.setCoopName(cooperator.getCorporationName());
+                    orderView.setAddress(cooperator.getAddress());
+                    orderView.setLongitude(cooperator.getLongitude());
+                    orderView.setLatitude(cooperator.getLatitude());
+                }
+            }
             orderView.setCreatorId(o.getCreatorId());
             orderView.setCreatorName(o.getCreatorName());
             orderView.setContactPhone(o.getContactPhone());
             orderView.setRemark(o.getRemark());
-            TechStat techStat = techStatRepository.getByTechId(o.getMainTechId());
-            // orderView.setEvaluateStatus();
-            orderView.setOrderCount(techStat.getTotalOrders());
-            orderView.setEvaluate(techStat.getStarRate());
+            if(o.getMainTechId() != null){
+                TechStat techStat = techStatRepository.getByTechId(o.getMainTechId());
+                if(techStat != null){
+                    // orderView.setEvaluateStatus();
+                    orderView.setOrderCount(techStat.getTotalOrders());
+                    orderView.setEvaluate(techStat.getStarRate());
+                }
+            }
             orderView.setCancelCount(0);
             orderView.setProductStatus(o.getProductStatus());
             orderView.setReassignmentStatus(o.getReassignmentStatus());
             // orderView.setPayment();
             // orderView.setPayStatus();
-            LocationStatus locationStatus = locationStatusRepository.findByTechId(o.getMainTechId());
-            if(locationStatus != null) orderView.setTechLongitude(locationStatus.getLng());
-            if(locationStatus != null) orderView.setTechLatitude(locationStatus.getLat());
+            if(o.getMainTechId() != null){
+                LocationStatus locationStatus = locationStatusRepository.findByTechId(o.getMainTechId());
+                if(locationStatus != null){
+                    orderView.setTechLongitude(locationStatus.getLng());
+                    orderView.setTechLatitude(locationStatus.getLat());
+                }
+            }
             // orderView.setComment();
             orderView.setVehicleModel(o.getVehicleModel());
             orderView.setRealOrderNum(o.getRealOrderNum());
