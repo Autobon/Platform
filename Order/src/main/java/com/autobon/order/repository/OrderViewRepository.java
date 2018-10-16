@@ -75,21 +75,26 @@ public interface OrderViewRepository extends JpaRepository<OrderView, Integer> {
             " and (?3 is null or ov.vin = ?3) " +
             " and (?4 is null or ov.contact_phone = ?4) " +
             " order by ov.id desc limit ?5,?6", nativeQuery = true)
-    List<OrderView> findAllCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+    List<OrderView> findAllCoopOrderView(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
 
-    @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1" +
+    @Query("select ov from Order ov where ov.coopId = ?1" +
+            " and (?2 is null or date_format(ov.AgreedEndTime,'%Y-%m-%d') = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contactPhone = ?4) ")
+    Page<Order> findAllCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable pageable);
+
+    @Query(value = "select count(*) from t_order ov where ov.coop_id = ?1" +
             " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
             " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
     int findAllCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
 
 
-    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1 and ov.status<10" +
-            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+    @Query("select ov from Order ov where ov.coopId = ?1 and ov.statusCode<10" +
+            " and (?2 is null or date_format(ov.AgreedEndTime,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contact_phone = ?4) " +
-            " order by ov.id desc limit ?5,?6", nativeQuery = true)
-    List<OrderView> findUnGetCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+            " and (?4 is null or ov.contactPhone = ?4) ")
+    Page<Order> findUnGetCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable p);
 
     @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status<10" +
             " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
@@ -110,12 +115,11 @@ public interface OrderViewRepository extends JpaRepository<OrderView, Integer> {
             " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
     int findUnFinishCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
 
-    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1 and ov.status>=50 and ov.status<60" +
-            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+    @Query("select ov from Order ov where ov.coopId = ?1 and ov.statusCode>=50 and ov.statusCode<60" +
+            " and (?2 is null or date_format(ov.AgreedEndTime,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contact_phone = ?4) " +
-            " order by ov.id desc limit ?5,?6", nativeQuery = true)
-    List<OrderView> findWorkingCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+            " and (?4 is null or ov.contactPhone = ?4) ")
+    Page<Order> findWorkingCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable p);
 
     @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status>=50 and ov.status<60" +
             " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
@@ -136,12 +140,11 @@ public interface OrderViewRepository extends JpaRepository<OrderView, Integer> {
             " and (?4 is null or ov.contact_phone = ?4)", nativeQuery = true)
     int findFinishCoopOrderCount(Integer coopId, String workDate, String vin, String phone);
 
-    @Query(value = "select ov.* from t_order_view ov where ov.coop_id = ?1 and ov.status>59 and ov.status<70" +
-            " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
+    @Query("select ov from Order ov where ov.coopId = ?1 and ov.statusCode>59 and ov.statusCode<70" +
+            " and (?2 is null or date_format(ov.AgreedEndTime,'%Y-%m-%d') = ?2) " +
             " and (?3 is null or ov.vin = ?3) " +
-            " and (?4 is null or ov.contact_phone = ?4) " +
-            " order by ov.id desc limit ?5,?6", nativeQuery = true)
-    List<OrderView> findUnEvaluateCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+            " and (?4 is null or ov.contactPhone = ?4) ")
+    Page<Order> findUnEvaluateCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable p);
 
     @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status>59 and ov.status<70" +
             " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +
@@ -154,7 +157,13 @@ public interface OrderViewRepository extends JpaRepository<OrderView, Integer> {
             " and (?3 is null or ov.vin = ?3) " +
             " and (?4 is null or ov.contact_phone = ?4) " +
             " order by ov.id desc limit ?5,?6", nativeQuery = true)
-    List<OrderView> findEvaluatedCoopOrder(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+    List<OrderView> findEvaluatedCoopOrderView(Integer coopId, String workDate, String vin, String phone, Integer begin, Integer size);
+
+    @Query("select ov from Order ov where ov.coopId = ?1 and ov.statusCode=70" +
+            " and (?2 is null or date_format(ov.AgreedEndTime,'%Y-%m-%d') = ?2) " +
+            " and (?3 is null or ov.vin = ?3) " +
+            " and (?4 is null or ov.contactPhone = ?4) ")
+    Page<Order> findEvaluatedCoopOrder(Integer coopId, String workDate, String vin, String phone, Pageable p);
 
     @Query(value = "select count(*) from t_order_view ov where ov.coop_id = ?1 and ov.status=70" +
             " and (?2 is null or date_format(ov.agreed_start_time,'%Y-%m-%d') = ?2) " +

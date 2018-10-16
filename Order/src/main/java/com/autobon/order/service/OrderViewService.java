@@ -1,13 +1,23 @@
 package com.autobon.order.service;
 
+import com.autobon.cooperators.entity.Cooperator;
+import com.autobon.cooperators.repository.CooperatorRepository;
+import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderPartnerView;
 import com.autobon.order.entity.OrderView;
 import com.autobon.order.repository.OrderPartnerViewRepository;
 import com.autobon.order.repository.OrderViewRepository;
+import com.autobon.technician.entity.LocationStatus;
+import com.autobon.technician.entity.TechStat;
+import com.autobon.technician.entity.Technician;
+import com.autobon.technician.repository.LocationStatusRepository;
+import com.autobon.technician.repository.TechStatRepository;
+import com.autobon.technician.repository.TechnicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +31,14 @@ public class OrderViewService {
     OrderViewRepository orderViewRepository;
     @Autowired
     OrderPartnerViewRepository orderPartnerViewRepository;
+    @Autowired
+    TechnicianRepository technicianRepository;
+    @Autowired
+    CooperatorRepository cooperatorRepository;
+    @Autowired
+    TechStatRepository techStatRepository;
+    @Autowired
+    LocationStatusRepository locationStatusRepository;
 
     public Page<OrderView> find(Integer techId,Integer status, Integer currentPage, Integer pageSize){
         currentPage = currentPage==null?1:currentPage;
@@ -101,34 +119,50 @@ public class OrderViewService {
    //     Pageable p = new PageRequest(currentPage-1,pageSize);
         Page<OrderView> page = null;
         if(status == 1){
-            //Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
-            List<OrderView> list = orderViewRepository.findUnGetCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
-            int count = orderViewRepository.findUnGetCoopOrderCount(coopId, workDate, vin, phone);
-            page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
+            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "id"));
+            // List<OrderView> list = orderViewRepository.findUnGetCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
+            Page<Order> page0 = orderViewRepository.findUnGetCoopOrder(coopId, workDate, vin, phone, p);
+            List<Order> list = page0.getContent();
+            List<OrderView> listView = toView(list);
+            // int count = orderViewRepository.findUnGetCoopOrderCount(coopId, workDate, vin, phone);
+            page = new PageImpl<>(listView, new PageRequest(currentPage-1,pageSize), page0.getTotalElements());
         }else if(status == 2)
         {
-            //Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
-            List<OrderView> list = orderViewRepository.findWorkingCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
-            int count = orderViewRepository.findWorkingCoopOrderCount(coopId, workDate, vin, phone);
-            page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
+            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "id"));
+            // List<OrderView> list = orderViewRepository.findWorkingCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
+            Page<Order> page0 = orderViewRepository.findWorkingCoopOrder(coopId, workDate, vin, phone, p);
+            List<Order> list = page0.getContent();
+            List<OrderView> listView = toView(list);
+            // int count = orderViewRepository.findWorkingCoopOrderCount(coopId, workDate, vin, phone);
+            page = new PageImpl<>(listView, new PageRequest(currentPage-1,pageSize), page0.getTotalElements());
         }
         else if(status == 3){
-            //Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
-            List<OrderView> list = orderViewRepository.findUnEvaluateCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
-            int count = orderViewRepository.findUnEvaluateCoopOrderCount(coopId, workDate, vin, phone);
-            page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
+            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "id"));
+            // List<OrderView> list = orderViewRepository.findUnEvaluateCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
+            Page<Order> page0 = orderViewRepository.findUnEvaluateCoopOrder(coopId, workDate, vin, phone, p);
+            List<Order> list = page0.getContent();
+            List<OrderView> listView = toView(list);
+            // int count = orderViewRepository.findUnEvaluateCoopOrderCount(coopId, workDate, vin, phone);
+            page = new PageImpl<>(listView, new PageRequest(currentPage-1,pageSize), page0.getTotalElements());
         }
         else if(status == 4){
-            //Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
-            List<OrderView> list = orderViewRepository.findEvaluatedCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
-            int count = orderViewRepository.findEvaluatedCoopOrderCount(coopId, workDate, vin, phone);
-            page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
+            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "id"));
+            // List<OrderView> list = orderViewRepository.findEvaluatedCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
+            Page<Order> page0 = orderViewRepository.findEvaluatedCoopOrder(coopId, workDate, vin, phone, p);
+            List<Order> list = page0.getContent();
+            List<OrderView> listView = toView(list);
+            //int count = orderViewRepository.findEvaluatedCoopOrderCount(coopId, workDate, vin, phone);
+            page = new PageImpl<>(listView, new PageRequest(currentPage-1,pageSize), page0.getTotalElements());
         }
         else if(status == 5){
-            //Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
-            List<OrderView> list = orderViewRepository.findAllCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
-            int count = orderViewRepository.findAllCoopOrderCount(coopId, workDate, vin, phone);
-            page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
+            // Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
+            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "id"));
+            // List<Order> list = orderViewRepository.findAllCoopOrder(coopId, workDate, vin, phone, (currentPage - 1) * pageSize, pageSize);
+            Page<Order> page0 = orderViewRepository.findAllCoopOrder(coopId, workDate, vin, phone, p);
+            List<Order> list = page0.getContent();
+            List<OrderView> listView = toView(list);
+            // int count = orderViewRepository.findAllCoopOrderCount(coopId, workDate, vin, phone);
+            page = new PageImpl<>(listView, new PageRequest(currentPage-1,pageSize), page0.getTotalElements());
         }
         return page;
     }
@@ -141,6 +175,69 @@ public class OrderViewService {
         int count = orderViewRepository.findAllOrderMCount(coopId);
         Page<OrderView> page = new PageImpl<>(list, new PageRequest(currentPage-1,pageSize), count);
         return page;
+    }
+
+    public List<OrderView> toView(List<Order> list){
+        List<OrderView> listView = new ArrayList<>();
+        for(Order o : list){
+            OrderView orderView = new OrderView();
+            orderView.setId(o.getId());
+            orderView.setOrderNum(o.getOrderNum());
+            orderView.setPhoto(o.getPhoto());
+            orderView.setAgreedStartTime(o.getAgreedStartTime());
+            orderView.setAgreedEndTime(o.getAgreedEndTime());
+            orderView.setStatusCode(o.getStatusCode());
+            // orderView.setCreatorType(o.gcrea());
+            orderView.setTechId(o.getMainTechId());
+            Technician technician = technicianRepository.getById(o.getMainTechId());
+            orderView.setTechName(technician.getName());
+            orderView.setTechAvatar(technician.getAvatar());
+            orderView.setTechPhone(technician.getPhone());
+            orderView.setBeforePhotos(o.getBeforePhotos());
+            orderView.setAfterPhotos(o.getAfterPhotos());
+            orderView.setStartTime(o.getStartTime());
+            orderView.setEndTime(o.getEndTime());
+            orderView.setSignTime(o.getSignTime());
+            orderView.setTakenTime(o.getTakenTime());
+            orderView.setCreateTime(o.getAddTime());
+            orderView.setType(o.getType());
+            orderView.setCoopId(o.getCoopId());
+            Cooperator cooperator = cooperatorRepository.getOne(o.getCoopId());
+            // orderView.setCoopName(cooperator.getCorporationName());
+            orderView.setAddress(cooperator.getAddress());
+            orderView.setLongitude(cooperator.getLongitude());
+            orderView.setLatitude(cooperator.getLatitude());
+            orderView.setCreatorId(o.getCreatorId());
+            orderView.setCreatorName(o.getCreatorName());
+            orderView.setContactPhone(o.getContactPhone());
+            orderView.setRemark(o.getRemark());
+            TechStat techStat = techStatRepository.getByTechId(o.getMainTechId());
+            // orderView.setEvaluateStatus();
+            orderView.setOrderCount(techStat.getTotalOrders());
+            orderView.setEvaluate(techStat.getStarRate());
+            orderView.setCancelCount(0);
+            orderView.setProductStatus(o.getProductStatus());
+            orderView.setReassignmentStatus(o.getReassignmentStatus());
+            // orderView.setPayment();
+            // orderView.setPayStatus();
+            LocationStatus locationStatus = locationStatusRepository.findByTechId(o.getMainTechId());
+            if(locationStatus != null) orderView.setTechLongitude(locationStatus.getLng());
+            if(locationStatus != null) orderView.setTechLatitude(locationStatus.getLat());
+            // orderView.setComment();
+            orderView.setVehicleModel(o.getVehicleModel());
+            orderView.setRealOrderNum(o.getRealOrderNum());
+            orderView.setLicense(o.getLicense());
+            orderView.setVin(o.getVin());
+            orderView.setCustomerName(o.getCustomerName());
+            orderView.setCustomerPhone(o.getCustomerPhone());
+            orderView.setTurnover(o.getTurnover());
+            orderView.setSalesman(o.getSalesman());
+            orderView.setTechnicianRemark(o.getTechnicianRemark());
+            orderView.setMakeUpRemark(o.getMakeUpRemark());
+
+            listView.add(orderView);
+        }
+        return listView;
     }
 
 }
