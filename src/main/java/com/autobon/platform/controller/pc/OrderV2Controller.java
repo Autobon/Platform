@@ -67,6 +67,9 @@ public class OrderV2Controller {
     @Autowired
     WorkDetailOrderViewService workDetailOrderViewService;
 
+    @Autowired
+    CommentService commentService;
+
     private int length = 0;
 
     /**
@@ -1529,9 +1532,24 @@ public class OrderV2Controller {
                          @RequestParam(value = "startTime", required = false) Long startTime,
                          @RequestParam(value = "endTime", required = false) Long endTime,
                          HttpServletRequest request,
-                         HttpServletResponse response) throws IOException {
+                         HttpServletResponse response) throws Exception {
+        Date start = null;
+        Date end = null;
+        if (startTime != null) {
+            Date date = new Date(startTime);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String dateStr = sdf.format(date);
+            start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
+        }
 
-        Page<WorkDetailView> views = workDetailService.findViews(techId, 1, 4000);
+        if (endTime != null) {
+            Date date = new Date(endTime);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String dateStr = sdf.format(date);
+            end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
+        }
+
+        List<WorkDetailView> views = workDetailService.findViewsExport(techId, start, end);
 // INSERT INTO t_tech_finance(tech_id,sum_income) SELECT t.id,SUM(w.payment) from t_technician t LEFT JOIN t_work_detail w on w.tech_id = t.id GROUP BY t.id
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] content = os.toByteArray();
@@ -1601,16 +1619,28 @@ public class OrderV2Controller {
         cell.setCellValue("报废扣款");
         cell.setCellStyle(style);
         cell = row.createCell(7);
-        cell.setCellValue("车型");
+        cell.setCellValue("评价");
         cell.setCellStyle(style);
         cell = row.createCell(8);
-        cell.setCellValue("车架号");
+        cell.setCellValue("车型");
         cell.setCellStyle(style);
         cell = row.createCell(9);
-        cell.setCellValue("车牌号");
+        cell.setCellValue("车架号");
         cell.setCellStyle(style);
         cell = row.createCell(10);
+        cell.setCellValue("车牌号");
+        cell.setCellStyle(style);
+        cell = row.createCell(11);
         cell.setCellValue("单号");
+        cell.setCellStyle(style);
+        cell = row.createCell(12);
+        cell.setCellValue("订单备注");
+        cell.setCellStyle(style);
+        cell = row.createCell(13);
+        cell.setCellValue("技师备注");
+        cell.setCellStyle(style);
+        cell = row.createCell(14);
+        cell.setCellValue("回填备注");
         cell.setCellStyle(style);
 //        String str = workDetailService.findLargest(techId);
 //        if(str != null){
@@ -1644,9 +1674,9 @@ public class OrderV2Controller {
 
 
         //新增数据行，并且设置单元格数据
-        if(views != null && views.getContent().size() > 0) {
+        if(views != null && views.size() > 0) {
             int rowNum = 1;
-            for (WorkDetailView view : views.getContent()) {
+            for (WorkDetailView view : views) {
 
                 row = sheet.createRow(rowNum);
                 cell = row.createCell(0);
@@ -1670,21 +1700,40 @@ public class OrderV2Controller {
                 cell = row.createCell(6);
                 cell.setCellStyle(style1);
                 cell.setCellValue(view.getTotalCost());
-                cell = row.createCell(7);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getVehicleModel());
+
+                Comment comment = commentService.getByOrderIdAndTechId(view.getOrderId(), view.getTechId());
+                if(comment != null){
+                    cell = row.createCell(7);
+                    cell.setCellStyle(style1);
+                    cell.setCellValue(comment.getStar() + "星" + (comment.isArriveOnTime()?",准时到达":"") + (comment.isCompleteOnTime()?",准时完工":"")
+                            + (comment.isProfessional()?",技术专业":"") + (comment.isDressNeatly()?",着装整洁":"")
+                            + (comment.isCarProtect()?",车辆保护超级棒":"") + (comment.isGoodAttitude()?",好态度":""));
+                }
+
                 cell = row.createCell(8);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getVin());
+                cell.setCellValue(view.getVehicleModel());
                 cell = row.createCell(9);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getLicense());
+                cell.setCellValue(view.getVin());
                 cell = row.createCell(10);
                 cell.setCellStyle(style);
+                cell.setCellValue(view.getLicense());
+                cell = row.createCell(11);
+                cell.setCellStyle(style);
                 cell.setCellValue(view.getRealOrderNum());
+                cell = row.createCell(12);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getRemark());
+                cell = row.createCell(13);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getTechnicianRemark());
+                cell = row.createCell(14);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getMakeUpRemark());
                 if(view.getPosition1() != null) {
                     String[] pos = view.getPosition1().split(",");
-                    int m = 10;
+                    int m = 14;
                     for(String s : pos){
                         HSSFRow row0 = sheet.getRow(0);
                         if(row0.getCell(m + 1) == null || row0.getCell(m + 1).getRichStringCellValue() == null){
@@ -1875,12 +1924,21 @@ public class OrderV2Controller {
     }
 
     @RequestMapping(value = "/excel/download/work", method = RequestMethod.GET)
-    public void downloadAll(@RequestParam(value = "startTime", required = false) Long startTime,
-                         @RequestParam(value = "endTime", required = false) Long endTime,
+    public void downloadAll(@RequestParam(value = "startTime", required = false) String startTime,
+                         @RequestParam(value = "endTime", required = false) String endTime,
                          HttpServletRequest request,
-                         HttpServletResponse response) throws IOException {
+                         HttpServletResponse response) throws Exception {
+        Date start = null;
+        Date end = null;
+        if (startTime != null && !startTime.equals("")) {
+            start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime);
+        }
 
-        List<WorkDetailView> views = workDetailService.findAllViews();
+        if (endTime != null && !endTime.equals("")) {
+            end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
+        }
+
+        List<WorkDetailView> views = workDetailService.findAllViews(start, end);
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] content = os.toByteArray();
@@ -1946,16 +2004,28 @@ public class OrderV2Controller {
         cell.setCellValue("报废扣款");
         cell.setCellStyle(style);
         cell = row.createCell(7);
-        cell.setCellValue("车型");
+        cell.setCellValue("评价");
         cell.setCellStyle(style);
         cell = row.createCell(8);
-        cell.setCellValue("车架号");
+        cell.setCellValue("车型");
         cell.setCellStyle(style);
         cell = row.createCell(9);
-        cell.setCellValue("车牌号");
+        cell.setCellValue("车架号");
         cell.setCellStyle(style);
         cell = row.createCell(10);
+        cell.setCellValue("车牌号");
+        cell.setCellStyle(style);
+        cell = row.createCell(11);
         cell.setCellValue("单号");
+        cell.setCellStyle(style);
+        cell = row.createCell(12);
+        cell.setCellValue("订单备注");
+        cell.setCellStyle(style);
+        cell = row.createCell(13);
+        cell.setCellValue("技师备注");
+        cell.setCellStyle(style);
+        cell = row.createCell(14);
+        cell.setCellValue("回填备注");
         cell.setCellStyle(style);
 //        String str = workDetailService.findLargest();
 //        if(str != null){
@@ -2015,21 +2085,40 @@ public class OrderV2Controller {
                 cell = row.createCell(6);
                 cell.setCellStyle(style1);
                 cell.setCellValue(view.getTotalCost());
-                cell = row.createCell(7);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getVehicleModel());
+
+                Comment comment = commentService.getByOrderIdAndTechId(view.getOrderId(), view.getTechId());
+                if(comment != null){
+                    cell = row.createCell(7);
+                    cell.setCellStyle(style1);
+                    cell.setCellValue(comment.getStar() + "星" + (comment.isArriveOnTime()?",准时到达":"") + (comment.isCompleteOnTime()?",准时完工":"")
+                            + (comment.isProfessional()?",技术专业":"") + (comment.isDressNeatly()?",着装整洁":"")
+                            + (comment.isCarProtect()?",车辆保护超级棒":"") + (comment.isGoodAttitude()?",好态度":""));
+                }
+
                 cell = row.createCell(8);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getVin());
+                cell.setCellValue(view.getVehicleModel());
                 cell = row.createCell(9);
                 cell.setCellStyle(style);
-                cell.setCellValue(view.getLicense());
+                cell.setCellValue(view.getVin());
                 cell = row.createCell(10);
                 cell.setCellStyle(style);
+                cell.setCellValue(view.getLicense());
+                cell = row.createCell(11);
+                cell.setCellStyle(style);
                 cell.setCellValue(view.getRealOrderNum());
+                cell = row.createCell(12);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getRemark());
+                cell = row.createCell(13);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getTechnicianRemark());
+                cell = row.createCell(14);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getMakeUpRemark());
                 if(view.getPosition1() != null) {
                     String[] pos = view.getPosition1().split(",");
-                    int m = 10;
+                    int m = 14;
                     for(String s : pos){
                         HSSFRow row0 = sheet.getRow(0);
                         if(row0.getCell(m + 1) == null || row0.getCell(m + 1).getRichStringCellValue() == null){

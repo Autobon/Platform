@@ -14,8 +14,31 @@
             <button type="submit" class="btn btn-primary" ng-click="getTechFinance()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
             <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
             <a ui-sref="console.finance.applyRecord({id: 0})" class="btn btn-sm btn-default"><i class="fa fa-list"></i>&nbsp;未处理提现申请</a>
-            <button type="button" class="btn btn-sm btn-default" ng-click="exportAllDetail()"><i class="fa fa-level-down"></i>&nbsp;导出所有</button>
+            <button type="button" class="btn btn-sm btn-default" ng-click="toExport()"><i class="fa fa-level-down"></i>&nbsp;导出所有</button>
         </form>
+    </div>
+    <div ng-if="showExport == 1" style="float:right;margin-right:115px;margin-top:10px;">
+        <div class="form-group" style="float:left;margin-left: 100px;">
+            <label style="float:left;line-height:40px;margin:0 4px;">开始时间:</label>
+            <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.startTime}}</div>
+                <div uib-dropdown-menu>
+                    <datetimepicker ng-model="filter.startTime" ng-change="kankan()"
+                                    data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm:ss', minView: 'minute', startView: 'year'}"
+                                    before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="float:left;">
+            <label style="float:left;line-height:40px;margin:0 4px;">结束时间:</label>
+            <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.endTime}}</div>
+                <div uib-dropdown-menu>
+                    <datetimepicker ng-model="filter.endTime"
+                                    data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm:ss', minView: 'minute', startView: 'year'}"
+                                    before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-default" style="margin-left:10px;" ng-click="exportAllDetail()">确认导出</button>
     </div>
     <div class="clearfix">
         <div ng-class="$state.is('console.finance') ? 'col-sm-12' : 'col-sm-3'">

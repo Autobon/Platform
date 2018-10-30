@@ -307,8 +307,12 @@ public class WorkDetailService {
         return workDetailViewRepository.findViews(techId, new PageRequest(page - 1, pageSize, new Sort(Sort.Direction.ASC, "id")));
     }
 
-    public List<WorkDetailView> findAllViews(){
-        return workDetailViewRepository.findAllViews();
+    public List<WorkDetailView> findViewsExport(int techId, Date start, Date end){
+        return workDetailViewRepository.findViewsExport(techId, start, end);
+    }
+
+    public List<WorkDetailView> findAllViews(Date start, Date end){
+        return workDetailViewRepository.findAllViews(start, end);
     }
 
     public String findLargest(int techId){

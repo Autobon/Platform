@@ -39,6 +39,15 @@ public class WorkDetailView {
     @Column(name = "vin")
     private String vin;
 
+    @Column(name = "remark")
+    private String remark;
+
+    @Column(name = "technician_remark")
+    private String technicianRemark;
+
+    @Column(name = "make_up_remark")
+    private String makeUpRemark;
+
     @Column
     private int source;
 
@@ -375,5 +384,29 @@ public class WorkDetailView {
 
     public void setAddTime(Date addTime) {
         this.addTime = addTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getTechnicianRemark() {
+        return technicianRemark;
+    }
+
+    public void setTechnicianRemark(String technicianRemark) {
+        this.technicianRemark = technicianRemark;
+    }
+
+    public String getMakeUpRemark() {
+        return makeUpRemark;
+    }
+
+    public void setMakeUpRemark(String makeUpRemark) {
+        this.makeUpRemark = makeUpRemark;
     }
 }

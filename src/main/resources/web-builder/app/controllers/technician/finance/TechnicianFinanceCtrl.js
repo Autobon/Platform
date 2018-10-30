@@ -37,9 +37,16 @@ export default class TechnicianCtrl extends Injector {
         window.location.href = Settings.domain + '/api/web/admin/order/excel/download/work/' + id;
     }
 
-    exportAllDetail() {
-        const {Settings} = this.$injected;
+	toExport() {
+		const {$scope} = this.$injected;
+		$scope.showExport = 1;
+	}
 
-        window.location.href = Settings.domain + '/api/web/admin/order/excel/download/work';
+    exportAllDetail() {
+        const {$scope, Settings} = this.$injected;
+
+        window.location.href = Settings.domain + '/api/web/admin/order/excel/download/work?startTime=' +
+            ($scope.filter.startTime === undefined ? '' : $scope.filter.startTime) + '&endTime=' +
+			($scope.filter.endTime === undefined ? '' : $scope.filter.endTime);
     }
 }
