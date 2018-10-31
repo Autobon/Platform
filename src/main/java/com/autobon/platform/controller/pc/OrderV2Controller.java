@@ -2085,37 +2085,36 @@ public class OrderV2Controller {
                 cell = row.createCell(6);
                 cell.setCellStyle(style1);
                 cell.setCellValue(view.getTotalCost());
+                cell = row.createCell(7);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getVehicleModel());
+                cell = row.createCell(8);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getVin());
+                cell = row.createCell(9);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getLicense());
+                cell = row.createCell(10);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getRealOrderNum());
+                cell = row.createCell(11);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getRemark());
+                cell = row.createCell(12);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getTechnicianRemark());
+                cell = row.createCell(13);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getMakeUpRemark());
 
+                cell = row.createCell(14);
+                cell.setCellStyle(style1);
                 Comment comment = commentService.getByOrderIdAndTechId(view.getOrderId(), view.getTechId());
                 if(comment != null){
-                    cell = row.createCell(7);
-                    cell.setCellStyle(style1);
                     cell.setCellValue(comment.getStar() + "星" + (comment.isArriveOnTime()?",准时到达":"") + (comment.isCompleteOnTime()?",准时完工":"")
                             + (comment.isProfessional()?",技术专业":"") + (comment.isDressNeatly()?",着装整洁":"")
                             + (comment.isCarProtect()?",车辆保护超级棒":"") + (comment.isGoodAttitude()?",好态度":""));
                 }
-
-                cell = row.createCell(8);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getVehicleModel());
-                cell = row.createCell(9);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getVin());
-                cell = row.createCell(10);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getLicense());
-                cell = row.createCell(11);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getRealOrderNum());
-                cell = row.createCell(12);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getRemark());
-                cell = row.createCell(13);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getTechnicianRemark());
-                cell = row.createCell(14);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getMakeUpRemark());
                 if(view.getPosition1() != null) {
                     String[] pos = view.getPosition1().split(",");
                     int m = 14;
@@ -2123,7 +2122,7 @@ public class OrderV2Controller {
                         HSSFRow row0 = sheet.getRow(0);
                         if(row0.getCell(m + 1) == null || row0.getCell(m + 1).getRichStringCellValue() == null){
                             cell = row0.createCell(m + 1);
-                            cell.setCellValue("施工部位" + ((m + 1 - 10)/3 + 1));
+                            cell.setCellValue("施工部位" + ((m + 1 - 14)/3 + 1));
                             cell.setCellStyle(style);
                             cell = row0.createCell(m + 2);
                             cell.setCellValue("施工型号");
