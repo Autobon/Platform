@@ -542,6 +542,7 @@ public class OrderService {
         Order order = repository.findOrderById(orderId);
 
         order.setTechnicianRemark(remark == null ? order.getTechnicianRemark() : remark);
+        repository.save(order);
         return order;
     }
 
