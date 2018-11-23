@@ -84,8 +84,22 @@
         </label>
     </div>
 </div>
-<div ng-if="showExport == 1" style="float:right;margin-right:10px;margin-top:10px;">
-    <div class="form-group" style="float:left;margin-left: 100px;">
+<div ng-if="showExport == 1" style="float:right;margin-right:115px;margin-top:10px;">
+    <div class="form-group" style="float:left;margin-top: 10px;">
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox1" ng-model="filter.project1" value="1" ng-change="onChangeProject(1, filter.project1)"> 隔热膜
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox2" ng-model="filter.project2" value="2" ng-change="onChangeProject(2, filter.project2)"> 隐形车衣
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox3" ng-model="filter.project3" value="3" ng-change="onChangeProject(3, filter.project3)"> 车身改色
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox4" ng-model="filter.project4" value="4" ng-change="onChangeProject(4, filter.project4)"> 美容清洁
+        </label>
+    </div>
+    <div class="form-group" style="float:left;margin-left: 20px;">
         <label style="float:left;line-height:40px;margin:0 4px;">开始时间:</label>
         <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.startDate}}</div>
             <div uib-dropdown-menu>
@@ -105,6 +119,7 @@
             </div>
         </div>
     </div>
+    <button type="button" class="btn btn-sm btn-default" style="margin-left:10px;" ng-click="showExport = 0">收起</button>
     <button type="button" class="btn btn-sm btn-default" style="margin-left:10px;" ng-click="exportExcel()">确认导出</button>
 </div>
 <br>

@@ -10,7 +10,7 @@ export default class OrderCtrl extends Injector {
         const {$scope, Settings, CooperatorService} = this.$injected;
         this.attachMethodsTo($scope);
         $scope.Settings   = Settings;
-        $scope.filter     = {sort: 'id'};
+        $scope.filter     = {sort: 'id', project1: true, project2: true, project3: true, project4: true};
         $scope.pagination = {page: 1, totalItems: 0, pageSize: 15};
         $scope.assignTemplate = 'assignOrder.html';
         $scope.techQuery = {};
@@ -18,6 +18,7 @@ export default class OrderCtrl extends Injector {
         $scope.orders = [];
 
         $scope.chooseIds = [];
+		$scope.chooseProjectIds = [1,2,3,4];
 
         $scope.coops = [];
         $scope.selected = [];
@@ -119,6 +120,26 @@ export default class OrderCtrl extends Injector {
         return false;
     }
 
+	onChangeProject(projectId, flag) {
+		const {$scope} = this.$injected;
+		if (flag) {
+			if (projectId) {
+				$scope.chooseProjectIds.push(projectId);
+			}
+		} else {
+			if($scope.chooseProjectIds.length < 2){
+				$scope.error = "请至少选择一个施工项目";
+				if (projectId == 1)  $scope.filter.project1 = true;
+				if (projectId == 2)  $scope.filter.project2 = true;
+				if (projectId == 3)  $scope.filter.project3 = true;
+				if (projectId == 4)  $scope.filter.project4 = true;
+				return;
+			}
+			$scope.chooseProjectIds = $scope.chooseProjectIds.filter(items => items !== projectId);
+		}
+		console.log($scope.chooseProjectIds.join(","));
+    }
+
     onCheckChange(id, flag) {
         const {$scope} = this.$injected;
 
@@ -193,13 +214,14 @@ export default class OrderCtrl extends Injector {
         //                     + '&orderType=' +  ($scope.filter.orderType === undefined ? '' : $scope.filter.orderType)
         //                     + '&orderStatus=' +  ($scope.filter.orderStatus === undefined ? '' : $scope.filter.orderStatus);
 
+        console.log($scope.chooseProjectIds);
         if ($scope.chooseIds.length > 0) {
             window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?idList=' + $scope.chooseIds.join(',');
         } else {
             window.location.href = Settings.domain + '/api/web/admin/order/excel/download/view?id=' + ($scope.filter.id === undefined ? '' : $scope.filter.id)
                 + '&startDate=' +  ($scope.filter.startDate === undefined ? '' : $scope.filter.startDate)
                 + '&endDate=' +  ($scope.filter.endDate === undefined ? '' : $scope.filter.endDate)
-                + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech);
+                + '&tech=' +  ($scope.filter.tech === undefined ? '' : $scope.filter.tech) + '&chooseProjectIds=' +  $scope.chooseProjectIds.join(',');
         }
     }
 

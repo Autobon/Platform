@@ -115,4 +115,7 @@ public class ConstructionProjectService {
         return constructionProjectRepository.findAll();
     }
 
+    public List<ConstructionPosition> findAllPosition(){
+        return constructionPositionRepository.findAll();
+    }
 }

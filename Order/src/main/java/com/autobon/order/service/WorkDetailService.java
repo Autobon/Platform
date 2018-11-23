@@ -25,8 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wh on 2016/11/2.
@@ -307,12 +309,24 @@ public class WorkDetailService {
         return workDetailViewRepository.findViews(techId, new PageRequest(page - 1, pageSize, new Sort(Sort.Direction.ASC, "id")));
     }
 
-    public List<WorkDetailView> findViewsExport(int techId, Date start, Date end){
-        return workDetailViewRepository.findViewsExport(techId, start, end);
+    public List<WorkDetailView> findViewsExport(int techId, Date start, Date end, String chooseProjectIds){
+        if(chooseProjectIds != null && !chooseProjectIds.equals("")){
+            List<Integer> listIds = Arrays.asList(chooseProjectIds.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+
+            List<WorkDetailView> list = workDetailViewRepository.findViewsExport(techId, start, end, listIds);
+            return list;
+        }
+        return null;
     }
 
-    public List<WorkDetailView> findAllViews(Date start, Date end){
-        return workDetailViewRepository.findAllViews(start, end);
+    public List<WorkDetailView> findAllViews(Date start, Date end, String chooseProjectIds){
+        if(chooseProjectIds != null && !chooseProjectIds.equals("")){
+            List<Integer> listIds = Arrays.asList(chooseProjectIds.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+
+            List<WorkDetailView> list = workDetailViewRepository.findAllViews(start, end, listIds);
+            return list;
+        }
+        return null;
     }
 
     public String findLargest(int techId){

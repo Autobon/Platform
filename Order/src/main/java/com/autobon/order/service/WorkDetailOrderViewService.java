@@ -10,9 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -25,27 +23,25 @@ public class WorkDetailOrderViewService {
     @Autowired
     WorkDetailOrderViewRepository workDetailOrderViewRepository;
 
-    public Page<WorkDetailOrderView> findViews(Date start, Date end, Integer currentPage, Integer pageSize){
-        currentPage = currentPage==null?1:currentPage;
-        currentPage = currentPage<=0?1:currentPage;
-        pageSize = pageSize==null?10:pageSize;
-        pageSize = pageSize<=0?10:pageSize;
-        Pageable p = new PageRequest(currentPage-1,pageSize);
-        Page<WorkDetailOrderView> page = workDetailOrderViewRepository.findViews(start, end, p);
+    public List<WorkDetailOrderView> findViews(Date start, Date end, String chooseProjectIds){
+        if(chooseProjectIds != null && !chooseProjectIds.equals("")){
+            List<String> listIds = Arrays.asList(chooseProjectIds.split(",")).stream().map(s -> s.trim() ).collect(Collectors.toList());
 
+            List<WorkDetailOrderView> list = workDetailOrderViewRepository.findViews(start, end, listIds);
+            return list;
+        }
+        return null;
 
-        return page;
     }
 
-    public List<WorkDetailOrderView> findViewsByTech(String tech, Date start, Date end, Integer currentPage, Integer pageSize){
-        currentPage = currentPage==null?1:currentPage;
-        currentPage = currentPage<=0?1:currentPage;
-        pageSize = pageSize==null?10:pageSize;
-        pageSize = pageSize<=0?10:pageSize;
-        List<WorkDetailOrderView> page = workDetailOrderViewRepository.findViewsByTech(tech,start, end, currentPage, pageSize);
+    public List<WorkDetailOrderView> findViewsByTech(String tech, Date start, Date end, String chooseProjectIds){
+        if(chooseProjectIds != null && !chooseProjectIds.equals("")){
+            List<String> listIds = Arrays.asList(chooseProjectIds.split(",")).stream().map(s -> s.trim() ).collect(Collectors.toList());
 
-
-        return page;
+            List<WorkDetailOrderView> list = workDetailOrderViewRepository.findViewsByTech(tech,start, end, listIds);
+            return list;
+        }
+        return null;
     }
 
     public Page<WorkDetailOrderView> findByIds(String idList, Integer currentPage, Integer pageSize){

@@ -30,6 +30,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by wh on 2016/11/15.
@@ -662,8 +663,1032 @@ public class OrderV2Controller {
                          @RequestParam(value = "endDate", required = false) String endDate,
                          @RequestParam(value = "status", required = false) Order.Status status,
                          @RequestParam(value = "idList", required = false) String idList,
+                         @RequestParam(value = "chooseProjectIds", required = false) String chooseProjectIds,
                          HttpServletRequest request,
                          HttpServletResponse response) throws Exception {
+        Date start = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2018-08-31 23:59:59");
+        Date end = new Date();
+        if(startDate != null && !startDate.equals("")) {
+            start = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(startDate);
+        }
+        if(endDate != null && !endDate.equals("")) {
+            end = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(endDate);
+        }
+        List<WorkDetailOrderView> viewList;
+        if(idList != null && !idList.equals("")){
+            Page<WorkDetailOrderView> viewPage =  workDetailOrderViewService.findByIds(idList,1,10000);
+            viewList = viewPage.getContent();
+        }else if(tech == null || tech.equals("")){
+            viewList =  workDetailOrderViewService.findViews(start, end, chooseProjectIds);
+        }else{
+            viewList =  workDetailOrderViewService.findViewsByTech(tech, start, end, chooseProjectIds);
+        }
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        byte[] content = os.toByteArray();
+        InputStream is = new ByteArrayInputStream(content);
+        // 设置response参数，可以打开下载页面
+
+        response.reset();
+
+        response.setHeader("content-type", "application/octet-stream");
+        response.setContentType("application/octet-stream");
+        response.addHeader("Content-Disposition", "attachment;filename=order" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls");
+
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+
+        List<ConstructionPosition> projectList = new ArrayList<>();
+        String[] chooseProjects = chooseProjectIds.split(",");
+        for(String s : chooseProjects){
+            if(s.equals("1")){
+                ConstructionPosition constructionPosition = new ConstructionPosition();
+                constructionPosition.setId(1);
+                constructionPosition.setName("隔热膜");
+                projectList.add(constructionPosition);
+            } else if(s.equals("2")){
+                ConstructionPosition constructionPosition = new ConstructionPosition();
+                constructionPosition.setId(2);
+                constructionPosition.setName("隐形车衣");
+                projectList.add(constructionPosition);
+            }else if(s.equals("3")){
+                ConstructionPosition constructionPosition = new ConstructionPosition();
+                constructionPosition.setId(3);
+                constructionPosition.setName("车身改色");
+                projectList.add(constructionPosition);
+            }else if(s.equals("4")){
+                ConstructionPosition constructionPosition = new ConstructionPosition();
+                constructionPosition.setId(4);
+                constructionPosition.setName("美容清洁");
+                projectList.add(constructionPosition);
+            }
+        }
+
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy h:mm"));
+        style.setBorderBottom(BorderStyle.THIN);//下边框
+        style.setBorderLeft(BorderStyle.THIN);//左边框
+        style.setBorderTop(BorderStyle.THIN);//上边框
+        style.setBorderRight(BorderStyle.THIN);//右边框
+        style.setAlignment(HorizontalAlignment.CENTER);
+
+        for(ConstructionPosition ps : projectList){
+            HSSFSheet sheet = workbook.createSheet(ps.getName());
+
+            sheet = first12(style, sheet);
+            HSSFRow row = sheet.getRow(0);
+            HSSFCell cell;
+
+            if(ps.getName().equals("隔热膜")){
+                cell = row.createCell(13);
+                cell.setCellValue("前档");
+                cell.setCellStyle(style);
+                cell = row.createCell(18);
+                cell.setCellValue("后挡");
+                cell.setCellStyle(style);
+                cell = row.createCell(23);
+                cell.setCellValue("左前门");
+                cell.setCellStyle(style);
+                cell = row.createCell(28);
+                cell.setCellValue("右前门");
+                cell.setCellStyle(style);
+                cell = row.createCell(33);
+                cell.setCellValue("左后门");
+                cell.setCellStyle(style);
+                cell = row.createCell(38);
+                cell.setCellValue("右后门");
+                cell.setCellStyle(style);
+                cell = row.createCell(43);
+                cell.setCellValue("左小角");
+                cell.setCellStyle(style);
+                cell = row.createCell(48);
+                cell.setCellValue("右小角");
+                cell.setCellStyle(style);
+                cell = row.createCell(53);
+                cell.setCellValue("左大角");
+                cell.setCellStyle(style);
+                cell = row.createCell(58);
+                cell.setCellValue("右大角");
+                cell.setCellStyle(style);
+                cell = row.createCell(63);
+                cell.setCellValue("前天窗");
+                cell.setCellStyle(style);
+                cell = row.createCell(68);
+                cell.setCellValue("中天窗");
+                cell.setCellStyle(style);
+                cell = row.createCell(73);
+                cell.setCellValue("后天窗");
+                cell.setCellStyle(style);
+                for(int i = 13;i < 74;i+=5){
+                    createThree(row, i, style);
+                }
+            }
+            if(ps.getName().equals("隐形车衣")){
+                cell = row.createCell(13);
+                cell.setCellValue("整车");
+                cell.setCellStyle(style);
+                cell = row.createCell(18);
+                cell.setCellValue("整车不含顶");
+                cell.setCellStyle(style);
+                cell = row.createCell(23);
+                cell.setCellValue("车顶");
+                cell.setCellStyle(style);
+                cell = row.createCell(28);
+                cell.setCellValue("引擎盖");
+                cell.setCellStyle(style);
+                cell = row.createCell(33);
+                cell.setCellValue("左前门");
+                cell.setCellStyle(style);
+                cell = row.createCell(38);
+                cell.setCellValue("左后门");
+                cell.setCellStyle(style);
+                cell = row.createCell(43);
+                cell.setCellValue("左前叶子板");
+                cell.setCellStyle(style);
+                cell = row.createCell(48);
+                cell.setCellValue("左后叶子板");
+                cell.setCellStyle(style);
+                cell = row.createCell(53);
+                cell.setCellValue("右前门");
+                cell.setCellStyle(style);
+                cell = row.createCell(58);
+                cell.setCellValue("右后门");
+                cell.setCellStyle(style);
+                cell = row.createCell(63);
+                cell.setCellValue("右前叶子板");
+                cell.setCellStyle(style);
+                cell = row.createCell(68);
+                cell.setCellValue("右后叶子板");
+                cell.setCellStyle(style);
+                cell = row.createCell(73);
+                cell.setCellValue("左裙边");
+                cell.setCellStyle(style);
+                cell = row.createCell(78);
+                cell.setCellValue("左后视镜");
+                cell.setCellStyle(style);
+                cell = row.createCell(83);
+                cell.setCellValue("前杠");
+                cell.setCellStyle(style);
+                cell = row.createCell(88);
+                cell.setCellValue("后杠");
+                cell.setCellStyle(style);
+                cell = row.createCell(93);
+                cell.setCellValue("右裙边");
+                cell.setCellStyle(style);
+                cell = row.createCell(98);
+                cell.setCellValue("右后视镜");
+                cell.setCellStyle(style);
+                cell = row.createCell(103);
+                cell.setCellValue("后箱盖");
+                cell.setCellStyle(style);
+                cell = row.createCell(108);
+                cell.setCellValue("喜悦套餐");
+                cell.setCellStyle(style);
+                cell = row.createCell(113);
+                cell.setCellValue("前杠角");
+                cell.setCellStyle(style);
+                cell = row.createCell(118);
+                cell.setCellValue("后杠角");
+                cell.setCellStyle(style);
+                cell = row.createCell(123);
+                cell.setCellValue("四轮眉");
+                cell.setCellStyle(style);
+                cell = row.createCell(128);
+                cell.setCellValue("手扣");
+                cell.setCellStyle(style);
+                cell = row.createCell(133);
+                cell.setCellValue("两后座椅");
+                cell.setCellStyle(style);
+                cell = row.createCell(138);
+                cell.setCellValue("两前座椅");
+                cell.setCellStyle(style);
+                cell = row.createCell(143);
+                cell.setCellValue("四门脚踏");
+                cell.setCellStyle(style);
+                cell = row.createCell(148);
+                cell.setCellValue("四门饰条");
+                cell.setCellStyle(style);
+                cell = row.createCell(153);
+                cell.setCellValue("中控");
+                cell.setCellStyle(style);
+                cell = row.createCell(158);
+                cell.setCellValue("左机盖");
+                cell.setCellStyle(style);
+                cell = row.createCell(163);
+                cell.setCellValue("右机盖");
+                cell.setCellStyle(style);
+                cell = row.createCell(168);
+                cell.setCellValue("左前杠");
+                cell.setCellStyle(style);
+                cell = row.createCell(173);
+                cell.setCellValue("右前杠");
+                cell.setCellStyle(style);
+                cell = row.createCell(178);
+                cell.setCellValue("左后杠");
+                cell.setCellStyle(style);
+                cell = row.createCell(183);
+                cell.setCellValue("右后杠");
+                cell.setCellStyle(style);
+                for(int i = 13;i < 184;i+=5){
+                    createThree(row, i, style);
+                }
+            }
+            if(ps.getName().equals("车身改色")){
+                cell = row.createCell(13);
+                cell.setCellValue("整车");
+                cell.setCellStyle(style);
+                cell = row.createCell(18);
+                cell.setCellValue("整车不含顶");
+                cell.setCellStyle(style);
+                cell = row.createCell(23);
+                cell.setCellValue("车顶");
+                cell.setCellStyle(style);
+                cell = row.createCell(28);
+                cell.setCellValue("引擎盖");
+                cell.setCellStyle(style);
+                cell = row.createCell(33);
+                cell.setCellValue("左前门");
+                cell.setCellStyle(style);
+                cell = row.createCell(38);
+                cell.setCellValue("左后门");
+                cell.setCellStyle(style);
+                cell = row.createCell(43);
+                cell.setCellValue("左前叶子板");
+                cell.setCellStyle(style);
+                cell = row.createCell(48);
+                cell.setCellValue("左后叶子板");
+                cell.setCellStyle(style);
+                cell = row.createCell(53);
+                cell.setCellValue("右前门");
+                cell.setCellStyle(style);
+                cell = row.createCell(58);
+                cell.setCellValue("右后门");
+                cell.setCellStyle(style);
+                cell = row.createCell(63);
+                cell.setCellValue("右前叶子板");
+                cell.setCellStyle(style);
+                cell = row.createCell(68);
+                cell.setCellValue("右后叶子板");
+                cell.setCellStyle(style);
+                cell = row.createCell(73);
+                cell.setCellValue("左裙边");
+                cell.setCellStyle(style);
+                cell = row.createCell(78);
+                cell.setCellValue("左后视镜");
+                cell.setCellStyle(style);
+                cell = row.createCell(83);
+                cell.setCellValue("前杠");
+                cell.setCellStyle(style);
+                cell = row.createCell(88);
+                cell.setCellValue("后杠");
+                cell.setCellStyle(style);
+                cell = row.createCell(93);
+                cell.setCellValue("右裙边");
+                cell.setCellStyle(style);
+                cell = row.createCell(98);
+                cell.setCellValue("右后视镜");
+                cell.setCellStyle(style);
+                cell = row.createCell(103);
+                cell.setCellValue("后箱盖");
+                cell.setCellStyle(style);
+                cell = row.createCell(108);
+                cell.setCellValue("喜悦套餐");
+                cell.setCellStyle(style);
+                cell = row.createCell(113);
+                cell.setCellValue("前杠角");
+                cell.setCellStyle(style);
+                cell = row.createCell(118);
+                cell.setCellValue("后杠角");
+                cell.setCellStyle(style);
+                cell = row.createCell(123);
+                cell.setCellValue("四轮眉");
+                cell.setCellStyle(style);
+                cell = row.createCell(128);
+                cell.setCellValue("手扣");
+                cell.setCellStyle(style);
+                cell = row.createCell(133);
+                cell.setCellValue("两后座椅");
+                cell.setCellStyle(style);
+                cell = row.createCell(138);
+                cell.setCellValue("两前座椅");
+                cell.setCellStyle(style);
+                cell = row.createCell(143);
+                cell.setCellValue("四门脚踏");
+                cell.setCellStyle(style);
+                cell = row.createCell(148);
+                cell.setCellValue("四门饰条");
+                cell.setCellStyle(style);
+                cell = row.createCell(153);
+                cell.setCellValue("中控");
+                cell.setCellStyle(style);
+                for(int i = 13;i < 154;i+=5){
+                    createThree(row, i, style);
+                }
+            }
+            if(ps.getName().equals("美容清洁")){
+                cell = row.createCell(13);
+                cell.setCellValue("新车封釉/镀膜/镀晶");
+                cell.setCellStyle(style);
+                cell = row.createCell(18);
+                cell.setCellValue("新车揭膜除胶或打蜡");
+                cell.setCellStyle(style);
+                cell = row.createCell(23);
+                cell.setCellValue("新车精洗整备（除胶除锈）");
+                cell.setCellStyle(style);
+                cell = row.createCell(28);
+                cell.setCellValue("杀菌/去味套餐");
+                cell.setCellStyle(style);
+                cell = row.createCell(33);
+                cell.setCellValue("二手车全车整备翻新");
+                cell.setCellStyle(style);
+                cell = row.createCell(38);
+                cell.setCellValue("旧车封釉/镀膜/镀晶");
+                cell.setCellStyle(style);
+                cell = row.createCell(43);
+                cell.setCellValue("内饰清洗/翻新");
+                cell.setCellStyle(style);
+                cell = row.createCell(48);
+                cell.setCellValue("发动机舱清洁养护");
+                cell.setCellStyle(style);
+                cell = row.createCell(53);
+                cell.setCellValue("轮毂翻新/镀膜");
+                cell.setCellStyle(style);
+                cell = row.createCell(58);
+                cell.setCellValue("玻璃清洁/镀膜");
+                cell.setCellStyle(style);
+                cell = row.createCell(63);
+                cell.setCellValue("真皮清洁/镀膜");
+                cell.setCellStyle(style);
+                cell = row.createCell(68);
+                cell.setCellValue("镀膜/镀晶维护");
+                cell.setCellStyle(style);
+                cell = row.createCell(73);
+                cell.setCellValue("后视镜犀牛皮");
+                cell.setCellStyle(style);
+                cell = row.createCell(78);
+                cell.setCellValue("四门手扣犀牛皮");
+                cell.setCellStyle(style);
+                cell = row.createCell(83);
+                cell.setCellValue("底盘装甲");
+                cell.setCellStyle(style);
+                cell = row.createCell(88);
+                cell.setCellValue("滤芯更换");
+                cell.setCellStyle(style);
+                cell = row.createCell(93);
+                cell.setCellValue("零售店镀晶（含机舱轮毂轮胎内饰整备）");
+                cell.setCellStyle(style);
+                cell = row.createCell(98);
+                cell.setCellValue("零售店极光养护（含机舱轮毂轮胎内饰整备）");
+                cell.setCellStyle(style);
+                cell = row.createCell(103);
+                cell.setCellValue("零售店内饰翻新（含机舱轮毂轮胎漆面打蜡）");
+                cell.setCellStyle(style);
+                cell = row.createCell(108);
+                cell.setCellValue("零售店真皮清洗镀膜（含机舱轮毂轮胎漆面打蜡）");
+                cell.setCellStyle(style);
+                cell = row.createCell(113);
+                cell.setCellValue("零售店撕车衣/改色膜");
+                cell.setCellStyle(style);
+                cell = row.createCell(118);
+                cell.setCellValue("零售店行车记录仪安装");
+                cell.setCellStyle(style);
+                cell = row.createCell(123);
+                cell.setCellValue("零售店裁脚垫");
+                cell.setCellStyle(style);
+                for(int i = 13;i < 124;i+=5){
+                    createThree(row, i, style);
+                }
+            }
+        }
+        //新增数据行，并且设置单元格数据
+        HSSFCellStyle styleD = workbook.createCellStyle();
+        styleD.setBorderBottom(BorderStyle.THIN);//下边框
+        styleD.setBorderLeft(BorderStyle.THIN);//左边框
+        styleD.setBorderTop(BorderStyle.THIN);//上边框
+        styleD.setBorderRight(BorderStyle.THIN);//右边框
+        if(viewList != null && viewList.size() > 0) {
+            int rowNum1 = 1;
+            int rowNum2 = 1;
+            int rowNum3 = 1;
+            int rowNum4 = 1;
+            for (WorkDetailOrderView order : viewList) {
+                HSSFSheet sheet;
+                HSSFRow row;
+                if(order.getType().equals("1")) {
+                    sheet = workbook.getSheet("隔热膜");
+                    row = sheet.createRow(rowNum1);
+                } else if(order.getType().equals("2")) {
+                    sheet = workbook.getSheet("隐形车衣");
+                    row = sheet.createRow(rowNum2);
+                } else if(order.getType().equals("3")) {
+                    sheet = workbook.getSheet("车身改色");
+                    row = sheet.createRow(rowNum3);
+                } else {
+                    sheet = workbook.getSheet("美容清洁");
+                    row = sheet.createRow(rowNum4);
+                }
+                row.createCell(0).setCellValue(order.getId());
+                row.createCell(1).setCellValue(order.getOrderNum());
+                row.createCell(2).setCellValue(order.getLicense() == null ? "" : order.getLicense());
+                row.createCell(3).setCellValue(order.getVehicleModel() == null ? "" : order.getVehicleModel());
+                row.createCell(4).setCellValue(order.getVin() == null ? "" : order.getVin());
+
+                HSSFCell cell;
+                cell = row.createCell(5);
+                cell.setCellStyle(style);
+                if(order.getAgreedStartTime() != null) cell.setCellValue(order.getAgreedStartTime());
+                row.createCell(6).setCellValue(order.getCreatorName());
+                cell = row.createCell(7);
+                cell.setCellStyle(style);
+                if(order.getCreateTime() != null) cell.setCellValue(order.getCreateTime());
+                cell = row.createCell(8);
+                cell.setCellStyle(style);
+                if(order.getTakenTime() != null) cell.setCellValue(order.getTakenTime());
+                cell = row.createCell(9);
+                cell.setCellStyle(style);
+                if(order.getSignTime() != null) cell.setCellValue(order.getSignTime());
+                cell = row.createCell(10);
+                cell.setCellStyle(style);
+                if(order.getStartTime() != null) cell.setCellValue(order.getStartTime());
+                cell = row.createCell(11);
+                cell.setCellStyle(style);
+                if(order.getEndTime() != null) cell.setCellValue(order.getEndTime());
+
+
+                String status1 = "";
+                if (order.getStatus().getStatusCode() == -10) {
+                    status1 = "待指派";
+                }
+                if (order.getStatus().getStatusCode() == 0) {
+                    status1 = "待指派";
+                } else if (order.getStatus().getStatusCode() >= 10 && order.getStatus().getStatusCode() < 50) {
+                    status1 = "已接单";
+                } else if (order.getStatus().getStatusCode() >= 50 && order.getStatus().getStatusCode() < 60) {
+                    status1 = "工作中";
+                } else if (order.getStatus().getStatusCode() == 60) {
+                    status1 = "已完成";
+                } else if (order.getStatus().getStatusCode() == 70) {
+                    status1 = "已评价";
+                } else if (order.getStatus().getStatusCode() == 200) {
+                    status1 = "已撤销";
+                }
+                row.createCell(12).setCellValue(status1);
+
+                int iMax = 14;
+                if(order.getType().equals("1")) iMax = 80;
+                if(order.getType().equals("2")) iMax = 190;
+                if(order.getType().equals("3")) iMax = 160;
+                if(order.getType().equals("4")) iMax = 130;
+                for(int i = 13;i < iMax;i++){
+                    row.createCell(i).setCellValue("");
+                }
+                List<WorkDetailView> detailList = order.getWorkDetails();
+                List<OrderProductView> productList = order.getOrderProducts();
+                for(WorkDetailView detail : detailList){
+                    if(detail.getPosition1() != null){
+                        String[] ids = detail.getPosition1().split(",");
+                        for(String s : ids){
+                            int startCell = findPlace(order.getType(), s);
+                            sheet.setColumnWidth(startCell, 18 * 256);
+                            cell = row.getCell(startCell);
+                            cell.setCellStyle(style);
+                            cell.setCellValue(findPosition(Integer.parseInt(s)));
+                            cell = row.getCell(startCell + 1);
+                            cell.setCellStyle(style);
+                            cell.setCellValue(detail.getTechName());
+                            //OrderProductView p = orderProductService.findByOrderIdAndProject(detail.getOrderId(), detail.getProject1(), Integer.parseInt(s));
+                            List<OrderProductView> pppp = productList.stream().filter((pp) -> (pp.getOrderId() == detail.getOrderId() && pp.getConstructionProjectId() == detail.getProject1() && pp.getConstructionPosition() == Integer.parseInt(s))).map(ss -> ss ).collect(Collectors.toList());
+                            if(pppp.size() > 0){
+                                OrderProductView p = pppp.get(0);
+                                sheet.setColumnWidth(startCell + 2, 18 * 256);
+                                cell = row.getCell(startCell + 2);
+                                cell.setCellStyle(styleD);
+                                cell.setCellValue(p == null?"" : p.getModel());
+                                cell = row.getCell(startCell + 3);
+                                cell.setCellStyle(styleD);
+                                if(p != null && p.getConstructionCommission() != null) cell.setCellValue(p.getConstructionCommission());
+                                cell = row.getCell(startCell + 4);
+                                cell.setCellStyle(styleD);
+                                if(p != null && p.getScrapCost() != null) cell.setCellValue(p.getScrapCost());
+                            }
+                        }
+                    }
+                }
+                if(order.getType().equals("1")) rowNum1++;
+                if(order.getType().equals("2")) rowNum2++;
+                if(order.getType().equals("3")) rowNum3++;
+                if(order.getType().equals("4")) rowNum4++;
+            }
+        }
+
+        response.reset();
+        response.setHeader("content-type", "application/octet-stream");
+        response.setContentType("application/octet-stream");
+        response.addHeader("Content-Disposition", "attachment;filename=order"
+                + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".xls");
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            workbook.write(out);
+            out.close();
+        } catch (Exception e) {
+            throw new RuntimeException("导出失败");
+        }
+    }
+
+    public String findPosition(int id){
+        switch (id){
+            case 1:
+                return "前档";
+            case 2:
+                return "左前门";
+            case 3:
+                return "右前门";
+            case 4:
+                return "左后门";
+            case 5:
+                return "右后门";
+            case 6:
+                return "后挡";
+            case 8:
+                return "引擎盖";
+            case 12:
+                return "后箱盖";
+            case 15:
+                return "车顶";
+            case 18:
+                return "整车";
+            case 22:
+                return "左小角";
+            case 23:
+                return "右小角";
+            case 24:
+                return "左大角";
+            case 25:
+                return "右大角";
+            case 26:
+                return "左裙边";
+            case 27:
+                return "右裙边";
+            case 28:
+                return "整车不含顶";
+            case 29:
+                return "前杠";
+            case 30:
+                return "后杠";
+            case 31:
+                return "左前叶子板";
+            case 32:
+                return "右前叶子板";
+            case 33:
+                return "左后叶子板";
+            case 34:
+                return "右后叶子板";
+            case 35:
+                return "左后视镜";
+            case 36:
+                return "右后视镜";
+            case 37:
+                return "手扣";
+            case 38:
+                return "中控";
+            case 39:
+                return "四门脚踏";
+            case 40:
+                return "四门饰条";
+            case 41:
+                return "两前座椅";
+            case 42:
+                return "两后座椅";
+            case 43:
+                return "喜悦套餐";
+            case 44:
+                return "前杠角";
+            case 45:
+                return "后杠角";
+            case 46:
+                return "四轮眉";
+            case 80:
+                return "前天窗";
+            case 81:
+                return "中天窗";
+            case 82:
+                return "后天窗";
+            case 83:
+                return "新车封釉/镀膜/镀晶";
+            case 84:
+                return "新车揭膜除胶或打蜡";
+            case 85:
+                return "新车精洗整备（除胶除锈）";
+            case 86:
+                return "杀菌/去味套餐";
+            case 87:
+                return "二手车全车整备翻新";
+            case 88:
+                return "旧车封釉/镀膜/镀晶";
+            case 89:
+                return "内饰清洗/翻新";
+            case 90:
+                return "发动机舱清洁养护";
+            case 91:
+                return "轮毂翻新/镀膜";
+            case 92:
+                return "玻璃清洁/镀膜";
+            case 93:
+                return "真皮清洁/镀膜";
+            case 94:
+                return "镀膜/镀晶维护";
+            case 95:
+                return "后视镜犀牛皮";
+            case 96:
+                return "四门手扣犀牛皮";
+            case 97:
+                return "底盘装甲";
+            case 98:
+                return "滤芯更换";
+            case 99:
+                return "零售店镀晶（含机舱轮毂轮胎内饰整备）";
+            case 100:
+                return "零售店极光养护（含机舱轮毂轮胎内饰整备）";
+            case 101:
+                return "零售店内饰翻新（含机舱轮毂轮胎漆面打蜡）";
+            case 102:
+                return "零售店真皮清洗镀膜（含机舱轮毂轮胎漆面打蜡）";
+            case 103:
+                return "零售店撕车衣/改色膜";
+            case 104:
+                return "零售店行车记录仪安装";
+            case 105:
+                return "零售店裁脚垫";
+            case 106:
+                return "左机盖";
+            case 107:
+                return "右机盖";
+            case 108:
+                return "左前杠";
+            case 109:
+                return "右前杠";
+            case 110:
+                return "左后杠";
+            case 111:
+                return "右后杠";
+        }
+        return "";
+    }
+
+    public int findPlace(String project, String position){
+        if(project.equals("1")){
+            if(position.equals("1")) return 13;
+            if(position.equals("6")) return 18;
+            if(position.equals("2")) return 23;
+            if(position.equals("3")) return 28;
+            if(position.equals("4")) return 33;
+            if(position.equals("5")) return 38;
+            if(position.equals("22")) return 43;
+            if(position.equals("23")) return 48;
+            if(position.equals("24")) return 53;
+            if(position.equals("25")) return 58;
+            if(position.equals("80")) return 63;
+            if(position.equals("81")) return 68;
+            if(position.equals("82")) return 73;
+        } else if(project.equals("2")){
+            if(position.equals("18")) return 13;
+            if(position.equals("28")) return 18;
+            if(position.equals("15")) return 23;
+            if(position.equals("8")) return 38;
+            if(position.equals("2")) return 33;
+            if(position.equals("4")) return 38;
+            if(position.equals("31")) return 43;
+            if(position.equals("33")) return 48;
+            if(position.equals("3")) return 53;
+            if(position.equals("5")) return 58;
+            if(position.equals("32")) return 63;
+            if(position.equals("34")) return 68;
+            if(position.equals("26")) return 73;
+            if(position.equals("35")) return 78;
+            if(position.equals("29")) return 83;
+            if(position.equals("30")) return 88;
+            if(position.equals("27")) return 93;
+            if(position.equals("36")) return 98;
+            if(position.equals("12")) return 103;
+            if(position.equals("43")) return 108;
+            if(position.equals("44")) return 113;
+            if(position.equals("45")) return 118;
+            if(position.equals("46")) return 123;
+            if(position.equals("37")) return 128;
+            if(position.equals("42")) return 133;
+            if(position.equals("41")) return 138;
+            if(position.equals("39")) return 143;
+            if(position.equals("40")) return 148;
+            if(position.equals("38")) return 153;
+            if(position.equals("106")) return 158;
+            if(position.equals("107")) return 163;
+            if(position.equals("108")) return 168;
+            if(position.equals("109")) return 173;
+            if(position.equals("110")) return 178;
+            if(position.equals("111")) return 183;
+        } else if(project.equals("3")){
+            if(position.equals("18")) return 13;
+            if(position.equals("28")) return 18;
+            if(position.equals("15")) return 23;
+            if(position.equals("8")) return 38;
+            if(position.equals("2")) return 33;
+            if(position.equals("4")) return 38;
+            if(position.equals("31")) return 43;
+            if(position.equals("33")) return 48;
+            if(position.equals("3")) return 53;
+            if(position.equals("5")) return 58;
+            if(position.equals("32")) return 63;
+            if(position.equals("34")) return 68;
+            if(position.equals("26")) return 73;
+            if(position.equals("35")) return 78;
+            if(position.equals("29")) return 83;
+            if(position.equals("30")) return 88;
+            if(position.equals("27")) return 93;
+            if(position.equals("36")) return 98;
+            if(position.equals("12")) return 103;
+            if(position.equals("43")) return 108;
+            if(position.equals("44")) return 113;
+            if(position.equals("45")) return 118;
+            if(position.equals("46")) return 123;
+            if(position.equals("37")) return 128;
+            if(position.equals("42")) return 133;
+            if(position.equals("41")) return 138;
+            if(position.equals("39")) return 143;
+            if(position.equals("40")) return 148;
+            if(position.equals("38")) return 153;
+        } else {
+            if(position.equals("83")) return 13;
+            if(position.equals("84")) return 18;
+            if(position.equals("85")) return 23;
+            if(position.equals("86")) return 28;
+            if(position.equals("87")) return 33;
+            if(position.equals("88")) return 38;
+            if(position.equals("89")) return 43;
+            if(position.equals("90")) return 48;
+            if(position.equals("91")) return 53;
+            if(position.equals("92")) return 58;
+            if(position.equals("93")) return 63;
+            if(position.equals("94")) return 68;
+            if(position.equals("95")) return 73;
+            if(position.equals("96")) return 78;
+            if(position.equals("97")) return 83;
+            if(position.equals("98")) return 88;
+            if(position.equals("99")) return 93;
+            if(position.equals("100")) return 98;
+            if(position.equals("101")) return 103;
+            if(position.equals("102")) return 108;
+            if(position.equals("103")) return 113;
+            if(position.equals("104")) return 118;
+            if(position.equals("105")) return 123;
+        }
+        return 254;
+    }
+
+    public int findPlace2(int position){
+        switch (position){
+            case 1:
+                return 15;
+            case 2:
+                return 17;
+            case 3:
+                return 19;
+            case 4:
+                return 21;
+            case 5:
+                return 23;
+            case 6:
+                return 25;
+            case 8:
+                return 27;
+            case 12:
+                return 29;
+            case 15:
+                return 31;
+            case 18:
+                return 33;
+            case 22:
+                return 35;
+            case 23:
+                return 37;
+            case 24:
+                return 39;
+            case 25:
+                return 41;
+            case 26:
+                return 43;
+            case 27:
+                return 45;
+            case 28:
+                return 47;
+            case 29:
+                return 49;
+            case 30:
+                return 51;
+            case 31:
+                return 53;
+            case 32:
+                return 55;
+            case 33:
+                return 57;
+            case 34:
+                return 59;
+            case 35:
+                return 61;
+            case 36:
+                return 63;
+            case 37:
+                return 65;
+            case 38:
+                return 67;
+            case 39:
+                return 69;
+            case 40:
+                return 71;
+            case 41:
+                return 73;
+            case 42:
+                return 75;
+            case 43:
+                return 77;
+            case 44:
+                return 79;
+            case 45:
+                return 81;
+            case 46:
+                return 83;
+            case 80:
+                return 85;
+            case 81:
+                return 87;
+            case 82:
+                return 89;
+            case 83:
+                return 91;
+            case 84:
+                return 93;
+            case 85:
+                return 95;
+            case 86:
+                return 97;
+            case 87:
+                return 99;
+            case 88:
+                return 101;
+            case 89:
+                return 103;
+            case 90:
+                return 105;
+            case 91:
+                return 107;
+            case 92:
+                return 109;
+            case 93:
+                return 111;
+            case 94:
+                return 113;
+            case 95:
+                return 115;
+            case 96:
+                return 117;
+            case 97:
+                return 119;
+            case 98:
+                return 121;
+            case 99:
+                return 123;
+            case 100:
+                return 125;
+            case 101:
+                return 127;
+            case 102:
+                return 129;
+            case 103:
+                return 131;
+            case 104:
+                return 133;
+            case 105:
+                return 135;
+            case 106:
+                return 137;
+            case 107:
+                return 139;
+            case 108:
+                return 141;
+            case 109:
+                return 143;
+            case 110:
+                return 145;
+            case 111:
+                return 147;
+        }
+        return 254;
+    }
+
+    public void createThree(HSSFRow row, int tag, HSSFCellStyle style){
+        HSSFCell cell;
+
+        cell = row.createCell(tag + 1);
+        cell.setCellValue("施工人员");
+        cell.setCellStyle(style);
+        cell = row.createCell(tag + 2);
+        cell.setCellValue("型号");
+        cell.setCellStyle(style);
+        cell = row.createCell(tag + 3);
+        cell.setCellValue("提成");
+        cell.setCellStyle(style);
+        cell = row.createCell(tag + 4);
+        cell.setCellValue("报废扣款");
+        cell.setCellStyle(style);
+    }
+
+    public HSSFSheet first12(HSSFCellStyle style, HSSFSheet sheet){
+        //设置列宽，setColumnWidth的第二个参数要乘以256，这个参数的单位是1/256个字符宽度
+        sheet.setColumnWidth(1, 18 * 256);
+        sheet.setColumnWidth(2, 20 * 256);
+        sheet.setColumnWidth(3, 12 * 256);
+        sheet.setColumnWidth(5, 20 * 256);
+        sheet.setColumnWidth(6, 18 * 256);
+        sheet.setColumnWidth(7, 15 * 256);
+        sheet.setColumnWidth(8, 18 * 256);
+        sheet.setColumnWidth(9, 18 * 256);
+        sheet.setColumnWidth(10, 18 * 256);
+        sheet.setColumnWidth(11, 18 * 256);
+        sheet.setColumnWidth(12, 18 * 256);
+
+        HSSFRow row = sheet.createRow(0);
+        HSSFCell cell;
+
+        cell = row.createCell(0);
+        cell.setCellValue("订单ID");
+        cell.setCellStyle(style);
+        cell = row.createCell(1);
+        cell.setCellValue("订单编号");
+        cell.setCellStyle(style);
+        cell = row.createCell(2);
+        cell.setCellValue("车牌");
+        cell.setCellStyle(style);
+        cell = row.createCell(3);
+        cell.setCellValue("车型");
+        cell.setCellStyle(style);
+        cell = row.createCell(4);
+        cell.setCellValue("车架号");
+        cell.setCellStyle(style);
+        cell = row.createCell(5);
+        cell.setCellValue("预约开始时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(6);
+        cell.setCellValue("下单人");
+        cell.setCellStyle(style);
+        cell = row.createCell(7);
+        cell.setCellValue("下单时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(8);
+        cell.setCellValue("接单时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(9);
+        cell.setCellValue("签到时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(10);
+        cell.setCellValue("开始施工时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(11);
+        cell.setCellValue("完成施工时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(12);
+        cell.setCellValue("订单状态");
+        cell.setCellStyle(style);
+
+        return sheet;
+    }
+
+    /**
+     * 导出EXCEL(新)
+     *
+     * @param tech      技师电话或者名字
+     * @param coopId    商户ID
+     * @param startDate 订单开始时间
+     * @param endDate  订单结束时间
+     * @param status    订单状态
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(value = "/excel/download/view11", method = RequestMethod.GET)
+    public void downloadView11(@RequestParam(value = "orderNum", required = false) String orderNum,
+                             @RequestParam(value = "orderCreator", required = false) String orderCreator,
+                             @RequestParam(value = "orderType", required = false) Integer orderType,
+                             @RequestParam(value = "orderStatus", required = false) Order.Status orderStatus,
+                             @RequestParam(value = "sort", defaultValue = "id") String sort,
+                             @RequestParam(value = "tech", required = false) String tech,
+                             @RequestParam(value = "coopId", required = false) String coopId,
+                             @RequestParam(value = "startDate", required = false) String startDate,
+                             @RequestParam(value = "endDate", required = false) String endDate,
+                             @RequestParam(value = "status", required = false) Order.Status status,
+                             @RequestParam(value = "idList", required = false) String idList,
+                                   @RequestParam(value = "chooseProjectIds", required = false) String chooseProjectIds,
+                             HttpServletRequest request,
+                             HttpServletResponse response) throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2018-08-31 23:59:59");
         Date end = new Date();
         if(startDate != null && startDate != "") {
@@ -677,10 +1702,9 @@ public class OrderV2Controller {
             Page<WorkDetailOrderView> viewPage =  workDetailOrderViewService.findByIds(idList,1,10000);
             viewList = viewPage.getContent();
         }else if(tech == null || tech == ""){
-            Page<WorkDetailOrderView> viewPage =  workDetailOrderViewService.findViews(start, end,1,10000);
-            viewList = viewPage.getContent();
+            viewList =  workDetailOrderViewService.findViews(start, end, chooseProjectIds);
         }else{
-            viewList =  workDetailOrderViewService.findViewsByTech(tech, start, end,1,10000);
+            viewList =  workDetailOrderViewService.findViewsByTech(tech, start, end, chooseProjectIds);
         }
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -1529,27 +2553,22 @@ public class OrderV2Controller {
 
     @RequestMapping(value = "/excel/download/work/{techId}", method = RequestMethod.GET)
     public void download(@PathVariable("techId") int techId,
-                         @RequestParam(value = "startTime", required = false) Long startTime,
-                         @RequestParam(value = "endTime", required = false) Long endTime,
+                         @RequestParam(value = "startTime", required = false) String startTime,
+                         @RequestParam(value = "endTime", required = false) String endTime,
+                         @RequestParam(value = "chooseProjectIds", required = false) String chooseProjectIds,
                          HttpServletRequest request,
                          HttpServletResponse response) throws Exception {
         Date start = null;
         Date end = null;
-        if (startTime != null) {
-            Date date = new Date(startTime);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String dateStr = sdf.format(date);
-            start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
+        if (startTime != null && !startTime.equals("")) {
+            start = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime);
         }
 
-        if (endTime != null) {
-            Date date = new Date(endTime);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String dateStr = sdf.format(date);
-            end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
+        if (endTime != null && !endTime.equals("")) {
+            end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
         }
 
-        List<WorkDetailView> views = workDetailService.findViewsExport(techId, start, end);
+        List<WorkDetailView> views = workDetailService.findViewsExport(techId, start, end, chooseProjectIds);
 // INSERT INTO t_tech_finance(tech_id,sum_income) SELECT t.id,SUM(w.payment) from t_technician t LEFT JOIN t_work_detail w on w.tech_id = t.id GROUP BY t.id
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] content = os.toByteArray();
@@ -1619,63 +2638,72 @@ public class OrderV2Controller {
         cell.setCellValue("报废扣款");
         cell.setCellStyle(style);
         cell = row.createCell(7);
-        cell.setCellValue("评价");
-        cell.setCellStyle(style);
-        cell = row.createCell(8);
         cell.setCellValue("车型");
         cell.setCellStyle(style);
-        cell = row.createCell(9);
+        cell = row.createCell(8);
         cell.setCellValue("车架号");
         cell.setCellStyle(style);
-        cell = row.createCell(10);
+        cell = row.createCell(9);
         cell.setCellValue("车牌号");
         cell.setCellStyle(style);
-        cell = row.createCell(11);
+        cell = row.createCell(10);
         cell.setCellValue("单号");
         cell.setCellStyle(style);
-        cell = row.createCell(12);
+        cell = row.createCell(11);
         cell.setCellValue("订单备注");
         cell.setCellStyle(style);
-        cell = row.createCell(13);
+        cell = row.createCell(12);
         cell.setCellValue("技师备注");
         cell.setCellStyle(style);
-        cell = row.createCell(14);
+        cell = row.createCell(13);
         cell.setCellValue("回填备注");
         cell.setCellStyle(style);
-//        String str = workDetailService.findLargest(techId);
-//        if(str != null){
-//            String[] positions = str.split(",");
-//            int j = 10;
-//            int k = 1;
-//            for(String s : positions){
-//                cell = row.createCell(j + 1);
-//                cell.setCellValue("施工部位" + k);
-//                cell.setCellStyle(style);
-//                cell = row.createCell(j + 2);
-//                cell.setCellValue("施工型号");
-//                cell.setCellStyle(style);
-//                cell = row.createCell(j + 3);
-//                cell.setCellValue("提成");
-//                cell.setCellStyle(style);
-//                j += 3;
-//                k ++;
-//            }
-//        }else{
-//            cell = row.createCell(11);
-//            cell.setCellValue("施工部位");
-//            cell.setCellStyle(style);
-//            cell = row.createCell(12);
-//            cell.setCellValue("施工型号");
-//            cell.setCellStyle(style);
-//            cell = row.createCell(13);
-//            cell.setCellValue("提成");
-//            cell.setCellStyle(style);
-//        }
+        cell = row.createCell(14);
+        cell.setCellValue("评价");
+        cell.setCellStyle(style);
+
+        String[] positions = {"前挡", "左前门", "右前门", "左后门", "右后门", "后挡", "引擎盖", "后箱盖", "车顶", "整车", "左小角", "右小角", "左大角", "右大角", "左裙边", "右裙边", "整车不含顶", "前杠", "后杠", "左前叶子板", "右前叶子板", "左后叶子板", "右后叶子板", "左后视镜", "右后视镜", "手扣", "中控", "四门脚踏", "四门饰条", "两前座椅", "两后座椅", "喜悦套餐", "前杠角", "后杠角", "四轮眉","前天窗,中天窗", "后天窗", "新车封釉/镀膜/镀晶", "新车揭膜除胶或打蜡", "新车精洗整备（除胶除锈）", "杀菌/去味套餐", "二手车全车整备翻新", "旧车封釉/镀膜/镀晶", "内饰清洗/翻新", "发动机舱清洁养护", "轮毂翻新/镀膜", "玻璃清洁/镀膜", "真皮清洁/镀膜", "镀膜/镀晶维护", "后视镜犀牛皮", "四门手扣犀牛皮", "底盘装甲", "滤芯更换", "零售店镀晶（含机舱轮毂轮胎内饰整备）", "零售店极光养护（含机舱轮毂轮胎内饰整备）", "零售店内饰翻新（含机舱轮毂轮胎漆面打蜡）", "零售店真皮清洗镀膜（含机舱轮毂轮胎漆面打蜡）", "零售店撕车衣/改色膜", "零售店行车记录仪安装", "零售店裁脚垫", "左机盖", "右机盖", "左前杠", "右前杠", "左后杠", "右后杠"};
+        for(int i = 0; i < positions.length; i+=2){
+            cell = row.createCell(i + 15);
+            cell.setCellValue(positions[i]);
+            cell.setCellStyle(style);
+            cell = row.createCell(i + 16);
+            cell.setCellStyle(style);
+            sheet.addMergedRegion(new CellRangeAddress(
+                    0, //first row (0-based)
+                    0, //last row (0-based)
+                    i + 15, //first column (0-based)
+                    i + 16
+            ));
+        }
+        //建第二行和第三行
+        HSSFRow row2 = sheet.createRow(1);
+        for(int i = 0;i < positions.length +15;i++){        // 前13列竖着合并单元格3格，并定义前13列的二三行样式
+            row2.createCell(i).setCellStyle(style);
+            if(i < 15){
+                sheet.addMergedRegion(new CellRangeAddress(
+                        0, //first row (0-based)
+                        1, //last row (0-based)
+                        i, //first column (0-based)
+                        i
+                ));
+            } else {
+                if(i % 2 > 0){
+                    cell = row2.getCell(i);
+                    cell.setCellValue("型号");
+                    cell.setCellStyle(style);
+                }else{
+                    cell = row2.getCell(i);
+                    cell.setCellValue("提成");
+                    cell.setCellStyle(style);
+                }
+            }
+        }
 
 
         //新增数据行，并且设置单元格数据
         if(views != null && views.size() > 0) {
-            int rowNum = 1;
+            int rowNum = 2;
             for (WorkDetailView view : views) {
 
                 row = sheet.createRow(rowNum);
@@ -1700,67 +2728,49 @@ public class OrderV2Controller {
                 cell = row.createCell(6);
                 cell.setCellStyle(style1);
                 cell.setCellValue(view.getTotalCost());
+                cell = row.createCell(7);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getVehicleModel());
+                cell = row.createCell(8);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getVin());
+                cell = row.createCell(9);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getLicense());
+                cell = row.createCell(10);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getRealOrderNum());
+                cell = row.createCell(11);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getRemark());
+                cell = row.createCell(12);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getTechnicianRemark());
+                cell = row.createCell(13);
+                cell.setCellStyle(style);
+                cell.setCellValue(view.getMakeUpRemark());
 
+                cell = row.createCell(14);
+                cell.setCellStyle(style1);
                 Comment comment = commentService.getByOrderIdAndTechId(view.getOrderId(), view.getTechId());
                 if(comment != null){
-                    cell = row.createCell(7);
-                    cell.setCellStyle(style1);
                     cell.setCellValue(comment.getStar() + "星" + (comment.isArriveOnTime()?",准时到达":"") + (comment.isCompleteOnTime()?",准时完工":"")
                             + (comment.isProfessional()?",技术专业":"") + (comment.isDressNeatly()?",着装整洁":"")
                             + (comment.isCarProtect()?",车辆保护超级棒":"") + (comment.isGoodAttitude()?",好态度":""));
                 }
-
-                cell = row.createCell(8);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getVehicleModel());
-                cell = row.createCell(9);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getVin());
-                cell = row.createCell(10);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getLicense());
-                cell = row.createCell(11);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getRealOrderNum());
-                cell = row.createCell(12);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getRemark());
-                cell = row.createCell(13);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getTechnicianRemark());
-                cell = row.createCell(14);
-                cell.setCellStyle(style);
-                cell.setCellValue(view.getMakeUpRemark());
                 if(view.getPosition1() != null) {
                     String[] pos = view.getPosition1().split(",");
-                    int m = 14;
                     for(String s : pos){
-                        HSSFRow row0 = sheet.getRow(0);
-                        if(row0.getCell(m + 1) == null || row0.getCell(m + 1).getRichStringCellValue() == null){
-                            cell = row0.createCell(m + 1);
-                            cell.setCellValue("施工部位" + ((m + 1 - 10)/3 + 1));
-                            cell.setCellStyle(style);
-                            cell = row0.createCell(m + 2);
-                            cell.setCellValue("施工型号");
-                            cell.setCellStyle(style);
-                            cell = row0.createCell(m + 3);
-                            cell.setCellValue("提成");
-                            cell.setCellStyle(style);
-                        }
                         OrderProductView p = orderProductService.findByOrderIdAndProject(view.getOrderId(), view.getProject1(), Integer.parseInt(s));
 
-                        sheet.setColumnWidth(m + 1, 18 * 256);
-                        cell = row.createCell(m + 1);
-                        cell.setCellStyle(style);
-                        cell.setCellValue(p == null?"" : p.getName());
-                        sheet.setColumnWidth(m + 2, 16 * 256);
-                        cell = row.createCell(m + 2);
+                        int startCell = findPlace2(Integer.parseInt(s));
+                        sheet.setColumnWidth(startCell, 16 * 256);
+                        cell = row.createCell(startCell);
                         cell.setCellStyle(style);
                         cell.setCellValue(p == null?"" : p.getModel());
-                        cell = row.createCell(m + 3);
+                        cell = row.createCell(startCell + 1);
                         cell.setCellStyle(style1);
                         if(p != null && p.getConstructionCommission() != null) cell.setCellValue(p.getConstructionCommission());
-                        m += 3;
                     }
                 }
 //                cell = row.createCell(11);
@@ -1926,6 +2936,7 @@ public class OrderV2Controller {
     @RequestMapping(value = "/excel/download/work", method = RequestMethod.GET)
     public void downloadAll(@RequestParam(value = "startTime", required = false) String startTime,
                          @RequestParam(value = "endTime", required = false) String endTime,
+                            @RequestParam(value = "chooseProjectIds", required = false) String chooseProjectIds,
                          HttpServletRequest request,
                          HttpServletResponse response) throws Exception {
         Date start = null;
@@ -1938,7 +2949,7 @@ public class OrderV2Controller {
             end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endTime);
         }
 
-        List<WorkDetailView> views = workDetailService.findAllViews(start, end);
+        List<WorkDetailView> views = workDetailService.findAllViews(start, end, chooseProjectIds);
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] content = os.toByteArray();
@@ -2027,40 +3038,48 @@ public class OrderV2Controller {
         cell = row.createCell(14);
         cell.setCellValue("评价");
         cell.setCellStyle(style);
-//        String str = workDetailService.findLargest();
-//        if(str != null){
-//            String[] positions = str.split(",");
-//            int j = 10;
-//            int k = 1;
-//            for(String s : positions){
-//                cell = row.createCell(j + 1);
-//                cell.setCellValue("施工部位" + k);
-//                cell.setCellStyle(style);
-//                cell = row.createCell(j + 2);
-//                cell.setCellValue("施工型号");
-//                cell.setCellStyle(style);
-//                cell = row.createCell(j + 3);
-//                cell.setCellValue("提成");
-//                cell.setCellStyle(style);
-//                j += 3;
-//                k ++;
-//            }
-//        }else{
-//            cell = row.createCell(11);
-//            cell.setCellValue("施工部位");
-//            cell.setCellStyle(style);
-//            cell = row.createCell(12);
-//            cell.setCellValue("施工型号");
-//            cell.setCellStyle(style);
-//            cell = row.createCell(13);
-//            cell.setCellValue("提成");
-//            cell.setCellStyle(style);
-//        }
 
+        String[] positions = {"前挡", "左前门", "右前门", "左后门", "右后门", "后挡", "引擎盖", "后箱盖", "车顶", "整车", "左小角", "右小角", "左大角", "右大角", "左裙边", "右裙边", "整车不含顶", "前杠", "后杠", "左前叶子板", "右前叶子板", "左后叶子板", "右后叶子板", "左后视镜", "右后视镜", "手扣", "中控", "四门脚踏", "四门饰条", "两前座椅", "两后座椅", "喜悦套餐", "前杠角", "后杠角", "四轮眉","前天窗,中天窗", "后天窗", "新车封釉/镀膜/镀晶", "新车揭膜除胶或打蜡", "新车精洗整备（除胶除锈）", "杀菌/去味套餐", "二手车全车整备翻新", "旧车封釉/镀膜/镀晶", "内饰清洗/翻新", "发动机舱清洁养护", "轮毂翻新/镀膜", "玻璃清洁/镀膜", "真皮清洁/镀膜", "镀膜/镀晶维护", "后视镜犀牛皮", "四门手扣犀牛皮", "底盘装甲", "滤芯更换", "零售店镀晶（含机舱轮毂轮胎内饰整备）", "零售店极光养护（含机舱轮毂轮胎内饰整备）", "零售店内饰翻新（含机舱轮毂轮胎漆面打蜡）", "零售店真皮清洗镀膜（含机舱轮毂轮胎漆面打蜡）", "零售店撕车衣/改色膜", "零售店行车记录仪安装", "零售店裁脚垫", "左机盖", "右机盖", "左前杠", "右前杠", "左后杠", "右后杠"};
+        for(int i = 0; i < positions.length; i+=2){
+            cell = row.createCell(i + 15);
+            cell.setCellValue(positions[i]);
+            cell.setCellStyle(style);
+            cell = row.createCell(i + 16);
+            cell.setCellStyle(style);
+            sheet.addMergedRegion(new CellRangeAddress(
+                    0, //first row (0-based)
+                    0, //last row (0-based)
+                    i + 15, //first column (0-based)
+                    i + 16
+            ));
+        }
+        //建第二行和第三行
+        HSSFRow row2 = sheet.createRow(1);
+        for(int i = 0;i < positions.length +15;i++){        // 前13列竖着合并单元格3格，并定义前13列的二三行样式
+            row2.createCell(i).setCellStyle(style);
+            if(i < 15){
+                sheet.addMergedRegion(new CellRangeAddress(
+                        0, //first row (0-based)
+                        1, //last row (0-based)
+                        i, //first column (0-based)
+                        i
+                ));
+            } else {
+                if(i % 2 > 0){
+                    cell = row2.getCell(i);
+                    cell.setCellValue("型号");
+                    cell.setCellStyle(style);
+                }else{
+                    cell = row2.getCell(i);
+                    cell.setCellValue("提成");
+                    cell.setCellStyle(style);
+                }
+            }
+        }
 
         //新增数据行，并且设置单元格数据
         if(views != null && views.size() > 0) {
-            int rowNum = 1;
+            int rowNum = 2;
             for (WorkDetailView view : views) {
 
                 row = sheet.createRow(rowNum);
@@ -2117,34 +3136,17 @@ public class OrderV2Controller {
                 }
                 if(view.getPosition1() != null) {
                     String[] pos = view.getPosition1().split(",");
-                    int m = 14;
                     for(String s : pos){
-                        HSSFRow row0 = sheet.getRow(0);
-                        if(row0.getCell(m + 1) == null || row0.getCell(m + 1).getRichStringCellValue() == null){
-                            cell = row0.createCell(m + 1);
-                            cell.setCellValue("施工部位" + ((m + 1 - 14)/3 + 1));
-                            cell.setCellStyle(style);
-                            cell = row0.createCell(m + 2);
-                            cell.setCellValue("施工型号");
-                            cell.setCellStyle(style);
-                            cell = row0.createCell(m + 3);
-                            cell.setCellValue("提成");
-                            cell.setCellStyle(style);
-                        }
                         OrderProductView p = orderProductService.findByOrderIdAndProject(view.getOrderId(), view.getProject1(), Integer.parseInt(s));
 
-                        sheet.setColumnWidth(m + 1, 18 * 256);
-                        cell = row.createCell(m + 1);
-                        cell.setCellStyle(style);
-                        cell.setCellValue(p == null?"" : p.getName());
-                        sheet.setColumnWidth(m + 2, 16 * 256);
-                        cell = row.createCell(m + 2);
+                        int startCell = findPlace2(Integer.parseInt(s));
+                        sheet.setColumnWidth(startCell, 16 * 256);
+                        cell = row.createCell(startCell);
                         cell.setCellStyle(style);
                         cell.setCellValue(p == null?"" : p.getModel());
-                        cell = row.createCell(m + 3);
+                        cell = row.createCell(startCell + 1);
                         cell.setCellStyle(style1);
                         if(p != null && p.getConstructionCommission() != null) cell.setCellValue(p.getConstructionCommission());
-                        m += 3;
                     }
                 }
 
