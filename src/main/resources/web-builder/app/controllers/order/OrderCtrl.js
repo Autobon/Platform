@@ -198,6 +198,11 @@ export default class OrderCtrl extends Injector {
         });
     }
 
+	closeExport() {
+		const {$scope} = this.$injected;
+		$scope.showExport = 0
+	}
+
     toExport() {
         const {$scope} = this.$injected;
         $scope.showExport = 1;

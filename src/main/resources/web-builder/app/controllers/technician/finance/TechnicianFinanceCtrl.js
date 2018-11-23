@@ -52,6 +52,11 @@ export default class TechnicianCtrl extends Injector {
         $scope.pagination = {...$scope.pagination, page: 1, totalItems: 0};
     }
 
+    closeExport() {
+		const {$scope} = this.$injected;
+		$scope.showExport = 0
+	}
+
     exportDetail(id) {
         const {$scope, Settings} = this.$injected;
 
