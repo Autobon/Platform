@@ -2663,11 +2663,12 @@ public class OrderV2Controller {
         cell.setCellStyle(style);
 
         String[] positions = {"前挡", "左前门", "右前门", "左后门", "右后门", "后挡", "引擎盖", "后箱盖", "车顶", "整车", "左小角", "右小角", "左大角", "右大角", "左裙边", "右裙边", "整车不含顶", "前杠", "后杠", "左前叶子板", "右前叶子板", "左后叶子板", "右后叶子板", "左后视镜", "右后视镜", "手扣", "中控", "四门脚踏", "四门饰条", "两前座椅", "两后座椅", "喜悦套餐", "前杠角", "后杠角", "四轮眉","前天窗,中天窗", "后天窗", "新车封釉/镀膜/镀晶", "新车揭膜除胶或打蜡", "新车精洗整备（除胶除锈）", "杀菌/去味套餐", "二手车全车整备翻新", "旧车封釉/镀膜/镀晶", "内饰清洗/翻新", "发动机舱清洁养护", "轮毂翻新/镀膜", "玻璃清洁/镀膜", "真皮清洁/镀膜", "镀膜/镀晶维护", "后视镜犀牛皮", "四门手扣犀牛皮", "底盘装甲", "滤芯更换", "零售店镀晶（含机舱轮毂轮胎内饰整备）", "零售店极光养护（含机舱轮毂轮胎内饰整备）", "零售店内饰翻新（含机舱轮毂轮胎漆面打蜡）", "零售店真皮清洗镀膜（含机舱轮毂轮胎漆面打蜡）", "零售店撕车衣/改色膜", "零售店行车记录仪安装", "零售店裁脚垫", "左机盖", "右机盖", "左前杠", "右前杠", "左后杠", "右后杠"};
-        for(int i = 0; i < positions.length; i+=2){
-            cell = row.createCell(i + 15);
+        int num0 = 15;
+        for(int i = 0; i < positions.length; i++){
+            cell = row.createCell(num0);
             cell.setCellValue(positions[i]);
             cell.setCellStyle(style);
-            cell = row.createCell(i + 16);
+            cell = row.createCell(num0 + 1);
             cell.setCellStyle(style);
             sheet.addMergedRegion(new CellRangeAddress(
                     0, //first row (0-based)
@@ -2675,6 +2676,7 @@ public class OrderV2Controller {
                     i + 15, //first column (0-based)
                     i + 16
             ));
+            num0 += 2;
         }
         //建第二行和第三行
         HSSFRow row2 = sheet.createRow(1);
