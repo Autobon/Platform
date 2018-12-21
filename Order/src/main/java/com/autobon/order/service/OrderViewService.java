@@ -50,15 +50,24 @@ public class OrderViewService {
         Page<OrderView> page = null;
         if(status == 1){
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "createTime"));
-            page = orderViewRepository.findAllOrder(techId, p);
+            Page<Order> page0 = orderViewRepository.findAllOrder(techId, p);
+            List<Order> list = page0.getContent();
+            List<OrderView> listView = toView(list);
+            page = new PageImpl<>(listView, new PageRequest(currentPage-1,pageSize), page0.getTotalElements());
         }else if(status == 2)
         {
-            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.ASC, "agreedStartTime"));
-            page = orderViewRepository.findUnFinishOrder(techId, p);
+            Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.ASC, "AgreedStartTime"));
+            Page<Order> page0 = orderViewRepository.findUnFinishOrder(techId, p);
+            List<Order> list = page0.getContent();
+            List<OrderView> listView = toView(list);
+            page = new PageImpl<>(listView, new PageRequest(currentPage-1,pageSize), page0.getTotalElements());
         }
         else if(status == 3){
             Pageable p = new PageRequest(currentPage-1,pageSize, new Sort(Sort.Direction.DESC, "endTime"));
-            page = orderViewRepository.findFinishOrder(techId, p);
+            Page<Order> page0 = orderViewRepository.findFinishOrder(techId, p);
+            List<Order> list = page0.getContent();
+            List<OrderView> listView = toView(list);
+            page = new PageImpl<>(listView, new PageRequest(currentPage-1,pageSize), page0.getTotalElements());
         }
 
         return page;

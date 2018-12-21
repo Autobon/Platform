@@ -17,16 +17,16 @@ import java.util.List;
 public interface OrderViewRepository extends JpaRepository<OrderView, Integer> {
 
 
-    @Query("select ov from OrderView ov where ov.techId = ?1")
-    Page<OrderView> findAllOrder(Integer techId, Pageable pageable);
+    @Query("select ov from Order ov where ov.mainTechId = ?1")
+    Page<Order> findAllOrder(Integer techId, Pageable pageable);
 
 
-    @Query("select ov from OrderView ov where ov.techId = ?1 and ov.statusCode>59 and ov.statusCode<71")
-    Page<OrderView> findFinishOrder(Integer techId, Pageable pageable);
+    @Query("select ov from Order ov where ov.mainTechId = ?1 and ov.statusCode>59 and ov.statusCode<71")
+    Page<Order> findFinishOrder(Integer techId, Pageable pageable);
 
 
-    @Query("select ov from OrderView ov where ov.techId = ?1 and ov.statusCode<60")
-    Page<OrderView> findUnFinishOrder(Integer techId, Pageable pageable);
+    @Query("select ov from Order ov where ov.mainTechId = ?1 and ov.statusCode<60")
+    Page<Order> findUnFinishOrder(Integer techId, Pageable pageable);
 
 
 
