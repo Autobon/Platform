@@ -699,28 +699,62 @@ public class OrderV2Controller {
         HSSFWorkbook workbook = new HSSFWorkbook();
 
         List<ConstructionPosition> projectList = new ArrayList<>();
-        String[] chooseProjects = chooseProjectIds.split(",");
-        for(String s : chooseProjects){
-            if(s.equals("1")){
-                ConstructionPosition constructionPosition = new ConstructionPosition();
-                constructionPosition.setId(1);
-                constructionPosition.setName("隔热膜");
-                projectList.add(constructionPosition);
-            } else if(s.equals("2")){
-                ConstructionPosition constructionPosition = new ConstructionPosition();
-                constructionPosition.setId(2);
-                constructionPosition.setName("隐形车衣");
-                projectList.add(constructionPosition);
-            }else if(s.equals("3")){
-                ConstructionPosition constructionPosition = new ConstructionPosition();
-                constructionPosition.setId(3);
-                constructionPosition.setName("车身改色");
-                projectList.add(constructionPosition);
-            }else if(s.equals("4")){
-                ConstructionPosition constructionPosition = new ConstructionPosition();
-                constructionPosition.setId(4);
-                constructionPosition.setName("美容清洁");
-                projectList.add(constructionPosition);
+        if(chooseProjectIds != null){
+
+            String[] chooseProjects = chooseProjectIds.split(",");
+            for(String s : chooseProjects){
+                if(s.equals("1")){
+                    ConstructionPosition constructionPosition = new ConstructionPosition();
+                    constructionPosition.setId(1);
+                    constructionPosition.setName("隔热膜");
+                    projectList.add(constructionPosition);
+                } else if(s.equals("2")){
+                    ConstructionPosition constructionPosition = new ConstructionPosition();
+                    constructionPosition.setId(2);
+                    constructionPosition.setName("隐形车衣");
+                    projectList.add(constructionPosition);
+                }else if(s.equals("3")){
+                    ConstructionPosition constructionPosition = new ConstructionPosition();
+                    constructionPosition.setId(3);
+                    constructionPosition.setName("车身改色");
+                    projectList.add(constructionPosition);
+                }else if(s.equals("4")){
+                    ConstructionPosition constructionPosition = new ConstructionPosition();
+                    constructionPosition.setId(4);
+                    constructionPosition.setName("美容清洁");
+                    projectList.add(constructionPosition);
+                }
+            }
+        }else{
+            List<String> strs = new ArrayList<>();
+            for(WorkDetailOrderView w : viewList){
+                if(!strs.contains(w.getType())){
+                    if(w.getType().equals("1")){
+                        ConstructionPosition constructionPosition = new ConstructionPosition();
+                        constructionPosition.setId(1);
+                        constructionPosition.setName("隔热膜");
+                        projectList.add(constructionPosition);
+                        strs.add(w.getType());
+                    } else if(w.getType().equals("2")){
+                        ConstructionPosition constructionPosition = new ConstructionPosition();
+                        constructionPosition.setId(2);
+                        constructionPosition.setName("隐形车衣");
+                        projectList.add(constructionPosition);
+                        strs.add(w.getType());
+                    }else if(w.getType().equals("3")){
+                        ConstructionPosition constructionPosition = new ConstructionPosition();
+                        constructionPosition.setId(3);
+                        constructionPosition.setName("车身改色");
+                        projectList.add(constructionPosition);
+                        strs.add(w.getType());
+                    }else if(w.getType().equals("4")){
+                        ConstructionPosition constructionPosition = new ConstructionPosition();
+                        constructionPosition.setId(4);
+                        constructionPosition.setName("美容清洁");
+                        projectList.add(constructionPosition);
+                        strs.add(w.getType());
+                    }
+                }
             }
         }
 
