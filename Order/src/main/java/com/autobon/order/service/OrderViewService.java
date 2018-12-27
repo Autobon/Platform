@@ -1,12 +1,16 @@
 package com.autobon.order.service;
 
+import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.entity.Cooperator;
+import com.autobon.cooperators.repository.CoopAccountRepository;
 import com.autobon.cooperators.repository.CooperatorRepository;
 import com.autobon.order.entity.Order;
 import com.autobon.order.entity.OrderPartnerView;
 import com.autobon.order.entity.OrderView;
+import com.autobon.order.entity.WorkDetail;
 import com.autobon.order.repository.OrderPartnerViewRepository;
 import com.autobon.order.repository.OrderViewRepository;
+import com.autobon.order.repository.WorkDetailRepository;
 import com.autobon.technician.entity.LocationStatus;
 import com.autobon.technician.entity.TechStat;
 import com.autobon.technician.entity.Technician;
@@ -39,6 +43,10 @@ public class OrderViewService {
     TechStatRepository techStatRepository;
     @Autowired
     LocationStatusRepository locationStatusRepository;
+    @Autowired
+    WorkDetailRepository workDetailRepository;
+    @Autowired
+    CoopAccountRepository coopAccountRepository;
 
     public Page<OrderView> find(Integer techId,Integer status, Integer currentPage, Integer pageSize){
         currentPage = currentPage==null?1:currentPage;
@@ -196,7 +204,7 @@ public class OrderViewService {
             orderView.setAgreedStartTime(o.getAgreedStartTime());
             orderView.setAgreedEndTime(o.getAgreedEndTime());
             orderView.setStatusCode(o.getStatusCode());
-            // orderView.setCreatorType(o.gcrea());
+            //orderView.setCreatorType(o.creator());
             orderView.setTechId(o.getMainTechId());
             if(o.getMainTechId() != null){
                 Technician technician = technicianRepository.getById(o.getMainTechId());
@@ -217,8 +225,12 @@ public class OrderViewService {
             orderView.setCoopId(o.getCoopId());
             if(o.getCoopId() != null){
                 Cooperator cooperator = cooperatorRepository.getOne(o.getCoopId());
+                CoopAccount coopAccount = coopAccountRepository.getOne(o.getCoopId());
+                if(coopAccount != null){
+                    orderView.setCoopName(coopAccount.getShortname());
+                }
                 if(cooperator != null){
-                    // orderView.setCoopName(cooperator.getCorporationName());
+                    orderView.setCoopName(cooperator.getFullname());
                     orderView.setAddress(cooperator.getAddress());
                     orderView.setLongitude(cooperator.getLongitude());
                     orderView.setLatitude(cooperator.getLatitude());
@@ -239,8 +251,13 @@ public class OrderViewService {
             orderView.setCancelCount(0);
             orderView.setProductStatus(o.getProductStatus());
             orderView.setReassignmentStatus(o.getReassignmentStatus());
-            // orderView.setPayment();
-            // orderView.setPayStatus();
+            if(o.getMainTechId() != null){
+                WorkDetail workDetail = workDetailRepository.findByOrderIdAndTechId(o.getId(), o.getMainTechId());
+                if(workDetail != null){
+                    orderView.setPayment(workDetail.getPayment());
+                    orderView.setPayStatus(workDetail.getPayStatus());
+                }
+            }
             if(o.getMainTechId() != null){
                 LocationStatus locationStatus = locationStatusRepository.findByTechId(o.getMainTechId());
                 if(locationStatus != null){
