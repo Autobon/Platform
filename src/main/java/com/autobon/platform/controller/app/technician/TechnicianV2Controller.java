@@ -604,6 +604,7 @@ public class TechnicianV2Controller {
             return new JsonResult(false, "登陆过期");
         }
 
+        orderView.setPayment(workDetailService.getByOderIdAndTechId(orderId, technician.getId()).getPayment());
         orderView.setComment(commentService.getByOrderIdAndTechId(orderId, technician.getId()));
         List<WorkDetailShow> workDetailShowList = workDetailService.getByOrderId(orderId);
         Map<Integer, String> projectMap = constructionProjectService.getProject();
