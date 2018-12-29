@@ -225,8 +225,8 @@ public class OrderViewService {
             orderView.setCoopId(o.getCoopId());
             if(o.getCoopId() != null){
                 Cooperator cooperator = cooperatorRepository.getOne(o.getCoopId());
-                CoopAccount coopAccount = coopAccountRepository.getOne(o.getCoopId());
-                if(coopAccount != null){
+                CoopAccount coopAccount = coopAccountRepository.getByCooperatorIdAndIsMain(o.getCoopId(), true);
+                if(coopAccount != null && coopAccount.getId() > 0){
                     orderView.setCoopName(coopAccount.getShortname());
                 }
                 if(cooperator != null){
