@@ -1143,7 +1143,7 @@ public class OrderV2Controller {
                 if(order.getSignTime() != null) cell.setCellValue(order.getSignTime());
                 cell = row.createCell(10);
                 cell.setCellStyle(style);
-                if(order.getTakenTime() != null) cell.setCellValue(order.getTakenTime());
+                if(order.getTakenTime() != null) cell.setCellValue(order.getStartTime());
                 cell = row.createCell(11);
                 cell.setCellStyle(style);
                 if(order.getEndTime() != null) cell.setCellValue(order.getEndTime());
