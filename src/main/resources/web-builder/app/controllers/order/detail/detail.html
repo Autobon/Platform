@@ -68,7 +68,7 @@
             <map-location style="height: 250px; border-radius: 4px; border: 1px solid #cabe9c;" position="{{order.position}}"></map-location>
         </div>
     </div>
-   <div ng-if="order.status == 'FINISHED'">
+   <div ng-if="order.status == 'FINISHED' || order.status == 'COMMENTED'">
     <div ng-repeat="vs in order.workDetailShows">
         <h4>{{Settings.headTypes[vs.isMainTech]}}:</h4>
         <div class="row detail-row">
