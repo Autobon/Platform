@@ -909,12 +909,12 @@ public class TechnicianV2Controller {
             if (order.getStatus() != Order.Status.IN_PROGRESS) {
                 return new JsonResult(false, "订单还未开始或已结束");
             }
-            if (order.getSignTime() != null) {
+            if (order.getSignTime() != null && order.getStatusCode() >= Order.Status.SIGNED_IN.getStatusCode()) {
                 return new JsonResult(false, "你已签到, 请不要重复操作");
             }
-            if (order.getStatusCode() >= Order.Status.SIGNED_IN.getStatusCode()) {
-                return new JsonResult(false, "你已签到, 请不要重复操作");
-            }
+//            if (order.getStatusCode() >= Order.Status.SIGNED_IN.getStatusCode()) {
+//                return new JsonResult(false, "你已签到, 请不要重复操作");
+//            }
             order.setStatus(Order.Status.SIGNED_IN);
             order.setSignTime(new Date());
             orderService.save(order);
