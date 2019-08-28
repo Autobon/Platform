@@ -9,7 +9,7 @@
         </div>
         <div class="row-search-h40">
             <div class="form-group">
-                <label>真实编号</label>
+                <label>施工单号</label>
                 <input type="text" class="form-control ml10" ng-model="realOrderNum" style="width: 150px;">
             </div>
             <div class="form-group ml10">
@@ -22,7 +22,7 @@
             </div>
             <div class="form-group ml10">
                 <label>车架号</label>
-                <input type="text" class="form-control ml10" ng-model="vin" style="width: 150px;">
+                <input type="text" class="form-control ml10" ng-model="vin" maxlength="17" minlength="17" style="width: 150px;">
             </div>
         </div>
         <div class="row-search-h40">
@@ -55,7 +55,11 @@
                                         <label >施工项目</label>
                                         <span>{{project.projectName}}</span>
                                     </div>
-                                    <label class="mr10">施工部位以及施工型号</label>
+                                    <div class="form-group">
+                                        <label >施工部位以及施工型号</label>
+                                        <span>部位 231231</span>
+                                    </div>
+                                   <!-- <label class="mr10">施工部位以及施工型号</label>-->
                                     <div ng-repeat="proList in project.productShowList">
                                         <div class="row m-b-10">
                                             <label class="col-lg-6 control-label text-right" style="padding:0 !important;">
@@ -75,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 imgdiv">
+            <div class="col-md-6 imgdiv" style="overflow: hidden;margin-bottom: 20px;position: relative;height: 500px" >
                 <!--<uib-carousel active="active" interval="myInterval" no-wrap="true" no-pause="false">-->
                     <!--<uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">-->
                         <!--<div class="img-view-content">-->
@@ -90,14 +94,17 @@
                 <!--<div ng-repeat="photo in photoList">-->
                     <!--<img ng-if="photo" ng-src="{{photo}}" style="height: 560px;width: 600px;" image-modal class="img-responsive pull-left m-r-10">-->
                 <!--</div>-->
-                    <img ng-src="{{currentImg}}" style="height: auto;width: 100%;display:block;transform-origin: center center;margin-top: 50px;" image-modal class="img-responsive pull-left m-r-10 img-view-content">
+                    <img ng-src="{{currentImg}}" style="height: 80%;width: 100%;display:block;transform-origin: center center;margin-top: 50px;position: absolute" class="img-responsive pull-left m-r-10 ">
                     <div style="clear:both;"></div>
-                <div style="width:230px;margin: 10px auto;">
-                    <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="previous()"><span class="glyphicon glyphicon-menu-left"></span>上一张</button>
-                    <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;background:#e89007 !important;" ng-click="clickImg()"><span class="glyphicon glyphicon-repeat">旋转</span></button>
-                    <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="next()">下一张<span class="glyphicon glyphicon-menu-right"></span></button>
-                    <div style="clear:both;"></div>
-                </div>
+
+            </div>
+            <div style="width:370px;margin-left:60%;">
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="previous()"><span class="glyphicon glyphicon-menu-left"></span>上一张</button>
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;background:#e89007 !important;" ng-click="clickImg()"><span class="glyphicon glyphicon-repeat">旋转</span></button>
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="next()">下一张<span class="glyphicon glyphicon-menu-right"></span></button>
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="magnify()" >放大<span class="glyphicon "></span></button>
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="shrink()" >缩小<span class="glyphicon "></span></button>
+                <div style="clear:both;"></div>
             </div>
         </div>
         <div class="row-search-h40">

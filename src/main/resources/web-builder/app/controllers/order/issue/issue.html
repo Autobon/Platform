@@ -1,0 +1,66 @@
+<div class="">
+    <form class="form-horizontal" name="form">
+        <div class="page-header"><h3>发布订单</h3></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">订单类型</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">商户</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">报价产品</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">车架号/车牌号</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">车型</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">预约开始时间</label>
+            <div class="col-sm-9">
+                <input type="text" required ng-model="" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系人</label>
+            <div class="col-sm-9">
+                <input type="text" required  class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系人电话</label>
+            <div class="col-sm-9">
+                <input type="text" required  class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">营业执照照片</label>
+            <div class="col-sm-9">
+                <input type="file" file-uploader required ng-model="" name="file"
+                       accept=".jpg,.jpeg,.png,.bmp" callback="onUploadedPhoto(data)" upload-url="{{uploadUrl}}" class="form-control">
+                <img ng-if="coop.bussinessLicensePic" ng-src="{{coop.bussinessLicensePic}}" image-modal resize="100px,100px" class="img-thumbnail m-t-5">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-3">
+                <button type="submit" class="btn btn-primary btn-block" ng-click="save()">提 交</button>
+            </div>
+        </div>
+    </form>
+</div>
