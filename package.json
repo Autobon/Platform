@@ -18,7 +18,7 @@
     "angular-ui-router": "^0.2.18",
     "babel-polyfill": "^6.7.4",
     "ngES6": "git://github.com/web-es6/ngES6.git",
-    "jquery": "^2.2.2",
+    "jquery": "^3.5.0",
     "bootstrap": "^3.3.6",
     "font-awesome": "",
     "moment": "",
