@@ -47,4 +47,18 @@ public class StaffService {
                 new Sort(Sort.Direction.DESC, "createAt")));
     }
 
+
+    public Page<Staff> findStaffs(String name, int page, int pageSize){
+
+        if (name != null) {
+            name = "%" + name + "%";
+        }
+        return  repository.find(name, new PageRequest(page - 1, pageSize,
+                new Sort(Sort.Direction.DESC, "id")));
+    }
+
+    public void deleteStaff(int id){
+        repository.delete(id);
+    }
+
 }

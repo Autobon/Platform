@@ -8,6 +8,7 @@ public class JsonMessage {
     private String message = "";
     private String error = "";
     private Object data;
+    private Object res;
 
     public JsonMessage(boolean result) {
         this.result = result;
@@ -28,6 +29,14 @@ public class JsonMessage {
         this.error = error;
         this.message = message;
         this.data = data;
+    }
+
+    public JsonMessage(boolean result, String error, String message, Object data, Object res) {
+        this.result = result;
+        this.error = error;
+        this.message = message;
+        this.data = data;
+        this.res = res;
     }
 
     public boolean getResult() {
@@ -60,5 +69,13 @@ public class JsonMessage {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public Object getRes() {
+        return res;
+    }
+
+    public void setRes(Object res) {
+        this.res = res;
     }
 }

@@ -1,5 +1,5 @@
 <div class="container home-panel">
-    <div class="col-sm-4">
+    <div class="col-sm-4" ng-show="getOrder">
         <ul class="list-group">
             <li class="list-group-item active clearfix">
                 <a ui-sref="console.order"><h4><i class="glyphicon glyphicon-list-alt"></i>&nbsp;订单<span class="badge pull-right badge-console">创建: {{stat.totalOrder[0]}}<br>完成: {{stat.totalOrder[1]}}</span></h4></a>
@@ -10,7 +10,7 @@
             <li class="list-group-item clearfix">本月完成/上月完成<span class="pull-right h4">{{stat.thisMonth.finishedOrderCount}} / <small>{{stat.lastMonth.finishedOrderCount}}</small></span></li>
         </ul>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4" ng-show="getCoop">
         <ul class="list-group">
             <li class="list-group-item active clearfix">
                 <a ui-sref="console.cooperator"><h4><i class="fa fa-university"></i>&nbsp;商户<span class="badge pull-right badge-console">注册: {{stat.totalCoop[0]}}<br>认证: {{stat.totalCoop[1]}}</span></h4></a>
@@ -21,7 +21,7 @@
             <li class="list-group-item clearfix">本月认证/上月认证<span class="pull-right h4">{{stat.thisMonth.verifiedCoopCount}} / <small>{{stat.lastMonth.verifiedCoopCount}}</small></span></li>
         </ul>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4" ng-show="getTech">
         <ul class="list-group">
             <li class="list-group-item active clearfix">
                 <a ui-sref="console.technician"><h4><i class="fa fa-odnoklassniki-square"></i>&nbsp;技师<span class="badge pull-right badge-console">注册: {{stat.totalTech[0]}}<br>认证: {{stat.totalTech[1]}}</span></h4></a>

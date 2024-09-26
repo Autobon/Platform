@@ -15,6 +15,8 @@ public class RedisCacheConfig {
     private String redisHost;
     @Value("${spring.redis.port}")
     private int redisPort;
+    @Value("${spring.redis.password:\"\"}")
+    private String redisPassword;
 
     @Bean
     public JedisPool createJedisPool() {
@@ -24,6 +26,13 @@ public class RedisCacheConfig {
         config.setTestOnBorrow(true);
         config.setMaxTotal(8);
         config.setMaxWaitMillis(5000);
-        return new JedisPool(config, redisHost, redisPort);
+
+        if ("".equals(redisPassword)) {
+            return new JedisPool(config, redisHost, redisPort);
+        } else {
+            return new JedisPool(config, redisHost, redisPort, 3000, redisPassword);
+        }
+
     }
+
 }

@@ -36,4 +36,38 @@ export default class CooperatorService extends Injector {
         const {$http, Settings} = this.$injected;
         return $http.post(Settings.domain + '/api/web/admin/cooperator/' + coop.id, coop);
     }
+
+    upload() {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/study/upload');
+    }
+
+    get uploadFile() {
+        return '/api/web/admin/study/upload';
+    }
+
+    getAccounts(id) {
+        const {$http, Settings} = this.$injected;
+        return $http.get(Settings.domain + '/api/web/admin/cooperator/' + id + '/sale');
+    }
+
+    modifyAccount(params) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/cooperator/' + params.coopId + '/sale/' + params.saleId, {newCoopId: params.newCoopId});
+    }
+
+    banCoop(id) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/cooperator/coop/ban/' + id);
+    }
+
+    pickCoop(id) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/cooperator/coop/unban/' + id);
+    }
+
+    modifyAccountInfo(params) {
+        const {$http, Settings} = this.$injected;
+        return $http.post(Settings.domain + '/api/web/admin/cooperator/info/sale/' + params.saleId, {name: params.name, fired: params.fired});
+    }
 }

@@ -1,0 +1,25 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>{{$state.is('console.team.new') ? '添加团队' : '修改团队'}}</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <form class="form-horizontal" name="form">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">团队名称</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="name" ng-model="teamData.name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">团队负责人</label>
+            <div class="col-sm-6">
+                <select class="form-control" id="selectedTech" ng-model="selectedTech" ng-change="selectTech()"
+                        ng-options="t.id as t.name for t in techs">
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-3">
+                <button type="submit" class="btn btn-primary btn-block" ng-click="save()">提 交</button>
+            </div>
+        </div>
+    </form>
+</div>

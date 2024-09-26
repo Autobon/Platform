@@ -79,6 +79,31 @@ public class Technician implements UserDetails {
 
     @Column private String pushId; // 个推客户端ID, 由手机端更新
 
+    @Column private String reference; //推荐人号码（注册用户）
+
+    @Column private int filmLevel;
+
+    @Column private int filmWorkingSeniority;
+
+    @Column private int carCoverLevel;
+
+    @Column private int carCoverWorkingSeniority;
+
+    @Column private int colorModifyLevel;
+
+    @Column private int colorModifyWorkingSeniority;
+
+    @Column private int beautyLevel;
+
+    @Column private int beautyWorkingSeniority;
+
+    @Column private String resume;
+
+    @Column private int workStatus;
+
+    @Column private int teamId;
+
+
     @JsonIgnore
     @Column(name = "status")
     private int statusCode; // 帐户状态码,请使用getStatus()来获取状态枚举类型值
@@ -280,6 +305,63 @@ public class Technician implements UserDetails {
         this.statusCode = statusCode;
     }
 
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public int getFilmLevel() {
+        return filmLevel;
+    }
+
+    public void setFilmLevel(int filmLevel) {
+        this.filmLevel = filmLevel;
+    }
+
+    public int getCarCoverLevel() {
+        return carCoverLevel;
+    }
+
+    public void setCarCoverLevel(int carCoverLevel) {
+        this.carCoverLevel = carCoverLevel;
+    }
+
+    public int getColorModifyLevel() {
+        return colorModifyLevel;
+    }
+
+    public void setColorModifyLevel(int colorModifyLevel) {
+        this.colorModifyLevel = colorModifyLevel;
+    }
+
+    public int getBeautyLevel() {
+        return beautyLevel;
+    }
+
+    public void setBeautyLevel(int beautyLevel) {
+        this.beautyLevel = beautyLevel;
+    }
+
+    public String getResume() {
+        return resume;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
+    }
+
+    public int getWorkStatus() {
+        return workStatus;
+    }
+
+    public void setWorkStatus(int workStatus) {
+        this.workStatus = workStatus;
+    }
+
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -329,5 +411,46 @@ public class Technician implements UserDetails {
     @Override
     public boolean isEnabled() {
         return getStatus() != Status.BANNED;
+    }
+
+
+    public int getFilmWorkingSeniority() {
+        return filmWorkingSeniority;
+    }
+
+    public void setFilmWorkingSeniority(int filmWorkingSeniority) {
+        this.filmWorkingSeniority = filmWorkingSeniority;
+    }
+
+    public int getCarCoverWorkingSeniority() {
+        return carCoverWorkingSeniority;
+    }
+
+    public void setCarCoverWorkingSeniority(int carCoverWorkingSeniority) {
+        this.carCoverWorkingSeniority = carCoverWorkingSeniority;
+    }
+
+    public int getColorModifyWorkingSeniority() {
+        return colorModifyWorkingSeniority;
+    }
+
+    public void setColorModifyWorkingSeniority(int colorModifyWorkingSeniority) {
+        this.colorModifyWorkingSeniority = colorModifyWorkingSeniority;
+    }
+
+    public int getBeautyWorkingSeniority() {
+        return beautyWorkingSeniority;
+    }
+
+    public void setBeautyWorkingSeniority(int beautyWorkingSeniority) {
+        this.beautyWorkingSeniority = beautyWorkingSeniority;
+    }
+
+    public int getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 }

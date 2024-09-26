@@ -6,59 +6,175 @@
     <form class="form-inline pull-left">
         <div class="form-group">
             <label for="orderNum">订单编号:</label>
-            <input type="text" class="form-control" id="orderNum" ng-model="filter.orderNum">
+            <input type="text" class="form-control" id="orderNum" ng-model="filter.orderNum" style="width: 145px;">
         </div>
         <div class="form-group">
             <label for="orderCreator">下单人:</label>
             <input type="text" class="form-control" id="orderCreator" ng-model="filter.orderCreator"
-                   placeholder="姓名或手机号">
+                   placeholder="姓名或手机号" style="width: 120px;">
+        </div>
+        <div class="form-group">
+            <label for="orderCreator">技师:</label>
+            <input type="text" class="form-control" id="tech" ng-model="filter.tech"
+                   placeholder="姓名或手机号" style="width: 120px;">
         </div>
         <div class="form-group">
             <label for="orderType">订单类型:</label>
             <select class="form-control" id="orderType" ng-model="filter.orderType"
-                    ng-options="key as value for (key, value) in Settings.orderTypes">
+                    ng-options="key as value for (key, value) in Settings.orderTypes" style="width: 105px;">
             </select>
         </div>
         <div class="form-group">
             <label for="orderStatus">订单状态:</label>
             <select class="form-control" id="orderStatus" ng-model="filter.orderStatus"
-                    ng-options="key as value for (key, value) in Settings.orderStatus">
+                    ng-options="key as value for (key, value) in Settings.orderStatus" style="width: 145px;">
             </select>
         </div>
-        <div class="form-group m-l-10 m-r-10">
-            <label class="radio-inline">
-                <input type="radio" name="paid" ng-model="filter.sort" value="id"> 按下单时间
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="paid" ng-model="filter.sort" value="orderTime"> 按预约时间
-            </label>
-        </div>
+        <button ng-if="!showMore" type="button" class="btn btn-link" ng-click="openMoreSearch()">展开更多</button>
+        <button ng-if="showMore" type="button" class="btn btn-link" ng-click="closeMoreSearch()">收起更多</button>
         <button type="submit" class="btn btn-primary" ng-click="getOrders(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
         <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
     </form>
-    <a ui-sref="console.order.new" class="pull-right btn-new">发布订单&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+    <a class="pull-right btn-new" ui-sref="console.order.issue">发布订单&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+    <a class="pull-right btn-new" style="cursor:pointer" ng-click="toExport();">导出Excel</a>
+</div>
+<div ng-if="showMore" style="float:left;margin-left:10px;margin-top:10px;">
+    <div class="form-group" style="float:left;">
+        <label style="float:left;line-height:40px;margin:0 4px;">下单开始时间:</label>
+        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 100px;">{{filter.addTime}}</div>
+            <div uib-dropdown-menu>
+                <datetimepicker ng-model="filter.addTime"
+                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD', minView: 'day', startView: 'year'}"
+                                before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" style="float:left;">
+        <label style="float:left;line-height:40px;margin:0 4px;">预约开始时间:</label>
+        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 100px;">{{filter.orderTime}}</div>
+            <div uib-dropdown-menu>
+                <datetimepicker ng-model="filter.orderTime"
+                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD', minView: 'day', startView: 'year'}"
+                                before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" style="float:left;">
+        <label for="orderStatus">商户:</label>
+        <span ng-dropdown-multiselect="" options="coops" selected-model="selected"
+              extra-settings="searchSelectAllSettings">
+            </span>
+    </div>
+    <div class="form-group" style="float:left;">
+        <label for="orderStatus">vin:</label>
+        <input type="text" class="form-control" id="vin" ng-model="filter.vin"
+               placeholder="车架号" style="width: 120px;display: inline-block;">
+    </div>
+    <div class="form-group" style="float:left;">
+        <label for="orderStatus">车牌号:</label>
+        <input type="text" class="form-control" id="license" ng-model="filter.license"
+               placeholder="车牌号" style="width: 120px;display: inline-block;">
+    </div>
+    <div class="form-group" style="float:left;">
+        <label class="radio-inline">
+            <input type="radio" name="paid" ng-model="filter.sort" value="id"> 按下单时间
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="paid" ng-model="filter.sort" value="agreed_start_time"> 按预约时间
+        </label>
+    </div>
+</div>
+<div ng-if="showExport == 1" style="float:right;margin-right:115px;margin-top:10px;">
+    <div class="form-group" style="float:left;margin-top: 10px;">
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox1" ng-model="filter.project1" value="1" ng-change="onChangeProject(1, filter.project1)"> 隔热膜
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox2" ng-model="filter.project2" value="2" ng-change="onChangeProject(2, filter.project2)"> 隐形车衣
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox3" ng-model="filter.project3" value="3" ng-change="onChangeProject(3, filter.project3)"> 车身改色
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox4" ng-model="filter.project4" value="4" ng-change="onChangeProject(4, filter.project4)"> 美容清洁
+        </label>
+    </div>
+    <div class="form-group" style="float:left;margin-left: 20px;">
+        <label style="float:left;line-height:40px;margin:0 4px;">开始时间:</label>
+        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.startDate}}</div>
+            <div uib-dropdown-menu>
+                <datetimepicker ng-model="filter.startDate" ng-change="kankan()"
+                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm:ss', minView: 'minute', startView: 'year'}"
+                                before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" style="float:left;">
+        <label style="float:left;line-height:40px;margin:0 4px;">结束时间:</label>
+        <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.endDate}}</div>
+            <div uib-dropdown-menu>
+                <datetimepicker ng-model="filter.endDate"
+                                data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm:ss', minView: 'minute', startView: 'year'}"
+                                before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-sm btn-default" style="margin-left:10px;" ng-click="closeExport()">收起</button>
+    <button type="button" class="btn btn-sm btn-default" style="margin-left:10px;" ng-click="exportExcel()">确认导出</button>
 </div>
 <br>
 <div class="clearfix">
     <div ng-class="$state.is('console.order') ? 'col-sm-12' : 'col-sm-3'">
         <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.order')">
             <table class="table table-striped">
-                <thead><tr><th>序号</th><th>订单编号</th><th>订单类型</th><th>预约时间</th><th>下单人</th><th>下单时间</th><th>订单状态</th><th>操作</th></tr></thead>
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="qx" ng-change="allSelect(filter.toSelectAll)" ng-model="filter.toSelectAll">
+                    </th>
+                    <th>序号</th>
+                    <th>订单编号</th>
+                    <th>订单类型</th>
+                    <th>车牌</th>
+                    <th>车型</th>
+                    <th>车架号</th>
+                    <th>预约开始时间</th>
+                    <th>下单人</th>
+                    <th>下单时间</th>
+                    <th>订单状态</th>
+                    <th>补录状态</th>
+                    <th>改派状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
                 <tbody>
-                    <tr ng-repeat="order in orders">
+                    <tr ng-repeat="order in orders" ng-style="order.style">
+                        <td>
+                            <input type="checkbox"  id="cb"  ng-model="order.selected"
+                                   ng-change="onCheckChange(order.id, order.selected)">
+                        </td>
                         <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
                         <td>{{order.orderNum}}</td>
-                        <td>{{Settings.orderTypes[order.orderType]}}</td>
-                        <td>{{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}</td>
+                        <td><span ng-repeat="s in order.type.split(',')" class="fa fa-tag m-l-5">{{Settings.orderTypes[s]}}</span></td>
+                        <td>{{order.license}}</td>
+                        <td>{{order.vehicleModel}}</td>
+                        <td>{{order.vin}}</td>
+                        <td>{{order.agreedStartTime | date : 'YYYY-MM-DD HH:mm'}}</td>
                         <td>{{order.creatorName}}</td>
                         <td>{{order.addTime | date : 'YYYY-MM-DD HH:mm'}}</td>
                         <td>{{Settings.orderStatus[order.status]}}</td>
-                        <td><a ui-sref="console.order.detail({orderNum: order.orderNum})" class="btn btn-xs btn-default">
+                        <td>{{Settings.productStatus[order.productStatus]}}</td>
+                        <td>{{Settings.reassignmentStatus[order.reassignmentStatus]}}</td>
+                        <td><a ui-sref="console.order.detail({id: order.id})" class="btn btn-xs btn-default">
                             <i class="fa fa-list"></i>&nbsp;详情</a>
-                            <span ng-if="order.status == 'NEWLY_CREATED'" class="btn btn-default btn-xs" popover-placement="left"
-                                 popover-trigger="outsideClick" popover-is-open="techQuery['show' + order.id]" uib-popover-template="'assignOrder.html'">
+                            <a ui-sref="console.order.modify({id: order.id})" class="btn btn-xs btn-default">
+                                <i class="fa fa-list"></i>&nbsp;修改</a>
+                            <a ng-if="order.status != 'CANCELED'" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.makeup({id: order.id})" class="btn btn-xs btn-default">
+                                <i class="fa fa-paper-plane-o"></i>&nbsp;回填
+                            </a>
+                            <a ng-if="order.status == 'CREATED_TO_APPOINT' || order.reassignmentStatus == 1" class="btn btn-default btn-xs" popover-placement="left" ui-sref="console.order.dispatch({id: order.id})" class="btn btn-xs btn-default">
                                 <i class="fa fa-paper-plane-o"></i>&nbsp;派单
-                            </span>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -79,9 +195,9 @@
             </div>
             <ul class="side-nav-list">
                 <li ng-repeat="order in orders" ui-sref-active="active">
-                    <a ui-sref="console.order.detail({orderNum: order.orderNum})">
+                    <a ui-sref="console.order.detail({id: order.id})">
                         <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b> {{order.orderNum}}
-                        <span class="btn btn-default btn-xs">{{Settings.orderTypes[order.orderType]}}</span>
+                        <span class="btn btn-default btn-xs" ng-repeat="s in order.type.split(',')">{{Settings.orderTypes[s]}}</span>
                         <span class="btn btn-xs btn-success">{{Settings.orderStatus[order.status]}}</span><br>
                         下单人: {{order.creatorName}}<br>预约时间: {{order.orderTime | date : 'YYYY-MM-DD HH:mm'}}
                     </a>

@@ -25,12 +25,12 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             template  : templateCache.OrderCtrl,
         })
         .state('console.order.detail', {
-            url       : '/{orderNum:\\d+[^/]*}',
+            url       : '/detail/{id:\\d+}',
             controller: 'OrderDetailCtrl',
             template  : templateCache.OrderDetailCtrl,
         })
         .state('console.order.edit', {
-            url       : '/edit/{orderNum:\\d+[^/]*}',
+            url       : '/edit/{id:\\d+[^/]*}',
             controller: 'OrderEditorCtrl',
             template  : templateCache.OrderEditorCtrl,
         })
@@ -38,6 +38,26 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             url       : '/new',
             controller: 'OrderEditCtrl',
             template  : templateCache.OrderEditCtrl,
+        })
+        .state('console.order.makeup', {
+            url       : '/makeup/{id:\\d+[^/]*}',
+            controller: 'OrderMakeupCtrl',
+            template  : templateCache.OrderMakeupCtrl,
+        })
+        .state('console.order.modify', {
+            url       : '/modify/{id:\\d+}',
+            controller: 'OrderModifyCtrl',
+            template  : templateCache.OrderModifyCtrl,
+        })
+        .state('console.order.dispatch', {
+            url       : '/dispatch/{id:\\d+}',
+            controller: 'OrderDispatchCtrl',
+            template  : templateCache.OrderDispatchCtrl,
+        })
+        .state('console.order.issue', {
+            url       : '/issue',
+            controller: 'OrderDispatchCtrl',
+            template  : templateCache.OrderIssueCtrl,
         })
         .state('console.technician', {
             url       : '/technician',
@@ -48,6 +68,26 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
             url       : '/{id:\\d+}',
             controller: 'TechnicianDetailCtrl',
             template  : templateCache.TechnicianDetailCtrl,
+        })
+        .state('console.technician.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'TechnicianEditorCtrl',
+            template  : templateCache.TechnicianEditorCtrl,
+        })
+        .state('console.finance', {
+            url       : '/finance',
+            controller: 'TechnicianFinanceCtrl',
+            template  : templateCache.TechnicianFinanceCtrl,
+        })
+        .state('console.finance.workDetail', {
+            url       : '/workDetail/{id:\\d+}',
+            controller: 'WorkDetailCtrl',
+            template  : templateCache.WorkDetailCtrl,
+        })
+        .state('console.finance.applyRecord', {
+            url       : '/applyRecord/{id:\\d+}',
+            controller: 'ApplyRecordCtrl',
+            template  : templateCache.ApplyRecordCtrl,
         })
         .state('console.cooperator', {
             url       : '/cooperator',
@@ -122,7 +162,123 @@ export default function routeConfig($locationProvider, $urlRouterProvider, $stat
         .state('console.test', {
             url     : '/test',
             template: 'ABDDDD',
-        });
+        })
+        .state('console.product', {
+            url       : '/product',
+            controller: 'ProductCtrl',
+            template  : templateCache.ProductCtrl,
+        })
+        .state('console.product.detail', {
+            url       : '/{id:\\d+}',
+            controller: 'ProductDetailCtrl',
+            template  : templateCache.ProductDetailCtrl,
+        })
+        .state('console.product.import', {
+            url       : '/import',
+            controller: 'ProductImportCtrl',
+            template  : templateCache.ProductImportCtrl,
+        })
+        .state('console.product.new', {
+            url       : '/new',
+            controller: 'ProductEditCtrl',
+            template  : templateCache.ProductEditCtrl,
+        })
+        .state('console.product.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'ProductEditCtrl',
+            template  : templateCache.ProductEditCtrl,
+        })
+        .state('console.study', {
+            url       : '/study',
+            controller: 'StudyCtrl',
+            template  : templateCache.StudyCtrl,
+        })
+        .state('console.study.new', {
+            url       : '/new',
+            controller: 'StudyEditCtrl',
+            template  : templateCache.StudyEditCtrl,
+        })
+        .state('console.study.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'StudyEditCtrl',
+            template  : templateCache.StudyEditCtrl,
+        })
+        .state('console.study.detail', {
+            url       : '/{id:\\d+}',
+            controller: 'StudyDetailCtrl',
+            template  : templateCache.StudyDetailCtrl,
+        })
+        .state('console.cooperator.account', {
+            url       : '/account/{id:\\d+}',
+            controller: 'AccountCtrl',
+            template  : templateCache.AccountCtrl,
+        })
+        .state('console.role', {
+            url       : '/role',
+            controller: 'RoleCtrl',
+            template  : templateCache.RoleCtrl,
+        })
+        .state('console.role.new', {
+            url       : '/new',
+            controller: 'EditorRoleCtrl',
+            template  : templateCache.EditorRoleCtrl,
+        })
+        .state('console.role.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'EditorRoleCtrl',
+            template  : templateCache.EditorRoleCtrl,
+        })
+        .state('console.staff', {
+            url       : '/staff',
+            controller: 'StaffCtrl',
+            template  : templateCache.StaffCtrl,
+        })
+        .state('console.staff.new', {
+            url       : '/new',
+            controller: 'EditorStaffCtrl',
+            template  : templateCache.EditorStaffCtrl,
+        })
+        .state('console.staff.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'EditorStaffCtrl',
+            template  : templateCache.EditorStaffCtrl,
+        })
+        .state('console.team', {
+            url       : '/team',
+            controller: 'TeamCtrl',
+            template  : templateCache.TeamCtrl,
+        })
+        .state('console.team.new', {
+            url       : '/new',
+            controller: 'TeamEditorCtrl',
+            template  : templateCache.TeamEditorCtrl,
+        })
+        .state('console.team.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'TeamEditorCtrl',
+            template  : templateCache.TeamEditorCtrl,
+        })
+        .state('console.team.member', {
+            url       : '/team/{id:\\d+}/member',
+            controller: 'MemberCtrl',
+            template  : templateCache.MemberCtrl,
+        })
+        .state('console.merchandiser', {
+            url       : '/merchandiser',
+            controller: 'MerchandiserCtrl',
+            template  : templateCache.MerchandiserCtrl,
+        })
+        .state('console.merchandiser.new', {
+            url       : '/new',
+            controller: 'MerchandiserEditorCtrl',
+            template  : templateCache.MerchandiserEditorCtrl,
+        })
+        .state('console.merchandiser.edit', {
+            url       : '/edit/{id:\\d+}',
+            controller: 'MerchandiserEditorCtrl',
+            template  : templateCache.MerchandiserEditorCtrl,
+        })
+        ;
 }
 
 routeConfig.$inject = ['$locationProvider', '$urlRouterProvider', '$stateProvider', 'templateProvider'];

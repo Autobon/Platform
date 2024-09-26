@@ -1,0 +1,57 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>技师提现申请记录</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <div class="row-search">
+        <form class="form-inline pull-left">
+            <div class="form-group">
+                <label for="name">姓名:</label>
+                <input type="text" class="form-control" id="name" ng-model="filter.name">
+            </div>
+            <div class="form-group">
+                <label for="state">支付状态:</label>
+                <select class="form-control" id="state" ng-model="filter.state"
+                        ng-options="key as value for (key, value) in Settings.applyStatus" style="width: 145px;">
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" ng-click="getViews()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+            <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+        </form>
+    </div>
+    <div class="clearfix">
+        <div class="table-responsive m-l-20 m-r-20">
+            <table class="table table-striped align-middle">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>技师姓名</th>
+                    <th>申请时间</th>
+                    <th>申请金额</th>
+                    <th>支付时间</th>
+                    <th>支付金额</th>
+                    <th>支付状态</th>
+                    <th ng-show="able == 'able'">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="v in views">
+                    <td><b>{{$index+1+pagination.pageSize*(pagination.page-1)}}</b></td>
+                    <td>{{v.techName}}</td>
+                    <td>{{v.applyDate | date : 'YYYY-MM-DD HH:mm'}}</td>
+                    <td>{{v.applyMoney}}</td>
+                    <td>{{v.payDate | date : 'YYYY-MM-DD HH:mm'}}</td>
+                    <td>{{v.payment}}</td>
+                    <td>{{Settings.applyStatus[v.state]}}</td>
+                    <td><button type="button" class="btn btn-sm btn-default" ng-disabled="v.state > 0" ng-click="endPay(v.id)">完成支付</button></td>
+
+                </tr>
+                </tbody>
+            </table>
+            <footer class="text-right">
+                <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getViews()"
+                                previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+            </footer>
+        </div>
+    </div>
+</div>

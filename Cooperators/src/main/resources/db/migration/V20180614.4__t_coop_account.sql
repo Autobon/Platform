@@ -1,0 +1,1 @@
+alter table t_coop_account add status_code int(1) DEFAULT 0;

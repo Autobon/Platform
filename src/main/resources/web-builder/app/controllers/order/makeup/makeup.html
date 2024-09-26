@@ -1,0 +1,136 @@
+<div class="">
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <form class="form-inline form-border">
+        <div class="row-search-h40">
+            <div class="form-group">
+                <label>订单编号</label>
+                <span>{{product.orderNum}}</span>
+            </div>
+        </div>
+        <div class="row-search-h40">
+            <div class="form-group">
+                <label>施工单号</label>
+                <input type="text" class="form-control ml10" ng-model="realOrderNum" style="width: 150px;">
+            </div>
+            <div class="form-group ml10">
+                <label>车&nbsp;&nbsp;&nbsp;&nbsp;型</label>
+                <input type="text" class="form-control ml10" ng-model="vehicleModel" style="width: 150px;">
+            </div>
+            <div class="form-group ml10">
+                <label>车&nbsp;&nbsp;&nbsp;&nbsp;牌</label>
+                <input type="text" class="form-control ml10" ng-model="license" style="width: 150px;">
+            </div>
+            <div class="form-group ml10">
+                <label>车架号</label>
+                <input type="text" class="form-control ml10" ng-model="vin" maxlength="17" minlength="17" style="width: 150px;">
+            </div>
+        </div>
+        <div class="row-search-h40">
+            <div class="form-group">
+                <label>客户姓名</label>
+                <input type="text" class="form-control ml10" ng-model="customerName" style="width: 150px;">
+            </div>
+            <div class="form-group">
+                <label>联系方式</label>
+                <input type="text" class="form-control ml10" ng-model="customerPhone" style="width: 150px;">
+            </div>
+            <div class="form-group ml10">
+                <label>业务员</label>
+                <input type="text" class="form-control ml10" ng-model="salesman" style="width: 150px;">
+            </div>
+            <div class="form-group ml10">
+                <label>营业额</label>
+                <input type="text" class="form-control ml10" ng-model="turnover" style="width: 150px;">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group" style="width: 40%;" ng-repeat="project in product.project">
+                    <div class="main-principal">
+                        <form class="form-inline form-border">
+                            <div class="mt10">
+                                <div class="form-group mr10">
+                                    <div class="form-group">
+                                        <label >施工项目</label>
+                                        <span>{{project.projectName}}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label >施工部位以及施工型号</label>
+                                        <span>部位 231231</span>
+                                    </div>
+                                   <!-- <label class="mr10">施工部位以及施工型号</label>-->
+                                    <div ng-repeat="proList in project.productShowList">
+                                        <div class="row m-b-10">
+                                            <label class="col-lg-6 control-label text-right" style="padding:0 !important;">
+                                                <span>{{proList.positionName}}：</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <select ng-model="proList.productId" style="width: 130px;">
+                                                    <option ng-repeat="pl in proList.productList" value="{{pl.id}}">{{pl.model}}</option>
+                                                    <option value=0>--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 imgdiv" style="overflow: hidden;margin-bottom: 20px;position: relative;height: 500px" >
+                <!--<uib-carousel active="active" interval="myInterval" no-wrap="true" no-pause="false">-->
+                    <!--<uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">-->
+                        <!--<div class="img-view-content">-->
+                            <!--<img ng-src="{{slide.image}}" style="margin:auto;" ng-click="clickImg()">-->
+                            <!--<div class="carousel-caption">-->
+                                <!--<h4>Slide {{slide.id}}</h4>-->
+                                <!--<p>{{slide.text}}</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</uib-slide>-->
+                <!--</uib-carousel>-->
+                <!--<div ng-repeat="photo in photoList">-->
+                    <!--<img ng-if="photo" ng-src="{{photo}}" style="height: 560px;width: 600px;" image-modal class="img-responsive pull-left m-r-10">-->
+                <!--</div>-->
+                    <img ng-src="{{currentImg}}" style="height: 80%;width: 100%;display:block;transform-origin: center center;margin-top: 50px;position: absolute" class="img-responsive pull-left m-r-10 ">
+                    <div style="clear:both;"></div>
+
+            </div>
+            <div style="width:370px;margin-left:60%;">
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="previous()"><span class="glyphicon glyphicon-menu-left"></span>上一张</button>
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;background:#e89007 !important;" ng-click="clickImg()"><span class="glyphicon glyphicon-repeat">旋转</span></button>
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="next()">下一张<span class="glyphicon glyphicon-menu-right"></span></button>
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="magnify()" >放大<span class="glyphicon "></span></button>
+                <button class="btn-primary" style="padding: 4px 10px !important;border: none !important;" ng-click="shrink()" >缩小<span class="glyphicon "></span></button>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+        <div class="row-search-h40">
+            <div class="form-group">
+                <label>备注</label>
+                <textarea class="form-control" rows="3" ng-model="remark"></textarea>
+            </div>
+        </div>
+
+        <div class="pull-right modify-btn">
+            <button class="mr50 mt30" ng-click="save();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+        </div>
+    </form>
+</div>
+<div class="img-view-dialog" ng-show="isPicture" ng-class="{ closing : isClose  }">
+    <div class="img-view-content" draggable ng-class="{ loadingImg : hasImg  }">
+        <img class="dialog-img" src="" />
+    </div>
+    <div class="dialog-tool">
+        <i class="download-dialog" ng-click="downloadImg()"><i class="fa fa-download"></i></i>
+        <i class="close-dialog" ng-click="backoff()"></i>
+        <i class="rotate-dialog" ng-click="rotate()"></i>
+        <i ng-show="preTrue" class="previous-dialog" ng-click="previous()"></i>
+        <i ng-show="nextTrue" class="next-dialog" ng-click="next()"></i>
+    </div>
+</div>
+
+
+

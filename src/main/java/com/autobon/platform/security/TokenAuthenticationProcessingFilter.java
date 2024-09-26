@@ -2,6 +2,8 @@ package com.autobon.platform.security;
 
 import com.autobon.cooperators.entity.CoopAccount;
 import com.autobon.cooperators.service.CoopAccountService;
+import com.autobon.merchandiser.entity.Merchandiser;
+import com.autobon.merchandiser.service.MerchandiserService;
 import com.autobon.shared.RedisCache;
 import com.autobon.staff.entity.Staff;
 import com.autobon.staff.service.StaffService;
@@ -100,6 +102,9 @@ public class TokenAuthenticationProcessingFilter extends AbstractAuthenticationP
                     }
                 }
             }
+        }else if (token.startsWith("merchandiser:")){
+            int id = Merchandiser.decodeToken(token);
+            if (id > 0) user = applicationContext.getBean(MerchandiserService.class).get(id);
         }
 
         if (user == null) {

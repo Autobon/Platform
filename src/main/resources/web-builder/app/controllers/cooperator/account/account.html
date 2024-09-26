@@ -1,0 +1,34 @@
+<div class="clearfix">
+    <div class="page-header"><h3>业务员列表</h3></div>
+    <div class="table-responsive m-l-20 m-r-20">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>企业简称</th>
+                    <th>业务员姓名</th>
+                    <th>手机号</th>
+                    <th>性别</th>
+                    <th>是否离职</th>
+                    <th>注册时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="a in accounts">
+                <td>{{$index+1}}</td>
+                <td>{{a.name}}</td>
+                <td>{{a.name}}</td>
+                <td>{{a.phone}}</td>
+                <td>{{a.gender==1?'男':'女'}}</td>
+                <td>{{a.fired?'离职':'未离职'}}</td>
+                <td>{{a.createTime | date : 'YYYY-MM-DD HH:mm'}}</td>
+                <td>
+                    <button class="btn btn-xs btn-default" ng-click="info(a)"><i class="fa fa-edit"></i>&nbsp;修改</button>
+                    <button class="btn btn-xs btn-default" ng-click="change(a.id)"><i class="fa fa-refresh"></i>&nbsp;变更</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+<div class="page-title">
+    <i class="fa fa-user"></i>&nbsp;角色管理
+</div>
+<div class="row-search">
+    <form class="form-inline pull-left">
+        <div class="form-group">
+            <label for="fileName">角色名称:</label>
+            <input type="text" class="form-control" id="fileName" ng-model="roleData.name">
+        </div>
+        <!--<div class="form-group m-l-5">-->
+            <!--<label for="type">资料类型:</label>-->
+            <!--<select class="form-control" id="type" ng-model="studyData.type">-->
+                <!--<option value="1">培训资料</option>-->
+                <!--<option value="2">施工标准</option>-->
+                <!--<option value="3">业务规则</option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <button type="submit" class="btn btn-primary m-l-5" ng-click="getDatas(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+        <button type="button" class="btn btn-sm btn-default m-l-5" ng-click="reset()">重置</button>
+    </form>
+    <a ui-sref="console.role.new" class="pull-right btn-new">添加角色&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
+</div>
+<br>
+<div class="clearfix">
+    <div ng-class="$state.is('console.role') ? 'col-sm-12' : 'col-sm-3'">
+        <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.role')">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>角色名称</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="r in roleDatas">
+                    <td>{{$index+1+pagination.pageSize*(pagination.page-1)}}</td>
+                    <td>{{r.name}}</td>
+                    <td><div class="text_overflow">{{r.remark}}</div></td>
+                    <td>
+                        <a ui-sref="console.role.edit({id: r.id})" ng-show="r.id > 1 && r.name != '超级管理员'" class="btn btn-xs btn-default"><i class="fa fa-edit"></i>&nbsp;编辑</a>
+                        <button ng-click="deleteRole(r.id)" ng-show="r.id > 1 && r.name != '超级管理员'" class="btn btn-xs btn-default"><i class="fa fa-close"></i>&nbsp;删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <footer class="text-right">
+                <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getDatas()"
+                                previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+            </footer>
+        </div>
+        <div ng-if="!$state.is('console.role')">
+            <div class="clearfix">
+                <div class="pull-right btn-inverse m-b-5" ng-click="$state.go('^')"
+                     style="width: 24px; height: 16px; line-height: 16px; border-radius: 16px; text-align: center; cursor: pointer;">
+                    <i class="fa fa-arrows-h"></i></div>
+            </div>
+            <ul class="side-nav-list">
+                <li ng-repeat="r in roleDatas" ui-sref-active="active" class="clearfix">
+                    <span>
+                        <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
+                        {{r.name}}
+                    </span>
+                </li>
+            </ul>
+
+            <footer class="text-right">
+                <div>第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getDatas()"
+                                previous-text="←" next-text="→" max-size="3" class="pagination-sm"></uib-pagination>
+            </footer>
+        </div>
+    </div>
+    <div ui-view class="col-sm-9"></div>
+</div>

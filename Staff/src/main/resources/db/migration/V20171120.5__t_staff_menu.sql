@@ -1,0 +1,1 @@
+CREATE VIEW t_staff_menu as select s.*,rm.menu_id from t_staff s LEFT JOIN t_role_staff rs on rs.staff_id = s.id LEFT JOIN t_role_menu rm ON rm.role_id = rs.role_id

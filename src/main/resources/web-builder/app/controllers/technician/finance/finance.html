@@ -1,0 +1,129 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h4><i class="fa fa-cny"></i>&nbsp;财务管理</h4></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <div class="row-search">
+        <form class="form-inline pull-left">
+            <div class="form-group">
+                <label for="name">姓名:</label>
+                <input type="text" class="form-control" id="name" ng-model="filter.name">
+            </div>
+            <div class="form-group">
+                <label for="phone">手机号:</label>
+                <input type="text" class="form-control" id="phone" ng-model="filter.phone">
+            </div>
+            <button type="submit" class="btn btn-primary" ng-click="getTechFinance()"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
+            <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+            <a ui-sref="console.finance.applyRecord({id: 0})" class="btn btn-sm btn-default"><i class="fa fa-list"></i>&nbsp;未处理提现申请</a>
+            <button type="button" class="btn btn-sm btn-default" ng-click="toExport(1)"><i class="fa fa-level-down"></i>&nbsp;导出</button>
+        </form>
+    </div>
+    <div ng-if="showExport == 1" style="float:right;margin-right:115px;margin-top:10px;">
+        <div class="form-group" style="float:left;margin-top: 10px;">
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox1" ng-model="filter.project1" value="1" ng-change="onChangeProject(1, filter.project1)"> 隔热膜
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox2" ng-model="filter.project2" value="2" ng-change="onChangeProject(2, filter.project2)"> 隐形车衣
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox3" ng-model="filter.project3" value="3" ng-change="onChangeProject(3, filter.project3)"> 车身改色
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox4" ng-model="filter.project4" value="4" ng-change="onChangeProject(4, filter.project4)"> 美容清洁
+            </label>
+        </div>
+        <div class="form-group" style="float:left;margin-left: 20px;">
+            <label style="float:left;line-height:40px;margin:0 4px;">开始时间:</label>
+            <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.startTime}}</div>
+                <div uib-dropdown-menu>
+                    <datetimepicker ng-model="filter.startTime" ng-change="kankan()"
+                                    data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm:ss', minView: 'minute', startView: 'year'}"
+                                    before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="float:left;">
+            <label style="float:left;line-height:40px;margin:0 4px;">结束时间:</label>
+            <div uib-dropdown is-open="false" style="display: inline-block;"><div uib-dropdown-toggle tooltip-placement="bottom" tooltip-append-to-body="true" class="form-control" style="width: 160px;">{{filter.endTime}}</div>
+                <div uib-dropdown-menu>
+                    <datetimepicker ng-model="filter.endTime"
+                                    data-datetimepicker-config="{modelType: 'YYYY-MM-DD HH:mm:ss', minView: 'minute', startView: 'year'}"
+                                    before-render="beforeRenderDatetimepicker($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-default" style="margin-left:10px;" ng-click="closeExport()">收起</button>
+        <button type="button" class="btn btn-sm btn-default" style="margin-left:10px;" ng-click="startExport()">确认导出</button>
+    </div>
+    <div class="clearfix">
+        <div ng-class="$state.is('console.finance') ? 'col-sm-12' : 'col-sm-3'">
+            <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.finance')">
+                <table class="table table-striped align-middle">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>手机号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>总收入</th>
+                        <th>已提现</th>
+                        <th>未提现</th>
+                        <th>已申请</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="t in finances">
+                        <td><b>{{$index+1+pagination.pageSize*(pagination.page-1)}}</b></td>
+                        <td>{{t.phone}}</td>
+                        <td>{{t.name}}</td>
+                        <td>{{t.gender}}</td>
+                        <td>{{t.sumIncome}}</td>
+                        <td>{{t.sumCash}}</td>
+                        <td>{{t.notCash}}</td>
+                        <td>{{t.alreadyApply}}</td>
+                        <td><a ui-sref="console.finance.workDetail({id: t.techId})" class="btn btn-xs btn-default">
+                            <i class="fa fa-list"></i>&nbsp;收入明细</a>
+                            <a ui-sref="console.finance.applyRecord({id: t.techId})" class="btn btn-xs btn-default">
+                                <i class="fa fa-list"></i>&nbsp;申请记录</a>
+                            <button type="button" class="btn btn-xs btn-default" ng-click="toExport(2, t.techId)"><i class="fa fa-list"></i>导出明细</button>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <footer class="text-right">
+                    <div class="pull-left">第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                    <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                    items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getTechFinance()"
+                                    previous-text="上一页" next-text="下一页" max-size="7"></uib-pagination>
+                </footer>
+            </div>
+            <div ng-if="!$state.is('console.finance')">
+                <div class="clearfix">
+                    <div class="pull-right btn-inverse m-b-5" ng-click="$state.go('^')"
+                         style="width: 24px; height: 16px; line-height: 16px; border-radius: 16px; text-align: center; cursor: pointer;">
+                        <i class="fa fa-arrows-h"></i></div>
+                </div>
+                <ul class="side-nav-list">
+                    <li ng-repeat="t in finances" ui-sref-active="active">
+                        <a ui-sref=".order({id: b.id})">
+                            <b>{{$index+1+pagination.pageSize*(pagination.page-1)}}.</b>
+                            {{t.phone}}
+                            <span class="m-l-5">{{t.name}}</span>
+                            <span class="m-l-5">{{t.sumIncome}}</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <footer class="text-right">
+                    <div>第{{pagination.page}}页 / 共{{(pagination.totalItems/pagination.pageSize) | ceil}}页</div>
+                    <uib-pagination total-items="pagination.totalItems" ng-model="pagination.page" boundary-link-numbers="true"
+                                    items-per-page="pagination.pageSize" force-ellipses="true" ng-change="getTechFinance()"
+                                    previous-text="←" next-text="→" max-size="3" class="pagination-sm"></uib-pagination>
+                </footer>
+            </div>
+        </div>
+        <div ui-view class="col-sm-9"></div>
+    </div>
+</div>

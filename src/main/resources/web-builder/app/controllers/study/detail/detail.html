@@ -1,0 +1,46 @@
+<div class="container-fluid m-l-40 m-r-40">
+    <div class="page-header"><h3>资料详情</h3></div>
+    <uib-alert type="danger" close="error = ''" ng-show="error" class="alert-fixed-top">{{error}}</uib-alert>
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">资料类型:</label>
+            <div class="col-sm-6">
+                {{['','培训资料','施工标准','业务规则'][studyData.type]}}
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-10">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">资料文件:</label>
+            <div class="col-sm-6">
+                {{studyData.path}}
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-10">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">资料名称:</label>
+            <div class="col-sm-6">
+                {{studyData.fileName}}
+                <button class="btn btn-default btn-xs m-l-10" ng-click="downloadFile()"><i class="fa fa-download">下载</i></button>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-10">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">文件大小:</label>
+            <div class="col-sm-6">
+                <span ng-if="studyData.fileLength/1024 > 1024">{{studyData.fileLength/1024/1024}}M</span>
+                <span ng-if="studyData.fileLength/1024 < 1024">{{studyData.fileLength/1024}}KB</span>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-10">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">备注:</label>
+            <div class="col-sm-6">
+                {{studyData.remark}}
+            </div>
+        </div>
+    </div>
+</div>

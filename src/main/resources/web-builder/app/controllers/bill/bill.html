@@ -27,16 +27,17 @@
         </div>
         <button type="submit" class="btn btn-primary" ng-click="getBills(true)"><span class="glyphicon glyphicon-search"></span>&nbsp;查找</button>
         <button type="button" class="btn btn-sm btn-default" ng-click="reset()">重置</button>
+        <a ui-sref="console.bill.finance" class="btn btn-default"><i class="fa fa-sliders"></i>&nbsp;技师账单</a>
     </form>
 </div>
 <br>
 <div class="clearfix">
-    <div style="position: absolute; right: 0; z-index: 100;">
+    <!--<div style="position: absolute; right: 0; z-index: 100;">
         <span class="btn btn-primary" ng-click="generate()" tooltip-placement="bottom" uib-tooltip="仅限测试,交付时请告知开发人员删除"
               tooltip-append-to-body="true">生成账单</span>
         <span class="btn btn-default m-l-10 m-r-10" ng-click="clear()" tooltip-placement="bottom" uib-tooltip="仅限测试,交付时请告知开发人员删除"
               tooltip-append-to-body="true">清空帐单</span>
-    </div>
+    </div>-->
     <div ng-class="$state.is('console.bill') ? 'col-sm-12' : 'col-sm-3'">
         <div class="table-responsive m-l-20 m-r-20" ng-if="$state.is('console.bill')">
             <table class="table table-striped">

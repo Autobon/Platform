@@ -8,6 +8,8 @@ export default class OrderDetailCtrl extends Injector {
     constructor(...args) {
         super(...args);
         const {$scope, $stateParams, OrderService} = this.$injected;
+
+        $scope.$parent.showMore = false;
         $scope.comment = {
             arriveOnTime  : true,
             completeOnTime: true,
@@ -18,26 +20,31 @@ export default class OrderDetailCtrl extends Injector {
         };
         this.attachMethodsTo($scope);
 
-        OrderService.getDetail($stateParams.orderNum).then(res => {
-            if (res.data && res.data.result) {
-                let order = $scope.order = res.data.data;
+        OrderService.getDetail2($stateParams.id).then(res => {
+            if (res.data.status === true) {
+                let order = $scope.order = res.data.message;
+                console.log($scope.order.workDetailShows);
+                order.position         = {lng: order.longitude, lat: order.latitude};
+                $scope.order.photoList = [];
+                if ($scope.order.photo != null) $scope.order.photoList = $scope.order.photo.split(',');
+                console.log($scope.order.beforePhotos);
+                $scope.order.startPhotoList = [];
+                if ($scope.order.beforePhotos != null) $scope.order.startPhotoList = $scope.order.beforePhotos.split(',');
+                console.log(JSON.stringify($scope.order.startPhotoList));
 
-                order.position         = {lng: order.positionLon, lat: order.positionLat};
-                $scope.comment.orderId = order.id;
-                if (order.mainConstruct) {
-                    OrderService.assembleWorkItemsText(order.mainConstruct.workItems, order.mainConstruct.workPercent, order.orderType).then(d => {
-                        $scope.$apply(() => {
-                            order.mainConstruct.workItems = d;
-                        });
-                    });
-                }
-                if (order.secondConstruct) {
-                    OrderService.assembleWorkItemsText(order.secondConstruct.workItems, order.secondConstruct.workPercent, order.orderType).then(d => {
-                        $scope.$apply(() => {
-                            order.secondConstruct.workItems = d;
-                        });
-                    });
-                }
+                $scope.order.afterPhotoList = [];
+                if ($scope.order.afterPhotos != null) $scope.order.afterPhotoList = $scope.order.afterPhotos.split(',');
+            }
+        });
+        OrderService.getOrder($stateParams.id).then(res => {
+            if (res.data.status === true) {
+                $scope.or = res.data.message;
+            }
+        });
+
+        OrderService.getOrderProduct($stateParams.id).then(res => {
+            if (res.data.status === true) {
+                $scope.products = res.data.message;
             }
         });
     }

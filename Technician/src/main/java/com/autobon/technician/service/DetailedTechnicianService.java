@@ -5,6 +5,7 @@ import com.autobon.technician.repository.DetailedTechnicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +26,15 @@ public class DetailedTechnicianService {
 
     public Page<DetailedTechnician> findByName(String name, int page, int pageSize) {
         return repository.findByName(name, new PageRequest(page - 1, pageSize,
-                Sort.Direction.DESC, "lastLoginAt"));
+                Sort.Direction.DESC, "id"));
     }
 
     public Page<DetailedTechnician> findAll(int page, int pageSize) {
         return repository.findAll(new PageRequest(page - 1, pageSize,
                 Sort.Direction.DESC, "lastLoginAt"));
     }
+
+
 
 
 }

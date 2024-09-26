@@ -55,9 +55,13 @@ public class Cooperator{
 
     @Column private Date createTime; //注册时间
 
-    @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败
+    @Column private int statusCode; //状态 0-未审核 1-审核成功 2-审核失败 3-禁用
 
     @Column private int orderNum;//商户订单数
+
+    @Column private String salesman;
+
+    @Column private String salesmanPhone;
 
 
     public  Cooperator(){
@@ -238,5 +242,21 @@ public class Cooperator{
 
     public void setOrderNum(int orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public String getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(String salesman) {
+        this.salesman = salesman;
+    }
+
+    public String getSalesmanPhone() {
+        return salesmanPhone;
+    }
+
+    public void setSalesmanPhone(String salesmanPhone) {
+        this.salesmanPhone = salesmanPhone;
     }
 }
